@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Producto</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Editar Producto</h1>
+        <form th:action="@{/productos/actualizar/{id}(id=${producto.id})}" th:object="${producto}" method="post">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" th:field="*{nombre}" id="nombre" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <input type="text" th:field="*{descripcion}" id="descripcion" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" th:field="*{categoria}" class="form-control" required>
+                    <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombre}"></option>
+                </select>
+            </div>
+            
+
+            <div class="mb-3">
+                <label for="precio" class="form-label">Precio</label>
+                <input type="number" th:field="*{precio}" id="precio" class="form-control" step="0.01" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" th:field="*{stock}" id="stock" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="proveedor" class="form-label">Proveedor</label>
+                <input type="text" th:field="*{proveedor}" id="proveedor" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="imagenURL" class="form-label">Imagen URL</label>
+                <input type="text" th:field="*{imagenURL}" id="imagenURL" class="form-control" />
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" th:field="*{activo}" id="activo" class="form-check-input" />
+                <label class="form-check-label" for="activo">Activo</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Actualizar Producto</button>
+        </form>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

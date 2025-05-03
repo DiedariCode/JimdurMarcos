@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Producto</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Nuevo Producto</h1>
+        <form action="/productos/guardar" th:object="${producto}" method="post">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" th:field="*{nombre}" class="form-control" placeholder="Nombre del producto" required>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" th:field="*{descripcion}" class="form-control" placeholder="Descripción del producto" required>
+            </div>
+            <div class="form-group">
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" th:field="*{precio}" class="form-control" placeholder="Precio" required>
+            </div>
+            <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" th:field="*{stock}" class="form-control" placeholder="Cantidad en stock" required>
+            </div>
+            <div class="form-group">
+                <label for="proveedor">Proveedor:</label>
+                <input type="text" id="proveedor" th:field="*{proveedor}" class="form-control" placeholder="Proveedor (Ej: Bosch)" required>
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" th:field="*{categoria}" class="form-control" required>
+                    <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombre}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="imagenURL">Imagen URL:</label>
+                <input type="text" id="imagenURL" th:field="*{imagenURL}" class="form-control" placeholder="URL de la imagen (opcional)">
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" id="activo" th:field="*{activo}" class="form-check-input" checked>
+                <label class="form-check-label" for="activo">Activo</label>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Guardar Producto</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
