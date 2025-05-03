@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JIMDUR Admin - Gestión de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div th:replace="fragments/sidebar :: sidebar"></div>
+
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 px-md-4 py-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Gestión de Productos</h2>
+                    <a th:href="@{/admin/productos/agregar}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i> Agregar Producto
+                    </a>
+                </div>
+
+                <!-- Filters -->
+                <div class="row mb-4 g-2">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="Buscar por nombre, SKU o marca...">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" name="categoria">
+                            <option value="">Todas las categorías</option>
+                            <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
+                                th:text="${categoria.nombre}">Categoría</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" name="estado">
+                            <option value="">Todos los estados</option>
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive mb-4">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>SKU</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Proveedor</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="producto : ${productos}">
+                                <td>
+                                    <img th:if="${producto.imagenURL}" th:src="@{${producto.imagenURL}}" alt="img"
+                                        class="img-thumbnail" style="width: 50px;">
+                                    <i th:unless="${producto.imagenURL}" class="fas fa-box text-secondary fs-4"></i>
+                                </td>
+                                <td>
+                                    <strong th:text="${producto.nombre}">Nombre</strong><br>
+                                    <small
+                                        th:text="${#strings.abbreviate(producto.descripcion, 50)}">Descripción</small>
+                                </td>
+                                <td th:text="${producto.id}">SKU</td>
+                                <td th:text="${producto.categoria.nombre}">Categoría</td>
+                                <td th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">S/ 0.00</td>
+                                <td>
+                                    <span th:text="${producto.stock}"
+                                        th:classappend="${producto.stock < 10} ? 'text-danger' : (${producto.stock < 30} ? 'text-warning' : 'text-success')">
+                                    </span>
+                                </td>
+                                <td th:text="${producto.proveedor}">Proveedor</td>
+                                <td>
+                                    <span class="badge"
+                                        th:classappend="${producto.activo} ? 'bg-success' : 'bg-secondary'"
+                                        th:text="${producto.activo} ? 'Activo' : 'Inactivo'">
+                                    </span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}"
+                                        class="btn btn-sm btn-warning me-1" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{/admin/productos/eliminar/{id}(id=${producto.id})}"
+                                        class="btn btn-sm btn-danger" title="Eliminar"
+                                        onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
+                        <li class="page-item" th:each="page : ${pages}"
+                            th:classappend="${page == currentPage} ? 'active'">
+                            <a class="page-link" th:href="@{/admin/productos/{page}(page=${page})}"
+                                th:text="${page}">1</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i
+                                    class="fas fa-angle-double-right"></i></a></li>
+                    </ul>
+                </nav>
+
+                <p class="text-center mt-3">
+                    Mostrando <span th:text="${productos.size()}">10</span> productos de <span
+                        th:text="${totalProductos}">100</span> en total
+                </p>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
