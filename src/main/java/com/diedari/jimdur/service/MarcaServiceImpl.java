@@ -42,6 +42,9 @@ public class MarcaServiceImpl implements MarcaService {
 
     @Override
     public List<Marca> obtenerMarcaPorNombres(String nombre) {
+        if (nombre == null || nombre.isEmpty()) {
+            return marcaRepository.findAll();
+        }
         return marcaRepository.findByNombre(nombre);
     }
 

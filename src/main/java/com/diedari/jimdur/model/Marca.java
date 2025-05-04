@@ -1,10 +1,15 @@
 package com.diedari.jimdur.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,11 +38,15 @@ public class Marca {
     @Column(name = "estado_marca", nullable = false)
     private boolean activo;
 
+    @OneToMany(mappedBy = "marca")
+    @JsonIgnore
+    private List<Producto> productos;
+
     public Marca() {
     }
 
     public Marca(Long id, String nombre, String descripcion, String logoUrl, String paisOrigen, String sitioWeb,
-            boolean activo) {
+            boolean activo, List<Producto> productos) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -45,6 +54,7 @@ public class Marca {
         this.paisOrigen = paisOrigen;
         this.sitioWeb = sitioWeb;
         this.activo = activo;
+        this.productos = productos;
     }
 
     public Long getId() {
@@ -101,6 +111,14 @@ public class Marca {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+    
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 
 }

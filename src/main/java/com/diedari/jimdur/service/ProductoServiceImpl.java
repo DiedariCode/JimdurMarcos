@@ -3,6 +3,8 @@ package com.diedari.jimdur.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.diedari.jimdur.model.Categoria;
@@ -55,6 +57,12 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public Producto obtenerProductoPorId(Long id) {
         return productoRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Producto> listarUltimosProductos(int cantidad) {
+        Pageable limit = PageRequest.of(0, cantidad);
+        return productoRepository.findTopNByOrderByIdDesc(limit);
     }
 
 }

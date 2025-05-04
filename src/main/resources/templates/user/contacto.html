@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/contacto.css}">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div th:replace=" ~{fragments/navbar :: navbar}">
+    </div>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section text-center text-white d-flex align-items-center justify-content-center">
+            <div class="hero-overlay"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="display-4">JIMDUR Repuestos</h1>
+                    <p class="lead">Excelencia en repuestos de motocicletas desde 1995</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Formularios -->
+        <section class="formularios-section py-5 pb-3">
+            <div class="container">
+                <div class="row">
+                    <!-- Sección de Contacto -->
+                    <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-duration="1000">
+                        <div class="p-4 rounded shadow-sm card-contacto">
+                            <h2 class="fw-bold text-center mb-3" style="color: #333333;">
+                                CONTÁC<span class="text-danger">TANOS</span>
+                            </h2>
+                            <p class="text-muted text-center">Tu consulta es importante para nosotros</p>
+
+                            <!-- Información de contacto -->
+                            <div class="d-flex justify-content-between my-4">
+                                <!-- Teléfono -->
+                                <div class="text-center">
+                                    <img src="../img/iconos/telefono.svg" alt="Teléfono" class="mb-2"
+                                        style="width: 40px;">
+                                    <p class="mb-0">(+51) 968108775</p>
+                                </div>
+                                <!-- Ubicación -->
+                                <div class="text-center">
+                                    <img src="../img/iconos/Ubicación.svg" alt="Ubicación" class="mb-2"
+                                        style="width: 40px;">
+                                    <p class="mb-0">Av. José Aguilar Santisteban, Piura - Perú</p>
+                                </div>
+                                <!-- Correo -->
+                                <div class="text-center">
+                                    <img src="../img/iconos/correo.svg" alt="Correo" class="mb-2" style="width: 40px;">
+                                    <p class="mb-0">info@jimdurr.com</p>
+                                </div>
+                            </div>
+
+                            <!-- Mapa -->
+                            <div class="mt-4">
+                                <iframe th:src="'https://www.google.com/maps/embed?pb=' + ${mapUrl}" width="100%"
+                                    height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Formulario de Cotización -->
+                    <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-duration="1000">
+                        <form class="p-4 rounded shadow-sm card-form" id="cotizacion-form">
+                            <h2 class="text-center mb-4 fw-bold" style="color: #333333;">
+                                SOLICITE SU <span class="text-danger">COTIZACIÓN</span>
+                            </h2>
+
+                            <!-- Campos del formulario -->
+                            <div class="mb-3">
+                                <input type="text" id="nombre" class="form-control" placeholder="Nombre" required>
+                                <small class="error-message text-danger"></small>
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" id="correo" class="form-control" placeholder="Correo Electrónico"
+                                    required>
+                                <small class="error-message text-danger"></small>
+                            </div>
+                            <div class="mb-3">
+                                <input type="tel" id="telefono" class="form-control" placeholder="Teléfono" required>
+                                <small class="error-message text-danger"></small>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" id="dni" class="form-control" placeholder="DNI o RUC">
+                                <small class="error-message text-danger"></small>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" id="placa" class="form-control" placeholder="Placa vehicular o VIN">
+                                <small class="error-message text-danger"></small>
+                            </div>
+                            <div class="mb-3">
+                                <select id="asunto" class="form-control" required>
+                                    <option value="" disabled selected>Seleccione un asunto</option>
+                                    <option value="queja">Queja</option>
+                                    <option value="sugerencia">Sugerencia</option>
+                                    <option value="consulta">Consulta</option>
+                                    <option value="reclamo">Reclamo</option>
+                                    <option value="otros">Otros</option>
+                                </select>
+                                <small class="error-message text-danger"></small>
+                            </div>
+                            <div class="mb-3">
+                                <textarea id="mensaje" class="form-control" rows="4" placeholder="Mensaje"
+                                    required></textarea>
+                                <small class="error-message text-danger"></small>
+                            </div>
+
+                            <!-- Botón de enviar -->
+                            <button type="submit" class="btn btn-danger w-100" id="submit-btn">Enviar mensaje</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Sección de Feedback y Horarios de Atención -->
+        <div class="container-fluid bg-light py-4 div-info-adicional">
+            <div class="container" data-aos="fade-up" data-aos-duration="1000">
+                <div class="row">
+                    <!-- Sección de Feedback -->
+                    <div class="col-lg-6 mt-3 card-formFed">
+                        <h2 class="fw-bold text-center text-uppercase">Deja tu <span class="text-danger">reseña</span>
+                        </h2>
+                        <form class="feedback-form bg-white p-4 rounded shadow-sm">
+                            <div class="mb-3">
+                                <input type="text" class="form-control bg-light" placeholder="Nombre" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" class="form-control bg-light" placeholder="Correo Electrónico"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control bg-light" rows="8" placeholder="Tu reseña"
+                                    required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger w-100">Enviar Reseña</button>
+                        </form>
+                    </div>
+
+                    <!-- Sección de Horarios de Atención -->
+                    <div class="col-lg-6 mt-0">
+                        <h2 class="text-center fw-bold pt-3 text-uppercase">Horarios <span class="text-danger">de
+                                Atencion</span></h2>
+                        <div class="row" data-aos="fade-up" data-aos-duration="1000">
+                            <div class="col-12 mb-3">
+                                <div class="p-4 border bg-white rounded shadow-sm div-horario">
+                                    <h4>Lunes a Viernes</h4>
+                                    <p>9:00 AM - 6:00 PM</p>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3" data-aos="fade-up" data-aos-duration="1000">
+                                <div class="p-4 border bg-white rounded shadow-sm div-horario">
+                                    <h4>Sábados</h4>
+                                    <p>9:00 AM - 1:00 PM</p>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3" data-aos="fade-up" data-aos-duration="1000">
+                                <div class="p-4 border bg-white rounded shadow-sm div-horario">
+                                    <h4>Domingos y Feriados</h4>
+                                    <p>Cerrado</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sección de Preguntas Frecuentes (FAQ) -->
+        <section class="faq-section py-5">
+            <div class="container" data-aos="fade-up" data-aos-duration="1000">
+                <!-- Título -->
+                <div class="row">
+                    <div class="col-12 text-center mb-4">
+                        <h2 class="fw-bold text-uppercase">
+                            Preguntas <span class="text-danger">Frecuentes</span>
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Acordeón de Preguntas Frecuentes -->
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="accordion" id="faqAccordion">
+                            <!-- Pregunta 1 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        ¿Qué tipo de repuestos ofrecen?
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Ofrecemos una amplia gama de repuestos y accesorios para motocicletas de
+                                        diversas marcas y modelos.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 2 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        ¿Realizan envíos a domicilio?
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                    data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Sí, realizamos envíos a domicilio dentro de la ciudad y también a otras
+                                        localidades bajo ciertas condiciones.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 3 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseThree" aria-expanded="false"
+                                        aria-controls="collapseThree">
+                                        ¿Cómo puedo hacer un pedido?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse"
+                                    aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Puedes realizar tu pedido a través de nuestro formulario de contacto o
+                                        llamándonos directamente.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <footer></footer>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

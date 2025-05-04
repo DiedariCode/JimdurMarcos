@@ -1,0 +1,143 @@
+<header th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg p-2">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" th:href="@{/}">
+                <img th:src="@{/image/logos/logo_Jimdur_pequeno.png}" alt="Jimdur Logo">
+            </a>
+
+
+            <!-- Contenido principal de la navegación -->
+            <div class="collapse navbar-collapse ms-5" id="navbarNav">
+                <!-- Enlaces de navegación (centrados) -->
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/productos}">Productos</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoriasDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorías
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
+                            <li><a class="dropdown-item" href="#">Motores</a></li>
+                            <li><a class="dropdown-item" href="#">Frenos</a></li>
+                            <li><a class="dropdown-item" href="#">Transmisión</a></li>
+                            <li><a class="dropdown-item" href="#">Accesorios</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Ver todas</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/nosotros}">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/contacto}">Contacto</a>
+                    </li>
+                </ul>
+
+                <!-- Barra de búsqueda (visible solo en pantallas grandes) -->
+                <div class="d-none d-lg-flex">
+                    <form class="search-form d-flex border" role="search">
+                        <input class="form-control" type="search" placeholder="Buscar productos..."
+                            aria-label="Buscar">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+
+                <!-- Acciones del usuario (visibles solo en pantallas grandes) -->
+                <div class="d-none d-lg-flex align-items-center ms-3">
+                    <!-- Favoritos -->
+                    <div class="dropdown">
+                        <button class="btn-icon position-relative" type="button" id="favoritosDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-heart"></i>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-count">
+                                2
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="favoritosDropdown">
+                            <h6 class="fw-bold mb-3">Mis Favoritos</h6>
+                            <div class="cart-item d-flex align-items-center">
+                                <img src="" class="me-3" alt="Producto">
+                                <div>
+                                    <p class="mb-0 fw-bold">Filtro de aceite</p>
+                                    <small class="text-muted">S/. 45.00</small>
+                                </div>
+                                <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
+                            </div>
+                            <div class="cart-item d-flex align-items-center">
+                                <img src="" class="me-3" alt="Producto">
+                                <div>
+                                    <p class="mb-0 fw-bold">Kit de frenos</p>
+                                    <small class="text-muted">S/. 120.00</small>
+                                </div>
+                                <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
+                            </div>
+                            <div class="d-grid gap-2 mt-3">
+                                <a href="#" class="btn btn-sm btn-danger">Ver todos</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Carrito -->
+                    <div class="dropdown">
+                        <button class="btn-icon position-relative" type="button" id="carritoDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-count">
+                                3
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="carritoDropdown">
+                            <h6 class="fw-bold mb-3">Mi Carrito</h6>
+                            <div class="cart-item d-flex align-items-center">
+                                <img src="/api/placeholder/40/40" class="me-3" alt="Producto">
+                                <div>
+                                    <p class="mb-0 fw-bold">Filtro de aceite</p>
+                                    <small class="text-muted">1 x S/. 45.00</small>
+                                </div>
+                                <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
+                            </div>
+                            <div class="cart-item d-flex align-items-center">
+                                <img src="/api/placeholder/40/40" class="me-3" alt="Producto">
+                                <div>
+                                    <p class="mb-0 fw-bold">Kit de frenos</p>
+                                    <small class="text-muted">1 x S/. 120.00</small>
+                                </div>
+                                <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
+                            </div>
+                            <div class="cart-item d-flex align-items-center">
+                                <img src="/api/placeholder/40/40" class="me-3" alt="Producto">
+                                <div>
+                                    <p class="mb-0 fw-bold">Aceite motor</p>
+                                    <small class="text-muted">2 x S/. 35.00</small>
+                                </div>
+                                <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
+                            </div>
+                            <div class="d-flex justify-content-between mt-3">
+                                <span>Total:</span>
+                                <span class="fw-bold">S/. 235.00</span>
+                            </div>
+                            <div class="d-grid gap-2 mt-3">
+                                <a href="#" class="btn btn-sm btn-danger">Proceder al pago</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acceder/Usuario -->
+                    <button class="btn-icon active ms-2" data-bs-toggle="modal" data-bs-target="#authModal">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
