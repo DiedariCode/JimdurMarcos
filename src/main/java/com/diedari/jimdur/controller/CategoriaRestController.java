@@ -43,16 +43,16 @@ public class CategoriaRestController {
     @PutMapping("/actualizar/{id}")
     public Categoria actualizarCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
         Categoria actual = categoriaService.obtenerCategoriaPorId(id);
-        if(actual != null) {
+        if (actual != null) {
             actual.setNombre(categoria.getNombre());
             actual.setDescripcion(categoria.getDescripcion());
-            actual.setSubcategoria(categoria.getSubcategoria());
+            actual.setActiva(categoria.isActiva());
             return categoriaService.actualizarCategoria(actual);
         } else {
             return null;
         }
     }
-
+    
     @DeleteMapping("/{id}")
     public void eliminarCategoria(@PathVariable Long id) {
         categoriaService.eliminarCategoriaPorId(id);

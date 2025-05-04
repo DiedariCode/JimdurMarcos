@@ -4,35 +4,41 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 @Entity
 public class Categoria {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre; // Ej: "Frenos", "Iluminación"
+    @Column(name = "nombre_categoria", nullable = false, unique = true)
+    private String nombre;
+
+    @Column(name = "slug_categoria", nullable = false, unique = true)
+    private String slug;
+
+    @Column(name = "descripcion_categoria", nullable = false)
     private String descripcion;
-    private String subcategoria; // Opcional: Ej: "Pastillas", "Faros LED"
+
+    @Column(name = "estado_activa", nullable = false)
+    private boolean activa; // true = activa, false = inactiva
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-    @JsonIgnore // Evita la recursión infinita al serializar
+    @JsonIgnore
     private List<Producto> productos;
 
     public Categoria() {
     }
 
-    public Categoria(Long id, String nombre, String descripcion, String subcategoria, List<Producto> productos) {
+    public Categoria(Long id, String nombreCategoria, String slug, String descripcion, boolean estado,
+            List<Producto> productos) {
         this.id = id;
-        this.nombre = nombre;
+        this.nombre = nombreCategoria;
+        this.slug = slug;
         this.descripcion = descripcion;
-        this.subcategoria = subcategoria;
+        this.activa = estado;
         this.productos = productos;
     }
 
@@ -48,8 +54,18 @@ public class Categoria {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombre(String nombreCategoria) {
+        this.nombre = nombreCategoria;
+        // Al cambiar el nombre, también actualizamos el slug
+        this.slug = generarSlug(nombreCategoria);
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public String getDescripcion() {
@@ -60,12 +76,12 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    public String getSubcategoria() {
-        return subcategoria;
+    public boolean isActiva() {
+        return activa;
     }
 
-    public void setSubcategoria(String subcategoria) {
-        this.subcategoria = subcategoria;
+    public void setActiva(boolean activa) {
+        this.activa = activa;
     }
 
     public List<Producto> getProductos() {
@@ -76,5 +92,8 @@ public class Categoria {
         this.productos = productos;
     }
 
-    
+    // Método para generar el slug automáticamente desde el nombre
+    private String generarSlug(String nombreCategoria) {
+        return nombreCategoria.toLowerCase().replace(" ", "-").replaceAll("[^a-z0-9-]", "");
+    }
 }

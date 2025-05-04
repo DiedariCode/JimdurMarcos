@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Categoría</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+</head>
+
+<body>
+    <!-- Main content -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar area (columna izquierda) -->
+
+            <div th:replace="fragments/sidebar :: sidebar"></div>
+
+
+            <!-- Content area (columna derecha) -->
+            <div class="col-md-9">
+                <div class="container mt-4">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <a href="#" th:href="@{/admin/categorias}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                            <h1 class="d-inline-block ms-2">Editar Categoría</h1>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">Editar categoría</h5>
+                            <p class="text-muted">Actualiza la información de la categoría existente</p>
+
+                            <form th:action="@{/admin/categorias/editar/{id}(id=${categoria.id})}" method="post"
+                                th:object="${categoria}">
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre de la categoría <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="descripcion" class="form-label">Descripción</label>
+                                    <textarea class="form-control" id="descripcion" rows="3"
+                                        th:field="*{descripcion}"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="slug" class="form-label">Slug <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="slug" th:field="*{slug}" required>
+                                    <div class="form-text">El slug se usa en las URLs. Ejemplo: /categoria/<span
+                                            th:text="*{slug}">aceites</span></div>
+                                </div>
+
+                                <div class="mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="activa"
+                                        th:field="*{activa}">
+                                    <label class="form-check-label" for="activa">Categoría activa</label>
+                                </div>
+
+                                <div class="text-muted mb-4" th:if="${cantidadProductos != null}">
+                                    Esta categoría contiene <span th:text="${cantidadProductos}">24</span> productos.
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#eliminarModal">
+                                        <i class="bi bi-trash"></i> Eliminar categoría
+                                    </button>
+                                    <div>
+                                        <a href="#" th:href="@{/categorias}" class="btn btn-secondary me-2">Cancelar</a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-check-lg"></i> Actualizar categoría
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para confirmar eliminación -->
+    <div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar esta categoría? Esta acción no se puede deshacer.
+                    <p class="mt-2 text-danger" th:if="${cantidadProductos > 0}">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Esta categoría contiene <strong
+                            th:text="${cantidadProductos}">24</strong> productos que quedarán sin categoría.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form th:action="@{/categorias/eliminar/{id}(id=${categoria.id})}" method="post">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -14,4 +14,6 @@ public interface CategoriaService {
     Categoria actualizarCategoria(Categoria categoria); // Actualizar una categoría existente
 
     void eliminarCategoriaPorId(Long id); // Eliminar una categoría por ID
+
+    List<Categoria> obtenerCategoriaPorEstado(boolean activa); // Obtener una categoría por estado (activa/inactiva)
 }

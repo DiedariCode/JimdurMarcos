@@ -33,7 +33,7 @@ public class Producto {
     @Column(name = "proveedor", nullable = false, length = 100)
     private String proveedor; // Ej: "Bosch", "Valeo", "Sachs", etc.
 
-    @Column(name = "imagen_url", nullable = true, length = 255)
+    @Column(name = "imagen_url", nullable = true, length = 1000)
     private String imagenURL; // URL de la imagen del producto
 
     @Column(name = "activo", nullable = false)

@@ -43,10 +43,10 @@ public class ProductoController {
     }
 
     // Guardar nuevo producto
-    @PostMapping("/guardar")
+    @PostMapping("/agregar")
     public String guardarProducto(@ModelAttribute Producto producto) {
         productoService.guardarProductoNuevo(producto);
-        return "redirect:/admin/productos"; // Redirige a la lista de productos
+        return "redirect:/admin/productos/"; // Redirige a la lista de productos
     }
 
     // Editar producto
@@ -60,7 +60,7 @@ public class ProductoController {
             model.addAttribute("contenido", "admin/productos/editar"); // Vista para editar producto
             return "admin/productos/editar"; 
         } else {
-            return "redirect:/admin/productos";
+            return "redirect:/admin/productos/";
         }
     }
 
@@ -79,13 +79,13 @@ public class ProductoController {
             actual.setActivo(producto.isActivo());
             productoService.actualizarProducto(actual);
         }
-        return "redirect:/admin/productos";
+        return "redirect:/admin/productos/";
     }
 
     // Eliminar producto
     @GetMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id) {
         productoService.eliminarProducto(id);
-        return "redirect:/admin/productos";
+        return "redirect:/admin/productos/";
     }
 }

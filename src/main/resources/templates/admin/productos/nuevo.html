@@ -4,93 +4,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo Producto</title>
+    <title>Agregar Producto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
 <body>
+    <!-- Main content -->
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
+            <!-- Sidebar area (columna izquierda) -->
             <div th:replace="fragments/sidebar :: sidebar"></div>
 
-            <!-- Main Content -->
-            <div class="col-md-9 col-lg-10">
-                <div th:fragment="contenido">
-                    <div class="container mt-5">
-                        <div class="row justify-content-center">
-                            <div class="col-md-8">
-                                <div class="card shadow-lg rounded-lg">
-                                    <div class="card-header bg-success text-white">
-                                        <h3 class="mb-0 text-center">Agregar Nuevo Producto</h3>
+            <!-- Content area (columna derecha) -->
+            <div class="col-md-9">
+                <div class="container mt-4">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <a href="#" th:href="@{/admin/productos}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                            <h1 class="d-inline-block ms-2">Agregar Producto</h1>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">Nuevo producto</h5>
+                            <p class="text-muted">Introduce la información del nuevo producto</p>
+
+                            <form th:action="@{/admin/productos/agregar}" method="post" th:object="${producto}">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="nombre" class="form-label">Nombre del producto <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
                                     </div>
-                                    <div class="card-body">
-                                        <form action="/admin/productos/guardar" th:object="${producto}" method="post">
-                                            <div class="form-group">
-                                                <label for="nombre">Nombre</label>
-                                                <input type="text" id="nombre" th:field="*{nombre}" class="form-control"
-                                                    placeholder="Nombre del producto" required>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="descripcion">Descripción</label>
-                                                <textarea id="descripcion" th:field="*{descripcion}"
-                                                    class="form-control" placeholder="Descripción del producto" rows="3"
-                                                    required></textarea>
-                                            </div>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="precio">Precio</label>
-                                                    <input type="number" id="precio" th:field="*{precio}"
-                                                        class="form-control" placeholder="Precio" required>
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label for="stock">Stock</label>
-                                                    <input type="number" id="stock" th:field="*{stock}"
-                                                        class="form-control" placeholder="Cantidad en stock" required>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="proveedor">Proveedor</label>
-                                                    <input type="text" id="proveedor" th:field="*{proveedor}"
-                                                        class="form-control" placeholder="Ej: Bosch" required>
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label for="categoria">Categoría</label>
-                                                    <select id="categoria" th:field="*{categoria}" class="form-control"
-                                                        required>
-                                                        <option value="" disabled selected>Seleccione una categoría
-                                                        </option>
-                                                        <option th:each="categoria : ${categorias}"
-                                                            th:value="${categoria.id}" th:text="${categoria.nombre}">
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="imagenURL">URL de Imagen</label>
-                                                <input type="text" id="imagenURL" th:field="*{imagenURL}"
-                                                    class="form-control" placeholder="URL de la imagen (opcional)">
-                                            </div>
-
-                                            <div class="form-group form-check">
-                                                <input type="checkbox" id="activo" th:field="*{activo}"
-                                                    class="form-check-input" checked>
-                                                <label class="form-check-label" for="activo">Producto Activo</label>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-success btn-block">
-                                                <i class="fas fa-save"></i> Guardar Producto
-                                            </button>
-                                        </form>
+                                    <div class="col-md-6">
+                                        <label for="precio" class="form-label">Precio <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="precio" th:field="*{precio}" required>
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="descripcion" class="form-label">Descripción</label>
+                                        <textarea class="form-control" id="descripcion" rows="3" th:field="*{descripcion}"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="stock" class="form-label">Stock</label>
+                                        <input type="number" class="form-control" id="stock" th:field="*{stock}" required>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="categoria" class="form-label">Categoría</label>
+                                        <select id="categoria" th:field="*{categoria}" class="form-control" required>
+                                            <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombre}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="imagenURL" class="form-label">Imagen URL</label>
+                                        <input type="text" class="form-control" id="imagenURL" th:field="*{imagenURL}">
+                                    </div>
+                                </div>
+
+                                <!-- Campo para seleccionar proveedor -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="proveedor" class="form-label">Proveedor <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="proveedor" th:field="*{proveedor}" required>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <a href="#" th:href="@{/admin/productos/}" class="btn btn-secondary me-2">Cancelar</a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-lg"></i> Agregar producto
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -98,7 +91,8 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -43,4 +43,10 @@ public class CategoriaServiceImpl implements CategoriaService {
     public void eliminarCategoriaPorId(Long id) {
         categoriaRepository.deleteById(id);
     }
+
+    @Override
+    public List<Categoria> obtenerCategoriaPorEstado(boolean activa) {
+        return categoriaRepository.findByActiva(activa); // Devuelve una lista de categorías
+    }
+    
 }
