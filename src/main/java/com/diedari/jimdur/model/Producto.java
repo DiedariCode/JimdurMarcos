@@ -39,11 +39,15 @@ public class Producto {
     @Column(name = "activo", nullable = false)
     private boolean activo; // Indica si el producto está activo o no
 
+    @ManyToOne
+    @JoinColumn(name = "marca_id")
+    private Marca marca;
+
     public Producto() {
     }
 
     public Producto(Long id, String nombre, String descripcion, Categoria categoria, Double precio, int stock,
-            String proveedor, String imagenURL, boolean activo) {
+            String proveedor, String imagenURL, boolean activo, Marca marca) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -53,6 +57,7 @@ public class Producto {
         this.proveedor = proveedor;
         this.imagenURL = imagenURL;
         this.activo = activo;
+        this.marca = marca;
     }
 
     public Long getId() {
@@ -125,6 +130,14 @@ public class Producto {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
     }
 
     @Override

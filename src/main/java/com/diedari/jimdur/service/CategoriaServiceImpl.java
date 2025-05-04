@@ -46,7 +46,15 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public List<Categoria> obtenerCategoriaPorEstado(boolean activa) {
-        return categoriaRepository.findByActiva(activa); // Devuelve una lista de categorías
+        return categoriaRepository.findByActiva(activa); 
+    }
+
+    @Override
+    public List<Categoria> obtenerCategoriaPorNombre(String nombre) {
+        if (nombre == null || nombre.isEmpty()) {
+            return categoriaRepository.findAll(); // Si no se proporciona un nombre, devuelve todas las categorías   
+        }
+        return categoriaRepository.findByNombre(nombre); 
     }
     
 }

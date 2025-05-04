@@ -10,7 +10,14 @@ import com.diedari.jimdur.model.Categoria;
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     // Aquí puedes agregar métodos personalizados si es necesario
-    
+
     // Método para encontrar una categoría por su estado "activa"
     public List<Categoria> findByActiva(boolean activa);
+
+    // Método para encontrar una categoría por su nombre
+    public List<Categoria> findByNombre(String nombre);
+
+    public List<Categoria> findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(String nombre,
+            String descripcion);
+
 }

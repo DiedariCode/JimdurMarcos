@@ -1,51 +1,112 @@
-<div th:fragment="sidebar" class="col-md-3 col-lg-2 bg-dark text-white min-vh-100 p-3">
-  <h4 class="text-center mb-4"><i class="fas fa-biking"></i> JIMDUR Admin</h4>
-  <ul class="nav flex-column">
-      <li class="nav-item mb-2">
-          <a href="#" class="nav-link text-white">
-              <i class="fas fa-th-large me-2"></i>Dashboard
-          </a>
-      </li>
-      <li class="nav-item mb-2">
-          <a href="#" class="nav-link text-white cursor-pointer active" data-bs-toggle="collapse" data-bs-target="#productosSubmenu" aria-expanded="false" aria-controls="productosSubmenu">
-              <i class="fas fa-box me-2"></i>Productos
-              <i class="fas fa-chevron-down ms-2"></i> <!-- Flecha para indicar submenú -->
-          </a>
-          <!-- Submenu de Productos -->
-          <ul class="nav flex-column ms-3 collapse" id="productosSubmenu">
-              <li class="nav-item mb-2">
-                  <a th:href="@{/admin/productos/}" class="nav-link text-white">Todos los productos</a>
-              </li>
-              <li class="nav-item mb-2">
-                  <a th:href="@{/admin/productos/agregar}" class="nav-link text-white">Agregar productos</a>
-              </li>
-              <li class="nav-item mb-2">
-                  <a th:href="@{/admin/categorias}" class="nav-link text-white">Categorías</a>
-              </li>
-              <li class="nav-item mb-2">
-                  <a th:href="@{/admin/productos/marcas}" class="nav-link text-white">Marcas</a>
-              </li>
-          </ul>
-      </li>
-      <li class="nav-item mb-2">
-          <a href="#" class="nav-link text-white">
-              <i class="fas fa-users me-2"></i>Usuarios
-          </a>
-      </li>
-      <li class="nav-item mb-2">
-          <a href="#" class="nav-link text-white">
-              <i class="fas fa-shopping-cart me-2"></i>Pedidos
-          </a>
-      </li>
-      <li class="nav-item mb-2">
-          <a href="#" class="nav-link text-white">
-              <i class="fas fa-chart-bar me-2"></i>Reportes
-          </a>
-      </li>
-      <li class="nav-item mb-2">
-          <a href="#" class="nav-link text-white">
-              <i class="fas fa-cog me-2"></i>Configuración
-          </a>
-      </li>
-  </ul>
+<!-- Sidebar Fragment -->
+<div th:fragment="sidebar" class="sidebar-container col-md-3 col-lg-2 min-vh-100">
+    <div class="sidebar-header">
+        <div class="logo-container">
+            <i class="fas fa-biking"></i>
+            <span>JIMDUR Admin</span>
+        </div>
+    </div>
+    
+    <div class="sidebar-user">
+        <div class="user-avatar">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-info">
+            <p class="user-name">Administrador</p>
+            <p class="user-role">Super Admin</p>
+        </div>
+    </div>
+    
+    <div class="sidebar-divider"></div>
+    
+    <ul class="nav-menu">
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <div class="nav-icon"><i class="fas fa-th-large"></i></div>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        
+        <li class="nav-item has-submenu">
+            <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#productosSubmenu" aria-expanded="true" aria-controls="productosSubmenu">
+                <div class="nav-icon"><i class="fas fa-box"></i></div>
+                <span>Productos</span>
+                <div class="chevron"><i class="fas fa-chevron np-down"></i></div>
+            </a>
+            <ul class="submenu collapse show" id="productosSubmenu">
+                <li>
+                    <a th:href="@{/admin/productos/}" class="submenu-link">
+                        <i class="fas fa-circle submenu-icon"></i>
+                        <span>Todos los productos</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/productos/agregar}" class="submenu-link">
+                        <i class="fas fa-circle submenu-icon"></i>
+                        <span>Agregar productos</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/categorias}" class="submenu-link">
+                        <i class="fas fa-circle submenu-icon"></i>
+                        <span>Categorías</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/productos/marcas}" class="submenu-link">
+                        <i class="fas fa-circle submenu-icon"></i>
+                        <span>Marcas</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <div class="nav-icon"><i class="fas fa-users"></i></div>
+                <span>Usuarios</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <div class="nav-icon"><i class="fas fa-shopping-cart"></i></div>
+                <span>Pedidos</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+                <span>Reportes</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <div class="nav-icon"><i class="fas fa-cog"></i></div>
+                <span>Configuración</span>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sidebar-footer">
+        <a href="#" class="footer-link">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Cerrar sesión</span>
+        </a>
+    </div>
+    
+    <script>
+        // Script para corregir el chevron de productos (si es necesario)
+        document.addEventListener('DOMContentLoaded', function() {
+            const submenuToggles = document.querySelectorAll('.has-submenu .nav-link');
+            submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const expanded = this.getAttribute('aria-expanded') === 'true';
+                    this.setAttribute('aria-expanded', !expanded);
+                });
+            });
+        });
+    </script>
 </div>

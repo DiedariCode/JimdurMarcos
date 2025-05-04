@@ -38,7 +38,6 @@ public class ProductoController {
         model.addAttribute("producto", new Producto());
         List<Categoria> categorias = categoriaService.obtenerTodasLasCategorias();
         model.addAttribute("categorias", categorias);
-        model.addAttribute("contenido", "admin/productos/nuevo"); // Vista para agregar producto
         return "admin/productos/nuevo"; // Usamos el layout principal
     }
 
@@ -57,7 +56,6 @@ public class ProductoController {
             model.addAttribute("producto", producto);
             List<Categoria> categorias = categoriaService.obtenerTodasLasCategorias();
             model.addAttribute("categorias", categorias);
-            model.addAttribute("contenido", "admin/productos/editar"); // Vista para editar producto
             return "admin/productos/editar"; 
         } else {
             return "redirect:/admin/productos/";

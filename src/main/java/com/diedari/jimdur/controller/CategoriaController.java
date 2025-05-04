@@ -38,8 +38,8 @@ public class CategoriaController {
     }
 
     // Aqui es para filtrar las categorias por su estado
-    @GetMapping("/filtrar")
-    public String filtrarCategorias(@RequestParam("estado") String estado, Model model) {
+    @GetMapping("/filtrar/estado")
+    public String filtrarCategoriasPorEstado(@RequestParam("estado") String estado, Model model) {
         List<Categoria> categorias;
 
         // Verificar el estado y filtrar las categorías
@@ -54,6 +54,16 @@ public class CategoriaController {
         model.addAttribute("categorias", categorias);
         model.addAttribute("categoria", new Categoria()); // Para el formulario de nueva categoría
         model.addAttribute("productos", productoService.listarTodosLosProductos()); // Vista para listar categorías
+
+        return "admin/categoria/listar";
+    }
+
+    @GetMapping("/filtrar/nombre")
+    public String filtrarCategoriasPorNombre(@RequestParam("nombre") String nombre, Model model) {
+        List<Categoria> categorias = categoriaService.obtenerCategoriaPorNombre(nombre); 
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("categoria", new Categoria()); // Para el formulario de nueva categoria
+        model.addAttribute("productos", productoService.listarTodosLosProductos()); // Vista para listar categorias
 
         return "admin/categoria/listar";
     }

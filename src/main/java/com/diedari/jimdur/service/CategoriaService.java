@@ -16,4 +16,6 @@ public interface CategoriaService {
     void eliminarCategoriaPorId(Long id); // Eliminar una categoría por ID
 
     List<Categoria> obtenerCategoriaPorEstado(boolean activa); // Obtener una categoría por estado (activa/inactiva)
+
+    List<Categoria> obtenerCategoriaPorNombre(String nombre); // Obtener una categoría por nombre
 }
