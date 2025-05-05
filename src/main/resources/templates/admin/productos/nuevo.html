@@ -47,7 +47,7 @@
                                         <label for="precio" class="form-label">Precio <span
                                                 class="text-danger">*</span></label>
                                         <input type="number" class="form-control" id="precio" th:field="*{precio}"
-                                            required>
+                                            step="0.01" required>
                                     </div>
                                 </div>
 
@@ -64,7 +64,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Campo para seleccionar proveedor -->
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="proveedor" class="form-label">Proveedor <span
@@ -72,30 +71,69 @@
                                         <input type="text" class="form-control" id="proveedor" th:field="*{proveedor}"
                                             required>
                                     </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="categoria" class="form-label">Categoría</label>
-                                        <select id="categoria" th:field="*{categoria}" class="form-control" required>
-                                            <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
-                                                th:text="${categoria.nombre}"></option>
-                                        </select>
-                                    </div>
                                     <div class="col-md-6">
                                         <label for="imagenURL" class="form-label">Imagen URL</label>
                                         <input type="text" class="form-control" id="imagenURL" th:field="*{imagenURL}">
                                     </div>
                                 </div>
 
+                                <!-- Categoría y Marca -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="categoria" class="form-label">Categoría</label>
+                                        <select id="categoria" th:field="*{categoria.id}" class="form-select" required>
+                                            <option value="" disabled selected>Seleccione una categoría</option>
+                                            <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
+                                                th:text="${categoria.nombre}"></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="marca" class="form-label">Marca</label>
+                                        <select id="marca" th:field="*{marca.id}" class="form-select" required>
+                                            <option value="" disabled selected>Seleccione una marca</option>
+                                            <option th:each="marca : ${marcas}" th:value="${marca.id}"
+                                                th:text="${marca.nombre}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Promociones / Descuentos -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="descuento" class="form-label">Descuento</label>
+                                        <input type="number" class="form-control" id="descuento" th:field="*{descuento}"
+                                            step="0.01" min="0">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="tipoDescuento" class="form-label">Tipo de descuento</label>
+                                        <select class="form-select" id="tipoDescuento" th:field="*{tipoDescuento}">
+                                            <option value="" disabled selected>Seleccione tipo de descuento</option>
+                                            <option value="PORCENTAJE">Porcentaje (%)</option>
+                                            <option value="MONTO">Monto fijo (S/)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Activo -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" th:field="*{activo}"
+                                                id="activo">
+                                            <label class="form-check-label" for="activo">Producto activo</label>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="d-flex justify-content-between">
-                                    <a href="#" th:href="@{/admin/productos/}"
-                                        class="btn btn-secondary me-2">Cancelar</a>
+                                    <a th:href="@{/admin/productos/}" class="btn btn-secondary me-2">Cancelar</a>
                                     <button type="submit" class="btn btn-primary">
                                         <i class="bi bi-check-lg"></i> Agregar producto
                                     </button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>

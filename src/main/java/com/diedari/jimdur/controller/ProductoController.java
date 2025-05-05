@@ -1,15 +1,22 @@
 package com.diedari.jimdur.controller;
 
-import com.diedari.jimdur.model.Producto;
-import com.diedari.jimdur.model.Categoria;
-import com.diedari.jimdur.service.ProductoService;
-import com.diedari.jimdur.service.CategoriaService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import com.diedari.jimdur.model.Categoria;
+import com.diedari.jimdur.model.Marca;
+import com.diedari.jimdur.model.Producto;
+import com.diedari.jimdur.service.CategoriaService;
+import com.diedari.jimdur.service.MarcaService;
+import com.diedari.jimdur.service.ProductoService;
 
 @Controller
 @RequestMapping("/admin/productos")
@@ -20,6 +27,9 @@ public class ProductoController {
 
     @Autowired
     private CategoriaService categoriaService;
+
+    @Autowired
+    private MarcaService marcaService; 
 
     // Listar productos
     @GetMapping("/")
@@ -38,6 +48,8 @@ public class ProductoController {
         model.addAttribute("producto", new Producto());
         List<Categoria> categorias = categoriaService.obtenerTodasLasCategorias();
         model.addAttribute("categorias", categorias);
+        List<Marca> marcas = marcaService.listarTodasLasMarcas(); 
+        model.addAttribute("marcas", marcas); 
         return "admin/productos/nuevo"; // Usamos el layout principal
     }
 

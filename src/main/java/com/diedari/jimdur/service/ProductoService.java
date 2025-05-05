@@ -22,4 +22,5 @@ public interface ProductoService {
 
     // Método para listar los últimos productos agregados ESTO PARA EL INDEX QUE TENGO ESO :V
     public List<Producto> listarUltimosProductos(int cantidad);
+    
 }

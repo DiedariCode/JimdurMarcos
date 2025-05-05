@@ -1,12 +1,6 @@
 package com.diedari.jimdur.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Producto {
@@ -31,23 +25,36 @@ public class Producto {
     private int stock;
 
     @Column(name = "proveedor", nullable = false, length = 100)
-    private String proveedor; // Ej: "Bosch", "Valeo", "Sachs", etc.
+    private String proveedor;
 
     @Column(name = "imagen_url", nullable = true, length = 1000)
-    private String imagenURL; // URL de la imagen del producto
+    private String imagenURL;
 
     @Column(name = "activo", nullable = false)
-    private boolean activo; // Indica si el producto está activo o no
+    private boolean activo;
 
     @ManyToOne
     @JoinColumn(name = "marca_id")
     private Marca marca;
 
+    // NUEVOS CAMPOS PARA DESCUENTO
+    @Column(name = "tipo_descuento", length = 20)
+    private String tipoDescuento; // "porcentaje" o "monto"
+
+    @Column(name = "descuento")
+    private Double descuento; // puede ser 10.0 (10%) o 20.0 soles
+
+    @Column(name = "precio_oferta")
+    private Double precioOferta; // precio con descuento aplicado
+
+    // Constructor vacío
     public Producto() {
     }
 
+    // Constructor con todos los campos (puedes omitir si no lo usas)
     public Producto(Long id, String nombre, String descripcion, Categoria categoria, Double precio, int stock,
-            String proveedor, String imagenURL, boolean activo, Marca marca) {
+            String proveedor, String imagenURL, boolean activo, Marca marca,
+            String tipoDescuento, Double descuento, Double precioOferta) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -58,8 +65,28 @@ public class Producto {
         this.imagenURL = imagenURL;
         this.activo = activo;
         this.marca = marca;
+        this.tipoDescuento = tipoDescuento;
+        this.descuento = descuento;
+        this.precioOferta = precioOferta;
     }
 
+    // Método para calcular el precio de oferta basado en tipo y valor del descuento
+    public void calcularPrecioOferta() {
+        if (tipoDescuento != null && descuento != null && descuento > 0) {
+            if (tipoDescuento.equalsIgnoreCase("porcentaje")) {
+                this.precioOferta = precio - (precio * descuento / 100);
+            } else if (tipoDescuento.equalsIgnoreCase("monto")) {
+                this.precioOferta = precio - descuento;
+            }
+            // Validar que no sea negativo
+            if (this.precioOferta < 0)
+                this.precioOferta = 0.0;
+        } else {
+            this.precioOferta = precio;
+        }
+    }
+
+    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -140,10 +167,35 @@ public class Producto {
         this.marca = marca;
     }
 
+    public String getTipoDescuento() {
+        return tipoDescuento;
+    }
+
+    public void setTipoDescuento(String tipoDescuento) {
+        this.tipoDescuento = tipoDescuento;
+    }
+
+    public Double getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(Double descuento) {
+        this.descuento = descuento;
+    }
+
+    public Double getPrecioOferta() {
+        return precioOferta;
+    }
+
+    public void setPrecioOferta(Double precioOferta) {
+        this.precioOferta = precioOferta;
+    }
+
     @Override
     public String toString() {
         return "Producto [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", categoria=" + categoria
                 + ", precio=" + precio + ", stock=" + stock + ", proveedor=" + proveedor + ", imagenURL=" + imagenURL
-                + ", activo=" + activo + "]";
+                + ", activo=" + activo + ", tipoDescuento=" + tipoDescuento + ", descuento=" + descuento
+                + ", precioOferta=" + precioOferta + "]";
     }
 }
