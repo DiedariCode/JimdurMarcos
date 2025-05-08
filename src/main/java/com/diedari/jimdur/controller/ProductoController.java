@@ -90,7 +90,6 @@ public class ProductoController {
             actual.setPrecio(producto.getPrecio());
             actual.setStock(producto.getStock());
             actual.setProveedor(producto.getProveedor());
-            actual.setImagenURL(producto.getImagenURL());
             actual.setCategoria(producto.getCategoria());
             actual.setMarca(producto.getMarca());
             actual.setActivo(producto.isActivo());

@@ -39,104 +39,235 @@
                             <p class="text-muted">Introduce la información del nuevo producto</p>
 
                             <form th:action="@{/admin/productos/agregar}" method="post" th:object="${producto}">
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="nombre" class="form-label">Nombre del producto <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
-                                            required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="precio" class="form-label">Precio <span
-                                                class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" id="precio" th:field="*{precio}"
-                                            step="0.01" required>
-                                    </div>
-                                </div>
+                                <!-- Pestañas de navegación -->
+                                <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="general-tab" data-bs-toggle="tab"
+                                            data-bs-target="#general" type="button" role="tab" aria-controls="general"
+                                            aria-selected="true">Información General</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="images-tab" data-bs-toggle="tab"
+                                            data-bs-target="#images" type="button" role="tab" aria-controls="images"
+                                            aria-selected="false">Imágenes</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="specifications-tab" data-bs-toggle="tab"
+                                            data-bs-target="#specifications" type="button" role="tab"
+                                            aria-controls="specifications"
+                                            aria-selected="false">Especificaciones</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="compatibility-tab" data-bs-toggle="tab"
+                                            data-bs-target="#compatibility" type="button" role="tab"
+                                            aria-controls="compatibility" aria-selected="false">Compatibilidad</button>
+                                    </li>
+                                </ul>
 
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="descripcion" class="form-label">Descripción</label>
-                                        <textarea class="form-control" id="descripcion" rows="3"
-                                            th:field="*{descripcion}"></textarea>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="stock" class="form-label">Stock</label>
-                                        <input type="number" class="form-control" id="stock" th:field="*{stock}"
-                                            required>
-                                    </div>
-                                </div>
+                                <!-- Contenedor de pestañas -->
+                                <div class="tab-content p-3 border border-top-0 rounded-bottom" id="productTabsContent">
+                                    <!-- Pestaña: Información General -->
+                                    <div class="tab-pane fade show active" id="general" role="tabpanel"
+                                        aria-labelledby="general-tab">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="nombre" class="form-label">Nombre del producto <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
+                                                    required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="precio" class="form-label">Precio <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" id="precio"
+                                                    th:field="*{precio}" step="0.01" required>
+                                            </div>
+                                        </div>
 
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="proveedor" class="form-label">Proveedor <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="proveedor" th:field="*{proveedor}"
-                                            required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="imagenURL" class="form-label">Imagen URL</label>
-                                        <input type="text" class="form-control" id="imagenURL" th:field="*{imagenURL}">
-                                    </div>
-                                </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="descripcion" class="form-label">Descripción</label>
+                                                <textarea class="form-control" id="descripcion" rows="3"
+                                                    th:field="*{descripcion}"></textarea>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="stock" class="form-label">Stock</label>
+                                                <input type="number" class="form-control" id="stock" th:field="*{stock}"
+                                                    required>
+                                            </div>
+                                        </div>
 
-                                <!-- Categoría y Marca -->
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="categoria" class="form-label">Categoría</label>
-                                        <select id="categoria" th:field="*{categoria.id}" class="form-select" required>
-                                            <option value="" disabled selected>Seleccione una categoría</option>
-                                            <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
-                                                th:text="${categoria.nombre}"></option>
-                                        </select>
-                                    </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="proveedor" class="form-label">Proveedor <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="proveedor"
+                                                    th:field="*{proveedor}" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="imagenURL" class="form-label">Imagen URL</label>
+                                                <input type="text" class="form-control" id="imagenURL"
+                                                    th:field="*{imagenURL}">
+                                            </div>
+                                        </div>
 
-                                    <div class="col-md-6">
-                                        <label for="marca" class="form-label">Marca</label>
-                                        <select id="marca" th:field="*{marca.id}" class="form-select" required>
-                                            <option value="" disabled selected>Seleccione una marca</option>
-                                            <option th:each="marca : ${marcas}" th:value="${marca.id}"
-                                                th:text="${marca.nombre}"></option>
-                                        </select>
-                                    </div>
-                                </div>
+                                        <!-- Categoría y Marca -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="categoria" class="form-label">Categoría</label>
+                                                <select id="categoria" th:field="*{categoria.id}" class="form-select"
+                                                    required>
+                                                    <option value="" disabled selected>Seleccione una categoría</option>
+                                                    <option th:each="categoria : ${categorias}"
+                                                        th:value="${categoria.id}" th:text="${categoria.nombre}">
+                                                    </option>
+                                                </select>
+                                            </div>
 
-                                <!-- Promociones / Descuentos -->
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="descuento" class="form-label">Descuento</label>
-                                        <input type="number" class="form-control" id="descuento" th:field="*{descuento}"
-                                            step="0.01" min="0">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="tipoDescuento" class="form-label">Tipo de descuento</label>
-                                        <select class="form-select" id="tipoDescuento" th:field="*{tipoDescuento}">
-                                            <option value="" disabled selected>Seleccione tipo de descuento</option>
-                                            <option value="PORCENTAJE">Porcentaje (%)</option>
-                                            <option value="MONTO">Monto fijo (S/)</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                            <div class="col-md-6">
+                                                <label for="marca" class="form-label">Marca</label>
+                                                <select id="marca" th:field="*{marca.id}" class="form-select" required>
+                                                    <option value="" disabled selected>Seleccione una marca</option>
+                                                    <option th:each="marca : ${marcas}" th:value="${marca.id}"
+                                                        th:text="${marca.nombre}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
 
-                                <!-- Activo -->
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" th:field="*{activo}"
-                                                id="activo">
-                                            <label class="form-check-label" for="activo">Producto activo</label>
+                                        <!-- Promociones / Descuentos -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="descuento" class="form-label">Descuento</label>
+                                                <input type="number" class="form-control" id="descuento"
+                                                    th:field="*{descuento}" step="0.01" min="0">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="tipoDescuento" class="form-label">Tipo de descuento</label>
+                                                <select class="form-select" id="tipoDescuento"
+                                                    th:field="*{tipoDescuento}">
+                                                    <option value="" disabled selected>Seleccione tipo de descuento
+                                                    </option>
+                                                    <option value="PORCENTAJE">Porcentaje (%)</option>
+                                                    <option value="MONTO">Monto fijo (S/)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Activo -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" th:field="*{activo}"
+                                                        id="activo">
+                                                    <label class="form-check-label" for="activo">Producto activo</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <!-- Pestaña: Imágenes -->
+                                    <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="imagenPrincipal" class="form-label">Imagen Principal</label>
+                                                <input type="file" class="form-control" id="imagenPrincipal"
+                                                    name="imagenPrincipal">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="imagenesAdicionales" class="form-label">Imágenes
+                                                    Adicionales</label>
+                                                <input type="file" class="form-control" id="imagenesAdicionales"
+                                                    name="imagenesAdicionales" multiple>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="alert alert-info">
+                                                    <i class="bi bi-info-circle"></i> Puede subir hasta 5 imágenes
+                                                    adicionales. Formatos permitidos: JPG, PNG, WEBP.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pestaña: Especificaciones -->
+                                    <div class="tab-pane fade" id="specifications" role="tabpanel"
+                                        aria-labelledby="specifications-tab">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="peso" class="form-label">Peso (kg)</label>
+                                                <input type="number" class="form-control" id="peso" step="0.01">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="dimensiones" class="form-label">Dimensiones (AxLxA
+                                                    cm)</label>
+                                                <input type="text" class="form-control" id="dimensiones"
+                                                    placeholder="30x20x10">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="material" class="form-label">Material</label>
+                                                <input type="text" class="form-control" id="material">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="color" class="form-label">Color</label>
+                                                <input type="text" class="form-control" id="color">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label for="especificacionesTecnicas"
+                                                    class="form-label">Especificaciones Técnicas</label>
+                                                <textarea class="form-control" id="especificacionesTecnicas"
+                                                    rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pestaña: Compatibilidad -->
+                                    <div class="tab-pane fade" id="compatibility" role="tabpanel"
+                                        aria-labelledby="compatibility-tab">
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label class="form-label">Compatibilidad con Modelos</label>
+                                                <div class="border p-3 rounded">
+                                                    <!-- Aquí puedes agregar los modelos manualmente por ahora -->
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="modelo-1"
+                                                            value="1">
+                                                        <label class="form-check-label" for="modelo-1">Modelo 1</label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="modelo-2"
+                                                            value="2">
+                                                        <label class="form-check-label" for="modelo-2">Modelo 2</label>
+                                                    </div>
+                                                    <!-- Puedes duplicar esto para más modelos -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label for="notasCompatibilidad" class="form-label">Notas de
+                                                    Compatibilidad</label>
+                                                <textarea class="form-control" id="notasCompatibilidad" rows="3"
+                                                    placeholder="Cualquier información adicional sobre compatibilidad..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
 
-                                <div class="d-flex justify-content-between">
+                                <div class="d-flex justify-content-between mt-3">
                                     <a th:href="@{/admin/productos/}" class="btn btn-secondary me-2">Cancelar</a>
                                     <button type="submit" class="btn btn-primary">
                                         <i class="bi bi-check-lg"></i> Agregar producto
                                     </button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>

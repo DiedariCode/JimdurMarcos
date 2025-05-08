@@ -1,6 +1,17 @@
 package com.diedari.jimdur.model;
 
-import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Producto {
@@ -27,8 +38,8 @@ public class Producto {
     @Column(name = "proveedor", nullable = false, length = 100)
     private String proveedor;
 
-    @Column(name = "imagen_url", nullable = true, length = 1000)
-    private String imagenURL;
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImagenProducto> imagenes = new ArrayList<>();
 
     @Column(name = "activo", nullable = false)
     private boolean activo;
@@ -53,8 +64,8 @@ public class Producto {
 
     // Constructor con todos los campos (puedes omitir si no lo usas)
     public Producto(Long id, String nombre, String descripcion, Categoria categoria, Double precio, int stock,
-            String proveedor, String imagenURL, boolean activo, Marca marca,
-            String tipoDescuento, Double descuento, Double precioOferta) {
+            String proveedor, List<ImagenProducto> imagenes, boolean activo, Marca marca, String tipoDescuento,
+            Double descuento, Double precioOferta) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -62,7 +73,7 @@ public class Producto {
         this.precio = precio;
         this.stock = stock;
         this.proveedor = proveedor;
-        this.imagenURL = imagenURL;
+        this.imagenes = imagenes;
         this.activo = activo;
         this.marca = marca;
         this.tipoDescuento = tipoDescuento;
@@ -143,12 +154,12 @@ public class Producto {
         this.proveedor = proveedor;
     }
 
-    public String getImagenURL() {
-        return imagenURL;
+    public List<ImagenProducto> getImagenes() {
+        return imagenes;
     }
 
-    public void setImagenURL(String imagenURL) {
-        this.imagenURL = imagenURL;
+    public void setImagenes(List<ImagenProducto> imagenes) {
+        this.imagenes = imagenes;
     }
 
     public boolean isActivo() {
@@ -194,8 +205,10 @@ public class Producto {
     @Override
     public String toString() {
         return "Producto [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", categoria=" + categoria
-                + ", precio=" + precio + ", stock=" + stock + ", proveedor=" + proveedor + ", imagenURL=" + imagenURL
-                + ", activo=" + activo + ", tipoDescuento=" + tipoDescuento + ", descuento=" + descuento
-                + ", precioOferta=" + precioOferta + "]";
+                + ", precio=" + precio + ", stock=" + stock + ", proveedor=" + proveedor + ", imagenes=" + imagenes
+                + ", activo=" + activo + ", marca=" + marca + ", tipoDescuento=" + tipoDescuento + ", descuento="
+                + descuento + ", precioOferta=" + precioOferta + "]";
     }
+
+    
 }

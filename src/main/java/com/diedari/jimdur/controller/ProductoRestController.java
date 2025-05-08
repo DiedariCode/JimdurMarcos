@@ -53,7 +53,6 @@ public class ProductoRestController {
             actual.setPrecio(producto.getPrecio());
             actual.setStock(producto.getStock());
             actual.setProveedor(producto.getProveedor());
-            actual.setImagenURL(producto.getImagenURL());
             actual.setActivo(producto.isActivo());
             return productoService.actualizarProducto(actual);
         } else {
