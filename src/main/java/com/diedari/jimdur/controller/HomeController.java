@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.model.Producto;
+import com.diedari.jimdur.service.CategoriaService;
 import com.diedari.jimdur.service.ProductoService;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,10 +23,15 @@ public class HomeController {
     @Autowired
     private ProductoService productoService;
 
+    @Autowired
+    private CategoriaService categoriaService;
+
     @GetMapping
     public String index(Model model) {
         List<Producto> ultimosProductos = productoService.listarUltimosProductos(4);
+        List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
         model.addAttribute("ultimosProductos", ultimosProductos);
+        model.addAttribute("categorias", categorias);
         return "index";
     }
 

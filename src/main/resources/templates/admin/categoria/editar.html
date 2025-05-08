@@ -46,7 +46,8 @@
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre de la categoría <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
+                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required
+                                        oninput="generarSlug()">
                                 </div>
 
                                 <div class="mb-3">
@@ -57,10 +58,40 @@
 
                                 <div class="mb-3">
                                     <label for="slug" class="form-label">Slug <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="slug" th:field="*{slug}" required>
+                                    <input type="text" class="form-control" id="slug" th:field="*{slug}" required
+                                        readonly>
                                     <div class="form-text">El slug se usa en las URLs. Ejemplo: /categoria/<span
                                             th:text="*{slug}">aceites</span></div>
                                 </div>
+
+                                <div class="mb-3">
+                                    <label for="icono" class="form-label">Ícono de la categoría</label>
+                                    <select th:field="*{iconoCategoria}" class="form-select" id="icono">
+                                        <option value="">Selecciona un ícono</option>
+                                        <option value="bi-gear-fill">⚙️ Motor / Accesorios</option>
+                                        <option value="bi-droplet-fill">💧 Aceites / Lubricantes</option>
+                                        <option value="bi-battery-full">🔋 Baterías</option>
+                                        <option value="bi-disc-fill">🛞 Frenos</option>
+                                        <option value="bi-funnel-fill">🧰 Filtros</option>
+                                        <option value="bi-link">⛓️ Cadenas</option>
+                                        <option value="bi-lightning-fill">⚡ Eléctricos</option>
+                                        <option value="bi-box-seam">📦 Empaquetaduras</option>
+                                        <option value="bi-speedometer2">🏍️ Velocímetros</option>
+                                        <option value="bi-tools">🔧 Herramientas</option>
+                                        <option value="bi-exhaust">🔥 Escape / Silenciador</option>
+                                        <option value="bi-lightbulb-fill">💡 Luces</option>
+                                        <option value="bi-brightness-high-fill">🌞 Reflectores</option>
+                                        <option value="bi-clipboard-check">📋 Mantenimiento</option>
+                                        <option value="bi-house-door-fill">🏠 Carenado</option>
+                                        <option value="bi-joystick">🎮 Accesorios estéticos</option>
+                                        <option value="bi-bag-fill">🛍️ Maleteros / Alforjas</option>
+                                        <option value="bi-shield-lock-fill">🛡️ Seguridad / Candados</option>
+                                        <option value="bi-cpu-fill">🖥️ Electrónica</option>
+                                        <option value="bi-person-gear">👤 Equipamiento del conductor</option>
+                                    </select>
+                                    <div class="form-text">Selecciona el ícono representativo de la categoría.</div>
+                                </div>
+
 
                                 <div class="mb-3 form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="activa"
@@ -68,21 +99,12 @@
                                     <label class="form-check-label" for="activa">Categoría activa</label>
                                 </div>
 
-                                <div class="text-muted mb-4" th:if="${cantidadProductos != null}">
-                                    Esta categoría contiene <span th:text="${cantidadProductos}">24</span> productos.
-                                </div>
-
                                 <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#eliminarModal">
-                                        <i class="bi bi-trash"></i> Eliminar categoría
+                                    <a href="#" th:href="@{/admin/categorias}"
+                                        class="btn btn-secondary me-2">Cancelar</a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-lg"></i> Editar categoría
                                     </button>
-                                    <div>
-                                        <a href="#" th:href="@{/categorias}" class="btn btn-secondary me-2">Cancelar</a>
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="bi bi-check-lg"></i> Actualizar categoría
-                                        </button>
-                                    </div>
                                 </div>
                             </form>
                         </div>

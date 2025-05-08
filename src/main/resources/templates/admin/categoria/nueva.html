@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <!-- CSS de Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS personalizado -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
@@ -42,7 +43,7 @@
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre de la categoría <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
+                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required oninput="generarSlug()" >
                                 </div>
 
                                 <div class="mb-3">
@@ -53,10 +54,38 @@
 
                                 <div class="mb-3">
                                     <label for="slug" class="form-label">Slug <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="slug" th:field="*{slug}" required>
-                                    <div class="form-text">El slug se usa en las URLs. Ejemplo: /categoria/<span
-                                            th:text="*{slug}">aceites</span></div>
+                                    <input type="text" class="form-control" id="slug" th:field="*{slug}" required readonly>
+                                    <div class="form-text">El slug se usa en las URLs. Ejemplo: /categoria/<span th:text="*{slug}">aceites</span></div>
                                 </div>
+
+                                <div class="mb-3">
+                                    <label for="icono" class="form-label">Ícono de la categoría</label>
+                                    <select th:field="*{iconoCategoria}" class="form-select" id="icono">
+                                        <option value="">Selecciona un ícono</option>
+                                        <option value="bi-gear-fill">⚙️ Motor / Accesorios</option>
+                                        <option value="bi-droplet-fill">💧 Aceites / Lubricantes</option>
+                                        <option value="bi-battery-full">🔋 Baterías</option>
+                                        <option value="bi-disc-fill">🛞 Frenos</option>
+                                        <option value="bi-funnel-fill">🧰 Filtros</option>
+                                        <option value="bi-link">⛓️ Cadenas</option>
+                                        <option value="bi-lightning-fill">⚡ Eléctricos</option>
+                                        <option value="bi-box-seam">📦 Empaquetaduras</option>
+                                        <option value="bi-speedometer2">🏍️ Velocímetros</option>
+                                        <option value="bi-tools">🔧 Herramientas</option>
+                                        <option value="bi-exhaust">🔥 Escape / Silenciador</option>
+                                        <option value="bi-lightbulb-fill">💡 Luces</option>
+                                        <option value="bi-brightness-high-fill">🌞 Reflectores</option>
+                                        <option value="bi-clipboard-check">📋 Mantenimiento</option>
+                                        <option value="bi-house-door-fill">🏠 Carenado</option>
+                                        <option value="bi-joystick">🎮 Accesorios estéticos</option>
+                                        <option value="bi-bag-fill">🛍️ Maleteros / Alforjas</option>
+                                        <option value="bi-shield-lock-fill">🛡️ Seguridad / Candados</option>
+                                        <option value="bi-cpu-fill">🖥️ Electrónica</option>
+                                        <option value="bi-person-gear">👤 Equipamiento del conductor</option>
+                                    </select>
+                                    <div class="form-text">Selecciona el ícono representativo de la categoría.</div>
+                                </div>
+
 
                                 <div class="mb-3 form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="activa"
@@ -78,6 +107,15 @@
             </div>
         </div>
     </div>
+
+    <!-- JavaScript para generar el slug automáticamente -->
+<script>
+    function generarSlug() {
+        var nombre = document.getElementById("nombre").value;
+        var slug = nombre.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        document.getElementById("slug").value = slug;
+    }
+</script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

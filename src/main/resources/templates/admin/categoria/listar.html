@@ -78,12 +78,13 @@
                             <table class="table data-table m-0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 25%">Categoría</th>
-                                        <th style="width: 35%">Descripción</th>
-                                        <th style="width: 35%">Slug(Campo Unico)</th>
+                                        <th style="width: 20%">Categoría</th>
+                                        <th style="width: 30%">Descripción</th>
+                                        <th style="width: 10%">Icono Bootstrap</th>
+                                        <th style="width: 20%">Slug (Campo Único)</th>
                                         <th style="width: 10%">Productos</th>
-                                        <th style="width: 15%">Estado</th>
-                                        <th style="width: 15%" class="text-center">Acciones</th>
+                                        <th style="width: 5%">Estado</th>
+                                        <th style="width: 5%" class="text-center">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -95,6 +96,9 @@
                                             <div class="text-muted"
                                                 th:text="${#strings.abbreviate(categoria.descripcion, 50)}">Descripción
                                             </div>
+                                        </td>
+                                        <td>
+                                            <div class="fw-medium" th:class="${categoria.iconoCategoria}"></div>
                                         </td>
                                         <td>
                                             <div class="text-muted"

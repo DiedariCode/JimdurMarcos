@@ -25,6 +25,9 @@ public class Categoria {
     @Column(name = "estado_activa", nullable = false)
     private boolean activa; // true = activa, false = inactiva
 
+    @Column(name = "icono_categoria", nullable = false)
+    private String iconoCategoria; // Icono de la categoría para la vista de index, agregado el 8 de mayo :V
+
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL) // Persistencia en cascada para productos
     @JsonIgnore
     private List<Producto> productos;
@@ -32,13 +35,14 @@ public class Categoria {
     public Categoria() {
     }
 
-    public Categoria(Long id, String nombreCategoria, String slug, String descripcion, boolean estado,
+    public Categoria(Long id, String nombreCategoria, String slug, String descripcion, boolean estado, String iconoCategoria,
             List<Producto> productos) {
         this.id = id;
         this.nombre = nombreCategoria;
         this.slug = slug;
         this.descripcion = descripcion;
         this.activa = estado;
+        this.iconoCategoria = iconoCategoria;
         this.productos = productos;
     }
 
@@ -84,6 +88,14 @@ public class Categoria {
         this.activa = activa;
     }
 
+    public String getIconoCategoria() {
+        return iconoCategoria;
+    }
+
+    public void setIconoCategoria(String iconoCategoria) {
+        this.iconoCategoria = iconoCategoria;
+    }
+
     public List<Producto> getProductos() {
         return productos;
     }
@@ -96,4 +108,5 @@ public class Categoria {
     private String generarSlug(String nombreCategoria) {
         return nombreCategoria.toLowerCase().replace(" ", "-").replaceAll("[^a-z0-9-]", "");
     }
+
 }
