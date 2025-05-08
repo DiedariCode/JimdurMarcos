@@ -13,6 +13,9 @@ import com.diedari.jimdur.model.Producto;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
     
+    // Usé @Query porque Spring Data JPA no tiene una convención directa para obtener los N últimos productos ordenados por ID descendente.
+
+    // ESTO ES PARA LA PAGINACIÓN, AUN NO ESTA IMPLEMENTADO EN EL CONTROLADOR
     @Query("SELECT p FROM Producto p ORDER BY p.id DESC")
     List<Producto> findTopNByOrderByIdDesc(Pageable pageable);
 

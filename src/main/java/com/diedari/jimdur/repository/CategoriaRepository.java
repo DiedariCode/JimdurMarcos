@@ -17,6 +17,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     // Método para encontrar una categoría por su nombre
     public List<Categoria> findByNombre(String nombre);
 
+    // Método para encontrar una categoría por su nombre o descripción, ignorando mayúsculas y minúsculas
     public List<Categoria> findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(String nombre,
             String descripcion);
 

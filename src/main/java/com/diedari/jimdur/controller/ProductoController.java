@@ -46,9 +46,9 @@ public class ProductoController {
     @GetMapping("/agregar")
     public String nuevoProductoForm(Model model) {
         model.addAttribute("producto", new Producto());
-        List<Categoria> categorias = categoriaService.obtenerTodasLasCategorias();
+        List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
         model.addAttribute("categorias", categorias);
-        List<Marca> marcas = marcaService.listarTodasLasMarcas(); 
+        List<Marca> marcas = marcaService.obtenerMarcasPorEstado(true); 
         model.addAttribute("marcas", marcas); 
         return "admin/productos/nuevo"; // Usamos el layout principal
     }
@@ -66,8 +66,13 @@ public class ProductoController {
         Producto producto = productoService.obtenerProductoPorId(id);
         if (producto != null) {
             model.addAttribute("producto", producto);
-            List<Categoria> categorias = categoriaService.obtenerTodasLasCategorias();
+
+            List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
             model.addAttribute("categorias", categorias);
+
+            List<Marca> marcas = marcaService.obtenerMarcasPorEstado(true); 
+            model.addAttribute("marcas", marcas); 
+
             return "admin/productos/editar"; 
         } else {
             return "redirect:/admin/productos/";
@@ -86,6 +91,8 @@ public class ProductoController {
             actual.setStock(producto.getStock());
             actual.setProveedor(producto.getProveedor());
             actual.setImagenURL(producto.getImagenURL());
+            actual.setCategoria(producto.getCategoria());
+            actual.setMarca(producto.getMarca());
             actual.setActivo(producto.isActivo());
             productoService.actualizarProducto(actual);
         }

@@ -25,7 +25,7 @@ public class Categoria {
     @Column(name = "estado_activa", nullable = false)
     private boolean activa; // true = activa, false = inactiva
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL) // Persistencia en cascada para productos
     @JsonIgnore
     private List<Producto> productos;
 
