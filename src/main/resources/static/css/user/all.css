@@ -112,6 +112,10 @@
     -webkit-box-orient: vertical;
   }
   
+  .badge {
+    z-index: 2;
+  }
+
   /* Brand Cards */
   .brand-card {
     transition: all 0.3s ease;

@@ -29,7 +29,7 @@ public class ProductoController {
     private CategoriaService categoriaService;
 
     @Autowired
-    private MarcaService marcaService; 
+    private MarcaService marcaService;
 
     // Listar productos
     @GetMapping("/")
@@ -48,8 +48,8 @@ public class ProductoController {
         model.addAttribute("producto", new Producto());
         List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
         model.addAttribute("categorias", categorias);
-        List<Marca> marcas = marcaService.obtenerMarcasPorEstado(true); 
-        model.addAttribute("marcas", marcas); 
+        List<Marca> marcas = marcaService.obtenerMarcasPorEstado(true);
+        model.addAttribute("marcas", marcas);
         return "admin/productos/nuevo"; // Usamos el layout principal
     }
 
@@ -70,10 +70,10 @@ public class ProductoController {
             List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
             model.addAttribute("categorias", categorias);
 
-            List<Marca> marcas = marcaService.obtenerMarcasPorEstado(true); 
-            model.addAttribute("marcas", marcas); 
+            List<Marca> marcas = marcaService.obtenerMarcasPorEstado(true);
+            model.addAttribute("marcas", marcas);
 
-            return "admin/productos/editar"; 
+            return "admin/productos/editar";
         } else {
             return "redirect:/admin/productos/";
         }
@@ -93,7 +93,10 @@ public class ProductoController {
             actual.setImagenURL(producto.getImagenURL());
             actual.setCategoria(producto.getCategoria());
             actual.setMarca(producto.getMarca());
+            actual.setDescuento(producto.getDescuento());
+            actual.setTipoDescuento(producto.getTipoDescuento());
             actual.setActivo(producto.isActivo());
+            actual.calcularPrecioOferta();
             productoService.actualizarProducto(actual);
         }
         return "redirect:/admin/productos/";

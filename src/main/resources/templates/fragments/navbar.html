@@ -5,55 +5,13 @@
             <a class="navbar-brand" th:href="@{/}">
                 <img th:src="@{/image/logos/logo_Jimdur_pequeno.png}" alt="Jimdur Logo">
             </a>
-
-
-            <!-- Contenido principal de la navegación -->
-            <div class="collapse navbar-collapse ms-5" id="navbarNav">
-                <!-- Enlaces de navegación (centrados) -->
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/productos}">Productos</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="categoriasDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Categorías
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
-                            <li><a class="dropdown-item" href="#">Motores</a></li>
-                            <li><a class="dropdown-item" href="#">Frenos</a></li>
-                            <li><a class="dropdown-item" href="#">Transmisión</a></li>
-                            <li><a class="dropdown-item" href="#">Accesorios</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Ver todas</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/nosotros}">Nosotros</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/contacto}">Contacto</a>
-                    </li>
-                </ul>
-
-                <!-- Barra de búsqueda (visible solo en pantallas grandes) -->
-                <div class="d-none d-lg-flex">
-                    <form class="search-form d-flex border" role="search">
-                        <input class="form-control" type="search" placeholder="Buscar productos..."
-                            aria-label="Buscar">
-                        <button type="submit"><i class="fas fa-search"></i></button>
-                    </form>
-                </div>
-
-                <!-- Acciones del usuario (visibles solo en pantallas grandes) -->
-                <div class="d-none d-lg-flex align-items-center ms-3">
-                    <!-- Favoritos -->
-                    <div class="dropdown">
+            
+            <!-- Botón hamburguesa para móviles -->
+            <div class="d-flex align-items-center order-lg-3">
+                <!-- Acciones del usuario visibles en móvil -->
+                <div class="d-flex align-items-center me-2">
+                    <!-- Favoritos - visible en todos los tamaños -->
+                    <div class="dropdown d-block">
                         <button class="btn-icon position-relative" type="button" id="favoritosDropdown"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-heart"></i>
@@ -65,7 +23,7 @@
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="favoritosDropdown">
                             <h6 class="fw-bold mb-3">Mis Favoritos</h6>
                             <div class="cart-item d-flex align-items-center">
-                                <img src="" class="me-3" alt="Producto">
+                                <img src="/api/placeholder/40/40" class="me-3" alt="Producto">
                                 <div>
                                     <p class="mb-0 fw-bold">Filtro de aceite</p>
                                     <small class="text-muted">S/. 45.00</small>
@@ -73,7 +31,7 @@
                                 <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
                             </div>
                             <div class="cart-item d-flex align-items-center">
-                                <img src="" class="me-3" alt="Producto">
+                                <img src="/api/placeholder/40/40" class="me-3" alt="Producto">
                                 <div>
                                     <p class="mb-0 fw-bold">Kit de frenos</p>
                                     <small class="text-muted">S/. 120.00</small>
@@ -85,9 +43,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Carrito -->
-                    <div class="dropdown">
+                    
+                    <!-- Carrito - visible en todos los tamaños -->
+                    <div class="dropdown d-block ms-2">
                         <button class="btn-icon position-relative" type="button" id="carritoDropdown"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-shopping-cart"></i>
@@ -131,11 +89,63 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Acceder/Usuario -->
+                    
+                    <!-- Usuario - visible en todos los tamaños -->
                     <button class="btn-icon active ms-2" data-bs-toggle="modal" data-bs-target="#authModal">
                         <i class="fas fa-user"></i>
                     </button>
+                </div>
+                
+                <!-- Botón hamburguesa -->
+                <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            
+            <!-- Contenido principal de la navegación -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Enlaces de navegación -->
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${activePage == 'inicio'} ? 'active'" th:href="@{/}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${activePage == 'productos'} ? 'active'" th:href="@{/productos}">Productos</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoriasDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false"
+                            th:classappend="${activePage == 'categoria'} ? 'active'">
+                            Categorías
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
+                            <li><a class="dropdown-item" href="#">Motores</a></li>
+                            <li><a class="dropdown-item" href="#">Frenos</a></li>
+                            <li><a class="dropdown-item" href="#">Transmisión</a></li>
+                            <li><a class="dropdown-item" href="#">Accesorios</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Ver todas</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/nosotros}"
+                        th:classappend="${activePage == 'nosotros'} ? 'active'">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/contacto}"
+                        th:classappend="${activePage == 'contacto'} ? 'active'">Contacto</a>
+                    </li>
+                </ul>
+                
+                <!-- Barra de búsqueda (visible en todas las pantallas en versión colapsada) -->
+                <div class="mt-3 mt-lg-0 me-2">
+                    <form class="search-form d-flex border" role="search">
+                        <input class="form-control" type="search" placeholder="Buscar productos..." aria-label="Buscar">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
                 </div>
             </div>
         </div>

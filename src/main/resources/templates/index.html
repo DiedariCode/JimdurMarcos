@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,7 @@
 <body>
 
     <!-- Navbar -->
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
 
     <!-- Main Content -->
     <main>
