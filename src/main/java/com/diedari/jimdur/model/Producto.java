@@ -47,6 +47,9 @@ public class Producto {
     @Column(name = "precio_oferta")
     private Double precioOferta; // precio con descuento aplicado
 
+    @Column(name = "slug", unique = true, length = 150, nullable = false)
+    private String slug;
+
     // Constructor vacío
     public Producto() {
     }
@@ -54,7 +57,7 @@ public class Producto {
     // Constructor con todos los campos (puedes omitir si no lo usas)
     public Producto(Long id, String nombre, String descripcion, Categoria categoria, Double precio, int stock,
             String proveedor, String imagenURL, boolean activo, Marca marca,
-            String tipoDescuento, Double descuento, Double precioOferta) {
+            String tipoDescuento, Double descuento, Double precioOferta, String slug) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -68,9 +71,11 @@ public class Producto {
         this.tipoDescuento = tipoDescuento;
         this.descuento = descuento;
         this.precioOferta = precioOferta;
+        this.slug = slug;
     }
 
-    // Método para calcular el precio de oferta basado en tipo y valor del descuento
+    // * Método para calcular el precio de oferta basado en tipo y valor del
+    // * descuento
     public void calcularPrecioOferta() {
         if (tipoDescuento != null && descuento != null && descuento > 0) {
             if (tipoDescuento.equalsIgnoreCase("porcentaje")) {
@@ -84,6 +89,14 @@ public class Producto {
         } else {
             this.precioOferta = precio;
         }
+    }
+
+    // * Metodo para generar el slug, que es util cuando entremos a un nuevo
+    // * producto y muestre la URL
+    public void generarSlug() {
+        this.slug = nombre.toLowerCase()
+                .replaceAll("[^a-z0-9]+", "-")
+                .replaceAll("^-|-$", "");
     }
 
     // Getters y Setters
@@ -189,6 +202,14 @@ public class Producto {
 
     public void setPrecioOferta(Double precioOferta) {
         this.precioOferta = precioOferta;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     @Override

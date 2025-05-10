@@ -74,4 +74,9 @@ public class ProductoServiceImpl implements ProductoService {
         return productoRepository.findTopNByOrderByIdDesc(limit);
     }
 
+    @Override
+    public Producto obtenerProductoPorSlug(String slug) {
+        return productoRepository.findBySlug(slug);
+    }
+
 }

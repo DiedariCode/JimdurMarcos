@@ -1,269 +1,575 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 
 <head>
-    <title>Title</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-    <!-- Bootstrap CSS v5.2.1 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" th:href="@{/css/contacto.css}">
+    <link rel="stylesheet" th:href="@{/css/user/all.css}">
+    <title>Contacto | JIMDUR Repuestos</title>
+
 </head>
 
 <body>
     <!-- Navbar -->
-    <div th:replace=" ~{fragments/navbar :: navbar}">
-    </div>
-
-    <main class="main-content">
-        <!-- Hero Section -->
-        <section class="hero-section text-center text-white d-flex align-items-center justify-content-center">
-            <div class="hero-overlay"></div>
+    <header th:replace="~{fragments/navbar :: navbar}"></header>
+    <main>
+        <!-- Hero Banner -->
+        <section class="bg-primary text-white py-5">
             <div class="container">
-                <div class="hero-content">
-                    <h1 class="display-4">JIMDUR Repuestos</h1>
-                    <p class="lead">Excelencia en repuestos de motocicletas desde 1995</p>
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h1 class="display-4 fw-bold mb-3">Contáctanos</h1>
+                        <p class="lead mb-4">Estamos aquí para ayudarte. Ponte en contacto con nosotros para cualquier
+                            consulta, sugerencia o solicitud de información.</p>
+                    </div>
+                    <div class="col-lg-6 text-center">
+                        <img src="https://placehold.co/600x400" alt="Atención al cliente JIMDUR"
+                            class="img-fluid rounded shadow-lg">
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Sección de Formularios -->
-        <section class="formularios-section py-5 pb-3">
+        <!-- Contact Information -->
+        <section class="py-5">
             <div class="container">
-                <div class="row">
-                    <!-- Sección de Contacto -->
-                    <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-duration="1000">
-                        <div class="p-4 rounded shadow-sm card-contacto">
-                            <h2 class="fw-bold text-center mb-3" style="color: #333333;">
-                                CONTÁC<span class="text-danger">TANOS</span>
-                            </h2>
-                            <p class="text-muted text-center">Tu consulta es importante para nosotros</p>
-
-                            <!-- Información de contacto -->
-                            <div class="d-flex justify-content-between my-4">
-                                <!-- Teléfono -->
-                                <div class="text-center">
-                                    <img src="../img/iconos/telefono.svg" alt="Teléfono" class="mb-2"
-                                        style="width: 40px;">
-                                    <p class="mb-0">(+51) 968108775</p>
+                <div class="row g-4">
+                    <!-- Contact Card 1 -->
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm text-center">
+                            <div class="card-body p-4">
+                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-flex mb-3">
+                                    <i class="bi bi-geo-alt text-primary fs-1"></i>
                                 </div>
-                                <!-- Ubicación -->
-                                <div class="text-center">
-                                    <img src="../img/iconos/Ubicación.svg" alt="Ubicación" class="mb-2"
-                                        style="width: 40px;">
-                                    <p class="mb-0">Av. José Aguilar Santisteban, Piura - Perú</p>
-                                </div>
-                                <!-- Correo -->
-                                <div class="text-center">
-                                    <img src="../img/iconos/correo.svg" alt="Correo" class="mb-2" style="width: 40px;">
-                                    <p class="mb-0">info@jimdurr.com</p>
-                                </div>
+                                <h3 class="card-title fw-bold">Visítanos</h3>
+                                <p class="card-text mb-0">Tienda Principal:</p>
+                                <p class="card-text mb-3">Av. Libertador 1234, Palermo, Buenos Aires</p>
+                                <p class="card-text mb-0">Centro de Distribución:</p>
+                                <p class="card-text">Ruta 9 Km 45, Escobar, Buenos Aires</p>
+                                <a href="#locations" class="btn btn-outline-primary mt-3">Ver todas las sucursales</a>
                             </div>
-
-                            <!-- Mapa -->
-                            <div class="mt-4">
-                                <iframe th:src="'https://www.google.com/maps/embed?pb=' + ${mapUrl}" width="100%"
-                                    height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                            </div>
-
                         </div>
                     </div>
 
-                    <!-- Formulario de Cotización -->
-                    <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-duration="1000">
-                        <form class="p-4 rounded shadow-sm card-form" id="cotizacion-form">
-                            <h2 class="text-center mb-4 fw-bold" style="color: #333333;">
-                                SOLICITE SU <span class="text-danger">COTIZACIÓN</span>
-                            </h2>
-
-                            <!-- Campos del formulario -->
-                            <div class="mb-3">
-                                <input type="text" id="nombre" class="form-control" placeholder="Nombre" required>
-                                <small class="error-message text-danger"></small>
+                    <!-- Contact Card 2 -->
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm text-center">
+                            <div class="card-body p-4">
+                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-flex mb-3">
+                                    <i class="bi bi-telephone text-primary fs-1"></i>
+                                </div>
+                                <h3 class="card-title fw-bold">Llámanos</h3>
+                                <p class="card-text mb-0">Atención al Cliente:</p>
+                                <p class="card-text mb-3">+54 11 1234-5678</p>
+                                <p class="card-text mb-0">Ventas Corporativas:</p>
+                                <p class="card-text mb-3">+54 11 5678-1234</p>
+                                <p class="card-text mb-0">Soporte Técnico:</p>
+                                <p class="card-text">+54 11 4321-8765</p>
+                                <p class="card-text text-muted small mt-3">Horario de atención: Lunes a Viernes de 9:00
+                                    a 18:00 y Sábados de 9:00 a 13:00</p>
                             </div>
-                            <div class="mb-3">
-                                <input type="email" id="correo" class="form-control" placeholder="Correo Electrónico"
-                                    required>
-                                <small class="error-message text-danger"></small>
-                            </div>
-                            <div class="mb-3">
-                                <input type="tel" id="telefono" class="form-control" placeholder="Teléfono" required>
-                                <small class="error-message text-danger"></small>
-                            </div>
-                            <div class="mb-3">
-                                <input type="text" id="dni" class="form-control" placeholder="DNI o RUC">
-                                <small class="error-message text-danger"></small>
-                            </div>
-                            <div class="mb-3">
-                                <input type="text" id="placa" class="form-control" placeholder="Placa vehicular o VIN">
-                                <small class="error-message text-danger"></small>
-                            </div>
-                            <div class="mb-3">
-                                <select id="asunto" class="form-control" required>
-                                    <option value="" disabled selected>Seleccione un asunto</option>
-                                    <option value="queja">Queja</option>
-                                    <option value="sugerencia">Sugerencia</option>
-                                    <option value="consulta">Consulta</option>
-                                    <option value="reclamo">Reclamo</option>
-                                    <option value="otros">Otros</option>
-                                </select>
-                                <small class="error-message text-danger"></small>
-                            </div>
-                            <div class="mb-3">
-                                <textarea id="mensaje" class="form-control" rows="4" placeholder="Mensaje"
-                                    required></textarea>
-                                <small class="error-message text-danger"></small>
-                            </div>
-
-                            <!-- Botón de enviar -->
-                            <button type="submit" class="btn btn-danger w-100" id="submit-btn">Enviar mensaje</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- Sección de Feedback y Horarios de Atención -->
-        <div class="container-fluid bg-light py-4 div-info-adicional">
-            <div class="container" data-aos="fade-up" data-aos-duration="1000">
-                <div class="row">
-                    <!-- Sección de Feedback -->
-                    <div class="col-lg-6 mt-3 card-formFed">
-                        <h2 class="fw-bold text-center text-uppercase">Deja tu <span class="text-danger">reseña</span>
-                        </h2>
-                        <form class="feedback-form bg-white p-4 rounded shadow-sm">
-                            <div class="mb-3">
-                                <input type="text" class="form-control bg-light" placeholder="Nombre" required>
-                            </div>
-                            <div class="mb-3">
-                                <input type="email" class="form-control bg-light" placeholder="Correo Electrónico"
-                                    required>
-                            </div>
-                            <div class="mb-3">
-                                <textarea class="form-control bg-light" rows="8" placeholder="Tu reseña"
-                                    required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-danger w-100">Enviar Reseña</button>
-                        </form>
+                        </div>
                     </div>
 
-                    <!-- Sección de Horarios de Atención -->
-                    <div class="col-lg-6 mt-0">
-                        <h2 class="text-center fw-bold pt-3 text-uppercase">Horarios <span class="text-danger">de
-                                Atencion</span></h2>
-                        <div class="row" data-aos="fade-up" data-aos-duration="1000">
-                            <div class="col-12 mb-3">
-                                <div class="p-4 border bg-white rounded shadow-sm div-horario">
-                                    <h4>Lunes a Viernes</h4>
-                                    <p>9:00 AM - 6:00 PM</p>
+                    <!-- Contact Card 3 -->
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm text-center">
+                            <div class="card-body p-4">
+                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-flex mb-3">
+                                    <i class="bi bi-envelope text-primary fs-1"></i>
                                 </div>
-                            </div>
-                            <div class="col-12 mb-3" data-aos="fade-up" data-aos-duration="1000">
-                                <div class="p-4 border bg-white rounded shadow-sm div-horario">
-                                    <h4>Sábados</h4>
-                                    <p>9:00 AM - 1:00 PM</p>
-                                </div>
-                            </div>
-                            <div class="col-12 mb-3" data-aos="fade-up" data-aos-duration="1000">
-                                <div class="p-4 border bg-white rounded shadow-sm div-horario">
-                                    <h4>Domingos y Feriados</h4>
-                                    <p>Cerrado</p>
+                                <h3 class="card-title fw-bold">Escríbenos</h3>
+                                <p class="card-text mb-0">Información General:</p>
+                                <p class="card-text mb-3">info@jimdurrepuestos.com</p>
+                                <p class="card-text mb-0">Ventas:</p>
+                                <p class="card-text mb-3">ventas@jimdurrepuestos.com</p>
+                                <p class="card-text mb-0">Atención al Cliente:</p>
+                                <p class="card-text">clientes@jimdurrepuestos.com</p>
+                                <div class="d-flex justify-content-center gap-3 mt-3">
+                                    <a href="#" class="text-primary fs-4"><i class="bi bi-facebook"></i></a>
+                                    <a href="#" class="text-primary fs-4"><i class="bi bi-instagram"></i></a>
+                                    <a href="#" class="text-primary fs-4"><i class="bi bi-twitter"></i></a>
+                                    <a href="#" class="text-primary fs-4"><i class="bi bi-whatsapp"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Sección de Preguntas Frecuentes (FAQ) -->
-        <section class="faq-section py-5">
-            <div class="container" data-aos="fade-up" data-aos-duration="1000">
-                <!-- Título -->
-                <div class="row">
-                    <div class="col-12 text-center mb-4">
-                        <h2 class="fw-bold text-uppercase">
-                            Preguntas <span class="text-danger">Frecuentes</span>
-                        </h2>
+        </section>
+
+        <!-- Contact Form and Map -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="row g-4">
+                    <!-- Contact Form -->
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <h2 class="fw-bold mb-4">Envíanos un mensaje</h2>
+                                <form id="contactForm">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="name" class="form-label">Nombre *</label>
+                                            <input type="text" class="form-control" id="name" name="name" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label">Email *</label>
+                                            <input type="email" class="form-control" id="email" name="email" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="phone" class="form-label">Teléfono</label>
+                                            <input type="tel" class="form-control" id="phone" name="phone">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="subject" class="form-label">Asunto *</label>
+                                            <select class="form-select" id="subject" name="subject" required>
+                                                <option value="" selected disabled>Seleccionar...</option>
+                                                <option value="Consulta de Producto">Consulta de Producto</option>
+                                                <option value="Soporte Técnico">Soporte Técnico</option>
+                                                <option value="Seguimiento de Pedido">Seguimiento de Pedido</option>
+                                                <option value="Reclamo">Reclamo</option>
+                                                <option value="Sugerencia">Sugerencia</option>
+                                                <option value="Otro">Otro</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="message" class="form-label">Mensaje *</label>
+                                            <textarea class="form-control" id="message" name="message" rows="5"
+                                                required></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="privacyPolicy"
+                                                    name="privacyPolicy" required>
+                                                <label class="form-check-label" for="privacyPolicy">
+                                                    Acepto la <a href="#" target="_blank">política de privacidad</a> y
+                                                    el tratamiento de mis datos personales *
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <h2 class="fw-bold mb-4">Nuestra Ubicación</h2>
+                                <div class="ratio ratio-4x3 mb-3">
+                                    <!-- Replace with your actual Google Maps embed code -->
+                                    <iframe 
+                                    th:src="${mapUrl}" 
+                                    allowfullscreen="" 
+                                    loading="lazy">
+                                    </iframe>
+                                </div>
+                                <h5 class="fw-bold">Tienda Principal - Palermo</h5>
+                                <p class="mb-3">Av. Libertador 1234, Palermo, Buenos Aires</p>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="bi bi-clock text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0"><strong>Horario de Atención:</strong></p>
+                                        <p class="mb-0">Lunes a Viernes: 9:00 - 18:00</p>
+                                        <p class="mb-0">Sábados: 9:00 - 13:00</p>
+                                        <p class="mb-0">Domingos y Feriados: Cerrado</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="bi bi-info-circle text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0"><strong>Servicios disponibles:</strong></p>
+                                        <p class="mb-0">Venta de repuestos, Asesoramiento técnico, Taller de servicio
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Acordeón de Preguntas Frecuentes -->
+        <!-- All Locations -->
+        <section class="py-5" id="locations">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5">Nuestras Sucursales</h2>
+
+                <div class="row g-4">
+                    <!-- Location 1 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Sucursal Palermo">
+                            <div class="card-body p-4">
+                                <h4 class="card-title fw-bold">Tienda Principal - Palermo</h4>
+                                <p class="card-text mb-3"><i class="bi bi-geo-alt text-primary me-2"></i>Av. Libertador
+                                    1234, Palermo, Buenos Aires</p>
+                                <p class="card-text mb-3"><i class="bi bi-telephone text-primary me-2"></i>+54 11
+                                    1234-5678</p>
+                                <p class="card-text mb-3"><i
+                                        class="bi bi-envelope text-primary me-2"></i>palermo@jimdurrepuestos.com</p>
+                                <p class="card-text mb-3">
+                                    <i class="bi bi-clock text-primary me-2"></i>
+                                    Lun-Vie: 9:00 - 18:00<br>
+                                    <span class="ms-4">Sáb: 9:00 - 13:00</span><br>
+                                    <span class="ms-4">Dom: Cerrado</span>
+                                </p>
+                                <a href="https://goo.gl/maps/1234" class="btn btn-outline-primary w-100"
+                                    target="_blank">Ver en el mapa</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location 2 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Sucursal Córdoba">
+                            <div class="card-body p-4">
+                                <h4 class="card-title fw-bold">Sucursal Córdoba</h4>
+                                <p class="card-text mb-3"><i class="bi bi-geo-alt text-primary me-2"></i>Av. Colón 2500,
+                                    Córdoba</p>
+                                <p class="card-text mb-3"><i class="bi bi-telephone text-primary me-2"></i>+54 351
+                                    234-5678</p>
+                                <p class="card-text mb-3"><i
+                                        class="bi bi-envelope text-primary me-2"></i>cordoba@jimdurrepuestos.com</p>
+                                <p class="card-text mb-3">
+                                    <i class="bi bi-clock text-primary me-2"></i>
+                                    Lun-Vie: 9:00 - 18:00<br>
+                                    <span class="ms-4">Sáb: 9:00 - 13:00</span><br>
+                                    <span class="ms-4">Dom: Cerrado</span>
+                                </p>
+                                <a href="https://goo.gl/maps/5678" class="btn btn-outline-primary w-100"
+                                    target="_blank">Ver en el mapa</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location 3 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Sucursal Rosario">
+                            <div class="card-body p-4">
+                                <h4 class="card-title fw-bold">Sucursal Rosario</h4>
+                                <p class="card-text mb-3"><i class="bi bi-geo-alt text-primary me-2"></i>Bv. Oroño 1200,
+                                    Rosario</p>
+                                <p class="card-text mb-3"><i class="bi bi-telephone text-primary me-2"></i>+54 341
+                                    345-6789</p>
+                                <p class="card-text mb-3"><i
+                                        class="bi bi-envelope text-primary me-2"></i>rosario@jimdurrepuestos.com</p>
+                                <p class="card-text mb-3">
+                                    <i class="bi bi-clock text-primary me-2"></i>
+                                    Lun-Vie: 9:00 - 18:00<br>
+                                    <span class="ms-4">Sáb: 9:00 - 13:00</span><br>
+                                    <span class="ms-4">Dom: Cerrado</span>
+                                </p>
+                                <a href="https://goo.gl/maps/9012" class="btn btn-outline-primary w-100"
+                                    target="_blank">Ver en el mapa</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location 4 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Sucursal Mendoza">
+                            <div class="card-body p-4">
+                                <h4 class="card-title fw-bold">Sucursal Mendoza</h4>
+                                <p class="card-text mb-3"><i class="bi bi-geo-alt text-primary me-2"></i>Av. San Martín
+                                    800, Mendoza</p>
+                                <p class="card-text mb-3"><i class="bi bi-telephone text-primary me-2"></i>+54 261
+                                    456-7890</p>
+                                <p class="card-text mb-3"><i
+                                        class="bi bi-envelope text-primary me-2"></i>mendoza@jimdurrepuestos.com</p>
+                                <p class="card-text mb-3">
+                                    <i class="bi bi-clock text-primary me-2"></i>
+                                    Lun-Vie: 9:00 - 18:00<br>
+                                    <span class="ms-4">Sáb: 9:00 - 13:00</span><br>
+                                    <span class="ms-4">Dom: Cerrado</span>
+                                </p>
+                                <a href="https://goo.gl/maps/3456" class="btn btn-outline-primary w-100"
+                                    target="_blank">Ver en el mapa</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location 5 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Centro de Distribución">
+                            <div class="card-body p-4">
+                                <h4 class="card-title fw-bold">Centro de Distribución</h4>
+                                <p class="card-text mb-3"><i class="bi bi-geo-alt text-primary me-2"></i>Ruta 9 Km 45,
+                                    Escobar, Buenos Aires</p>
+                                <p class="card-text mb-3"><i class="bi bi-telephone text-primary me-2"></i>+54 11
+                                    5678-1234</p>
+                                <p class="card-text mb-3"><i
+                                        class="bi bi-envelope text-primary me-2"></i>distribucion@jimdurrepuestos.com
+                                </p>
+                                <p class="card-text mb-3">
+                                    <i class="bi bi-clock text-primary me-2"></i>
+                                    Lun-Vie: 8:00 - 17:00<br>
+                                    <span class="ms-4">Sáb-Dom: Cerrado</span>
+                                </p>
+                                <a href="https://goo.gl/maps/7890" class="btn btn-outline-primary w-100"
+                                    target="_blank">Ver en el mapa</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location 6 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Sucursal Belgrano">
+                            <div class="card-body p-4">
+                                <h4 class="card-title fw-bold">Sucursal Belgrano</h4>
+                                <p class="card-text mb-3"><i class="bi bi-geo-alt text-primary me-2"></i>Av. Cabildo
+                                    2500, Belgrano, Buenos Aires</p>
+                                <p class="card-text mb-3"><i class="bi bi-telephone text-primary me-2"></i>+54 11
+                                    6789-0123</p>
+                                <p class="card-text mb-3"><i
+                                        class="bi bi-envelope text-primary me-2"></i>belgrano@jimdurrepuestos.com</p>
+                                <p class="card-text mb-3">
+                                    <i class="bi bi-clock text-primary me-2"></i>
+                                    Lun-Vie: 9:00 - 18:00<br>
+                                    <span class="ms-4">Sáb: 9:00 - 13:00</span><br>
+                                    <span class="ms-4">Dom: Cerrado</span>
+                                </p>
+                                <a href="https://goo.gl/maps/1234" class="btn btn-outline-primary w-100"
+                                    target="_blank">Ver en el mapa</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5">Preguntas Frecuentes</h2>
+
                 <div class="row justify-content-center">
-                    <div class="col-md-8">
+                    <div class="col-lg-10">
                         <div class="accordion" id="faqAccordion">
-                            <!-- Pregunta 1 -->
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
+                            <!-- FAQ Item 1 -->
+                            <div class="accordion-item border-0 mb-3 shadow-sm">
+                                <h3 class="accordion-header" id="headingOne">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        ¿Qué tipo de repuestos ofrecen?
+                                        ¿Cuáles son los métodos de pago aceptados?
                                     </button>
-                                </h2>
+                                </h3>
                                 <div id="collapseOne" class="accordion-collapse collapse show"
                                     aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
                                     <div class="accordion-body">
-                                        Ofrecemos una amplia gama de repuestos y accesorios para motocicletas de
-                                        diversas marcas y modelos.
+                                        <p>En JIMDUR Repuestos aceptamos múltiples formas de pago para tu comodidad:</p>
+                                        <ul>
+                                            <li>Tarjetas de crédito y débito (Visa, Mastercard, American Express)</li>
+                                            <li>Transferencia bancaria</li>
+                                            <li>Mercado Pago</li>
+                                            <li>Efectivo (solo en tiendas físicas)</li>
+                                            <li>Pago en cuotas sin interés con tarjetas seleccionadas</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Pregunta 2 -->
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingTwo">
+                            <!-- FAQ Item 2 -->
+                            <div class="accordion-item border-0 mb-3 shadow-sm">
+                                <h3 class="accordion-header" id="headingTwo">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        ¿Realizan envíos a domicilio?
+                                        ¿Cuál es la política de envíos y tiempos de entrega?
                                     </button>
-                                </h2>
+                                </h3>
                                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                                     data-bs-parent="#faqAccordion">
                                     <div class="accordion-body">
-                                        Sí, realizamos envíos a domicilio dentro de la ciudad y también a otras
-                                        localidades bajo ciertas condiciones.
+                                        <p>Nuestros tiempos de entrega varían según la ubicación:</p>
+                                        <ul>
+                                            <li>CABA y GBA: 24-48 horas hábiles</li>
+                                            <li>Capitales de provincia: 2-4 días hábiles</li>
+                                            <li>Resto del país: 3-7 días hábiles</li>
+                                        </ul>
+                                        <p>Los envíos se realizan a través de empresas de logística confiables y puedes
+                                            hacer seguimiento de tu pedido con el número de tracking que te
+                                            proporcionamos por email.</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Pregunta 3 -->
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingThree">
+                            <!-- FAQ Item 3 -->
+                            <div class="accordion-item border-0 mb-3 shadow-sm">
+                                <h3 class="accordion-header" id="headingThree">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseThree" aria-expanded="false"
                                         aria-controls="collapseThree">
-                                        ¿Cómo puedo hacer un pedido?
+                                        ¿Cuál es la política de devoluciones y garantía?
                                     </button>
-                                </h2>
+                                </h3>
                                 <div id="collapseThree" class="accordion-collapse collapse"
                                     aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
                                     <div class="accordion-body">
-                                        Puedes realizar tu pedido a través de nuestro formulario de contacto o
-                                        llamándonos directamente.
+                                        <p>Todos nuestros productos cuentan con garantía del fabricante. Además,
+                                            ofrecemos:</p>
+                                        <ul>
+                                            <li>30 días para devoluciones por productos defectuosos o errores en el
+                                                envío</li>
+                                            <li>Cambio inmediato o reembolso según tu preferencia</li>
+                                            <li>Para hacer efectiva la garantía, debes presentar la factura de compra
+                                            </li>
+                                        </ul>
+                                        <p>Para iniciar un proceso de devolución, comunícate con nuestro servicio de
+                                            atención al cliente.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FAQ Item 4 -->
+                            <div class="accordion-item border-0 mb-3 shadow-sm">
+                                <h3 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseFour" aria-expanded="false"
+                                        aria-controls="collapseFour">
+                                        ¿Ofrecen asesoramiento técnico para la instalación de repuestos?
+                                    </button>
+                                </h3>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                                    data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>Sí, en JIMDUR Repuestos contamos con un equipo de técnicos especializados que
+                                            pueden brindarte asesoramiento para la instalación y uso de los repuestos
+                                            que adquieras.</p>
+                                        <p>Puedes recibir asesoramiento de las siguientes formas:</p>
+                                        <ul>
+                                            <li>Presencial en nuestras tiendas</li>
+                                            <li>Vía telefónica llamando a nuestro servicio técnico</li>
+                                            <li>Por email enviando tu consulta a soporte@jimdurrepuestos.com</li>
+                                            <li>A través de nuestros tutoriales en YouTube</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FAQ Item 5 -->
+                            <div class="accordion-item border-0 shadow-sm">
+                                <h3 class="accordion-header" id="headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseFive" aria-expanded="false"
+                                        aria-controls="collapseFive">
+                                        ¿Cómo puedo saber si un repuesto es compatible con mi moto?
+                                    </button>
+                                </h3>
+                                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                                    data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>Para verificar la compatibilidad de un repuesto con tu moto, puedes:</p>
+                                        <ul>
+                                            <li>Utilizar nuestro buscador de repuestos por modelo de moto en la web</li>
+                                            <li>Consultar las especificaciones técnicas en la ficha del producto</li>
+                                            <li>Contactar con nuestro servicio de atención al cliente proporcionando la
+                                                marca, modelo y año de tu moto</li>
+                                            <li>Visitar cualquiera de nuestras tiendas físicas con los datos de tu moto
+                                            </li>
+                                        </ul>
+                                        <p>Recuerda que es importante verificar la compatibilidad antes de realizar tu
+                                            compra para evitar inconvenientes.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="text-center mt-4">
+                    <p class="mb-3">¿No encontraste respuesta a tu pregunta?</p>
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#contactModal">Contáctanos directamente</a>
+                </div>
             </div>
         </section>
 
+        <!-- Call to Action -->
+        <section class="py-5 bg-primary text-white">
+            <div class="container text-center py-4">
+                <h2 class="fw-bold mb-3">¿Necesitas ayuda inmediata?</h2>
+                <p class="lead mb-4">Nuestro equipo de atención al cliente está listo para asistirte</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="tel:+541112345678" class="btn btn-light btn-lg">
+                        <i class="bi bi-telephone me-2"></i>Llámanos
+                    </a>
+                    <a href="https://wa.me/541112345678" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-whatsapp me-2"></i>WhatsApp
+                    </a>
+                </div>
+            </div>
+        </section>
     </main>
-    <footer></footer>
-    <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
+    <!-- Contact Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="contactModalLabel">Contacto Rápido</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="quickContactForm">
+                        <div class="mb-3">
+                            <label for="quickName" class="form-label">Nombre *</label>
+                            <input type="text" class="form-control" id="quickName" name="quickName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quickEmail" class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="quickEmail" name="quickEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quickSubject" class="form-label">Asunto *</label>
+                            <input type="text" class="form-control" id="quickSubject" name="quickSubject" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quickMessage" class="form-label">Mensaje *</label>
+                            <textarea class="form-control" id="quickMessage" name="quickMessage" rows="3"
+                                required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" form="quickContactForm" class="btn btn-primary">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/scripts.js"></script>
 </body>
 
 </html>

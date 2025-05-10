@@ -1,158 +1,504 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Nosotros</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-    <!-- Bootstrap CSS v5.2.1 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" th:href="@{css/styles.css}">
+    <!-- AOS CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/user/all.css}">
+    <title>Sobre Nosotros | JIMDUR Repuestos</title>
 </head>
 
 <body>
     <!-- Navbar -->
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <main class="main-content">
-        <!-- Hero Section -->
-        <section></section>
+    <head th:replace="~{fragments/navbar :: navbar}"></head>
 
-        <!-- Historia Section -->
-        <section class="history-section py-5 bg-white">
+    <main>
+        <!-- Hero Banner -->
+        <section class="text-dark py-5">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-md-8 mb-0" data-aos="fade-up" data-aos-duration="1000">
-                        <h2 class="text-center text-dark fw-bold text-uppercase">Nuestra <span
-                                class="text-danger">Historia</span></h2>
-                        <p class="fw-normal p-3" style="text-align: justify; font-size: 1rem;">
-                            "Fundada en Ia ciudad de Piura, Jimdur E.I.R.L. nace con el
-                            compromiso de ofrecer productos de calidad para los amantes
-                            de las motocicletas. Desde nuestros inicios, hemos centrado
-                            nuestros esfuerzos en satisfacer las necesidades de nuestros
-                            clientes, brindando una amplia gama de repuestos, piezas, y
-                            accesorios para todas las marcas y modelos del mercado. A lo
-                            largo de los años, nos hemos consolidado como una empresa
-                            líder en el sector, destacándonos por nuestra pasión por el
-                            servicio al cliente"</p>
-                        <div class="row">
-                            <div class="col stat-item text-center">
-                                <span id="counter" class="stat-number display-4 text-danger">25</span>+
-                                <p class="stat-label">Años de experiencia</p>
-                            </div>
-
-                            <div class="col stat-item text-center">
-                                <span id="counter-clients" class="stat-number display-4 text-danger">10000</span>+
-                                <p class="stat-label">Clientes satisfechos</p>
-                            </div>
-                        </div>
+                    <div class="col-lg-6">
+                        <h1 class="display-4 fw-bold mb-3">Sobre Nosotros</h1>
+                        <p class="lead mb-4">Conoce la historia de JIMDUR Repuestos, nuestra misión, visión y el equipo
+                            detrás de la empresa líder en repuestos para motos en Piura-Peru.</p>
                     </div>
-                    <div class="col-md-4" data-aos="fade-up" data-aos-duration="1500">
-                        <img src="../public/retrato-elegante.jpg" alt="Historia JIMDUR"
-                            class="rounded img-fluid shadow --gerente">
-                        <p class="text-center pt-2 pb-0">Luis Jimenez <br> Gerente General</p>
+                    <div class="col-lg-6 text-center">
+                        <img th:src="@{/image/Nosotros.jpg}" alt="Equipo JIMDUR Repuestos"
+                            class="img-fluid rounded shadow-lg">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Misión y Visión Section -->
-        <section class="mission-vision-section text-center py-5 bg-light">
+        <!-- Our Story -->
+        <section class="py-5">
             <div class="container">
-                <h2 class="mb-5 fw-bold text-uppercase">Nuestra <span class="text-danger">Misión y Visión</span></h2>
-                <div class="row">
-                    <!-- Misión -->
-                    <div class="col-md-6 mb-4">
-                        <div class="mission-card p-4 shadow-sm bg-white" data-aos="fade-up" data-aos-duration="1000">
-                            <h3 class="mb-3">Misión</h3>
-                            <p>
-                                "Nuestra misión es proporcionar a nuestros
-                                clientes productos de las mejores marcas,
-                                reconocidas por su calidad y durabilidad,
-                                asegurando que encuentren exactamente lo que
-                                necesitan para sus motocicletas. Nos
-                                esforzamos por brindar un servicio excepcional,
-                                personalizado y cercano, que haga que cada
-                                visita a nuestra tienda sea una experiencia
-                                satisfactoria, basada en la confianza y la
-                                excelencia"
-                            </p>
-                        </div>
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <img src="https://placehold.co/600x400" alt="Historia de JIMDUR"
+                            class="img-fluid rounded shadow">
                     </div>
-                    <!-- Visión -->
-                    <div class="col-md-6 mb-4">
-                        <div class="vision-card p-4 shadow-sm bg-white" data-aos="fade-down" data-aos-duration="1000">
-                            <h3 class="mb-3">Visión</h3>
-                            <p>
-                                "Nos proyectamos como una de las empresas
-                                más competitivas del sector motero en nuestra
-                                región,
-                                cumpliendo y superando las
-                                expectativas de nuestros clientes. Para el 2023,
-                                aspiramos a consolidarnos como uno de los
-                                principales distribuidores mayoristas en el
-                                mercado piurano, y para el 2028, convertirnos
-                                en importadores de productos con nuestra
-                                propia marca, expandiendo nuestra presencia
-                                en diversos mercados a nivel nacional."
-                            </p>
-                        </div>
+                    <div class="col-lg-6">
+                        <h2 class="fw-bold mb-4">Nuestra Historia</h2>
+                        <p class="mb-3">JIMDUR Repuestos fue fundada en 2005 en la ciudad de Piura, Perú, como una
+                            empresa dedicada a la venta de partes, piezas y accesorios para motocicletas. Inspirados por
+                            la pasión por el motociclismo y la necesidad de ofrecer productos de calidad a precios
+                            justos, nace el nombre "JIMDUR", uniendo las iniciales de sus fundadores.</p>
+                        <p class="mb-3">Desde sus inicios, el compromiso ha sido brindar un servicio cercano, confiable
+                            y especializado, convirtiéndose rápidamente en una opción reconocida entre los motociclistas
+                            de la región.</p>
+                        <p>Actualmente, JIMDUR Repuestos continúa creciendo, ofreciendo una amplia variedad de productos
+                            y asesoría personalizada, con la visión de convertirse en un referente en el norte del país
+                            en el rubro de repuestos para motos.</p>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- Valores Section -->
-        <section class="values-section py-5">
+        <!-- Mission, Vision, Values -->
+        <section class="py-5 bg-light">
             <div class="container">
-                <h2 class="text-center mb-5 text-uppercase fw-bold text-uppercase">Nuestros <span
-                        class="text-danger">valores</span></h2>
-                <div class="row text-center">
-                    <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-duration="1000">
-                        <div class="value-card p-4 rounded shadow-sm">
-                            <i class="fas fa-medal text-danger fs-1 mb-3"></i>
-                            <h3>Calidad</h3>
-                            <p>Compromiso con la excelencia en cada producto que ofrecemos.</p>
+                <h2 class="text-center fw-bold mb-5">Misión, Visión y Valores</h2>
+
+                <div class="row g-4">
+                    <!-- Mission -->
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-flex mb-3">
+                                    <i class="bi bi-bullseye text-primary fs-1"></i>
+                                </div>
+                                <h3 class="card-title fw-bold">Misión</h3>
+                                <p class="card-text">Proporcionar a nuestros clientes repuestos y accesorios de la más
+                                    alta calidad para sus motocicletas, garantizando un servicio excepcional y
+                                    asesoramiento técnico especializado que contribuya al óptimo funcionamiento de sus
+                                    vehículos.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-duration="1000">
-                        <div class="value-card p-4 rounded shadow-sm">
-                            <i class="fas fa-handshake text-danger fs-1 mb-3"></i>
-                            <h3>Confianza</h3>
-                            <p>Construimos relaciones duraderas basadas en la honestidad.</p>
+
+                    <!-- Vision -->
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-flex mb-3">
+                                    <i class="bi bi-eye text-primary fs-1"></i>
+                                </div>
+                                <h3 class="card-title fw-bold">Visión</h3>
+                                <p class="card-text">Ser la empresa líder en distribución de repuestos y accesorios para motos en el norte del Perú, reconocida por la calidad de nuestros productos, la excelencia en el servicio al cliente y nuestro compromiso con la innovación y la sostenibilidad.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-duration="1000">
-                        <div class="value-card p-4 rounded shadow-sm">
-                            <i class="fas fa-tools text-danger fs-1 mb-3"></i>
-                            <h3>Experiencia</h3>
-                            <p>Conocimiento técnico respaldado por años de experiencia.</p>
+
+                    <!-- Values -->
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-flex mb-3">
+                                    <i class="bi bi-star text-primary fs-1"></i>
+                                </div>
+                                <h3 class="card-title fw-bold">Valores</h3>
+                                <ul class="list-unstyled text-start">
+                                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Calidad
+                                        en todos nuestros productos</li>
+                                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                        Integridad y transparencia</li>
+                                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                        Compromiso con el cliente</li>
+                                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Trabajo
+                                        en equipo</li>
+                                    <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Responsabilidad social
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Our Team -->
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5">Nuestro Equipo</h2>
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    <!-- Team Member 1 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm text-center">
+                            <div class="position-relative">
+                                <img src="https://placehold.co/400x400" class="card-img-top" alt="Carlos Martínez">
+                                <div
+                                    class="position-absolute bottom-0 start-0 end-0 p-3 bg-dark bg-opacity-75 text-white">
+                                    <h5 class="card-title mb-0">Carlos Martínez</h5>
+                                    <p class="card-text small mb-0">Director General</p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Con más de 20 años de experiencia en el sector, Carlos lidera la
+                                    estrategia y visión de JIMDUR Repuestos.</p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="#" class="text-primary"><i class="bi bi-linkedin"></i></a>
+                                    <a href="#" class="text-primary"><i class="bi bi-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 2 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm text-center">
+                            <div class="position-relative">
+                                <img src="https://placehold.co/400x400" class="card-img-top" alt="Laura Rodríguez">
+                                <div
+                                    class="position-absolute bottom-0 start-0 end-0 p-3 bg-dark bg-opacity-75 text-white">
+                                    <h5 class="card-title mb-0">Laura Rodríguez</h5>
+                                    <p class="card-text small mb-0">Gerente Comercial</p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Laura supervisa todas las operaciones comerciales y el desarrollo
+                                    de nuevas líneas de productos.</p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="#" class="text-primary"><i class="bi bi-linkedin"></i></a>
+                                    <a href="#" class="text-primary"><i class="bi bi-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 3 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm text-center">
+                            <div class="position-relative">
+                                <img src="https://placehold.co/400x400" class="card-img-top" alt="Miguel Sánchez">
+                                <div
+                                    class="position-absolute bottom-0 start-0 end-0 p-3 bg-dark bg-opacity-75 text-white">
+                                    <h5 class="card-title mb-0">Miguel Sánchez</h5>
+                                    <p class="card-text small mb-0">Jefe de Taller</p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Experto mecánico con certificaciones internacionales, Miguel lidera
+                                    nuestro equipo técnico y servicio de asesoramiento.</p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="#" class="text-primary"><i class="bi bi-linkedin"></i></a>
+                                    <a href="#" class="text-primary"><i class="bi bi-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 4 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm text-center">
+                            <div class="position-relative">
+                                <img src="https://placehold.co/400x400" class="card-img-top" alt="Ana Gómez">
+                                <div
+                                    class="position-absolute bottom-0 start-0 end-0 p-3 bg-dark bg-opacity-75 text-white">
+                                    <h5 class="card-title mb-0">Ana Gómez</h5>
+                                    <p class="card-text small mb-0">Gerente de E-commerce</p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Ana ha transformado nuestra presencia digital y lidera todas las
+                                    iniciativas de comercio electrónico.</p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="#" class="text-primary"><i class="bi bi-linkedin"></i></a>
+                                    <a href="#" class="text-primary"><i class="bi bi-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Facilities -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5">Nuestras Instalaciones</h2>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/800x500" class="card-img-top" alt="Tienda Principal">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Tienda Principal - Palermo</h5>
+                                <p class="card-text">Nuestra tienda insignia cuenta con más de 500m² de exposición,
+                                    taller especializado y un equipo de asesores técnicos para ayudarte a encontrar
+                                    exactamente lo que necesitas.</p>
+                                <p class="card-text"><i class="bi bi-geo-alt text-primary me-2"></i>Av. Libertador 1234,
+                                    Palermo, Buenos Aires</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/800x500" class="card-img-top" alt="Centro de Distribución">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Centro de Distribución</h5>
+                                <p class="card-text">Nuestro moderno centro logístico de 2000m² nos permite mantener un
+                                    amplio stock de productos y garantizar envíos rápidos a todo el país.</p>
+                                <p class="card-text"><i class="bi bi-geo-alt text-primary me-2"></i>Ruta 9 Km 45,
+                                    Escobar, Buenos Aires</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mt-2">
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Sucursal Córdoba">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Sucursal Córdoba</h5>
+                                <p class="card-text">Nuestra primera expansión fuera de Buenos Aires, atendiendo a la
+                                    región central del país.</p>
+                                <p class="card-text"><i class="bi bi-geo-alt text-primary me-2"></i>Av. Colón 2500,
+                                    Córdoba</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Sucursal Rosario">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Sucursal Rosario</h5>
+                                <p class="card-text">Ubicada estratégicamente para atender a la región litoral con un
+                                    amplio catálogo de productos.</p>
+                                <p class="card-text"><i class="bi bi-geo-alt text-primary me-2"></i>Bv. Oroño 1200,
+                                    Rosario</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Sucursal Mendoza">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Sucursal Mendoza</h5>
+                                <p class="card-text">Nuestra tienda más reciente, especializada en repuestos para motos
+                                    de montaña y enduro.</p>
+                                <p class="card-text"><i class="bi bi-geo-alt text-primary me-2"></i>Av. San Martín 800,
+                                    Mendoza</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications and Partners -->
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5">Certificaciones y Alianzas</h2>
+
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <h3 class="fw-bold mb-3">Certificaciones</h3>
+                        <p class="mb-4">En JIMDUR Repuestos nos comprometemos con los más altos estándares de calidad y
+                            servicio. Contamos con las siguientes certificaciones:</p>
+
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                <i class="bi bi-award text-primary fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">ISO 9001:2015</h5>
+                                <p class="text-muted mb-0">Sistema de Gestión de Calidad certificado para garantizar
+                                    procesos eficientes y productos de alta calidad.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                <i class="bi bi-shield-check text-primary fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Distribuidor Autorizado</h5>
+                                <p class="text-muted mb-0">Somos distribuidores oficiales de las principales marcas de
+                                    repuestos para motos a nivel mundial.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start">
+                            <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                <i class="bi bi-recycle text-primary fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Certificación Ambiental</h5>
+                                <p class="text-muted mb-0">Comprometidos con prácticas sostenibles y el correcto manejo
+                                    de residuos.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <h3 class="fw-bold mb-3">Alianzas Estratégicas</h3>
+                        <p class="mb-4">Trabajamos en estrecha colaboración con fabricantes y distribuidores
+                            internacionales para ofrecer los mejores productos:</p>
+
+                        <div class="row row-cols-2 row-cols-md-3 g-3">
+                            <div class="col">
+                                <div class="card h-100 p-3 brand-card">
+                                    <img src="https://placehold.co/160x80?text=Honda" class="img-fluid mx-auto"
+                                        alt="Honda">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 p-3 brand-card">
+                                    <img src="https://placehold.co/160x80?text=Yamaha" class="img-fluid mx-auto"
+                                        alt="Yamaha">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 p-3 brand-card">
+                                    <img src="https://placehold.co/160x80?text=Suzuki" class="img-fluid mx-auto"
+                                        alt="Suzuki">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 p-3 brand-card">
+                                    <img src="https://placehold.co/160x80?text=Motul" class="img-fluid mx-auto"
+                                        alt="Motul">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 p-3 brand-card">
+                                    <img src="https://placehold.co/160x80?text=Brembo" class="img-fluid mx-auto"
+                                        alt="Brembo">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 p-3 brand-card">
+                                    <img src="https://placehold.co/160x80?text=NGK" class="img-fluid mx-auto" alt="NGK">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5">Lo que dicen nuestros clientes</h2>
+
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <!-- Testimonial 1 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="https://placehold.co/60x60" class="rounded-circle me-3" alt="Cliente">
+                                    <div>
+                                        <h5 class="card-title mb-0">Roberto Fernández</h5>
+                                        <p class="text-muted small mb-0">Cliente desde 2015</p>
+                                    </div>
+                                </div>
+                                <div class="text-warning mb-3">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                </div>
+                                <p class="card-text">"Llevo años confiando en JIMDUR para los repuestos de mi Honda. Su
+                                    asesoramiento técnico es inmejorable y siempre tienen lo que necesito. El envío es
+                                    rápido y el servicio postventa excelente."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="https://placehold.co/60x60" class="rounded-circle me-3" alt="Cliente">
+                                    <div>
+                                        <h5 class="card-title mb-0">María López</h5>
+                                        <p class="text-muted small mb-0">Cliente desde 2019</p>
+                                    </div>
+                                </div>
+                                <div class="text-warning mb-3">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-half"></i>
+                                </div>
+                                <p class="card-text">"Como mujer motociclista, valoro mucho el trato respetuoso y
+                                    profesional que recibo en JIMDUR. Nunca me han hecho sentir menos por ser mujer y
+                                    siempre me asesoran con honestidad sobre lo que realmente necesito."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="https://placehold.co/60x60" class="rounded-circle me-3" alt="Cliente">
+                                    <div>
+                                        <h5 class="card-title mb-0">Diego Ramírez</h5>
+                                        <p class="text-muted small mb-0">Cliente desde 2020</p>
+                                    </div>
+                                </div>
+                                <div class="text-warning mb-3">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                </div>
+                                <p class="card-text">"Descubrí JIMDUR durante la pandemia cuando necesitaba repuestos
+                                    urgentes. Su tienda online es muy completa y fácil de usar. Los productos llegaron
+                                    bien embalados y antes de lo esperado. Ahora soy cliente habitual."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="py-5 bg-primary text-white">
+            <div class="container text-center py-4">
+                <h2 class="fw-bold mb-3">¿Quieres formar parte de nuestro equipo?</h2>
+                <p class="lead mb-4">Estamos en constante crecimiento y buscamos personas apasionadas por el mundo de
+                    las motos</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="trabaja-con-nosotros.html" class="btn btn-light btn-lg">Ver oportunidades</a>
+                    <a href="contacto.html" class="btn btn-outline-light btn-lg">Contáctanos</a>
+                </div>
+            </div>
+        </section>
     </main>
-    <footer>
-        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-            © 2025 Derechos Reservados:
-            <a class="text-reset fw-bold" href="Politicas.html#terminos-condiciones" target="_blank">JIMDUR
-                Repuestos</a>
-        </div>
-    </footer>
-    <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
+    <!-- Footer -->
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/scripts.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/user/all.css}">
+
+    <title>Catalogo Productos</title>
+</head>
+
+<body>
+    <header th:replace="~{fragments/navbar :: navbar}"></header>
+    <main class="py-4">
+        <div class="container">
+            <!-- Breadcrumbs -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../index.html">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="../catalogo.html">Catálogo</a></li>
+                    <li class="breadcrumb-item"><a href="../categoria/aceites.html">Aceites</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Aceite Motul 5100 4T 15W50</li>
+                </ol>
+            </nav>
+
+            <!-- Product Main Section -->
+            <div class="row g-5 mb-5">
+                <!-- Product Gallery -->
+                <div class="col-md-6">
+                    <div class="product-gallery">
+                        <div class="main-image border rounded p-3 bg-white mb-3">
+                            <img th:src="${producto.imagenURL}" class="img-fluid" id="mainImage"
+                                th:alt="${producto.nombre}">
+                        </div>
+                        <div class="thumbnails d-flex gap-2 overflow-auto pb-2">
+                            <!-- ! FALTA LA IMPLEMENTACION DE SEPARAR IMAGEN URL COMO ENTIDAD PARA SUBIR MAS -->
+                            <button class="thumbnail-btn border rounded p-1 active"
+                                data-img="https://placehold.co/600x600">
+                                <img src="https://placehold.co/80x80" class="img-fluid" alt="Aceite Motul - Vista 1">
+                            </button>
+                            <button class="thumbnail-btn border rounded p-1"
+                                data-img="https://placehold.co/600x600?text=Vista+2">
+                                <img src="https://placehold.co/80x80?text=Vista+2" class="img-fluid"
+                                    alt="Aceite Motul - Vista 2">
+                            </button>
+                            <button class="thumbnail-btn border rounded p-1"
+                                data-img="https://placehold.co/600x600?text=Vista+3">
+                                <img src="https://placehold.co/80x80?text=Vista+3" class="img-fluid"
+                                    alt="Aceite Motul - Vista 3">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="col-md-6">
+                    <div class="product-info">
+                        <!-- Brand & Category -->
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <a href="../marca/motul.html" class="text-decoration-none text-muted small" th:text="${producto.marca.nombre}">Motul</a>
+                            <span class="text-muted">•</span>
+                            <a href="../categoria/aceites.html"
+                                class="text-decoration-none text-muted small" th:text="${producto.categoria.nombre}">Aceites</a>
+                        </div>
+
+                        <!-- Product Title -->
+                        <h1 class="fw-bold mb-3" th:text="${producto.nombre}">Aceite Motul 5100 4T 15W50</h1>
+
+                        <!-- ! Rating falta implementacion -->
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <div class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <span class="fw-medium">4.8</span>
+                            <a href="#reviews" class="text-decoration-none text-muted small">(124 reseñas)</a>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="fs-3 fw-bold text-primary" 
+                            th:text="'S/ ' + ${producto.precioOferta}">$10.625</span>
+                            <span class="fs-5 text-muted text-decoration-line-through"
+                            th:if="${producto.descuento > 0}"
+                            th:text="'S/ ' + ${producto.precio}">$12.500</span>
+                            <span class="badge bg-danger"
+                            th:if="${producto.descuento > 0 and producto.tipoDescuento == 'PORCENTAJE'}"
+                            th:text="'-' + ${producto.descuento} + '%'">-15%</span>
+                        </div>
+
+                        <!-- Availability -->
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="fw-medium">Disponibilidad:</span>
+                            <span class="text-success">En stock (25 unidades)</span>
+                        </div>
+
+                        <!-- SKU -->
+                        <div class="text-danger fw-bold">PROXIMAMENTE</div>
+                        <div class="d-flex align-items-center gap-2 mb-4">
+                            <span class="fw-medium">SKU:</span>
+                            <span class="text-muted">MT-5100-15W50</span>
+                        </div>
+
+                        <!-- Add to Cart -->
+                        <div class="border-top border-bottom py-4 mb-4">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="input-group" style="width: 130px;">
+                                    <button class="btn btn-outline-secondary" type="button" id="decreaseQuantity">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                    <input type="text" class="form-control text-center" value="1" id="quantity">
+                                    <button class="btn btn-outline-secondary" type="button" id="increaseQuantity">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </div>
+                                <button
+                                    class="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center gap-2">
+                                    <i class="bi bi-cart"></i>
+                                    Agregar al carrito
+                                </button>
+                                <button class="btn btn-outline-secondary" title="Agregar a favoritos">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" title="Compartir">
+                                    <i class="bi bi-share"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Benefits -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-start gap-3 mb-3">
+                                <i class="bi bi-truck text-primary fs-5"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Envío gratis</h6>
+                                    <p class="text-muted small mb-0">En compras superiores a S/200</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3 mb-3">
+                                <i class="bi bi-shield-check text-primary fs-5"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Garantía de calidad</h6>
+                                    <p class="text-muted small mb-0">Todos nuestros productos son originales</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3">
+                                <i class="bi bi-credit-card text-primary fs-5"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Métodos de pago <span class="text-danger">PROXIMAMENTE</span></h6>
+                                    <p class="text-muted small mb-0">Tarjetas, transferencia y efectivo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details Tabs -->
+            <div class="product-details mb-5">
+                <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
+                            data-bs-target="#description" type="button" role="tab" aria-controls="description"
+                            aria-selected="true">Descripción</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="specifications-tab" data-bs-toggle="tab"
+                            data-bs-target="#specifications" type="button" role="tab" aria-controls="specifications"
+                            aria-selected="false">Especificaciones</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="compatibility-tab" data-bs-toggle="tab"
+                            data-bs-target="#compatibility" type="button" role="tab" aria-controls="compatibility"
+                            aria-selected="false">Compatibilidad</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews"
+                            type="button" role="tab" aria-controls="reviews" aria-selected="false">Reseñas</button>
+                    </li>
+                </ul>
+                <div class="tab-content p-4 border border-top-0 rounded-bottom" id="productTabsContent">
+                    <div class="tab-pane fade show active" id="description" role="tabpanel"
+                        aria-labelledby="description-tab">
+                        <p>Aceite de motor semisintético para motocicletas de 4 tiempos. Proporciona una excelente
+                            protección y rendimiento para motores de alta potencia.</p>
+
+                        <h5 class="fw-bold mt-4 mb-3">Características principales</h5>
+                        <ul>
+                            <li>Mejora la potencia y aceleración</li>
+                            <li>Excelente resistencia a altas temperaturas</li>
+                            <li>Protección superior contra el desgaste</li>
+                            <li>Ideal para motores con embrague húmedo</li>
+                            <li>Compatible con catalizadores</li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" style="width: 30%;">Tipo</th>
+                                        <td>Semisintético</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Viscosidad</th>
+                                        <td>15W50</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Capacidad</th>
+                                        <td>1 Litro</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Aplicación</th>
+                                        <td>Motores 4T</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Normas</th>
+                                        <td>API SL/SJ/SH/SG, JASO MA2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="compatibility" role="tabpanel" aria-labelledby="compatibility-tab">
+                        <h5 class="fw-bold mb-3">Modelos compatibles</h5>
+                        <ul>
+                            <li>Honda CB190R</li>
+                            <li>Yamaha FZ16</li>
+                            <li>Suzuki Gixxer</li>
+                            <li>Kawasaki Z400</li>
+                            <li>Y muchos más modelos de 4 tiempos</li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                        <div class="text-center py-5">
+                            <h5 class="fw-bold mb-3">Reseñas de clientes</h5>
+                            <p class="text-muted mb-4">Las reseñas de este producto estarán disponibles próximamente.
+                            </p>
+                            <button class="btn btn-primary">Escribir una reseña</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <div class="related-products">
+                <h2 class="fw-bold mb-4">Productos relacionados</h2>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    <!-- Related Product 1 -->
+                    <div class="col">
+                        <div class="card h-100">
+                            <a href="2.html" class="text-decoration-none">
+                                <img src="https://placehold.co/300x300" class="card-img-top p-3"
+                                    alt="Filtro de Aceite Hiflofiltro">
+                                <div class="card-body">
+                                    <h5 class="card-title text-dark">Filtro de Aceite Hiflofiltro HF204</h5>
+                                    <p class="card-text fw-bold mt-2">$3.500</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Related Product 2 -->
+                    <div class="col">
+                        <div class="card h-100">
+                            <a href="3.html" class="text-decoration-none">
+                                <img src="https://placehold.co/300x300" class="card-img-top p-3"
+                                    alt="Kit de Juntas de Motor">
+                                <div class="card-body">
+                                    <h5 class="card-title text-dark">Kit de Juntas de Motor Honda CB190R</h5>
+                                    <p class="card-text fw-bold mt-2">$6.800</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Related Product 3 -->
+                    <div class="col">
+                        <div class="card h-100">
+                            <a href="4.html" class="text-decoration-none">
+                                <img src="https://placehold.co/300x300" class="card-img-top p-3"
+                                    alt="Aceite Motul 7100">
+                                <div class="card-body">
+                                    <h5 class="card-title text-dark">Aceite Motul 7100 4T 10W40</h5>
+                                    <p class="card-text fw-bold mt-2">$15.800</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Related Product 4 -->
+                    <div class="col">
+                        <div class="card h-100">
+                            <a href="5.html" class="text-decoration-none">
+                                <img src="https://placehold.co/300x300" class="card-img-top p-3"
+                                    alt="Kit de Mantenimiento">
+                                <div class="card-body">
+                                    <h5 class="card-title text-dark">Kit de Mantenimiento Honda CB190R</h5>
+                                    <p class="card-text fw-bold mt-2">$9.200</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Custom JS -->
+
+</body>
+
+</html>

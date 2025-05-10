@@ -19,4 +19,8 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     @Query("SELECT p FROM Producto p ORDER BY p.id DESC")
     List<Producto> findTopNByOrderByIdDesc(Pageable pageable);
 
+    // Método para obtener un producto por su slug
+    @Query("SELECT p FROM Producto p WHERE p.slug = ?1")
+    Producto findBySlug(String slug);
+
 }

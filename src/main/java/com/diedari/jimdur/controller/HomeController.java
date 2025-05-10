@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.diedari.jimdur.model.Categoria;
@@ -65,6 +66,17 @@ public class HomeController {
         model.addAttribute("activePage", "contacto");
 
         return "/user/contacto";
+    }
+
+    @GetMapping("/producto/{slug}")
+    public String detalleProductoForm(@PathVariable String slug, Model model) {
+        // NAVBAR DINAMICA:
+        Producto producto = productoService.obtenerProductoPorSlug(slug);
+        if (producto == null) {
+            return "redirect:/productos"; // Redirigir a la lista de productos si no se encuentra el producto
+        }
+        model.addAttribute("producto", producto);
+        return "/user/detalle-producto";
     }
 
 }

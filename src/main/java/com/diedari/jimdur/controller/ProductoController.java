@@ -97,6 +97,7 @@ public class ProductoController {
             actual.setTipoDescuento(producto.getTipoDescuento());
             actual.setActivo(producto.isActivo());
             actual.calcularPrecioOferta();
+            actual.generarSlug();
             productoService.actualizarProducto(actual);
         }
         return "redirect:/admin/productos/";

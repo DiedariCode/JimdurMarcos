@@ -13,8 +13,8 @@
     <!-- AOS CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
-    <link rel="stylesheet" th:href="@{css/styles.css}">
-    <link rel="stylesheet" th:href="@{css/user/all.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/user/all.css}">
 
     <title>Catalogo Productos</title>
 </head>
@@ -136,7 +136,7 @@
 
                 <!-- ! Main Content -->
                 <div class="col-lg-9">
-                    <!-- ?Toolbar -->
+                    <!-- ? Toolbar -->
                     <div class="d-flex flex-column 
                         flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-3">
                         <p class="text-muted mb-0" th:text="'Mostrando ' + ${productos.size()} + ' productos'">Mostrando 12 productos</p>
@@ -149,7 +149,7 @@
                                 <option value="newest">Más nuevos</option>
                             </select>
 
-                            <!-- Mobile Filter Button -->
+                            <!-- todo Mobile Filter Button -->
                             <button class="btn btn-outline-primary d-lg-none" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#filtersOffcanvas">
                                 <i class="bi bi-sliders me-1"></i> Filtros
@@ -157,9 +157,9 @@
                         </div>
                     </div>
 
-                    <!-- Products Grid -->
+                    <!-- ?  Products Grid -->
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-                        <!-- Productos -->
+                        <!-- todo Productos -->
                         <div class="col" th:each="producto : ${productos}">
                             <div class="card h-100 product-card">
                                 <div class="position-relative pt-3 px-3">
@@ -172,7 +172,7 @@
                                 <div class="card-body">
                                     <p class="text-muted small" th:text="${producto.categoria.nombre} + ' | ' +  ${producto.nombre}">Aceites | Motul</p>
                                     <h5 class="card-title product-title">
-                                        <a th:href="'/productos' + ${producto.id}" class="text-decoration-none text-dark"
+                                        <a th:href="'/producto/' + ${producto.slug}" class="text-decoration-none text-dark"
                                         th:text="${producto.descripcion}">Aceite Motul 5100 4T 15W50</a>
                                     </h5>
                                     <div class="d-flex align-items-center mb-2">
