@@ -1,122 +1,151 @@
 <header th:fragment="navbar">
-    <nav class="navbar navbar-expand-lg p-2">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
             <!-- Logo -->
             <a class="navbar-brand" th:href="@{/}">
                 <img th:src="@{/image/logos/logo_Jimdur_pequeno.png}" alt="Jimdur Logo">
             </a>
-            
-            <!-- Botón hamburguesa para móviles -->
+
+            <!-- User Actions & Mobile Toggler Group -->
             <div class="d-flex align-items-center order-lg-3">
-                <!-- Acciones del usuario visibles en móvil -->
+                <!-- User Actions -->
                 <div class="d-flex align-items-center me-2">
-                    <!-- Favoritos - visible en todos los tamaños -->
-                    <div class="dropdown d-block">
+                    <!-- Favoritos Dropdown -->
+                    <div class="dropdown">
                         <button class="btn-icon position-relative" type="button" id="favoritosDropdown"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-expanded="false" aria-label="Ver favoritos">
                             <i class="fas fa-heart"></i>
                             <span
                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-count">
                                 2
                             </span>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="favoritosDropdown">
+                        <div class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="favoritosDropdown"
+                            style="min-width: 300px;">
                             <h6 class="fw-bold mb-3">Mis Favoritos</h6>
-                            <div class="cart-item d-flex align-items-center">
-                                <img src="/api/placeholder/40/40" class="me-3" alt="Producto">
-                                <div>
-                                    <p class="mb-0 fw-bold">Filtro de aceite</p>
+                            <!-- Favorite Item 1 -->
+                            <div class="cart-item d-flex align-items-center mb-2">
+                                <img th:src="@{/api/placeholder/40/40}" class="rounded me-3" alt="Producto Favorito">
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 fw-bold small">Filtro de aceite</p>
                                     <small class="text-muted">S/. 45.00</small>
                                 </div>
-                                <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
+                                <button class="btn btn-sm btn-icon text-danger"
+                                    aria-label="Eliminar Filtro de aceite de favoritos">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
-                            <div class="cart-item d-flex align-items-center">
-                                <img src="/api/placeholder/40/40" class="me-3" alt="Producto">
-                                <div>
-                                    <p class="mb-0 fw-bold">Kit de frenos</p>
+                            <!-- Favorite Item 2 -->
+                            <div class="cart-item d-flex align-items-center mb-3">
+                                <img th:src="@{/api/placeholder/40/40}" class="rounded me-3" alt="Producto Favorito">
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 fw-bold small">Kit de frenos</p>
                                     <small class="text-muted">S/. 120.00</small>
                                 </div>
-                                <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
+                                <button class="btn btn-sm btn-icon text-danger"
+                                    aria-label="Eliminar Kit de frenos de favoritos">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
-                            <div class="d-grid gap-2 mt-3">
-                                <a href="#" class="btn btn-sm btn-danger">Ver todos</a>
+                            <div class="d-grid">
+                                <a href="#" class="btn btn-sm btn-danger">Ver todos los favoritos</a>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Carrito - visible en todos los tamaños -->
-                    <div class="dropdown d-block ms-2">
+
+                    <!-- Carrito Dropdown -->
+                    <div class="dropdown ms-2">
                         <button class="btn-icon position-relative" type="button" id="carritoDropdown"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-expanded="false" aria-label="Ver carrito de compras">
                             <i class="fas fa-shopping-cart"></i>
                             <span
                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-count">
                                 3
                             </span>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="carritoDropdown">
+                        <div class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="carritoDropdown"
+                            style="min-width: 320px;">
                             <h6 class="fw-bold mb-3">Mi Carrito</h6>
-                            <div class="cart-item d-flex align-items-center">
-                                <img src="/api/placeholder/40/40" class="me-3" alt="Producto">
-                                <div>
-                                    <p class="mb-0 fw-bold">Filtro de aceite</p>
+                            <!-- Cart Item 1 -->
+                            <div class="cart-item d-flex align-items-center mb-2">
+                                <img th:src="@{/api/placeholder/40/40}" class="rounded me-3" alt="Producto en carrito">
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 fw-bold small">Filtro de aceite</p>
                                     <small class="text-muted">1 x S/. 45.00</small>
                                 </div>
-                                <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
+                                <button class="btn btn-sm btn-icon text-danger"
+                                    aria-label="Eliminar Filtro de aceite del carrito">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
-                            <div class="cart-item d-flex align-items-center">
-                                <img src="/api/placeholder/40/40" class="me-3" alt="Producto">
-                                <div>
-                                    <p class="mb-0 fw-bold">Kit de frenos</p>
+                            <!-- Cart Item 2 -->
+                            <div class="cart-item d-flex align-items-center mb-2">
+                                <img th:src="@{/api/placeholder/40/40}" class="rounded me-3" alt="Producto en carrito">
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 fw-bold small">Kit de frenos</p>
                                     <small class="text-muted">1 x S/. 120.00</small>
                                 </div>
-                                <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
+                                <button class="btn btn-sm btn-icon text-danger"
+                                    aria-label="Eliminar Kit de frenos del carrito">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
-                            <div class="cart-item d-flex align-items-center">
-                                <img src="/api/placeholder/40/40" class="me-3" alt="Producto">
-                                <div>
-                                    <p class="mb-0 fw-bold">Aceite motor</p>
+                            <!-- Cart Item 3 -->
+                            <div class="cart-item d-flex align-items-center mb-3">
+                                <img th:src="@{/api/placeholder/40/40}" class="rounded me-3" alt="Producto en carrito">
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 fw-bold small">Aceite motor</p>
                                     <small class="text-muted">2 x S/. 35.00</small>
                                 </div>
-                                <button class="btn btn-sm ms-auto"><i class="fas fa-trash text-danger"></i></button>
+                                <button class="btn btn-sm btn-icon text-danger"
+                                    aria-label="Eliminar Aceite motor del carrito">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
-                            <div class="d-flex justify-content-between mt-3">
-                                <span>Total:</span>
+                            <hr class="my-2">
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="fw-semibold">Total:</span>
                                 <span class="fw-bold">S/. 235.00</span>
                             </div>
-                            <div class="d-grid gap-2 mt-3">
+                            <div class="d-grid">
                                 <a href="#" class="btn btn-sm btn-danger">Proceder al pago</a>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Usuario - visible en todos los tamaños -->
-                    <button class="btn-icon active ms-2" data-bs-toggle="modal" data-bs-target="#authModal">
+
+                    <!-- Usuario Button -->
+                    <button class="btn-icon active ms-2" data-bs-toggle="modal" data-bs-target="#authModal"
+                        aria-label="Cuenta de usuario o iniciar sesión">
                         <i class="fas fa-user"></i>
                     </button>
                 </div>
-                
-                <!-- Botón hamburguesa -->
-                <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+                <!-- Navbar Toggler (Mobile) -->
+                <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavContent" aria-controls="navbarNavContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
-            
-            <!-- Contenido principal de la navegación -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- Enlaces de navegación -->
+
+            <!-- Main Navigation Links & Search -->
+            <div class="collapse navbar-collapse" id="navbarNavContent">
+                <!-- Navigation Links -->
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link" th:classappend="${activePage == 'inicio'} ? 'active'" th:href="@{/}">Inicio</a>
+                        <a class="nav-link" th:classappend="${activePage == 'inicio'} ? 'active'" th:href="@{/}"
+                            th:aria-current="${activePage == 'inicio'} ? 'page' : null">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:classappend="${activePage == 'productos'} ? 'active'" th:href="@{/productos}">Productos</a>
+                        <a class="nav-link" th:classappend="${activePage == 'productos'} ? 'active'"
+                            th:href="@{/productos}"
+                            th:aria-current="${activePage == 'productos'} ? 'page' : null">Productos</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="categoriasDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false"
-                            th:classappend="${activePage == 'categoria'} ? 'active'">
+                            th:classappend="${activePage == 'categoria'} ? 'active'"
+                            th:aria-current="${activePage == 'categoria'} ? 'page' : null">
                             Categorías
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
@@ -132,19 +161,24 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/nosotros}"
-                        th:classappend="${activePage == 'nosotros'} ? 'active'">Nosotros</a>
+                            th:classappend="${activePage == 'nosotros'} ? 'active'"
+                            th:aria-current="${activePage == 'nosotros'} ? 'page' : null">Nosotros</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/contacto}"
-                        th:classappend="${activePage == 'contacto'} ? 'active'">Contacto</a>
+                            th:classappend="${activePage == 'contacto'} ? 'active'"
+                            th:aria-current="${activePage == 'contacto'} ? 'page' : null">Contacto</a>
                     </li>
                 </ul>
-                
-                <!-- Barra de búsqueda (visible en todas las pantallas en versión colapsada) -->
-                <div class="mt-3 mt-lg-0 me-2">
-                    <form class="search-form d-flex border" role="search">
-                        <input class="form-control" type="search" placeholder="Buscar productos..." aria-label="Buscar">
-                        <button type="submit"><i class="fas fa-search"></i></button>
+
+                <!-- Search Bar -->
+                <div class="mt-3 mt-lg-0">
+                    <form class="search-form d-flex" role="search">
+                        <input class="form-control form-control-sm" type="search" placeholder="Buscar productos..."
+                            aria-label="Buscar productos">
+                        <button class="btn btn-sm btn-outline-secondary" type="submit" aria-label="Buscar">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </form>
                 </div>
             </div>

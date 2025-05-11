@@ -56,6 +56,7 @@ public class ProductoController {
     // Guardar nuevo producto
     @PostMapping("/agregar")
     public String guardarProducto(@ModelAttribute Producto producto) {
+        producto.generarSlug(); // Primero generas el slug
         productoService.guardarProductoNuevo(producto);
         return "redirect:/admin/productos/"; // Redirige a la lista de productos
     }

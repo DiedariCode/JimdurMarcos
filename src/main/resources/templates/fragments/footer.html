@@ -1,70 +1,95 @@
+<!-- Footer -->
 <footer th:fragment="footer" class="bg-dark text-white py-5">
   <div class="container">
-    <div class="row">
-      <!-- About -->
-      <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+    <div class="row g-4">
+      <!-- ?About :v -->
+      <div class="col-lg-3 col-md-6">
         <div class="d-flex align-items-center mb-3">
           <i class="bi bi-bicycle me-2 text-primary fs-4"></i>
           <span class="fw-bold fs-4">JIMDUR Repuestos</span>
         </div>
-        <p class="text-white">Especialistas en repuestos y accesorios para motos de todas las marcas. Calidad y garantía en todos nuestros productos.</p>
-        <div class="d-flex">
-          <a href="#" class="me-3 text-white"><i class="bi bi-facebook fs-5"></i></a>
-          <a href="#" class="me-3 text-white"><i class="bi bi-instagram fs-5"></i></a>
-          <a href="#" class="me-3 text-white"><i class="bi bi-twitter fs-5"></i></a>
-          <a href="#" class="text-white"><i class="bi bi-youtube fs-5"></i></a>
+        <p class="text-white-50 mb-4">Especialistas en repuestos y accesorios para motos de todas las marcas. Calidad y
+          garantía en todos nuestros productos.</p>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-white-50 hover-text-primary"><i class="bi bi-facebook fs-5"></i></a>
+          <a href="#" class="text-white-50 hover-text-primary"><i class="bi bi-instagram fs-5"></i></a>
+          <a href="#" class="text-white-50 hover-text-primary"><i class="bi bi-twitter fs-5"></i></a>
+          <a href="#" class="text-white-50 hover-text-primary"><i class="bi bi-youtube fs-5"></i></a>
         </div>
       </div>
-      
-      <!-- Quick Links -->
-      <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-        <h5 class="mb-3">Enlaces rápidos</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2"><a href="catalogo.html" class="text-white">Catálogo de productos</a></li>
-          <li class="mb-2"><a href="ofertas.html" class="text-white">Ofertas especiales</a></li>
-          <li class="mb-2"><a href="marcas.html" class="text-white">Marcas</a></li>
-          <li class="mb-2"><a href="blog.html" class="text-white">Blog</a></li>
-          <li class="mb-2"><a href="nosotros.html" class="text-white">Sobre nosotros</a></li>
-          <li><a href="contacto.html" class="text-white">Contacto</a></li>
-        </ul>
-      </div>
-      
-      <!-- Contact -->
-      <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-        <h5 class="mb-3">Contacto</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2 d-flex align-items-start">
-            <i class="bi bi-geo-alt-fill text-primary me-2 mt-1"></i>
-            <span class="text-white">Av. Libertador 1234, Buenos Aires, Argentina</span>
-          </li>
-          <li class="mb-2 d-flex align-items-center">
-            <i class="bi bi-telephone-fill text-primary me-2"></i>
-            <span class="text-white">+54 11 1234-5678</span>
-          </li>
-          <li class="d-flex align-items-center">
-            <i class="bi bi-envelope-fill text-primary me-2"></i>
-            <span class="text-white">info@jimdurrepuestos.com</span>
-          </li>
-        </ul>
-      </div>
-      
-      <!-- Newsletter -->
+
+      <!-- ? Enlaces Rapidos -->
       <div class="col-lg-3 col-md-6">
-        <h5 class="mb-3">Suscríbete a nuestro newsletter</h5>
-        <p class="text-white mb-3">Recibe nuestras ofertas y novedades directamente en tu correo.</p>
-        <form>
-          <div class="input-group mb-3">
-            <input type="email" class="form-control" placeholder="Tu correo electrónico">
+        <h5 class="fw-bold mb-4">Enlaces rápidos</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a th:href="@{/productos}"
+              class="text-white-50 text-decoration-none hover-text-primary">Catálogo de productos</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none hover-text-primary">Ofertas
+              especiales</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none hover-text-primary">Marcas</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none hover-text-primary">Blog</a></li>
+          <li class="mb-2"><a href="nosotros.html" class="text-white-50 text-decoration-none hover-text-primary">Sobre
+              nosotros</a></li>
+          <li class="mb-2"><a href="contacto.html"
+              class="text-white-50 text-decoration-none hover-text-primary">Contacto</a></li>
+        </ul>
+      </div>
+
+      <!-- ? Contactos -->
+      <div class="col-lg-3 col-md-6">
+        <h5 class="fw-bold mb-4">Contacto</h5>
+        <ul class="list-unstyled">
+          <li class="mb-3 d-flex">
+            <i class="bi bi-geo-alt text-primary me-2 mt-1"></i>
+            <span class="text-white-50">Av las Amapolas, Piura 20009</span>
+          </li>
+          <li class="mb-3 d-flex">
+            <i class="bi bi-telephone text-primary me-2 mt-1"></i>
+            <span class="text-white-50">+51 123456789</span>
+          </li>
+          <li class="mb-3 d-flex">
+            <i class="bi bi-envelope text-primary me-2 mt-1"></i>
+            <span class="text-white-50">info@jimdurrepuestos.com</span>
+          </li>
+          <li class="d-flex">
+            <i class="bi bi-clock text-primary me-2 mt-1"></i>
+            <div class="text-white-50">
+              <div>Lun-Vie: 9:00 - 18:00</div>
+              <div>Sáb: 9:00 - 13:00</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ? Recibir correos -->
+      <div class="col-lg-3 col-md-6">
+        <h5 class="fw-bold mb-4">Suscríbete a para recibir ofertas</h5>
+        <p class="text-white-50 mb-3">Recibe nuestras ofertas y novedades directamente en tu correo.</p>
+        <form class="mb-3">
+          <div class="input-group">
+            <input type="email" class="form-control bg-dark border-secondary text-white"
+              placeholder="Tu correo electrónico">
             <button class="btn btn-primary" type="submit">Suscribirse</button>
           </div>
         </form>
+        <h6 class="fw-bold mb-3">Métodos de pago</h6>
+        <div class="d-flex flex-wrap gap-2">
+          <i class="fa-brands fa-cc-visa payment-icon"></i>
+          <i class="fa-brands fa-cc-mastercard payment-icon"></i>
+          <i class="fa-brands fa-cc-amex payment-icon"></i>
+          <i class="fa-brands fa-cc-paypal payment-icon"></i>
+        </div>
       </div>
     </div>
-    
-    <div class="border-top border-secondary mt-4 pt-4 text-center text-white">
-      <p>© 2025 JIMDUR Repuestos. Todos los derechos reservados.</p>
+
+    <div class="border-top border-secondary mt-4 pt-4 text-center">
+      <p>©
+        <script>document.write(new Date().getFullYear())</script> JIMDUR Repuestos. Todos los derechos reservados.
+      </p>
+
       <small class="d-block mt-2">
-        Este sitio web es parte de un proyecto académico universitario y no representa a la empresa real <strong>GRUPO JIMDUR E.I.R.L.</strong>, registrada en Piura, Perú.
+        Este sitio web es parte de un proyecto académico universitario y no representa a la empresa real <strong>GRUPO
+          JIMDUR E.I.R.L.</strong>, registrada en Piura, Perú.
       </small>
     </div>
   </div>
