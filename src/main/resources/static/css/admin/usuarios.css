@@ -1,0 +1,29 @@
+/* usuarios.css 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    display: flex;
+    height: 100vh; 
+}
+
+
+
+.content {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+}
+
+.table-responsive {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.page-header {
+    margin-bottom: 1rem;
+}*/
