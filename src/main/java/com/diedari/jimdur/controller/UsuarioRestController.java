@@ -51,7 +51,7 @@ public class UsuarioRestController {
         existente.setNombres(usuario.getNombres());
         existente.setCorreo(usuario.getCorreo());
         existente.setNumeroTelefono(usuario.getNumeroTelefono());
-        existente.setContraseña(usuario.getContraseña());
+        existente.setContrasena(usuario.getContrasena());
 
         Usuario actualizado = service.actualizarUsuario(existente);
         return ResponseEntity.ok(actualizado);
