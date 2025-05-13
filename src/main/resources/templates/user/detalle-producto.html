@@ -67,10 +67,11 @@
                     <div class="product-info">
                         <!-- Brand & Category -->
                         <div class="d-flex align-items-center gap-2 mb-2">
-                            <a href="../marca/motul.html" class="text-decoration-none text-muted small" th:text="${producto.marca.nombre}">Motul</a>
+                            <a href="../marca/motul.html" class="text-decoration-none text-muted small"
+                                th:text="${producto.marca.nombre}">Motul</a>
                             <span class="text-muted">•</span>
-                            <a href="../categoria/aceites.html"
-                                class="text-decoration-none text-muted small" th:text="${producto.categoria.nombre}">Aceites</a>
+                            <a href="../categoria/aceites.html" class="text-decoration-none text-muted small"
+                                th:text="${producto.categoria.nombre}">Aceites</a>
                         </div>
 
                         <!-- Product Title -->
@@ -91,15 +92,18 @@
 
                         <!-- Price -->
                         <div class="d-flex align-items-center gap-3 mb-3">
-                            <span class="fs-3 fw-bold text-primary" 
-                            th:text="'S/ ' + ${producto.precioOferta}">$10.625</span>
-                            <span class="fs-5 text-muted text-decoration-line-through"
-                            th:if="${producto.descuento > 0}"
-                            th:text="'S/ ' + ${producto.precio}">$12.500</span>
+                            <span class="fs-3 fw-bold text-primary"
+                                th:text="'S/ ' + ${producto.precioOferta}">$10.625</span>
+                            <span class="fs-5 text-muted text-decoration-line-through" th:if="${producto.descuento > 0}"
+                                th:text="'S/ ' + ${producto.precio}">$12.500</span>
                             <span class="badge bg-danger"
-                            th:if="${producto.descuento > 0 and producto.tipoDescuento == 'PORCENTAJE'}"
-                            th:text="'-' + ${producto.descuento} + '%'">-15%</span>
+                                th:if="${producto.descuento > 0 and producto.tipoDescuento == 'PORCENTAJE'}"
+                                th:text="'-' + ${producto.descuento} + '%'">-15%</span>
                         </div>
+
+                        <!-- Short Description -->
+                        <p class="text-muted mb-4" th:text="${producto.descripcion}">Aceite semisintético de alta calidad para motores de 4 tiempos.
+                            Proporciona protección superior y rendimiento óptimo para tu motocicleta.</p>
 
                         <!-- Availability -->
                         <div class="d-flex align-items-center gap-2 mb-2">
@@ -159,7 +163,8 @@
                             <div class="d-flex align-items-start gap-3">
                                 <i class="bi bi-credit-card text-primary fs-5"></i>
                                 <div>
-                                    <h6 class="fw-bold mb-1">Métodos de pago <span class="text-danger">PROXIMAMENTE</span></h6>
+                                    <h6 class="fw-bold mb-1">Métodos de pago <span
+                                            class="text-danger">PROXIMAMENTE</span></h6>
                                     <p class="text-muted small mb-0">Tarjetas, transferencia y efectivo</p>
                                 </div>
                             </div>

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.diedari.jimdur.model.Categoria;
+import com.diedari.jimdur.model.Marca;
 import com.diedari.jimdur.model.Producto;
 import com.diedari.jimdur.repository.CategoriaRepository;
 import com.diedari.jimdur.repository.MarcaRepository;
@@ -59,26 +61,25 @@ public class ProductoRestController {
         if (actual != null) {
             actual.setNombre(producto.getNombre());
             actual.setDescripcion(producto.getDescripcion());
-            actual.setCategoria(producto.getCategoria());
             actual.setPrecio(producto.getPrecio());
             actual.setStock(producto.getStock());
-            actual.setProveedor(producto.getProveedor());
             actual.setImagenURL(producto.getImagenURL());
             actual.setActivo(producto.isActivo());
-            actual.setMarca(producto.getMarca());
             actual.setTipoDescuento(producto.getTipoDescuento());
             actual.setDescuento(producto.getDescuento());
             actual.setPrecioOferta(producto.getPrecioOferta());
             actual.setSlug(producto.getSlug());
+            actual.setProveedor(producto.getProveedor());
 
-            // Persistir el producto y la marca (si se cambia)
+            // Asociar marca y categoría existentes por ID
             if (producto.getMarca() != null && producto.getMarca().getId() != null) {
-                marcaRepository.save(producto.getMarca());
+                Marca marca = marcaRepository.findById(producto.getMarca().getId()).orElse(null);
+                actual.setMarca(marca);
             }
 
-            // Persistir la categoría (si se cambia)
             if (producto.getCategoria() != null && producto.getCategoria().getId() != null) {
-                categoriaRepository.save(producto.getCategoria());
+                Categoria categoria = categoriaRepository.findById(producto.getCategoria().getId()).orElse(null);
+                actual.setCategoria(categoria);
             }
 
             return productoService.actualizarProducto(actual);
