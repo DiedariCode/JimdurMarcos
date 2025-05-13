@@ -34,6 +34,9 @@ public class CategoriaController {
         model.addAttribute("categoria", new Categoria()); // Para el formulario de nueva categoria
         model.addAttribute("productos", productoService.listarTodosLosProductos()); // Vista para listar categorias
 
+
+        model.addAttribute("claseActiva", "categoria");
+
         return "admin/categoria/listar";
     }
 

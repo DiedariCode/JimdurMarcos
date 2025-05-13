@@ -1,5 +1,7 @@
 package com.diedari.jimdur.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,42 +14,59 @@ import jakarta.persistence.Table;
 public class Usuario {
 
     @Id
-     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "nombre", nullable = false, length = 50)
-    private String nombre;
-
-    @Column(name = "apellido", nullable = false, length = 50)
-    private String apellido;
+    private String nombres;
 
     @Column(name = "correo", nullable = false, unique = true, length = 100)
     private String correo;
 
-    @Column(name = "contraseña", nullable = false, length = 255)
-    private String contraseña;
+    @Column(name = "numero_telefono", nullable = false, unique = true)
+    private String numeroTelefono;
 
-    //Constructor vacío
+    @Column(name = "contrasena", nullable = false, length = 255)
+    private String contrasena;
+
+    @Column(name = "rol", nullable = false, length = 20)
+    private String rol;
+
+    // Campo para almacenar la fecha y hora del último acceso
+    @Column(name = "ultimo_acceso")
+    private LocalDateTime ultimoAcceso;
+
+    // Campo para indicar si el usuario está activo o no
+    @Column(name = "estado", nullable = false)
+    private boolean estado; // true = activo, false = inactivo
+
+    // Constructor vacío
     public Usuario() {
     }
 
-    // Constructor con todos los campos (puedes omitir si no lo usas)
-    public Usuario(Long id, String nombre, String apellido, String correo, String contraseña) {
+    public Usuario(Long id, String nombres, String correo, String numeroTelefono, String contrasena,
+            LocalDateTime ultimoAcceso, boolean estado, String rol) {
         this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
+        this.nombres = nombres;
         this.correo = correo;
-        this.contraseña = contraseña;
+        this.numeroTelefono = numeroTelefono;
+        this.contrasena = contrasena;
+        this.ultimoAcceso = ultimoAcceso;
+        this.estado = estado;
+        this.rol = rol;
     }
 
-      public Usuario(String nombre, String apellido, String correo, String contraseña) {
-       this.nombre = nombre;
-        this.apellido = apellido;
+    public Usuario(String nombres, String correo, String numeroTelefono, String contrasena, LocalDateTime ultimoAcceso,
+            boolean estado, String rol) {
+        this.nombres = nombres;
         this.correo = correo;
-        this.contraseña = contraseña;
+        this.numeroTelefono = numeroTelefono;
+        this.contrasena = contrasena;
+        this.ultimoAcceso = ultimoAcceso;
+        this.estado = estado;
+        this.rol = rol;
     }
-    
-    //getters y setters
+
     public Long getId() {
         return id;
     }
@@ -56,20 +75,12 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
     public String getCorreo() {
@@ -80,18 +91,50 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getNumeroTelefono() {
+        return numeroTelefono;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setNumeroTelefono(String numeroTelefono) {
+        this.numeroTelefono = numeroTelefono;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public LocalDateTime getUltimoAcceso() {
+        return ultimoAcceso;
+    }
+
+    public void setUltimoAcceso(LocalDateTime ultimoAcceso) {
+        this.ultimoAcceso = ultimoAcceso;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     @Override
     public String toString() {
-        return "Usuario [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", correo=" + correo
-                + ", contraseña=" + contraseña + "]";
+        return "Usuario [id=" + id + ", nombres=" + nombres + ", correo=" + correo + ", numeroTelefono="
+                + numeroTelefono + ", contraseña=" + contrasena + ", ultimoAcceso=" + ultimoAcceso + ", estado="
+                + estado + ", rol=" + rol + "]";
     }
-    
 }

@@ -4,8 +4,10 @@ import com.diedari.jimdur.model.Usuario;
 import com.diedari.jimdur.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -30,21 +32,29 @@ public class UsuarioRestController {
     // Crear nuevo usuario
     @PostMapping
     public Usuario guardarUsuario(@RequestBody Usuario usuario) {
+        // ! TODAVIA NO ESTA IMPLEMENTADO EL REGISTRO DE USUARIO
+        usuario.setEstado(true);
+        usuario.setUltimoAcceso(LocalDateTime.of(2023, 5, 1, 14, 32));
+
         return service.guardarUsuario(usuario);
     }
 
     // Actualizar usuario existente
     @PutMapping("/{id}")
-    public Usuario actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
         Usuario existente = service.obtenerUsuarioPorId(id);
-        if (existente != null) {
-            existente.setNombre(usuario.getNombre());
-            existente.setApellido(usuario.getApellido());
-            existente.setCorreo(usuario.getCorreo());
-            existente.setContraseña(usuario.getContraseña());
-            return service.actualizarUsuario(existente);
+        if (existente == null) {
+            return ResponseEntity.notFound().build(); // Devuelve 404 si no se encuentra
         }
-        return null; // O lanzar excepción si no se encuentra
+
+        // Actualizar los campos
+        existente.setNombres(usuario.getNombres());
+        existente.setCorreo(usuario.getCorreo());
+        existente.setNumeroTelefono(usuario.getNumeroTelefono());
+        existente.setContraseña(usuario.getContraseña());
+
+        Usuario actualizado = service.actualizarUsuario(existente);
+        return ResponseEntity.ok(actualizado);
     }
 
     // Eliminar usuario
@@ -52,5 +62,5 @@ public class UsuarioRestController {
     public void eliminarUsuario(@PathVariable Long id) {
         service.eliminarUsuario(id);
     }
-    
+
 }

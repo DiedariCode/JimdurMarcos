@@ -38,6 +38,7 @@ public class ProductoController {
         model.addAttribute("productos", productos);
         model.addAttribute("producto", new Producto()); // Para el formulario de nuevo producto
         model.addAttribute("categorias", categoriaService.obtenerTodasLasCategorias()); // O el método que uses
+        model.addAttribute("claseActiva", "productos");
 
         return "admin/productos/listar"; // Usamos el layout principal
     }
@@ -50,6 +51,9 @@ public class ProductoController {
         model.addAttribute("categorias", categorias);
         List<Marca> marcas = marcaService.obtenerMarcasPorEstado(true);
         model.addAttribute("marcas", marcas);
+
+        model.addAttribute("claseActiva", "agregar"); 
+
         return "admin/productos/nuevo"; // Usamos el layout principal
     }
 

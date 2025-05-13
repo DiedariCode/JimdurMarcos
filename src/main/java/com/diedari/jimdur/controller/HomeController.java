@@ -13,7 +13,6 @@ import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.model.Producto;
 import com.diedari.jimdur.service.CategoriaService;
 import com.diedari.jimdur.service.ProductoService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/")
@@ -78,5 +77,7 @@ public class HomeController {
         model.addAttribute("producto", producto);
         return "/user/detalle-producto";
     }
+
+    
 
 }

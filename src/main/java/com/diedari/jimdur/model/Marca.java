@@ -32,7 +32,7 @@ public class Marca {
     @Column(name = "pais_origen_marca", length = 100)
     private String paisOrigen;
 
-    @Column(name = "sitio-web_marca", length = 255)
+    @Column(name = "sitio_web_marca", length = 255)
     private String sitioWeb;
 
     @Column(name = "estado_marca", nullable = false)

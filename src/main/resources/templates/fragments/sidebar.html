@@ -1,75 +1,193 @@
-<!-- Sidebar Fragment -->
-<div th:fragment="sidebar" class="sidebar-container col-md-3 col-lg-2 p-0 bg-dark text-white">
-    <div class="d-flex flex-column justify-content-between min-vh-100 p-3">
-        <div>
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <i class="bi bi-bootstrap-fill me-2 fs-3"></i>
-                <span class="fs-4">Administrador</span>
+<!-- Sidebar Fragment Mejorado -->
+<div th:fragment="sidebar"
+    class="sidebar-container position-fixed col-md-3 col-lg-2 p-0 bg-gradient text-dark h-100 overflow-auto">
+    <div class="d-flex flex-column justify-content-between h-100">
+        <!-- Cabecera del Sidebar -->
+        <div class="sidebar-header p-3 text-center border-bottom border-secondary">
+            <a href="/" class="d-flex align-items-center justify-content-center text-dark text-decoration-none">
+                <i class="bi bi-shop-window fs-2 me-2 text-primary"></i>
+                <span class="fs-4 fw-bold">Jimdur Admin</span>
             </a>
-            <hr>
+            <p class="text-muted small mt-2 mb-0">Panel de Administración</p>
+        </div>
+
+        <!-- Menú Principal -->
+        <div class="p-3">
             <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active text-white" aria-current="page">
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-dark d-flex align-items-center" aria-current="page"
+                        th:classappend="${claseActiva == 'inicio'} ? 'active'">
                         <i class="bi bi-house-door-fill me-2"></i>
-                        Home
+                        <span>Inicio</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="nav-link text-white">
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-dark d-flex align-items-center"
+                        th:classappend="${claseActiva == 'panel-principal'} ? 'active'">
                         <i class="bi bi-speedometer2 me-2"></i>
-                        Dashboard
+                        <span>Panel Principal</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="nav-link text-white">
-                        <i class="bi bi-table me-2"></i>
-                        Orders
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-dark d-flex align-items-center"
+                        th:classappend="${claseActiva == 'pedidos'} ? 'active'">
+                        <i class="bi bi-cart3 me-2"></i>
+                        <span>Pedidos</span>
+                        <span class="badge bg-danger rounded-pill ms-auto">5</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#collapseProducts" class="nav-link text-white" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseProducts">
-                        <i class="bi bi-grid-3x3-gap-fill me-2"></i>
-                        Products
-                        <!-- Ícono chevron para submenú colapsable -->
-                        <i class="bi bi-chevron-down ms-auto"></i>
+
+                <!-- Menú de Productos con Submenu -->
+                <li class="nav-item mb-2">
+                    <a href="#collapseProductos" class="nav-link text-dark d-flex align-items-center"
+                        data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseProductos"
+                        th:classappend="${claseActiva == 'productos' 
+                        || claseActiva == 'agregar' 
+                        || claseActiva == 'categoria' 
+                        || claseActiva == 'marca'}
+                         ? 'active'">
+                        <i class="bi bi-box-seam me-2"></i>
+                        <span>Productos</span>
+                        <i class="bi bi-chevron-down ms-auto small"></i>
                     </a>
-                    <!-- Submenú colapsable -->
-                    <ul class="collapse show" id="collapseProducts">
-                        <li>
-                            <a th:href="@{/admin/productos/}" class="nav-link text-white ps-4">Listar Productos</a>
-                        </li>
-                        <li>
-                            <a th:href="@{/admin/productos/agregar}" class="nav-link text-white ps-4">Agregar Productos</a>
-                        </li>
-                        <li>
-                            <a th:href="@{/admin/categorias}" class="nav-link text-white ps-4">Categorias</a>
-                        </li>
-                        <li>
-                            <a th:href="@{/admin/marca}" class="nav-link text-white ps-4">Marcas</a>
-                        </li>
-                    </ul>
+                    <!-- Submenú colapsable con estilo mejorado -->
+                    <div class="collapse show mt-1" id="collapseProductos">
+                        <ul class="nav flex-column ms-3 border-start border-secondary ps-2">
+                            <li class="nav-item mt-1">
+                                <a th:href="@{/admin/productos/}" class="nav-link text-dark py-1"
+                                    th:classappend="${claseActiva == 'productos'} ? 'sub-active'">
+                                    <i class="bi bi-list-ul me-2 small"></i>Listar Productos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/admin/productos/agregar}" class="nav-link text-dark py-1"
+                                    th:classappend="${claseActiva == 'agregar'} ? 'sub-active'">
+                                    <i class="bi bi-plus-circle me-2 small"></i>Agregar Producto
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/admin/categorias}" class="nav-link text-dark py-1"
+                                    th:classappend="${claseActiva == 'categoria'} ? 'active'">
+                                    <i class="bi bi-tags me-2 small"></i>Categorías
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/admin/marca}" class="nav-link text-dark py-1"
+                                    th:classappend="${claseActiva == 'marca'} ? 'active'">
+                                    <i class="bi bi-bookmark-star me-2 small"></i>Marcas
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
-                <li>
-                    <a href="#" class="nav-link text-white">
+
+                <li class="nav-item mb-2">
+                    <a th:href="@{/admin/usuarios}" class="nav-link text-dark d-flex align-items-center"
+                        th:classappend="${claseActiva == 'usuario'} ? 'active'">
                         <i class="bi bi-people-fill me-2"></i>
-                        Customers
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+
+                <li class="nav-item mb-2">
+                    <a th:href="@{/admin/usuarios}" class="nav-link text-dark d-flex align-items-center"
+                        th:classappend="${claseActiva == 'clientes'} ? 'active'">
+                        <i class="bi bi-person-fill me-2"></i>
+                        <span>Clientes</span>
+                    </a>
+                </li>
+
+                <li class="nav-item mb-2">
+                    <a href="#collapseInventario" class="nav-link text-dark d-flex align-items-center"
+                        data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseInventario"
+                        th:classappend="${claseActiva == 'clientes'} ? 'active'">
+                        <i class="bi bi-box me-2"></i>
+                        <span>Inventario</span>
+                        <i class="bi bi-chevron-down ms-auto small"></i> <!-- Icono para desplegar -->
+                    </a>
+
+                    <!-- Submenú colapsable -->
+                    <div class="collapse" id="collapseInventario">
+                        <ul class="nav flex-column ms-3 border-start border-secondary ps-2">
+                            <li class="nav-item mt-1">
+                                <a th:href="@{/admin/productos/}" class="nav-link text-dark py-1"
+                                    th:classappend="${claseActiva == 'productos'} ? 'sub-active'">
+                                    <i class="bi bi-list-ul me-2 small"></i>Estados
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/admin/productos/agregar}" class="nav-link text-dark py-1"
+                                    th:classappend="${claseActiva == 'agregar'} ? 'sub-active'">
+                                    <i class="bi bi-plus-circle me-2 small"></i>Movimientos
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li class="nav-item mb-2">
+                    <a href="#collapseReportes" class="nav-link text-dark d-flex align-items-center"
+                        data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseReportes"
+                        th:classappend="${claseActiva == 'reportes'} ? 'active'">
+                        <i class="bi bi-graph-up me-2"></i>
+                        <span>Reportes</span>
+                        <i class="bi bi-chevron-down ms-auto small"></i> <!-- Icono para desplegar -->
+                    </a>
+
+                    <!-- Submenú colapsable -->
+                    <div class="collapse" id="collapseReportes">
+                        <ul class="nav flex-column ms-3 border-start border-secondary ps-2">
+                            <li class="nav-item mt-1">
+                                <a th:href="@{/admin/reportes/ventas}" class="nav-link text-dark py-1"
+                                    th:classappend="${claseActiva == 'ventas'} ? 'sub-active'">
+                                    <i class="bi bi-bar-chart-line me-2 small"></i>Reporte de Ventas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/admin/reportes/stock}" class="nav-link text-dark py-1"
+                                    th:classappend="${claseActiva == 'stock'} ? 'sub-active'">
+                                    <i class="bi bi-boxes me-2 small"></i>Reporte de Stock
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-dark d-flex align-items-center"
+                        th:classappend="${claseActiva == 'configuracion'} ? 'active'">
+                        <i class="bi bi-gear-fill me-2"></i>
+                        <span>Configuración</span>
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>mdo</strong>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
-            </ul>
+
+        <!-- Perfil de Usuario -->
+        <div class="border-top border-secondary p-3">
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
+                    id="dropdownUsuario" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="Avatar de usuario" width="40" height="40"
+                        class="rounded-circle me-2 border border-2 border-light">
+                    <div>
+                        <strong>Admin Usuario</strong>
+                        <div class="text-muted small">Administrador</div>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark shadow" aria-labelledby="dropdownUsuario">
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-plus-circle me-2"></i>Nuevo proyecto</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Ajustes</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

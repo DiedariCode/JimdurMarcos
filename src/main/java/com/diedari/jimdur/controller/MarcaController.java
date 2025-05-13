@@ -26,7 +26,11 @@ public class MarcaController {
     @GetMapping
     public String listarTodasLasMarcas(Model model){
         model.addAttribute("marcas", marcaService.listarTodasLasMarcas());
+
+        model.addAttribute("claseActiva", "marca");
+
         return "admin/marca/listar";
+        
     }
 
     @GetMapping("/filtrar/estado")
