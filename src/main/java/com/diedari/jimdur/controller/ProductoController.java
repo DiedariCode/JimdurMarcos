@@ -56,7 +56,6 @@ public class ProductoController {
     // Guardar nuevo producto
     @PostMapping("/agregar")
     public String guardarProducto(@ModelAttribute Producto producto) {
-        producto.generarSlug(); // Primero generas el slug
         productoService.guardarProductoNuevo(producto);
         return "redirect:/admin/productos/"; // Redirige a la lista de productos
     }
@@ -98,7 +97,6 @@ public class ProductoController {
             actual.setTipoDescuento(producto.getTipoDescuento());
             actual.setActivo(producto.isActivo());
             actual.calcularPrecioOferta();
-            actual.generarSlug();
             productoService.actualizarProducto(actual);
         }
         return "redirect:/admin/productos/";

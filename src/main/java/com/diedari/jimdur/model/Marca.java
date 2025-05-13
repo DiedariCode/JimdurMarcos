@@ -29,14 +29,17 @@ public class Marca {
     @Column(name = "logourl_marca", length = 255)
     private String logoUrl;
 
-    @Column(name = "paisOrigen_marca", length = 100)
+    @Column(name = "pais_origen_marca", length = 100)
     private String paisOrigen;
 
-    @Column(name = "sitioWeb_marca", length = 255)
+    @Column(name = "sitio-web_marca", length = 255)
     private String sitioWeb;
 
     @Column(name = "estado_marca", nullable = false)
     private boolean activo;
+
+    @Column(name = "slug_marca", nullable = false, unique = true)
+    private String slug;
 
     @OneToMany(mappedBy = "marca")
     @JsonIgnore
@@ -46,7 +49,7 @@ public class Marca {
     }
 
     public Marca(Long id, String nombre, String descripcion, String logoUrl, String paisOrigen, String sitioWeb,
-            boolean activo, List<Producto> productos) {
+            boolean activo, List<Producto> productos, String slug) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -55,6 +58,7 @@ public class Marca {
         this.sitioWeb = sitioWeb;
         this.activo = activo;
         this.productos = productos;
+        this.slug = slug;
     }
 
     public Long getId() {
@@ -71,6 +75,7 @@ public class Marca {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+        this.slug = generarSlug(nombre);
     }
 
     public String getDescripcion() {
@@ -116,9 +121,20 @@ public class Marca {
     public List<Producto> getProductos() {
         return productos;
     }
-    
+
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
 
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    private String generarSlug(String nombre) {
+        return nombre.toLowerCase().replaceAll("[^a-z0-9]+", "-");
+    }
 }

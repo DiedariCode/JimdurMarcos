@@ -17,6 +17,7 @@ public class Categoria {
     private String nombre;
 
     @Column(name = "slug_categoria", nullable = false, unique = true)
+    // URLS amigables para la categoría
     private String slug;
 
     @Column(name = "descripcion_categoria", nullable = false)
@@ -29,16 +30,16 @@ public class Categoria {
     private String iconoCategoria; // Icono de la categoría para la vista de index, agregado el 8 de mayo :V
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL) // Persistencia en cascada para productos
-    @JsonIgnore
+    @JsonIgnore // ! infinito
     private List<Producto> productos;
 
     public Categoria() {
     }
 
-    public Categoria(Long id, String nombreCategoria, String slug, String descripcion, boolean estado, String iconoCategoria,
+    public Categoria(Long id, String nombre, String slug, String descripcion, boolean estado, String iconoCategoria,
             List<Producto> productos) {
         this.id = id;
-        this.nombre = nombreCategoria;
+        this.nombre = nombre;
         this.slug = slug;
         this.descripcion = descripcion;
         this.activa = estado;
@@ -58,10 +59,9 @@ public class Categoria {
         return nombre;
     }
 
-    public void setNombre(String nombreCategoria) {
-        this.nombre = nombreCategoria;
-        // Al cambiar el nombre, también actualizamos el slug
-        this.slug = generarSlug(nombreCategoria);
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+        this.slug = generarSlug(nombre);
     }
 
     public String getSlug() {
@@ -105,8 +105,8 @@ public class Categoria {
     }
 
     // Método para generar el slug automáticamente desde el nombre
-    private String generarSlug(String nombreCategoria) {
-        return nombreCategoria.toLowerCase().replace(" ", "-").replaceAll("[^a-z0-9-]", "");
+    private String generarSlug(String nombre) {
+        return nombre.toLowerCase().replace(" ", "-").replaceAll("[^a-z0-9-]", "");
     }
 
 }
