@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @RestController
 @RequestMapping("/api/categoria")
 public class CategoriaRestController {
-    
+
     @Autowired
     private CategoriaService categoriaService;
 
@@ -38,7 +36,7 @@ public class CategoriaRestController {
     public List<Categoria> listarCategoriasPorNombre(@PathVariable String nombre) {
         return categoriaService.obtenerCategoriaPorNombre(nombre);
     }
-    
+
     @GetMapping("/{id}")
     public Categoria obtenerCategoriaPorId(@PathVariable Long id) {
         return categoriaService.obtenerCategoriaPorId(id);
@@ -48,7 +46,10 @@ public class CategoriaRestController {
     public Categoria crearCategoria(@RequestBody Categoria categoria) {
         return categoriaService.crearCategoria(categoria);
     }
-    
+
+    // Con el RequestBody se puede recibir un objeto completo
+    // Osea pasa ese JSON a un objeto Categoria
+
     @PutMapping("/actualizar/{id}")
     public Categoria actualizarCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
         Categoria actual = categoriaService.obtenerCategoriaPorId(id);
@@ -61,7 +62,7 @@ public class CategoriaRestController {
             return null;
         }
     }
-    
+
     @DeleteMapping("/{id}")
     public void eliminarCategoria(@PathVariable Long id) {
         categoriaService.eliminarCategoriaPorId(id);

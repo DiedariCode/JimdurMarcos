@@ -101,9 +101,11 @@ public class CategoriaController {
     public String editarCategoria(@PathVariable Long id, @ModelAttribute Categoria categoria) {
         Categoria categoriaExistente = categoriaService.obtenerCategoriaPorId(id);
         if (categoriaExistente != null) {
-            categoria.setId(id); // Aqui me aseguro de que el ID de la categoria sera el mismo
-            categoriaService.crearCategoria(categoria); // Actualiza la categoria en vez de usar los setter y getters a
-                                                        // como se hizo en el producto
+            categoriaExistente.setNombre(categoria.getNombre());
+            categoriaExistente.setDescripcion(categoria.getDescripcion());
+            categoriaExistente.setIconoCategoria(categoria.getIconoCategoria());
+            categoriaExistente.setActiva(categoria.isActiva());
+            categoriaService.actualizarCategoria(categoriaExistente);
         }
         return "redirect:/admin/categorias"; // Redirige a la lista de categorias
     }

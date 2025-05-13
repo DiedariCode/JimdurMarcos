@@ -15,7 +15,7 @@ public class Producto {
     private String descripcion;
 
     @ManyToOne
-    @JoinColumn(name = "categoria_id", nullable = false)
+    @JoinColumn(name = "categoria_id", nullable = false) // FK categoria_id dentro de la tabla producto
     private Categoria categoria;
 
     @Column(name = "precio", nullable = false)
@@ -90,13 +90,9 @@ public class Producto {
             this.precioOferta = precio;
         }
     }
-
-    // * Metodo para generar el slug, que es util cuando entremos a un nuevo
-    // * producto y muestre la URL
-    public void generarSlug() {
-        this.slug = nombre.toLowerCase()
-                .replaceAll("[^a-z0-9]+", "-")
-                .replaceAll("^-|-$", "");
+    // * Método para generar el slug a partir del nombre
+    private String generarSlug(String nombre) {
+        return nombre.toLowerCase().replaceAll("[^a-z0-9]+", "-");
     }
 
     // Getters y Setters
@@ -114,6 +110,7 @@ public class Producto {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+        this.slug = generarSlug(nombre);
     }
 
     public String getDescripcion() {
