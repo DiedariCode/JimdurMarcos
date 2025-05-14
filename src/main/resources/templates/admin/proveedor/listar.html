@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestion de Proveedor de cada Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- ICONOS BOOTSTRAP -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- CSS de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- ICONOS FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- CSS PERSONALIZADO: SIDEBAR -->
+    <link rel="stylesheet" th:href="@{/css/admin/productos.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar.css}">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div th:replace="fragments/sidebar :: sidebar"></div>
+
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 ms-auto px-4 py-4 content-wrapper animate-fade">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center page-header">
+                    <div>
+                        <h2>Gestión de Proveedores</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0 mt-1">
+                                <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Proveedor</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <a th:href="@{/admin/proveedor/agregar}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i> Agregar Proveedor
+                    </a>
+                </div>
+
+                <!-- Filtros -->
+                <div class="filters-card">
+                    <form th:action="@{/admin/proveedor/filtrar}" method="get">
+                        <div class="row g-3">
+                            <div class="col-md-10">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-transparent border-end-0">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0 ps-0" name="busqueda"
+                                        placeholder="Buscar por nombre del proveedor...">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-filter me-2"></i> Filtrar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tabla de Proveedor -->
+                <div class="card mb-4">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table data-table m-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Id</th>
+                                        <th class="text-center">Nombres</th>
+                                        <th class="text-center">Correo</th>
+                                        <th class="text-center">Teléfono</th>
+                                        <th class="text-center">Dirección</th>
+                                        <th class="text-center">RUC</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="prove : ${proveedores}">
+                                        <!-- ID CAMPO -->
+                                        <td th:text="${prove.idProveedor}">ID PROVEEDOR</td>
+                                        <!-- NOMBRE CAMPO -->
+                                        <td th:text="${prove.nombre}">Nombre</td>
+                                        <!-- CORREO CAMPO -->
+                                        <td th:text="${prove.correo}">Correo</td>
+                                        <!-- TELEFONO CAMPO -->
+                                        <td th:text="${prove.telefono}">Teléfono</td>
+                                        <!-- DIRECCION CAMPO -->
+                                        <td th:text="${prove.direccion}">Dirección</td>
+                                        <!-- RUC CAMPO -->
+                                        <td th:text="${prove.ruc}">RUC</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <!-- Botón de editar -->
+                                                <a th:href="@{/admin/proveedor/editar/{id}(id=${prove.idProveedor})}"
+                                                    class="btn btn-warning btn-action" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <!-- Botón de eliminar -->
+                                                <a th:href="@{/admin/proveedor/eliminar/{id}(id=${prove.idProveedor})}"
+                                                    class="btn btn-danger btn-action" title="Eliminar"
+                                                    onclick="return confirm('¿Estás seguro de eliminar este proveedor?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${noProveedores}">
+                                        <td colspan="12" class="text-center py-5">
+                                            <div class="text-muted">
+                                                <i class="fas fa-box-open fa-3x mb-3"></i>
+                                                <p class="mb-0">No se encontraron proveedores</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paginación -->
+                <div class="d-flex flex-column align-items-center">
+                    <nav aria-label="Navegación de páginas">
+                        <!-- <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Primera">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Anterior">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item" th:each="page : ${pages}"
+                                th:classappend="${page == currentPage} ? 'active'">
+                                <a class="page-link" th:href="@{/admin/productos/{page}(page=${page})}"
+                                    th:text="${page}">1</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Siguiente">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Última">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                        </ul> -->
+                    </nav>
+                    <!-- <div class="pagination-info">
+                        Mostrando <span class="fw-medium" th:text="${prove.size()}">10</span> de
+                        <span class="fw-medium" th:text="${totalProductos}">100</span> proveedores en total
+                    </div> -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,6 +1,5 @@
 package com.diedari.jimdur.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +10,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.model.Marca;
 import com.diedari.jimdur.model.Producto;
-import com.diedari.jimdur.model.ProductoProveedor;
-import com.diedari.jimdur.model.Proveedor;
 import com.diedari.jimdur.service.CategoriaService;
 import com.diedari.jimdur.service.MarcaService;
 import com.diedari.jimdur.service.ProductoService;
+import com.diedari.jimdur.service.ProveedorService;
+import com.diedari.jimdur.service.UbicacionService;
 
 @Controller
 @RequestMapping("/admin/productos")
@@ -35,63 +33,50 @@ public class ProductoController {
     @Autowired
     private MarcaService marcaService;
 
+    @Autowired
+    private UbicacionService ubicacionService;
+
+    @Autowired
+    private ProveedorService proveedorService;
+
     // Listar productos
     @GetMapping("/")
     public String listarProductosForm(Model model) {
         List<Producto> productos = productoService.listarTodosLosProductos();
         model.addAttribute("productos", productos);
         model.addAttribute("producto", new Producto()); // Para el formulario de nuevo producto
-        model.addAttribute("categorias", categoriaService.obtenerTodasLasCategorias()); // O el método que uses
+        model.addAttribute("categorias", categoriaService.obtenerTodasLasCategorias());
+        model.addAttribute("marcas", marcaService.listarTodasLasMarcas());
+        model.addAttribute("ubicacion", ubicacionService.listarUbicaciones());
         model.addAttribute("claseActiva", "productos");
 
         return "admin/productos/listar"; // Usamos el layout principal
     }
 
+    // Formulario para nuevo producto
     @GetMapping("/agregar")
     public String nuevoProductoForm(Model model) {
+
         model.addAttribute("producto", new Producto());
-        List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
-        model.addAttribute("categorias", categorias);
 
-        List<Marca> marcas = marcaService.obtenerMarcasPorEstado(true);
-        model.addAttribute("marcas", marcas);
+        model.addAttribute("categorias", categoriaService.obtenerCategoriaPorEstado(true));
 
-        List<Proveedor> proveedores = proveedorService.obtenerProveedores();
-        model.addAttribute("proveedores", proveedores); // Pasar la lista de proveedores
+        model.addAttribute("marcas", marcaService.obtenerMarcasPorEstado(true));
+
+        model.addAttribute("ubicacion", ubicacionService.listarUbicaciones());
+
+        model.addAttribute("proveedores", proveedorService.listarProveedores());
 
         model.addAttribute("claseActiva", "agregar");
 
         return "admin/productos/nuevo"; // Usamos el layout principal
     }
 
-    @PostMapping("/guardar")
-    public String guardarProducto(@ModelAttribute Producto producto,
-            @RequestParam Long proveedorId,
-            @RequestParam Double precioCompra,
-            @RequestParam Date fechaAdquisicion,
-            Model model) {
-
-        // Obtener el proveedor por ID
-        Proveedor proveedor = proveedorService.findById(proveedorId);
-        if (proveedor == null) {
-            model.addAttribute("error", "Proveedor no encontrado");
-            return "admin/productos/nuevo"; // Vuelve al formulario si no se encuentra el proveedor
-        }
-
-        // Crear la relación ProductoProveedor
-        ProductoProveedor productoProveedor = new ProductoProveedor();
-        productoProveedor.setProducto(producto);
-        productoProveedor.setProveedor(proveedor);
-        productoProveedor.setPrecioCompra(precioCompra);
-        productoProveedor.setFechaAdquisicion(fechaAdquisicion);
-
-        // Agregar la relación al producto
-        producto.addProveedor(productoProveedor);
-
-        // Guardar el producto con su proveedor
-        productoService.save(producto);
-
-        return "redirect:/productos"; // Redirigir a la lista de productos
+    // Guardar nuevo producto
+    @PostMapping("/agregar")
+    public String guardarProducto(@ModelAttribute Producto producto) {
+        productoService.guardarProductoNuevo(producto);
+        return "redirect:/admin/productos/"; // Redirige a la lista de productos
     }
 
     // Editar producto
@@ -106,6 +91,10 @@ public class ProductoController {
 
             List<Marca> marcas = marcaService.obtenerMarcasPorEstado(true);
             model.addAttribute("marcas", marcas);
+
+            model.addAttribute("ubicacion", ubicacionService.listarUbicaciones());
+
+            model.addAttribute("proveedores", proveedorService.listarProveedores());
 
             return "admin/productos/editar";
         } else {

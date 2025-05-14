@@ -86,11 +86,13 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 70px">Imagen</th>
-                                        <th style="width: 22%">Producto</th>
+                                        <th style="width: 15%">Producto</th>
                                         <th>ID</th>
                                         <th>Categoría</th>
                                         <th>Marca</th>
+                                        <th>Proveedor</th>
                                         <th>Stock</th>
+                                        <th>Ubicacion</th>
                                         <th>Precio</th>
                                         <th>Descuento</th>
                                         <th>PrecioFinal</th>
@@ -103,7 +105,6 @@
                                         <!-- IMAGEN CAMPO -->
                                         <td>
                                             <div th:if="${producto.imagenURL}" class="product-img-container">
-                                                <!-- Simplemente usa ${producto.imagenURL} si es una URL completa -->
                                                 <img th:src="${producto.imagenURL}" alt="Imagen producto"
                                                     class="product-img">
                                             </div>
@@ -122,11 +123,13 @@
                                             </p>
                                         </td>
                                         <!-- ID CAMPO -->
-                                        <td th:text="${producto.id}">SKU-12345</td>
+                                        <td th:text="${producto.idProducto}">SKU-12345</td>
                                         <!-- CATEGORIA CAMPO -->
                                         <td th:text="${producto.categoria.nombre}">Categoría</td>
                                         <!-- MARCA CAMPO -->
                                         <td th:text="${producto.marca.nombre}">Marca</td>
+                                        <!-- PROVEEDOR CAMPO -->
+                                        <td th:text="${producto.proveedor.nombre}">Proveedor</td>
                                         <!-- STOCK CAMPO -->
                                         <td>
                                             <span class="stock-badge"
@@ -135,6 +138,9 @@
                                                 100
                                             </span>
                                         </td>
+                                        <!-- UBICACION CAMPO -->
+                                        <td th:text="${producto.ubicacion.codigo}">Ubicación</td>
+
                                         <!-- PRECIO CAMPO -->
                                         <td>
                                             <span class="fw-medium"
@@ -166,12 +172,12 @@
                                         <td>
                                             <div class="d-flex justify-content-center gap-2">
                                                 <!-- Botón de editar -->
-                                                <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}"
+                                                <a th:href="@{/admin/productos/editar/{id}(id=${producto.idProducto})}"
                                                     class="btn btn-warning btn-action" title="Editar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <!-- Botón de eliminar -->
-                                                <a th:href="@{/admin/productos/eliminar/{id}(id=${producto.id})}"
+                                                <a th:href="@{/admin/productos/eliminar/{id}(id=${producto.idProducto})}"
                                                     class="btn btn-danger btn-action" title="Eliminar"
                                                     onclick="return confirm('¿Estás seguro de eliminar este producto?')">
                                                     <i class="fas fa-trash"></i>

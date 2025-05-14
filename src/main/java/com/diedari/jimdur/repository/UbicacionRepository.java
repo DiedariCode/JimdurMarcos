@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.diedari.jimdur.model.Ubicacion;
 
 @Repository
-public interface UbicacionRepository extends JpaRepository<Ubicacion, Long> {
+public interface UbicacionRepository extends JpaRepository<Ubicacion, Integer> {
     
     // Aquí puedes agregar métodos personalizados si es necesario
     // Por ejemplo, para buscar ubicaciones por nombre o código postal

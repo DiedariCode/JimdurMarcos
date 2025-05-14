@@ -164,7 +164,7 @@
                             <div class="card h-100 product-card">
                                 <div class="position-relative pt-3 px-3">
                                     <span class="position-absolute top-0 end-0 badge bg-danger m-3"
-                                        th:if="${producto.tipoDescuento == 'PORCENTAJE' and producto.descuento > 0}"
+                                        th:if="${producto.tipoDescuento == 'porcentaje' and producto.descuento > 0}"
                                         th:text="'-' + ${producto.descuento + '%' }"></span>
                                     <img th:src="${producto.imagenURL}" class="card-img-top product-img"
                                         alt="Aceite Motul">

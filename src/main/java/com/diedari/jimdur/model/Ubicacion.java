@@ -2,6 +2,7 @@ package com.diedari.jimdur.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,17 +17,29 @@ public class Ubicacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUbicacion;
 
+    @Column(unique = true)
+    private String codigo;
+
     private String nombre;
+
+    @Column(name = "capacidad")
+    private Integer capacidad;
+
     private String descripcion;
 
     @OneToMany(mappedBy = "ubicacion")
     private List<Producto> productos;
 
-    public Ubicacion(Integer idUbicacion, String nombre, String descripcion, List<Producto> productos) {
+    public Ubicacion() {
+    }
+
+    public Ubicacion(Integer idUbicacion, String nombre, String descripcion, List<Producto> productos, String codigo, Integer capacidad) {
         this.idUbicacion = idUbicacion;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.productos = productos;
+        this.codigo = codigo;
+        this.capacidad = capacidad;
     }
 
     public Integer getIdUbicacion() {
@@ -59,6 +72,22 @@ public class Ubicacion {
 
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public Integer getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(Integer capacidad) {
+        this.capacidad = capacidad;
     }
 
     

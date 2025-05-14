@@ -26,9 +26,7 @@ public class HomeController {
 
     @GetMapping
     public String index(Model model) {
-        List<Producto> ultimosProductos = productoService.listarUltimosProductos(4);
         List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
-        model.addAttribute("ultimosProductos", ultimosProductos);
         model.addAttribute("categorias", categorias);
 
         // NAVBAR DINAMICA:
@@ -77,7 +75,4 @@ public class HomeController {
         model.addAttribute("producto", producto);
         return "/user/detalle-producto";
     }
-
-    
-
 }

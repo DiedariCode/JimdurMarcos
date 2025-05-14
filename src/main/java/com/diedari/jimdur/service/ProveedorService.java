@@ -1,0 +1,20 @@
+package com.diedari.jimdur.service;
+
+import java.util.List;
+
+import com.diedari.jimdur.model.Proveedor;
+
+public interface ProveedorService {
+    
+    public List<Proveedor> listarProveedores();
+
+    public Proveedor obtenerProveedorPorId(Long idProveedor);
+
+    public Proveedor guardarProveedor(Proveedor proveedor);
+
+    public void eliminarProveedor(Long idProveedor);
+
+    public Proveedor actualizarProveedor(Proveedor proveedor);
+
+    
+}
