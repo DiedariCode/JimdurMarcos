@@ -1,22 +1,29 @@
 package com.diedari.jimdur.model;
 
-import jakarta.persistence.*;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_producto")
+    private Long idProducto;
 
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
     @Column(name = "descripcion", nullable = false, length = 255)
     private String descripcion;
-
-    @ManyToOne
-    @JoinColumn(name = "categoria_id", nullable = false) // FK categoria_id dentro de la tabla producto
-    private Categoria categoria;
 
     @Column(name = "precio", nullable = false)
     private Double precio;
@@ -27,15 +34,8 @@ public class Producto {
     @Column(name = "proveedor", nullable = false, length = 100)
     private String proveedor;
 
-    @Column(name = "imagen_url", nullable = true, length = 1000)
-    private String imagenURL;
-
     @Column(name = "activo", nullable = false)
     private boolean activo;
-
-    @ManyToOne
-    @JoinColumn(name = "marca_id")
-    private Marca marca;
 
     // NUEVOS CAMPOS PARA DESCUENTO
     @Column(name = "tipo_descuento", length = 20)
@@ -50,28 +50,61 @@ public class Producto {
     @Column(name = "slug", unique = true, length = 150, nullable = false)
     private String slug;
 
+    // ? ***** Relación con otras entidades *****
+
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", nullable = false) // FK categoria_id dentro de la tabla producto
+    private Categoria categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "id_marca", nullable = false) // FK marca_id dentro de la tabla producto"
+    private Marca marca;
+
+    @ManyToOne
+    @JoinColumn(name = "id_ubicacion")
+    private Ubicacion ubicacion;
+
+    // Relación uno a muchos con ImagenProducto
+    // Se usa CascadeType.ALL para que al eliminar un producto se eliminen sus
+    // imágenes asociadas
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImagenProducto> imagenes;
+
+    @OneToMany(mappedBy = "producto")
+    private List<ProductoProveedor> proveedores;
+
+    @OneToMany(mappedBy = "producto")
+    private List<ItemCarrito> itemsCarrito;
+
+    @OneToMany(mappedBy = "producto")
+    private List<DetallePedido> detalles;
+
     // Constructor vacío
     public Producto() {
     }
 
-    // Constructor con todos los campos (puedes omitir si no lo usas)
-    public Producto(Long id, String nombre, String descripcion, Categoria categoria, Double precio, int stock,
-            String proveedor, String imagenURL, boolean activo, Marca marca,
-            String tipoDescuento, Double descuento, Double precioOferta, String slug) {
-        this.id = id;
+    public Producto(Long idProducto, String nombre, String descripcion, Double precio, int stock, String proveedor,
+            boolean activo, String tipoDescuento, Double descuento, Double precioOferta, String slug,
+            Categoria categoria, Marca marca, Ubicacion ubicacion, List<ImagenProducto> imagenes,
+            List<ProductoProveedor> proveedores, List<ItemCarrito> itemsCarrito, List<DetallePedido> detalles) {
+        this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.categoria = categoria;
         this.precio = precio;
         this.stock = stock;
         this.proveedor = proveedor;
-        this.imagenURL = imagenURL;
         this.activo = activo;
-        this.marca = marca;
         this.tipoDescuento = tipoDescuento;
         this.descuento = descuento;
         this.precioOferta = precioOferta;
         this.slug = slug;
+        this.categoria = categoria;
+        this.marca = marca;
+        this.ubicacion = ubicacion;
+        this.imagenes = imagenes;
+        this.proveedores = proveedores;
+        this.itemsCarrito = itemsCarrito;
+        this.detalles = detalles;
     }
 
     // * Método para calcular el precio de oferta basado en tipo y valor del
@@ -90,18 +123,10 @@ public class Producto {
             this.precioOferta = precio;
         }
     }
+
     // * Método para generar el slug a partir del nombre
     private String generarSlug(String nombre) {
         return nombre.toLowerCase().replaceAll("[^a-z0-9]+", "-");
-    }
-
-    // Getters y Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -153,14 +178,6 @@ public class Producto {
         this.proveedor = proveedor;
     }
 
-    public String getImagenURL() {
-        return imagenURL;
-    }
-
-    public void setImagenURL(String imagenURL) {
-        this.imagenURL = imagenURL;
-    }
-
     public boolean isActivo() {
         return activo;
     }
@@ -209,11 +226,51 @@ public class Producto {
         this.slug = slug;
     }
 
-    @Override
-    public String toString() {
-        return "Producto [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", categoria=" + categoria
-                + ", precio=" + precio + ", stock=" + stock + ", proveedor=" + proveedor + ", imagenURL=" + imagenURL
-                + ", activo=" + activo + ", tipoDescuento=" + tipoDescuento + ", descuento=" + descuento
-                + ", precioOferta=" + precioOferta + "]";
+    public Ubicacion getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(Ubicacion ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public List<ImagenProducto> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(List<ImagenProducto> imagenes) {
+        this.imagenes = imagenes;
+    }
+
+    public List<ProductoProveedor> getProveedores() {
+        return proveedores;
+    }
+
+    public void setProveedores(List<ProductoProveedor> proveedores) {
+        this.proveedores = proveedores;
+    }
+
+    public List<ItemCarrito> getItemsCarrito() {
+        return itemsCarrito;
+    }
+
+    public void setItemsCarrito(List<ItemCarrito> itemsCarrito) {
+        this.itemsCarrito = itemsCarrito;
+    }
+
+    public List<DetallePedido> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetallePedido> detalles) {
+        this.detalles = detalles;
+    }
+
+    public Long getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(Long idProducto) {
+        this.idProducto = idProducto;
     }
 }

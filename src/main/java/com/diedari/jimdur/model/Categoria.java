@@ -29,7 +29,7 @@ public class Categoria {
     @Column(name = "icono_categoria", nullable = false)
     private String iconoCategoria; // Icono de la categoría para la vista de index, agregado el 8 de mayo :V
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL) // Persistencia en cascada para productos
+    @OneToMany(mappedBy = "categoria")
     @JsonIgnore // ! infinito
     private List<Producto> productos;
 

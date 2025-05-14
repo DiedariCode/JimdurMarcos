@@ -32,9 +32,6 @@ public class UsuarioRestController {
     // Crear nuevo usuario
     @PostMapping
     public Usuario guardarUsuario(@RequestBody Usuario usuario) {
-        // ! TODAVIA NO ESTA IMPLEMENTADO EL REGISTRO DE USUARIO
-        usuario.setEstado(true);
-        usuario.setUltimoAcceso(LocalDateTime.of(2023, 5, 1, 14, 32));
 
         return service.guardarUsuario(usuario);
     }
@@ -48,9 +45,9 @@ public class UsuarioRestController {
         }
 
         // Actualizar los campos
-        existente.setNombres(usuario.getNombres());
+        existente.setNombre(usuario.getNombre());
         existente.setCorreo(usuario.getCorreo());
-        existente.setNumeroTelefono(usuario.getNumeroTelefono());
+        existente.setTelefono(usuario.getTelefono());
         existente.setContrasena(usuario.getContrasena());
 
         Usuario actualizado = service.actualizarUsuario(existente);

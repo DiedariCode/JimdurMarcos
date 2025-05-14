@@ -1,12 +1,15 @@
 package com.diedari.jimdur.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,56 +20,49 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre", nullable = false, length = 50)
-    private String nombres;
-
-    @Column(name = "correo", nullable = false, unique = true, length = 100)
+    private String nombre;
     private String correo;
-
-    @Column(name = "numero_telefono", nullable = false, unique = true)
-    private String numeroTelefono;
-
-    @Column(name = "contrasena", nullable = false, length = 255)
     private String contrasena;
+    private String telefono;
 
-    @Column(name = "rol", nullable = false, length = 20)
-    private String rol;
+    private Rol rol;
 
-    // Campo para almacenar la fecha y hora del último acceso
-    @Column(name = "ultimo_acceso")
-    private LocalDateTime ultimoAcceso;
+    @Column(name = "fecha_reg")
+    private Date fechaRegistro;
 
-    // Campo para indicar si el usuario está activo o no
-    @Column(name = "estado", nullable = false)
-    private boolean estado; // true = activo, false = inactivo
+    public enum Rol {
+        cliente, staff, admin
+    }
 
-    // Constructor vacío
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Direccion> direcciones;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Carrito> carritos;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Pedido> pedidos;
+
+    // Constructor por defecto
     public Usuario() {
     }
 
-    public Usuario(Long id, String nombres, String correo, String numeroTelefono, String contrasena,
-            LocalDateTime ultimoAcceso, boolean estado, String rol) {
+    // Constructor para crear un nuevo usuario
+    public Usuario(Long id, String nombre, String correo, String contrasena, String telefono, Rol rol,
+            Date fechaRegistro, List<Direccion> direcciones, List<Carrito> carritos, List<Pedido> pedidos) {
         this.id = id;
-        this.nombres = nombres;
+        this.nombre = nombre;
         this.correo = correo;
-        this.numeroTelefono = numeroTelefono;
         this.contrasena = contrasena;
-        this.ultimoAcceso = ultimoAcceso;
-        this.estado = estado;
+        this.telefono = telefono;
         this.rol = rol;
+        this.fechaRegistro = fechaRegistro;
+        this.direcciones = direcciones;
+        this.carritos = carritos;
+        this.pedidos = pedidos;
     }
 
-    public Usuario(String nombres, String correo, String numeroTelefono, String contrasena, LocalDateTime ultimoAcceso,
-            boolean estado, String rol) {
-        this.nombres = nombres;
-        this.correo = correo;
-        this.numeroTelefono = numeroTelefono;
-        this.contrasena = contrasena;
-        this.ultimoAcceso = ultimoAcceso;
-        this.estado = estado;
-        this.rol = rol;
-    }
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -75,12 +71,12 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getNombres() {
-        return nombres;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getCorreo() {
@@ -91,14 +87,6 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public String getNumeroTelefono() {
-        return numeroTelefono;
-    }
-
-    public void setNumeroTelefono(String numeroTelefono) {
-        this.numeroTelefono = numeroTelefono;
-    }
-
     public String getContrasena() {
         return contrasena;
     }
@@ -107,34 +95,53 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-    public LocalDateTime getUltimoAcceso() {
-        return ultimoAcceso;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setUltimoAcceso(LocalDateTime ultimoAcceso) {
-        this.ultimoAcceso = ultimoAcceso;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    public boolean isEstado() {
-        return estado;
-    }
+    public Rol getRol() {
 
-    public void setEstado(boolean estado) {
-        this.estado = estado;
-    }
-
-    public String getRol() {
         return rol;
     }
-
-    public void setRol(String rol) {
+    
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario [id=" + id + ", nombres=" + nombres + ", correo=" + correo + ", numeroTelefono="
-                + numeroTelefono + ", contraseña=" + contrasena + ", ultimoAcceso=" + ultimoAcceso + ", estado="
-                + estado + ", rol=" + rol + "]";
+    public Date getFechaRegistro() {
+        return fechaRegistro;
     }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public List<Direccion> getDirecciones() {
+        return direcciones;
+    }
+
+    public void setDirecciones(List<Direccion> direcciones) {
+        this.direcciones = direcciones;
+    }
+
+    public List<Carrito> getCarritos() {
+        return carritos;
+    }
+
+    public void setCarritos(List<Carrito> carritos) {
+        this.carritos = carritos;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
 }

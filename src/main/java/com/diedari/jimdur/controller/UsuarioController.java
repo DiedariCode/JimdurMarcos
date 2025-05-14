@@ -42,10 +42,6 @@ public class UsuarioController {
     // Guardar nuevo usuario
     @PostMapping("/guardar")
     public String guardarUsuario(@ModelAttribute Usuario usuario) {
-        // ! TODAVIA NO ESTA IMPLEMENTADO EL REGISTRO DE USUARIO
-        usuario.setEstado(true);
-        usuario.setUltimoAcceso(LocalDateTime.of(2023, 5, 1, 14, 32));
-
         // ? LO NORMAL
         service.guardarUsuario(usuario); // Llama al servicio para guardar el usuario
         return "redirect:/admin/usuarios"; // Redirige a la lista de usuarios después de guardar
@@ -66,9 +62,9 @@ public class UsuarioController {
 
         // Actualizar los campos básicos
         usuarioExistente.setId(id);
-        usuarioExistente.setNombres(usuario.getNombres());
+        usuarioExistente.setNombre(usuario.getNombre());
         usuarioExistente.setCorreo(usuario.getCorreo());
-        usuarioExistente.setNumeroTelefono(usuario.getNumeroTelefono());
+        usuarioExistente.setTelefono(usuario.getTelefono());
         usuarioExistente.setContrasena(usuario.getContrasena());
 
         service.actualizarUsuario(usuarioExistente); // Guardar cambios
