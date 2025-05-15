@@ -101,7 +101,7 @@
                                             <label for="ubicacion" class="form-label">Ubicación</label>
                                             <select class="form-select" id="ubicacion"
                                                 th:field="*{ubicacion.idUbicacion}">
-                                                <option value="" selected>Sin ubicación</option>
+                                                <option value="" selected disabled>Sin ubicación</option>
                                                 <option th:each="ubi : ${ubicacion}" th:value="${ubi.idUbicacion}"
                                                     th:text="${ubi.nombre}"></option>
                                             </select>
@@ -183,17 +183,17 @@
                                         <div class="col-md-6">
                                             <label for="proveedor" class="form-label">Proveedor de este
                                                 producto*</label>
-                                            <select class="form-select" id="proveedor" th:field="*{proveedor}" required>
+                                            <select class="form-select" id="proveedor" th:field="*{proveedor.idProveedor}" required>
                                                 <option value="" selected disabled>Seleccione un proveedor</option>
-                                                <option th:each="proveedor : ${proveedores}"
-                                                    th:value="${proveedor.idProveedor}" th:text="${proveedor.nombre}">
+                                                <option th:each="prove : ${proveedores}"
+                                                    th:value="${prove.idProveedor}" th:text="${prove.nombre}">
                                                 </option>
                                             </select>
                                             <div class="invalid-feedback">
                                                 Por favor seleccione un proveedor.
                                             </div>
                                         </div>
-
+                                
                                         <!-- Estado (activo/inactivo) -->
                                         <div class="col-md-6">
                                             <label class="form-label d-block">Estado del producto</label>

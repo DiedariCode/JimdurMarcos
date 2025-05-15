@@ -2,6 +2,8 @@ package com.diedari.jimdur.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class Ubicacion {
     private String descripcion;
 
     @OneToMany(mappedBy = "ubicacion")
+    @JsonIgnore
     private List<Producto> productos;
 
     public Ubicacion() {

@@ -2,6 +2,8 @@ package com.diedari.jimdur.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -72,12 +74,15 @@ public class Producto {
     // Se usa CascadeType.ALL para que al eliminar un producto se eliminen sus
     // imágenes asociadas
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<ImagenProducto> imagenes;
 
     @OneToMany(mappedBy = "producto")
+    @JsonIgnore
     private List<ItemCarrito> itemsCarrito;
 
     @OneToMany(mappedBy = "producto")
+    @JsonIgnore
     private List<DetallePedido> detalles;
 
     // Constructor vacío

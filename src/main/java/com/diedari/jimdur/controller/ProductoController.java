@@ -108,6 +108,7 @@ public class ProductoController {
         Producto actual = productoService.obtenerProductoPorId(id);
         if (actual != null) {
             actual.setNombre(producto.getNombre());
+            actual.setImagenURL(producto.getImagenURL());
             actual.setDescripcion(producto.getDescripcion());
             actual.setCategoria(producto.getCategoria());
             actual.setPrecio(producto.getPrecio());

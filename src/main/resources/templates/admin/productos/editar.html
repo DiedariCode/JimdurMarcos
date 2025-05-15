@@ -22,7 +22,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar area (columna izquierda) -->
-            <div th:replace="fragments/sidebar :: sidebar"></div>
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
             <!-- Content area (columna derecha) -->
             <div class="col-md-9 col-lg-10 py-4 px-5 ms-auto">
@@ -195,12 +195,12 @@
                                             <div class="col-md-6">
                                                 <label for="proveedor" class="form-label">Proveedor de este
                                                     producto*</label>
-                                                <select class="form-select" id="proveedor" th:field="*{proveedor}"
+                                                <select class="form-select" id="proveedor" th:field="*{proveedor.idProveedor}"
                                                     required>
                                                     <option value="" selected disabled>Seleccione un proveedor</option>
-                                                    <option th:each="proveedor : ${proveedores}"
-                                                        th:value="${proveedor.idProveedor}"
-                                                        th:text="${proveedor.nombre}">
+                                                    <option th:each="prove : ${proveedores}"
+                                                        th:value="${prove.idProveedor}"
+                                                        th:text="${prove.nombre}">
                                                     </option>
                                                 </select>
                                                 <div class="invalid-feedback">

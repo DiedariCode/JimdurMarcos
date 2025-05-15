@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.model.Marca;
 import com.diedari.jimdur.model.Producto;
+import com.diedari.jimdur.model.Proveedor;
+import com.diedari.jimdur.model.Ubicacion;
 import com.diedari.jimdur.repository.CategoriaRepository;
 import com.diedari.jimdur.repository.MarcaRepository;
+import com.diedari.jimdur.repository.ProveedorRepository;
+import com.diedari.jimdur.repository.UbicacionRepository;
 import com.diedari.jimdur.service.ProductoService;
 
 @RestController
@@ -40,6 +44,12 @@ public class ProductoRestController {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    @Autowired
+    private ProveedorRepository proveedorRepository;
+
+    @Autowired
+    private UbicacionRepository ubicacionRepository;
+
     @GetMapping()
     public List<Producto> listarProductos() {
         return productoService.listarTodosLosProductos();
@@ -60,6 +70,7 @@ public class ProductoRestController {
         Producto actual = productoService.obtenerProductoPorId(id);
         if (actual != null) {
             actual.setNombre(producto.getNombre());
+            actual.setImagenURL(producto.getImagenURL());
             actual.setDescripcion(producto.getDescripcion());
             actual.setPrecio(producto.getPrecio());
             actual.setStock(producto.getStock());
@@ -68,7 +79,6 @@ public class ProductoRestController {
             actual.setDescuento(producto.getDescuento());
             actual.setPrecioOferta(producto.getPrecioOferta());
             actual.setSlug(producto.getSlug());
-            actual.setProveedor(producto.getProveedor());
 
             // Asociar marca y categoría existentes por ID
             if (producto.getMarca() != null && producto.getMarca().getId() != null) {
@@ -79,6 +89,18 @@ public class ProductoRestController {
             if (producto.getCategoria() != null && producto.getCategoria().getId() != null) {
                 Categoria categoria = categoriaRepository.findById(producto.getCategoria().getId()).orElse(null);
                 actual.setCategoria(categoria);
+            }
+
+            // Asociar proveedor
+            if (producto.getProveedor() != null && producto.getProveedor().getIdProveedor() != null) {
+                Proveedor proveedor = proveedorRepository.findById(producto.getProveedor().getIdProveedor()).orElse(null);
+                actual.setProveedor(proveedor);
+            }
+
+            // Asociar ubicación
+            if (producto.getUbicacion() != null && producto.getUbicacion().getIdUbicacion() != null) {
+                Ubicacion ubicacion = ubicacionRepository.findById(producto.getUbicacion().getIdUbicacion()).orElse(null);
+                actual.setUbicacion(ubicacion);
             }
 
             return productoService.actualizarProducto(actual);

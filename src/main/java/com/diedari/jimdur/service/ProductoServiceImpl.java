@@ -10,9 +10,13 @@ import org.springframework.stereotype.Service;
 import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.model.Marca;
 import com.diedari.jimdur.model.Producto;
+import com.diedari.jimdur.model.Proveedor;
+import com.diedari.jimdur.model.Ubicacion;
 import com.diedari.jimdur.repository.CategoriaRepository;
 import com.diedari.jimdur.repository.MarcaRepository;
 import com.diedari.jimdur.repository.ProductoRepository;
+import com.diedari.jimdur.repository.ProveedorRepository;
+import com.diedari.jimdur.repository.UbicacionRepository;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
@@ -29,6 +33,12 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Autowired
     private MarcaRepository marcaRepository;
+
+    @Autowired
+    private ProveedorRepository proveedorRepository;
+
+    @Autowired
+    private UbicacionRepository ubicacionRepository;
 
     @Override
     public Producto actualizarProducto(Producto producto) {
@@ -49,6 +59,16 @@ public class ProductoServiceImpl implements ProductoService {
                 .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
         producto.setMarca(marca);
 
+        // Validar y asignar proveedor
+        Proveedor proveedor = proveedorRepository.findById(producto.getProveedor().getIdProveedor())
+                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+        producto.setProveedor(proveedor);
+
+        // Validar y asignar ubicación
+        Ubicacion ubicacion = ubicacionRepository.findById(producto.getUbicacion().getIdUbicacion())
+                .orElseThrow(() -> new RuntimeException("Ubicación no encontrada"));
+        producto.setUbicacion(ubicacion);
+        
         // Guardar producto (ya con precio de oferta calculado)
         return productoRepository.save(producto);
     }
