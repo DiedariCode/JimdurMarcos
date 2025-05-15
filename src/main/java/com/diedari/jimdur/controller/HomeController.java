@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.model.Producto;
 import com.diedari.jimdur.service.CategoriaService;
+import com.diedari.jimdur.service.MarcaService;
 import com.diedari.jimdur.service.ProductoService;
 
 @Controller
@@ -23,6 +24,9 @@ public class HomeController {
 
     @Autowired
     private CategoriaService categoriaService;
+
+    @Autowired
+    private MarcaService marcaService;
 
     @GetMapping
     public String index(Model model) {
@@ -45,8 +49,12 @@ public class HomeController {
 
     @GetMapping("/productos")
     public String productosForm(Model model) {
-        List<Producto> productos = productoService.listarTodosLosProductos();
+        List<Producto> productos = productoService.obtenerProductoPorEstado(true);
         model.addAttribute("productos", productos);
+
+        model.addAttribute("categorias", categoriaService.obtenerCategoriaPorEstado(true));
+
+        model.addAttribute("marcas", marcaService.obtenerMarcasPorEstado(true));
 
         // NAVBAR DINAMICA:
         model.addAttribute("activePage", "productos");

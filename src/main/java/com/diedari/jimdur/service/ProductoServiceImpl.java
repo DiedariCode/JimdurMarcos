@@ -99,4 +99,8 @@ public class ProductoServiceImpl implements ProductoService {
         return productoRepository.findBySlug(slug);
     }
 
+    @Override
+    public List<Producto> obtenerProductoPorEstado(boolean activo) {
+        return productoRepository.findByActivo(activo);
+    }
 }

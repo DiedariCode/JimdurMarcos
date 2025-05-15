@@ -38,70 +38,27 @@
                                     <i class="bi bi-x"></i> Limpiar
                                 </button>
                             </div>
-
-                            <!-- Categories -->
+                            
+                            <!-- Categorías -->
                             <div class="mb-4">
                                 <h6 class="fw-bold mb-2">Categorías</h6>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="category1">
-                                    <label class="form-check-label" for="category1">Aceites</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="category2">
-                                    <label class="form-check-label" for="category2">Frenos</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="category3">
-                                    <label class="form-check-label" for="category3">Baterías</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="category4">
-                                    <label class="form-check-label" for="category4">Filtros</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="category5">
-                                    <label class="form-check-label" for="category5">Transmisión</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="category6">
-                                    <label class="form-check-label" for="category6">Cascos</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="category7">
-                                    <label class="form-check-label" for="category7">Encendido</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="category8">
-                                    <label class="form-check-label" for="category8">Suspensión</label>
+                                <div class="form-check mb-2" th:each="cat : ${categorias}">
+                                    <input class="form-check-input" type="checkbox" th:id="'category-' + ${cat.id}"
+                                        th:value="${cat.id}" />
+                                    <label class="form-check-label" th:for="'category-' + ${cat.id}"
+                                        th:text="${cat.nombre}">Categoría</label>
                                 </div>
                             </div>
 
-                            <!-- Brands -->
+
+                            <!-- Marcas -->
                             <div class="mb-4">
                                 <h6 class="fw-bold mb-2">Marcas</h6>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="brand1">
-                                    <label class="form-check-label" for="brand1">Motul</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="brand2">
-                                    <label class="form-check-label" for="brand2">Brembo</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="brand3">
-                                    <label class="form-check-label" for="brand3">Yuasa</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="brand4">
-                                    <label class="form-check-label" for="brand4">K&N</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="brand5">
-                                    <label class="form-check-label" for="brand5">RK</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="brand6">
-                                    <label class="form-check-label" for="brand6">LS2</label>
+                                <div class="form-check mb-2" th:each="marca : ${marcas}">
+                                    <input class="form-check-input" type="checkbox" th:id="'marca-' + ${marca.id}"
+                                    th:value="${marca.id}"
+                                    >
+                                    <label class="form-check-label" th:for="'marca-' + ${marca.id}" th:text="${marca.nombre}">Motul</label>
                                 </div>
                             </div>
 
@@ -132,14 +89,15 @@
                         </div>
                     </div>
                 </div>
-                
+
 
                 <!-- ! Main Content -->
                 <div class="col-lg-9">
                     <!-- ? Toolbar -->
                     <div class="d-flex flex-column 
                         flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-3">
-                        <p class="text-muted mb-0" th:text="'Mostrando ' + ${productos.size()} + ' productos'">Mostrando 12 productos</p>
+                        <p class="text-muted mb-0" th:text="'Mostrando ' + ${productos.size()} + ' productos'">Mostrando
+                            12 productos</p>
                         <div class="d-flex gap-2 w-100 w-sm-auto">
                             <select class="form-select">
                                 <option value="featured">Destacados</option>
@@ -170,10 +128,13 @@
                                         alt="Aceite Motul">
                                 </div>
                                 <div class="card-body">
-                                    <p class="text-muted small" th:text="${producto.categoria.nombre} + ' | ' +  ${producto.nombre}">Aceites | Motul</p>
+                                    <p class="text-muted small"
+                                        th:text="${producto.categoria.nombre} + ' | ' +  ${producto.nombre}">Aceites |
+                                        Motul</p>
                                     <h5 class="card-title product-title">
-                                        <a th:href="'/producto/' + ${producto.slug}" class="text-decoration-none text-dark"
-                                        th:text="${producto.descripcion}">Aceite Motul 5100 4T 15W50</a>
+                                        <a th:href="'/producto/' + ${producto.slug}"
+                                            class="text-decoration-none text-dark"
+                                            th:text="${producto.descripcion}">Aceite Motul 5100 4T 15W50</a>
                                     </h5>
                                     <div class="d-flex align-items-center mb-2">
                                         <div class="text-warning me-1">
@@ -183,46 +144,14 @@
                                         <span class="text-muted small ms-1">(124)</span>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <span class="fw-bold text-primary fs-5" th:text="'S/ ' + ${producto.precioOferta}">$10.625</span>
-                                        <span class="text-muted text-decoration-line-through ms-2" 
-                                        th:if="${producto.descuento > 0}"
-                                        th:text="'S/ ' +${producto.precio}">$12.500</span>
+                                        <span class="fw-bold text-primary fs-5"
+                                            th:text="'S/ ' + ${producto.precioOferta}">$10.625</span>
+                                        <span class="text-muted text-decoration-line-through ms-2"
+                                            th:if="${producto.descuento > 0}"
+                                            th:text="'S/ ' +${producto.precio}">$12.500</span>
                                     </div>
-                                    <p class="text-success small mt-1" th:text="'En stock (' + ${producto.stock} + ')'">En stock (25)</p>
-                                </div>
-                                <div class="card-footer bg-white border-top-0">
-                                    <button class="btn btn-primary w-100">
-                                        <i class="bi bi-cart me-2"></i>Agregar al carrito
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Producto de GUIA PARA HACERLO DINAMICO -->
-                        <div class="col">
-                            <div class="card h-100 product-card">
-                                <div class="position-relative pt-3 px-3">
-                                    <span class="position-absolute top-0 start-0 badge bg-primary m-3">Nuevo</span>
-                                    <img src="https://placehold.co/300x300" class="card-img-top product-img"
-                                        alt="Kit de Pastillas de Freno">
-                                </div>
-                                <div class="card-body">
-                                    <p class="text-muted small">Frenos | Brembo</p>
-                                    <h5 class="card-title product-title">
-                                        <a href="producto/2.html" class="text-decoration-none text-dark">Kit de
-                                            Pastillas de Freno Brembo</a>
-                                    </h5>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <div class="text-warning me-1">
-                                            <i class="bi bi-star-fill"></i>
-                                        </div>
-                                        <span class="fw-medium small">4.5</span>
-                                        <span class="text-muted small ms-1">(89)</span>
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                        <span class="fw-bold fs-5">$8.900</span>
-                                    </div>
-                                    <p class="text-success small mt-1">En stock (12)</p>
+                                    <p class="text-success small mt-1" th:text="'En stock (' + ${producto.stock} + ')'">
+                                        En stock (25)</p>
                                 </div>
                                 <div class="card-footer bg-white border-top-0">
                                     <button class="btn btn-primary w-100">

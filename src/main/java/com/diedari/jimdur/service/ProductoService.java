@@ -25,4 +25,7 @@ public interface ProductoService {
 
     // Metodo para obtener producto por slug
     public Producto obtenerProductoPorSlug(String slug);
+
+    // Método para obtener productos por estado
+    public List<Producto> obtenerProductoPorEstado(boolean activo);
 }
