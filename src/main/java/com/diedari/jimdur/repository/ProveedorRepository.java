@@ -7,5 +7,4 @@ import com.diedari.jimdur.model.Proveedor;
 
 @Repository
 public interface ProveedorRepository extends JpaRepository<Proveedor, Long> {
-    
 }

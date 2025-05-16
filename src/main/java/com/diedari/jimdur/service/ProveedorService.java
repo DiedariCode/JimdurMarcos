@@ -16,5 +16,4 @@ public interface ProveedorService {
 
     public Proveedor actualizarProveedor(Proveedor proveedor);
 
-    
 }
