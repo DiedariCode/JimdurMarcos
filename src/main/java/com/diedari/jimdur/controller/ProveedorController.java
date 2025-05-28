@@ -55,22 +55,22 @@ public class ProveedorController {
         return "admin/proveedor/editar";
     }
 
-    @PostMapping("/editar/{idProveedor}")
-    public String editarProveedor(@ModelAttribute Proveedor proveedor, @PathVariable Long idProveedor) {
-        Proveedor proveedorExistente = proveedorService.obtenerProveedorPorId(idProveedor);
-        if (proveedorExistente == null) {
-            return "redirect:/admin/proveedor";
-        } else {
-            proveedorExistente.setNombre(proveedor.getNombre());
-            proveedorExistente.setTelefono(proveedor.getTelefono());
-            proveedorExistente.setCorreo(proveedor.getCorreo());
-            proveedorExistente.setDireccion(proveedor.getDireccion());
-            proveedorExistente.setRuc(proveedor.getRuc());
-            proveedorService.guardarProveedor(proveedorExistente); // Llama al servicio para guardar el proveedor
+    // @PostMapping("/editar/{idProveedor}")
+    // public String editarProveedor(@ModelAttribute Proveedor proveedor, @PathVariable Long idProveedor) {
+    //     Proveedor proveedorExistente = proveedorService.obtenerProveedorPorId(idProveedor);
+    //     if (proveedorExistente == null) {
+    //         return "redirect:/admin/proveedor";
+    //     } else {
+    //         proveedorExistente.setNombre(proveedor.getNombre());
+    //         proveedorExistente.setTelefono(proveedor.getTelefono());
+    //         proveedorExistente.setCorreo(proveedor.getCorreo());
+    //         proveedorExistente.setDireccion(proveedor.getDireccion());
+    //         proveedorExistente.setRuc(proveedor.getRuc());
+    //         proveedorService.guardarProveedor(proveedorExistente); // Llama al servicio para guardar el proveedor
         
-        }
-        return "redirect:/admin/proveedor"; // Redirige a la lista de proveedores
-    }
+    //     }
+    //     return "redirect:/admin/proveedor"; // Redirige a la lista de proveedores
+    // }
 
     @GetMapping("/eliminar/{idProveedor}")
     public String eliminarProveedor(@PathVariable Long idProveedor) {

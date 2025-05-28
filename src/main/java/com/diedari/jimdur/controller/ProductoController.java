@@ -102,28 +102,28 @@ public class ProductoController {
         }
     }
 
-    // Actualizar producto
-    @PostMapping("/actualizar/{id}")
-    public String actualizarProducto(@PathVariable Long id, @ModelAttribute Producto producto) {
-        Producto actual = productoService.obtenerProductoPorId(id);
-        if (actual != null) {
-            actual.setNombre(producto.getNombre());
-            actual.setImagenURL(producto.getImagenURL());
-            actual.setDescripcion(producto.getDescripcion());
-            actual.setCategoria(producto.getCategoria());
-            actual.setPrecio(producto.getPrecio());
-            actual.setStock(producto.getStock());
-            actual.setProveedor(producto.getProveedor());
-            actual.setCategoria(producto.getCategoria());
-            actual.setMarca(producto.getMarca());
-            actual.setDescuento(producto.getDescuento());
-            actual.setTipoDescuento(producto.getTipoDescuento());
-            actual.setActivo(producto.isActivo());
-            actual.calcularPrecioOferta();
-            productoService.actualizarProducto(actual);
-        }
-        return "redirect:/admin/productos/";
-    }
+    // // Actualizar producto
+    // @PostMapping("/actualizar/{id}")
+    // public String actualizarProducto(@PathVariable Long id, @ModelAttribute Producto producto) {
+    //     Producto actual = productoService.obtenerProductoPorId(id);
+    //     if (actual != null) {
+    //         actual.setNombre(producto.getNombre());
+    //         actual.setImagenURL(producto.getImagenURL());
+    //         actual.setDescripcion(producto.getDescripcion());
+    //         actual.setCategoria(producto.getCategoria());
+    //         actual.setPrecio(producto.getPrecio());
+    //         actual.setStock(producto.getStock());
+    //         actual.setProveedor(producto.getProveedor());
+    //         actual.setCategoria(producto.getCategoria());
+    //         actual.setMarca(producto.getMarca());
+    //         actual.setDescuento(producto.getDescuento());
+    //         actual.setTipoDescuento(producto.getTipoDescuento());
+    //         actual.setActivo(producto.isActivo());
+    //         actual.calcularPrecioOferta();
+    //         productoService.actualizarProducto(actual);
+    //     }
+    //     return "redirect:/admin/productos/";
+    // }
 
     // Eliminar producto
     @GetMapping("/eliminar/{id}")

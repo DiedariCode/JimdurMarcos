@@ -10,6 +10,6 @@ import com.diedari.jimdur.model.Marca;
 @Repository
 public interface MarcaRepository extends JpaRepository <Marca, Long> {
 
-    public List<Marca> findByNombre(String nombre);
-    public List<Marca> findByActivo(Boolean activo);
+    public List<Marca> findByNombreMarca(String nombreMarca);
+    public List<Marca> findByEstadoMarca(Boolean estadoMarca);
 }

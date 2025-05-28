@@ -77,20 +77,20 @@ public class MarcaController {
         }
     }
 
-    @PostMapping("/editar/{id}")
-    public String editarMarca(@PathVariable Long id, @ModelAttribute Marca marca) {
-        Marca actual = marcaService.obtenerMarcaPorId(id);
-        if (actual != null) {
-            actual.setNombre(marca.getNombre());
-            actual.setDescripcion(marca.getDescripcion());
-            actual.setLogoUrl(marca.getLogoUrl());
-            actual.setPaisOrigen(marca.getPaisOrigen());
-            actual.setSitioWeb(marca.getSitioWeb());
-            actual.setActivo(marca.isActivo());
-            marcaService.actualizarMarca(actual);
-        }
-        return "redirect:/admin/marca"; // Redirige a la lista de marcas después de editar
-    }
+    // @PostMapping("/editar/{id}")
+    // public String editarMarca(@PathVariable Long id, @ModelAttribute Marca marca) {
+    //     Marca actual = marcaService.obtenerMarcaPorId(id);
+    //     if (actual != null) {
+    //         actual.setNombre(marca.getNombre());
+    //         actual.setDescripcion(marca.getDescripcion());
+    //         actual.setLogoUrl(marca.getLogoUrl());
+    //         actual.setPaisOrigen(marca.getPaisOrigen());
+    //         actual.setSitioWeb(marca.getSitioWeb());
+    //         actual.setActivo(marca.isActivo());
+    //         marcaService.actualizarMarca(actual);
+    //     }
+    //     return "redirect:/admin/marca"; // Redirige a la lista de marcas después de editar
+    // }
     
     @DeleteMapping("/eliminar/{id}")
     public String eliminarMarca(@PathVariable Long id) {

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.diedari.jimdur.model.Ubicacion;
+import com.diedari.jimdur.model.Ubicaciones;
 import com.diedari.jimdur.service.UbicacionService;
 
 @Controller
@@ -27,7 +27,7 @@ public class UbicacionController {
      */
     @GetMapping
     public String listarUbicaciones(Model model) {
-        List<Ubicacion> ubicaciones = ubicacionService.listarUbicaciones();
+        List<Ubicaciones> ubicaciones = ubicacionService.listarUbicaciones();
         model.addAttribute("ubicaciones", ubicaciones);
 
         model.addAttribute("claseActiva", "ubicaciones");
@@ -39,7 +39,7 @@ public class UbicacionController {
      */
     @GetMapping("/agregar")
     public String mostrarFormularioNuevo(Model model) {
-        model.addAttribute("ubicacion", new Ubicacion());
+        model.addAttribute("ubicacion", new Ubicaciones());
 
         model.addAttribute("claseActiva", "ubicaciones");
         return "/admin/ubicacion/nuevo";
@@ -49,7 +49,7 @@ public class UbicacionController {
      * Procesa el formulario para guardar una nueva ubicación
      */
     @PostMapping("/agregar")
-    public String guardarUbicacion(@ModelAttribute Ubicacion ubicacion, RedirectAttributes redirectAttributes) {
+    public String guardarUbicacion(@ModelAttribute Ubicaciones ubicacion, RedirectAttributes redirectAttributes) {
         try {
             ubicacionService.guardarUbicacion(ubicacion);
             redirectAttributes.addFlashAttribute("mensaje", "Ubicación guardada exitosamente");
@@ -66,7 +66,7 @@ public class UbicacionController {
     public String mostrarFormularioEditar(@PathVariable Integer id, Model model,
             RedirectAttributes redirectAttributes) {
         try {
-            Ubicacion ubicacion = ubicacionService.obtenerUbicacionPorId(id);
+            Ubicaciones ubicacion = ubicacionService.obtenerUbicacionPorId(id);
             model.addAttribute("ubicacion", ubicacion);
 
             model.addAttribute("claseActiva", "ubicaciones");
@@ -81,7 +81,7 @@ public class UbicacionController {
      * Procesa el formulario para actualizar una ubicación existente
      */
     @PostMapping("/actualizar")
-    public String actualizarUbicacion(@ModelAttribute Ubicacion ubicacion, RedirectAttributes redirectAttributes) {
+    public String actualizarUbicacion(@ModelAttribute Ubicaciones ubicacion, RedirectAttributes redirectAttributes) {
         try {
             ubicacionService.actualizarUbicacion(ubicacion);
             redirectAttributes.addFlashAttribute("mensaje", "Ubicación actualizada exitosamente");
