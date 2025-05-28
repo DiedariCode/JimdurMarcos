@@ -91,11 +91,11 @@
                                 <tbody>
                                     <tr th:each="categoria : ${categorias}">
                                         <td>
-                                            <div class="fw-medium" th:text="${categoria.nombre}">Nombre</div>
+                                            <div class="fw-medium" th:text="${categoria.nombreCategoria}">Nombre</div>
                                         </td>
                                         <td>
                                             <div class="text-muted"
-                                                th:text="${#strings.abbreviate(categoria.descripcion, 50)}">Descripción
+                                                th:text="${#strings.abbreviate(categoria.descripcionCategoria, 50)}">Descripción
                                             </div>
                                         </td>
                                         <td>
@@ -103,7 +103,7 @@
                                         </td>
                                         <td>
                                             <div class="text-muted"
-                                                th:text="${categoria.slug}">Descripción
+                                                th:text="${categoria.slugCategoria}">Descripción
                                             </div>
                                         </td>
                                         <td>
@@ -112,8 +112,8 @@
                                         </td>
                                         <td>
                                             <span class="badge"
-                                                th:classappend="${categoria.activa} ? 'badge-success' : 'badge-secondary'"
-                                                th:text="${categoria.activa} ? 'Activa' : 'Inactiva'">
+                                                th:classappend="${categoria.estadoActiva} ? 'badge-success' : 'badge-secondary'"
+                                                th:text="${categoria.estadoActiva} ? 'Activa' : 'Inactiva'">
                                             </span>
                                         </td>
                                         <td class="text-center">

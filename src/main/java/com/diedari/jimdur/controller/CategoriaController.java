@@ -99,19 +99,19 @@ public class CategoriaController {
         }
     }
 
-    // // Esto es para guardar los cambios de la categoria editada
-    // @PostMapping("/editar/{id}")
-    // public String editarCategoria(@PathVariable Long id, @ModelAttribute Categoria categoria) {
-    //     Categoria categoriaExistente = categoriaService.obtenerCategoriaPorId(id);
-    //     if (categoriaExistente != null) {
-    //         categoriaExistente.setNombre(categoria.getNombre());
-    //         categoriaExistente.setDescripcion(categoria.getDescripcion());
-    //         categoriaExistente.setIconoCategoria(categoria.getIconoCategoria());
-    //         categoriaExistente.setActiva(categoria.isActiva());
-    //         categoriaService.actualizarCategoria(categoriaExistente);
-    //     }
-    //     return "redirect:/admin/categorias"; // Redirige a la lista de categorias
-    // }
+    // Esto es para guardar los cambios de la categoria editada
+    @PostMapping("/editar/{id}")
+    public String editarCategoria(@PathVariable Long id, @ModelAttribute Categoria categoria) {
+        Categoria categoriaExistente = categoriaService.obtenerCategoriaPorId(id);
+        if (categoriaExistente != null) {
+            categoriaExistente.setNombreCategoria(categoria.getNombreCategoria());
+            categoriaExistente.setDescripcionCategoria(categoria.getDescripcionCategoria());
+            categoriaExistente.setIconoCategoria(categoria.getIconoCategoria());
+            categoriaExistente.setEstadoActiva(categoria.getEstadoActiva());
+            categoriaService.actualizarCategoria(categoriaExistente);
+        }
+        return "redirect:/admin/categorias"; // Redirige a la lista de categorias
+    }
 
     // Esto es para eliminar una categoria por su ID
     @GetMapping("/eliminar/{id}")

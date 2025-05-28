@@ -67,14 +67,14 @@
                         </thead>
                         <tbody>
                             <tr th:each="marca : ${marcas}">
-                                <td th:text="${marca.nombre}">Nombre</td>
-                                <td th:text="${#strings.abbreviate(marca.descripcion, 60)}">Descripción</td>
-                                <td th:text="${marca.paisOrigen}">Pais</td>
-                                <td th:text="${marca.sitioWeb}">Sitio Web</td>
+                                <td th:text="${marca.nombreMarca}">Nombre</td>
+                                <td th:text="${#strings.abbreviate(marca.descripcionMarca, 60)}">Descripción</td>
+                                <td th:text="${marca.paisOrigenMarca}">Pais</td>
+                                <td th:text="${marca.sitioWebMarca}">Sitio Web</td>
                                 <td th:text="${marca.productos.size()}">Productos</td>
                                 <td>
-                                    <span class="badge" th:classappend="${marca.activo} ? 'bg-success' : 'bg-secondary'"
-                                        th:text="${marca.activo} ? 'Activa' : 'Inactiva'">
+                                    <span class="badge" th:classappend="${marca.estadoMarca} ? 'bg-success' : 'bg-secondary'"
+                                        th:text="${marca.estadoMarca} ? 'Activa' : 'Inactiva'">
                                     </span>
                                 </td>
 
