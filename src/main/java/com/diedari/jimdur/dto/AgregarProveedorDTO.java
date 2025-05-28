@@ -13,21 +13,21 @@ public class AgregarProveedorDTO {
 
     // Información general del proveedor
     private String nombreEmpresa;          // Equivalente a 'nombre'
-    private String nombreComercial;        // Si es diferente, puedes mantenerlo
-    private String rucEmpresa;             // Equivalente a 'ruc'
-    private String tipoProveedor;          // Puedes mapearlo a una categoría general
-    private String estadoActivo;           // Para control de estado lógico (ej. "Activo", "Inactivo")
+    private String nombreComercial;
+    private String rucEmpresa;
+    private String tipoProveedor;
+    private String estadoActivo;
 
     // Información de contacto del proveedor
     private String nombreContactoPrincipal;
     private String cargoContacto;
-    private String telefonoContacto;       // Equivalente a 'telefono'
-    private String emailContacto;          // Equivalente a 'correo'
+    private String telefonoContacto;
+    private String emailContacto;
     private String sitioWebContacto;
     private String horarioAtencionContacto;
 
-    // Categoría de productos que ofrece
-    private String categoriaProductosProveedor;
+    // **Quitamos esta línea porque no está en la entidad**
+    // private String categoriaProductosProveedor;
 
     // Lista de direcciones del proveedor
     private List<DireccionProveedorDTO> direcciones;

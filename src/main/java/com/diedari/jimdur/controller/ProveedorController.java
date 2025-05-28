@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.diedari.jimdur.dto.AgregarProveedorDTO;
 import com.diedari.jimdur.mapper.ProveedorMapper;
 import com.diedari.jimdur.model.Proveedor;
+import com.diedari.jimdur.service.CategoriaService;
+import com.diedari.jimdur.service.ProductoService;
 import com.diedari.jimdur.service.ProveedorService;
 
 @Controller
@@ -22,13 +24,19 @@ public class ProveedorController {
     @Autowired
     private ProveedorService proveedorService;
 
-    @GetMapping("/listar")
+    @Autowired
+    private ProductoService productoService;    
+
+    @Autowired
+    private CategoriaService categoriaService;
+
+    @GetMapping
     public String listarProveedores(Model model) {
         model.addAttribute("proveedores", proveedorService.obtenerTodosLosProveedores());
         return "admin/proveedor/listar";
     }
 
-    @GetMapping("/nuevo")
+    @GetMapping("/agregar")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("proveedorDTO", new AgregarProveedorDTO());
         return "admin/proveedor/nuevo";
@@ -41,7 +49,7 @@ public class ProveedorController {
 
         proveedorService.guardarProveedor(proveedor);
 
-        return "redirect:/admin/proveedor/listar";
+        return "redirect:/admin/proveedor";
     }
 
     @PostMapping("/eliminar/{id}")

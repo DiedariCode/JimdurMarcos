@@ -29,6 +29,12 @@ public class ProductoProveedor {
     @Id
     @Column(name = "id_proveedor")
     private Long idProveedor;
+
+    @Column(name = "precio_compra")
+    private Double precioCompra;
+
+    @Column(name = "precio_venta")
+    private Double precioVenta;
     
     // Relaciones
     @ManyToOne(fetch = FetchType.LAZY)

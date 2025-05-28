@@ -1,8 +1,20 @@
 package com.diedari.jimdur.model;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -74,15 +86,20 @@ public class Proveedor {
     @Size(max = 255)
     private String horarioAtencionContacto;
 
-    // Categoría de productos que ofrece
-    @Column(name = "categoria_productos")
-    @Size(max = 255)
-    private String categoriaProductosProveedor;
-
     // Relaciones
     @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DireccionProveedor> direcciones;
 
     @ManyToMany(mappedBy = "proveedores", fetch = FetchType.LAZY)
     private List<Producto> productos;
+
+    public Set<String> obtenerCategorias() {
+        if (productos == null) {
+            return Collections.emptySet();
+        }
+        return productos.stream()
+                .map(producto -> producto.getCategoria().getNombreCategoria())
+                .collect(Collectors.toSet());
+    }
+
 }

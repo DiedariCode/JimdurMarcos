@@ -10,18 +10,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,50 +36,49 @@ public class Producto {
     @Column(name = "id_producto")
     private Long idProducto;
 
-    @Column(name = "nombre")
+    @Column(name = "sku", unique = true, length = 50, nullable = false)
+    @NotBlank(message = "El código SKU del producto es obligatorio")
+    @Size(max = 50)
+    private String sku;
+
+    @Column(name = "nombre", nullable = false, length = 100)
     @NotBlank(message = "El nombre del producto es obligatorio")
-    @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
+    @Size(max = 100)
     private String nombre;
 
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", nullable = false, length = 255)
     @NotBlank(message = "La descripción del producto es obligatoria")
-    @Size(max = 255, message = "La descripción no puede exceder 255 caracteres")
+    @Size(max = 255)
     private String descripcion;
 
-    @Column(name = "precio")
+    @Column(name = "precio", nullable = false)
     @NotNull(message = "El precio es obligatorio")
-    @DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor a 0")
+    @DecimalMin(value = "0.0", inclusive = false)
     private Double precio;
 
-    @Column(name = "stock")
-    @NotNull(message = "El stock es obligatorio")
-    @Min(value = 0, message = "El stock no puede ser negativo")
-    private Integer stock;
-
-    @Column(name = "imagen_url")
-    @Size(max = 255, message = "La URL de imagen no puede exceder 255 caracteres")
+    @Column(name = "imagen_url", length = 255)
     private String imagenUrl;
 
-    @Column(name = "slug", unique = true)
+    @Column(name = "slug", unique = true, length = 150, nullable = false)
     @NotBlank(message = "El slug es obligatorio")
-    @Size(max = 150, message = "El slug no puede exceder 150 caracteres")
+    @Size(max = 150)
     private String slug;
 
-    @Column(name = "activo")
+    @Column(name = "activo", nullable = false)
     @NotNull(message = "El estado activo es obligatorio")
     private Boolean activo;
 
     @Column(name = "descuento")
-    @DecimalMin(value = "0.0", message = "El descuento no puede ser negativo")
-    @DecimalMax(value = "100.0", message = "El descuento no puede ser mayor al 100%")
+    @DecimalMin(value = "0.0")
+    @DecimalMax(value = "100.0")
     private Double descuento;
 
     @Column(name = "precio_oferta")
-    @DecimalMin(value = "0.0", message = "El precio de oferta no puede ser negativo")
+    @DecimalMin(value = "0.0")
     private Double precioOferta;
 
-    @Column(name = "tipo_descuento")
-    @Size(max = 20, message = "El tipo de descuento no puede exceder 20 caracteres")
+    @Column(name = "tipo_descuento", length = 20)
+    @Size(max = 20)
     private String tipoDescuento;
 
     // Relaciones
@@ -102,10 +96,7 @@ public class Producto {
     @JoinColumn(name = "id_ubicacion")
     private Ubicaciones ubicacion;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "Producto_Proveedor", joinColumns = @JoinColumn(name = "id_producto"), inverseJoinColumns = @JoinColumn(name = "id_proveedor"))
-    private List<Proveedor> proveedores;
-
+    // Relaciones OneToMany para imágenes, pedidos, etc.
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ImagenProducto> imagenes;
 

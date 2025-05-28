@@ -5,6 +5,7 @@ import com.diedari.jimdur.dto.DireccionProveedorDTO;
 import com.diedari.jimdur.model.DireccionProveedor;
 import com.diedari.jimdur.model.Proveedor;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,27 +24,27 @@ public class ProveedorMapper {
                 .correo(dto.getEmailContacto())
                 .sitioWebContacto(dto.getSitioWebContacto())
                 .horarioAtencionContacto(dto.getHorarioAtencionContacto())
-                .categoriaProductosProveedor(dto.getCategoriaProductosProveedor())
+                // **No asignamos categoriaProductosProveedor porque ya no existe en la entidad**
                 .build();
 
-        if (dto.getDirecciones() != null) { // Verifica si hay direcciones en el DTO
+        if (dto.getDirecciones() != null) {
             List<DireccionProveedor> direcciones = dto.getDirecciones().stream()
-            .map(d ->
-                    DireccionProveedor.builder()
-                            .etiqueta(d.getEtiqueta())
-                            .calle(d.getCalle())
-                            .distrito(d.getDistrito())
-                            .ciudad(d.getCiudad())
-                            .departamentoEstado(d.getDepartamentoEstado())
-                            .codigoPostal(d.getCodigoPostal())
-                            .pais(d.getPais())
-                            .referencia(d.getReferencia())
-                            .tipoDireccion(d.getTipoDireccion()) 
-                            .proveedor(proveedor)
-                            .build()
-            ).collect(Collectors.toList());
-
+                .map(d -> DireccionProveedor.builder()
+                        .etiqueta(d.getEtiqueta())
+                        .calle(d.getCalle())
+                        .distrito(d.getDistrito())
+                        .ciudad(d.getCiudad())
+                        .departamentoEstado(d.getDepartamentoEstado())
+                        .codigoPostal(d.getCodigoPostal())
+                        .pais(d.getPais())
+                        .referencia(d.getReferencia())
+                        .tipoDireccion(d.getTipoDireccion())
+                        .proveedor(proveedor)
+                        .build())
+                .collect(Collectors.toList());
             proveedor.setDirecciones(direcciones);
+        } else {
+            proveedor.setDirecciones(Collections.emptyList());
         }
 
         return proveedor;
@@ -63,24 +64,24 @@ public class ProveedorMapper {
         dto.setEmailContacto(proveedor.getCorreo());
         dto.setSitioWebContacto(proveedor.getSitioWebContacto());
         dto.setHorarioAtencionContacto(proveedor.getHorarioAtencionContacto());
-        dto.setCategoriaProductosProveedor(proveedor.getCategoriaProductosProveedor());
+        // **No seteamos categoriaProductosProveedor porque ya no existe**
 
         if (proveedor.getDirecciones() != null) {
-            List<DireccionProveedorDTO> direccionesDTO = proveedor.getDirecciones().stream().map(d ->
-                    new DireccionProveedorDTO(
-                            d.getEtiqueta(),
-                            d.getCalle(),
-                            d.getDistrito(),
-                            d.getCiudad(),
-                            d.getDepartamentoEstado(),
-                            d.getCodigoPostal(),
-                            d.getPais(),
-                            d.getReferencia(),
-                            d.getTipoDireccion()
-                    )
-            ).collect(Collectors.toList());
-
+            List<DireccionProveedorDTO> direccionesDTO = proveedor.getDirecciones().stream()
+                .map(d -> new DireccionProveedorDTO(
+                        d.getEtiqueta(),
+                        d.getCalle(),
+                        d.getDistrito(),
+                        d.getCiudad(),
+                        d.getDepartamentoEstado(),
+                        d.getCodigoPostal(),
+                        d.getPais(),
+                        d.getReferencia(),
+                        d.getTipoDireccion()
+                )).collect(Collectors.toList());
             dto.setDirecciones(direccionesDTO);
+        } else {
+            dto.setDirecciones(Collections.emptyList());
         }
 
         return dto;
