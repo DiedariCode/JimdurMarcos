@@ -1,120 +1,328 @@
-<!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gestion de Proveedor de cada Producto</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- ICONOS BOOTSTRAP -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <!-- CSS de Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- ICONOS FONT AWESOME -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- CSS PERSONALIZADO: SIDEBAR -->
-    <link rel="stylesheet" th:href="@{/css/admin/productos.css}">
-    <link rel="stylesheet" th:href="@{/css/shared/sidebar.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Proveedores | JIMDUR Repuestos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
 </head>
-
-<body>
+<body class="admin-body">
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
-
-            <!-- Main Content -->
-            <main class="col-md-9 col-lg-10 ms-auto px-4 py-4 content-wrapper animate-fade">
-                <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center page-header">
-                    <div>
-                        <h2>Gestión de Proveedores</h2>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mb-0 mt-1">
-                                <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Proveedor</li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <a th:href="@{/admin/proveedor/agregar}" class="btn btn-primary">
-                        <i class="fas fa-plus me-2"></i> Agregar Proveedor
+            <div class="col-lg-2 col-md-3 sidebar p-0">
+                <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark h-100">
+                    <a href="../index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <img src="../img/logo-white.png" alt="JIMDUR Repuestos" class="logo-admin">
                     </a>
+                    <hr>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="dashboard.html" class="nav-link text-white">
+                                <i class="bi bi-speedometer2 me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="productos.html" class="nav-link text-white">
+                                <i class="bi bi-box-seam me-2"></i>
+                                Productos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="categorias.html" class="nav-link text-white">
+                                <i class="bi bi-tags me-2"></i>
+                                Categorías
+                            </a>
+                        </li>
+                        <li>
+                            <a href="marcas.html" class="nav-link text-white">
+                                <i class="bi bi-award me-2"></i>
+                                Marcas
+                            </a>
+                        </li>
+                        <li>
+                            <a href="pedidos.html" class="nav-link text-white">
+                                <i class="bi bi-cart-check me-2"></i>
+                                Pedidos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="clientes.html" class="nav-link text-white">
+                                <i class="bi bi-people me-2"></i>
+                                Clientes
+                            </a>
+                        </li>
+                        <li>
+                            <a href="proveedores.html" class="nav-link active">
+                                <i class="bi bi-truck me-2"></i>
+                                Proveedores
+                            </a>
+                        </li>
+                        <li>
+                            <a href="inventario.html" class="nav-link text-white">
+                                <i class="bi bi-clipboard-check me-2"></i>
+                                Inventario
+                            </a>
+                        </li>
+                        <li>
+                            <a href="usuarios.html" class="nav-link text-white">
+                                <i class="bi bi-person-badge me-2"></i>
+                                Usuarios
+                            </a>
+                        </li>
+                        <li>
+                            <a href="reportes.html" class="nav-link text-white">
+                                <i class="bi bi-graph-up me-2"></i>
+                                Reportes
+                            </a>
+                        </li>
+                        <li>
+                            <a href="configuracion.html" class="nav-link text-white">
+                                <i class="bi bi-gear me-2"></i>
+                                Configuración
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="../img/admin-avatar.jpg" alt="Admin" width="32" height="32" class="rounded-circle me-2">
+                            <strong>Administrador</strong>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                            <li><a class="dropdown-item" href="perfil.html">Perfil</a></li>
+                            <li><a class="dropdown-item" href="configuracion.html">Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../login.html">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main content -->
+            <div class="col-lg-10 col-md-9 ms-sm-auto px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Gestión de Proveedores</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Exportar</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Imprimir</button>
+                        </div>
+                        <a href="proveedores-agregar.html" class="btn btn-sm btn-primary">
+                            <i class="bi bi-plus-circle"></i> Nuevo Proveedor
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Filtros -->
-                <div class="filters-card">
-                    <form th:action="@{/admin/proveedor/filtrar}" method="get">
-                        <div class="row g-3">
-                            <div class="col-md-10">
-                                <div class="input-group">
-                                    <span class="input-group-text bg-transparent border-end-0">
-                                        <i class="fas fa-search text-muted"></i>
-                                    </span>
-                                    <input type="text" class="form-control border-start-0 ps-0" name="busqueda"
-                                        placeholder="Buscar por nombre del proveedor...">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary w-100">
-                                    <i class="fas fa-filter me-2"></i> Filtrar
-                                </button>
+                <!-- Filters -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Filtros</h5>
+                                <form class="row g-3">
+                                    <div class="col-md-3">
+                                        <label for="filterName" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="filterName" placeholder="Buscar por nombre">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="filterCategory" class="form-label">Categoría</label>
+                                        <select class="form-select" id="filterCategory">
+                                            <option value="">Todas las categorías</option>
+                                            <option value="1">Repuestos Originales</option>
+                                            <option value="2">Repuestos Alternativos</option>
+                                            <option value="3">Accesorios</option>
+                                            <option value="4">Herramientas</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="filterStatus" class="form-label">Estado</label>
+                                        <select class="form-select" id="filterStatus">
+                                            <option value="">Todos los estados</option>
+                                            <option value="active">Activo</option>
+                                            <option value="inactive">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="filterCountry" class="form-label">País</label>
+                                        <select class="form-select" id="filterCountry">
+                                            <option value="">Todos los países</option>
+                                            <option value="AR">Argentina</option>
+                                            <option value="BR">Brasil</option>
+                                            <option value="CL">Chile</option>
+                                            <option value="CO">Colombia</option>
+                                            <option value="MX">México</option>
+                                            <option value="US">Estados Unidos</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 text-end">
+                                        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                                        <button type="reset" class="btn btn-secondary">Limpiar</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
 
-                <!-- Tabla de Proveedor -->
+                <!-- Providers Table -->
                 <div class="card mb-4">
-                    <div class="card-body p-0">
+                    <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table data-table m-0">
+                            <table class="table table-striped table-hover" id="providersTable">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Id</th>
-                                        <th class="text-center">Nombres</th>
-                                        <th class="text-center">Correo</th>
-                                        <th class="text-center">Teléfono</th>
-                                        <th class="text-center">Dirección</th>
-                                        <th class="text-center">RUC</th>
-                                        <th class="text-center">Acciones</th>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Categoría</th>
+                                        <th>Contacto</th>
+                                        <th>Teléfono</th>
+                                        <th>Email</th>
+                                        <th>País</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="prove : ${proveedores}">
-                                        <!-- ID CAMPO -->
-                                        <td th:text="${prove.idProveedor}">ID PROVEEDOR</td>
-                                        <!-- NOMBRE CAMPO -->
-                                        <td th:text="${prove.nombre}">Nombre</td>
-                                        <!-- CORREO CAMPO -->
-                                        <td th:text="${prove.correo}">Correo</td>
-                                        <!-- TELEFONO CAMPO -->
-                                        <td th:text="${prove.telefono}">Teléfono</td>
-                                        <!-- DIRECCION CAMPO -->
-                                        <td th:text="${prove.direccion}">Dirección</td>
-                                        <!-- RUC CAMPO -->
-                                        <td th:text="${prove.ruc}">RUC</td>
+                                    <tr>
+                                        <td>PRV001</td>
+                                        <td>AutoPartes Internacional</td>
+                                        <td>Repuestos Originales</td>
+                                        <td>Carlos Méndez</td>
+                                        <td>+54 11 4567-8901</td>
+                                        <td>contacto@autopartes.com</td>
+                                        <td>Argentina</td>
+                                        <td><span class="badge bg-success">Activo</span></td>
                                         <td>
-                                            <div class="d-flex justify-content-center gap-2">
-                                                <!-- Botón de editar -->
-                                                <a th:href="@{/admin/proveedor/editar/{id}(id=${prove.idProveedor})}"
-                                                    class="btn btn-warning btn-action" title="Editar">
-                                                    <i class="fas fa-edit"></i>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="proveedores-detalle.html?id=PRV001" class="btn btn-info" data-bs-toggle="tooltip" title="Ver detalles">
+                                                    <i class="bi bi-eye"></i>
                                                 </a>
-                                                <!-- Botón de eliminar -->
-                                                <a th:href="@{/admin/proveedor/eliminar/{id}(id=${prove.idProveedor})}"
-                                                    class="btn btn-danger btn-action" title="Eliminar"
-                                                    onclick="return confirm('¿Estás seguro de eliminar este proveedor?')">
-                                                    <i class="fas fa-trash"></i>
+                                                <a href="proveedores-editar.html?id=PRV001" class="btn btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
                                                 </a>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="tooltip" title="Eliminar" onclick="confirmDelete('PRV001')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr th:if="${noProveedores}">
-                                        <td colspan="12" class="text-center py-5">
-                                            <div class="text-muted">
-                                                <i class="fas fa-box-open fa-3x mb-3"></i>
-                                                <p class="mb-0">No se encontraron proveedores</p>
+                                    <tr>
+                                        <td>PRV002</td>
+                                        <td>Repuestos Genuinos S.A.</td>
+                                        <td>Repuestos Originales</td>
+                                        <td>María González</td>
+                                        <td>+52 55 2345-6789</td>
+                                        <td>ventas@repuestosgenuinos.mx</td>
+                                        <td>México</td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="proveedores-detalle.html?id=PRV002" class="btn btn-info" data-bs-toggle="tooltip" title="Ver detalles">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="proveedores-editar.html?id=PRV002" class="btn btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="tooltip" title="Eliminar" onclick="confirmDelete('PRV002')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PRV003</td>
+                                        <td>Global Auto Parts</td>
+                                        <td>Repuestos Alternativos</td>
+                                        <td>John Smith</td>
+                                        <td>+1 305 789-4561</td>
+                                        <td>sales@globalautoparts.com</td>
+                                        <td>Estados Unidos</td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="proveedores-detalle.html?id=PRV003" class="btn btn-info" data-bs-toggle="tooltip" title="Ver detalles">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="proveedores-editar.html?id=PRV003" class="btn btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="tooltip" title="Eliminar" onclick="confirmDelete('PRV003')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PRV004</td>
+                                        <td>Herramientas Profesionales</td>
+                                        <td>Herramientas</td>
+                                        <td>Roberto Sánchez</td>
+                                        <td>+56 2 2345-6789</td>
+                                        <td>ventas@herramientaspro.cl</td>
+                                        <td>Chile</td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="proveedores-detalle.html?id=PRV004" class="btn btn-info" data-bs-toggle="tooltip" title="Ver detalles">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="proveedores-editar.html?id=PRV004" class="btn btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="tooltip" title="Eliminar" onclick="confirmDelete('PRV004')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PRV005</td>
+                                        <td>Accesorios Premium</td>
+                                        <td>Accesorios</td>
+                                        <td>Ana Martínez</td>
+                                        <td>+57 1 234-5678</td>
+                                        <td>info@accesorios-premium.co</td>
+                                        <td>Colombia</td>
+                                        <td><span class="badge bg-warning text-dark">En revisión</span></td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="proveedores-detalle.html?id=PRV005" class="btn btn-info" data-bs-toggle="tooltip" title="Ver detalles">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="proveedores-editar.html?id=PRV005" class="btn btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="tooltip" title="Eliminar" onclick="confirmDelete('PRV005')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PRV006</td>
+                                        <td>Importadora Automotriz</td>
+                                        <td>Repuestos Originales</td>
+                                        <td>Pedro Oliveira</td>
+                                        <td>+55 11 9876-5432</td>
+                                        <td>contacto@importadoraauto.br</td>
+                                        <td>Brasil</td>
+                                        <td><span class="badge bg-danger">Inactivo</span></td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="proveedores-detalle.html?id=PRV006" class="btn btn-info" data-bs-toggle="tooltip" title="Ver detalles">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="proveedores-editar.html?id=PRV006" class="btn btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="tooltip" title="Eliminar" onclick="confirmDelete('PRV006')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -124,47 +332,81 @@
                     </div>
                 </div>
 
-                <!-- Paginación -->
-                <div class="d-flex flex-column align-items-center">
-                    <nav aria-label="Navegación de páginas">
-                        <!-- <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Primera">
-                                    <i class="fas fa-angle-double-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Anterior">
-                                    <i class="fas fa-angle-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item" th:each="page : ${pages}"
-                                th:classappend="${page == currentPage} ? 'active'">
-                                <a class="page-link" th:href="@{/admin/productos/{page}(page=${page})}"
-                                    th:text="${page}">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Siguiente">
-                                    <i class="fas fa-angle-right"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Última">
-                                    <i class="fas fa-angle-double-right"></i>
-                                </a>
-                            </li>
-                        </ul> -->
-                    </nav>
-                    <!-- <div class="pagination-info">
-                        Mostrando <span class="fw-medium" th:text="${prove.size()}">10</span> de
-                        <span class="fw-medium" th:text="${totalProductos}">100</span> proveedores en total
-                    </div> -->
-                </div>
-            </main>
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Está seguro de que desea eliminar este proveedor? Esta acción no se puede deshacer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#providersTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
+                },
+                "pageLength": 10,
+                "responsive": true
+            });
+            
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+        });
+
+        // Delete confirmation
+        function confirmDelete(id) {
+            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+            
+            document.getElementById('confirmDeleteBtn').onclick = function() {
+                // Here you would normally call an API to delete the provider
+                console.log('Deleting provider with ID: ' + id);
+                
+                // For demo purposes, we'll just show an alert
+                alert('Proveedor eliminado correctamente');
+                modal.hide();
+                
+                // Reload the page or remove the row from the table
+                // location.reload();
+            };
+        }
+    </script>
+</body>
 </html>

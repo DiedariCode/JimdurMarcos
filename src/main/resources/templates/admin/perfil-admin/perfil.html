@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Administrador | JIMDUR Repuestos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <div class="text-center mb-4">
+                        <img src="/assets/img/logo-jimdur-white.png" alt="JIMDUR Repuestos" class="img-fluid" style="max-width: 150px;">
+                    </div>
+                    
+                    <div class="px-3 mb-4 text-center">
+                        <div class="admin-avatar mb-2">
+                            <img src="/assets/img/admin-avatar.jpg" alt="Admin" class="rounded-circle" width="80">
+                        </div>
+                        <div class="text-white">
+                            <h6 class="mb-0">Carlos Rodríguez</h6>
+                            <small class="text-muted">Administrador</small>
+                        </div>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/admin/dashboard.html">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/admin/pedidos/index.html">
+                                <i class="fas fa-shopping-cart me-2"></i>
+                                Pedidos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/admin/productos/index.html">
+                                <i class="fas fa-box me-2"></i>
+                                Productos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/admin/clientes/index.html">
+                                <i class="fas fa-users me-2"></i>
+                                Clientes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/admin/proveedores/index.html">
+                                <i class="fas fa-truck me-2"></i>
+                                Proveedores
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/admin/inventario/index.html">
+                                <i class="fas fa-warehouse me-2"></i>
+                                Inventario
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/admin/marketing/index.html">
+                                <i class="fas fa-bullhorn me-2"></i>
+                                Marketing
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/admin/reportes/index.html">
+                                <i class="fas fa-chart-bar me-2"></i>
+                                Reportes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white active" href="/admin/perfil/index.html">
+                                <i class="fas fa-user-circle me-2"></i>
+                                Mi Perfil
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/admin/ajustes/index.html">
+                                <i class="fas fa-cog me-2"></i>
+                                Ajustes
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <hr class="text-white-50">
+                    
+                    <div class="px-3 mt-4">
+                        <a href="/admin/logout.html" class="btn btn-danger w-100">
+                            <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/admin/dashboard.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Mi Perfil</li>
+                    </ol>
+                </nav>
+                
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h2">Mi Perfil</h1>
+                    <div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12 col-xl-4 mb-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <div class="position-relative d-inline-block mb-3">
+                                    <img src="/assets/img/admin-avatar.jpg" alt="Admin" class="rounded-circle img-thumbnail" width="150" height="150">
+                                    <button class="btn btn-sm btn-primary position-absolute bottom-0 end-0 rounded-circle">
+                                        <i class="fas fa-camera"></i>
+                                    </button>
+                                </div>
+                                <h5 class="card-title">Carlos Rodríguez</h5>
+                                <p class="card-text text-muted">Administrador General</p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <span class="badge bg-success">Online</span>
+                                    <span class="badge bg-primary">Administrador</span>
+                                </div>
+                                <hr>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-danger">
+                                        <i class="fas fa-lock me-2"></i> Cambiar Contraseña
+                                    </button>
+                                    <button class="btn btn-outline-secondary">
+                                        <i class="fas fa-shield-alt me-2"></i> Activar 2FA
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0">
+                                <div class="text-muted small">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>Miembro desde:</span>
+                                        <span>15/03/2022</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>Último acceso:</span>
+                                        <span>Hoy, 10:45 AM</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Estado:</span>
+                                        <span class="text-success">Activo</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-xl-8">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#personal" role="tab">
+                                            <i class="fas fa-user me-2"></i> Información Personal
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#notificaciones" role="tab">
+                                            <i class="fas fa-bell me-2"></i> Notificaciones
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#seguridad" role="tab">
+                                            <i class="fas fa-shield-alt me-2"></i> Seguridad
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <!-- Información Personal -->
+                                    <div class="tab-pane fade show active" id="personal" role="tabpanel">
+                                        <form>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="nombre" class="form-label">Nombre</label>
+                                                    <input type="text" class="form-control" id="nombre" value="Carlos">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="apellido" class="form-label">Apellido</label>
+                                                    <input type="text" class="form-control" id="apellido" value="Rodríguez">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                                    <input type="email" class="form-control" id="email" value="carlos.rodriguez@jimdur.com">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="telefono" class="form-label">Teléfono</label>
+                                                    <input type="tel" class="form-control" id="telefono" value="+58 412-555-1234">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="cargo" class="form-label">Cargo</label>
+                                                    <input type="text" class="form-control" id="cargo" value="Administrador General">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="departamento" class="form-label">Departamento</label>
+                                                    <select class="form-select" id="departamento">
+                                                        <option selected>Dirección</option>
+                                                        <option>Ventas</option>
+                                                        <option>Inventario</option>
+                                                        <option>Atención al Cliente</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="biografia" class="form-label">Biografía</label>
+                                                <textarea class="form-control" id="biografia" rows="3">Administrador general de JIMDUR Repuestos con más de 10 años de experiencia en el sector automotriz. Especialista en gestión de inventarios y optimización de procesos.</textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    
+                                    <!-- Notificaciones -->
+                                    <div class="tab-pane fade" id="notificaciones" role="tabpanel">
+                                        <h5 class="mb-4">Preferencias de Notificaciones</h5>
+                                        
+                                        <div class="mb-4">
+                                            <h6>Notificaciones por Correo</h6>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="emailPedidos" checked>
+                                                <label class="form-check-label" for="emailPedidos">Nuevos pedidos</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="emailInventario" checked>
+                                                <label class="form-check-label" for="emailInventario">Alertas de inventario</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="emailClientes">
+                                                <label class="form-check-label" for="emailClientes">Nuevos clientes</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="emailReportes" checked>
+                                                <label class="form-check-label" for="emailReportes">Reportes semanales</label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-4">
+                                            <h6>Notificaciones del Sistema</h6>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="sistemaPedidos" checked>
+                                                <label class="form-check-label" for="sistemaPedidos">Nuevos pedidos</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="sistemaInventario" checked>
+                                                <label class="form-check-label" for="sistemaInventario">Alertas de inventario</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="sistemaClientes" checked>
+                                                <label class="form-check-label" for="sistemaClientes">Nuevos clientes</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="sistemaActualizaciones" checked>
+                                                <label class="form-check-label" for="sistemaActualizaciones">Actualizaciones del sistema</label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6>Resúmenes</h6>
+                                            <div class="mb-3">
+                                                <label for="frecuenciaResumen" class="form-label">Frecuencia de resúmenes</label>
+                                                <select class="form-select" id="frecuenciaResumen">
+                                                    <option>Diario</option>
+                                                    <option selected>Semanal</option>
+                                                    <option>Mensual</option>
+                                                    <option>Nunca</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Seguridad -->
+                                    <div class="tab-pane fade" id="seguridad" role="tabpanel">
+                                        <h5 class="mb-4">Configuración de Seguridad</h5>
+                                        
+                                        <div class="mb-4">
+                                            <h6>Cambiar Contraseña</h6>
+                                            <form>
+                                                <div class="mb-3">
+                                                    <label for="currentPassword" class="form-label">Contraseña Actual</label>
+                                                    <input type="password" class="form-control" id="currentPassword">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="newPassword" class="form-label">Nueva Contraseña</label>
+                                                    <input type="password" class="form-control" id="newPassword">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="confirmPassword" class="form-label">Confirmar Nueva Contraseña</label>
+                                                    <input type="password" class="form-control" id="confirmPassword">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Actualizar Contraseña</button>
+                                            </form>
+                                        </div>
+                                        
+                                        <hr>
+                                        
+                                        <div class="mb-4">
+                                            <h6>Autenticación de Dos Factores</h6>
+                                            <p class="text-muted">Añade una capa adicional de seguridad a tu cuenta.</p>
+                                            
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">Autenticación por SMS</h6>
+                                                    <p class="text-muted mb-0 small">Recibe un código por SMS cada vez que inicies sesión</p>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="smsAuth">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">Autenticación por App</h6>
+                                                    <p class="text-muted mb-0 small">Usa una aplicación de autenticación como Google Authenticator</p>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="appAuth">
+                                                </div>
+                                            </div>
+                                            
+                                            <button class="btn btn-outline-primary">Configurar 2FA</button>
+                                        </div>
+                                        
+                                        <hr>
+                                        
+                                        <div>
+                                            <h6>Sesiones Activas</h6>
+                                            <p class="text-muted">Dispositivos donde has iniciado sesión recientemente.</p>
+                                            
+                                            <div class="list-group">
+                                                <div class="list-group-item d-flex align-items-center">
+                                                    <div class="me-3">
+                                                        <i class="fas fa-laptop fa-2x text-primary"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-0">Windows PC - Chrome</h6>
+                                                        <p class="text-muted mb-0 small">Caracas, Venezuela - Activo ahora</p>
+                                                    </div>
+                                                    <div>
+                                                        <span class="badge bg-success">Actual</span>
+                                                    </div>
+                                                </div>
+                                                <div class="list-group-item d-flex align-items-center">
+                                                    <div class="me-3">
+                                                        <i class="fas fa-mobile-alt fa-2x text-primary"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-0">iPhone - Safari</h6>
+                                                        <p class="text-muted mb-0 small">Caracas, Venezuela - Hace 2 horas</p>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn-sm btn-outline-danger">Cerrar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <button class="btn btn-outline-danger mt-3">
+                                                <i class="fas fa-sign-out-alt me-2"></i> Cerrar todas las sesiones
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Actividad Reciente</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Actualizó inventario</h6>
+                                            <small class="text-muted">Hoy, 09:15 AM</small>
+                                        </div>
+                                        <p class="mb-1 text-muted">Actualizó el stock de 15 productos en la categoría "Frenos"</p>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Procesó pedido #12458</h6>
+                                            <small class="text-muted">Ayer, 16:30 PM</small>
+                                        </div>
+                                        <p class="mb-1 text-muted">Cambió el estado del pedido a "Enviado" y generó la guía de envío</p>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Añadió nuevo producto</h6>
+                                            <small class="text-muted">Ayer, 14:22 PM</small>
+                                        </div>
+                                        <p class="mb-1 text-muted">Creó el producto "Kit de Embrague Toyota Corolla 2018-2020"</p>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Generó reporte de ventas</h6>
+                                            <small class="text-muted">22/05/2023, 10:45 AM</small>
+                                        </div>
+                                        <p class="mb-1 text-muted">Exportó el reporte mensual de ventas por categoría</p>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Actualizó proveedor</h6>
+                                            <small class="text-muted">21/05/2023, 15:10 PM</small>
+                                        </div>
+                                        <p class="mb-1 text-muted">Actualizó la información de contacto del proveedor "AutoPartes Express"</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white text-center">
+                                <a href="#" class="text-decoration-none">Ver todo el historial</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/assets/js/admin.js"></script>
+</body>
+</html>
