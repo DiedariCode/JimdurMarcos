@@ -199,19 +199,50 @@
                                                     </button>
                                                 </div>
 
+                                                <!-- Etiqueta y Calle -->
                                                 <div class="row">
-                                                    <div class="col-md-12 mb-3">
+                                                    <div class="col-md-6 mb-3">
                                                         <label class="form-label required-field"
-                                                            for="direccionCompleta">Dirección Completa</label>
+                                                            for="etiqueta">Etiqueta</label>
                                                         <input type="text" class="form-control"
-                                                            th:field="*{direcciones[__${iterStat.index}__].direccionCompleta}"
+                                                            th:field="*{direcciones[__${iterStat.index}__].etiqueta}"
                                                             required>
                                                         <div class="invalid-feedback">
-                                                            Por favor ingrese la dirección completa.
+                                                            Por favor ingrese una etiqueta para esta dirección.
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label required-field"
+                                                            for="calle">Calle</label>
+                                                        <input type="text" class="form-control"
+                                                            th:field="*{direcciones[__${iterStat.index}__].calle}"
+                                                            required>
+                                                        <div class="invalid-feedback">
+                                                            Por favor ingrese la calle.
                                                         </div>
                                                     </div>
                                                 </div>
 
+                                                <!-- Distrito y Referencia -->
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label required-field"
+                                                            for="distrito">Distrito</label>
+                                                        <input type="text" class="form-control"
+                                                            th:field="*{direcciones[__${iterStat.index}__].distrito}"
+                                                            required>
+                                                        <div class="invalid-feedback">
+                                                            Por favor ingrese el distrito.
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label" for="referencia">Referencia</label>
+                                                        <input type="text" class="form-control"
+                                                            th:field="*{direcciones[__${iterStat.index}__].referencia}">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Ciudad, Departamento, Código Postal -->
                                                 <div class="row">
                                                     <div class="col-md-4 mb-3">
                                                         <label class="form-label required-field"
@@ -225,12 +256,12 @@
                                                     </div>
                                                     <div class="col-md-4 mb-3">
                                                         <label class="form-label required-field"
-                                                            for="departamento">Departamento/Estado</label>
+                                                            for="departamentoEstado">Departamento/Estado</label>
                                                         <input type="text" class="form-control"
-                                                            th:field="*{direcciones[__${iterStat.index}__].departamento}"
+                                                            th:field="*{direcciones[__${iterStat.index}__].departamentoEstado}"
                                                             required>
                                                         <div class="invalid-feedback">
-                                                            Por favor ingrese el departamento.
+                                                            Por favor ingrese el departamento o estado.
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 mb-3">
@@ -241,6 +272,7 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- País y Tipo Dirección -->
                                                 <div class="row">
                                                     <div class="col-md-6 mb-3">
                                                         <label class="form-label required-field" for="pais">País</label>
@@ -266,10 +298,12 @@
                                                             Dirección</label>
                                                         <select class="form-select"
                                                             th:field="*{direcciones[__${iterStat.index}__].tipoDireccion}">
-                                                            <option value="Principal">Principal</option>
-                                                            <option value="Sucursal">Sucursal</option>
-                                                            <option value="Almacén">Almacén</option>
-                                                            <option value="Oficina">Oficina</option>
+                                                            <option value="">Seleccionar...</option>
+                                                            <option value="FISCAL">Fiscal</option>
+                                                            <option value="ENVIO">Envío</option>
+                                                            <option value="FACTURACION">Facturación</option>
+                                                            <option value="DEVOLUCION">Devolución</option>
+                                                            <option value="OTRO">Otro</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -288,18 +322,44 @@
                                                     </button>
                                                 </div>
 
+                                                <!-- Etiqueta y Calle -->
                                                 <div class="row">
-                                                    <div class="col-md-12 mb-3">
-                                                        <label class="form-label required-field">Dirección
-                                                            Completa</label>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label required-field">Etiqueta</label>
                                                         <input type="text" class="form-control"
-                                                            name="direcciones[0].direccionCompleta" required>
+                                                            name="direcciones[0].etiqueta" required>
                                                         <div class="invalid-feedback">
-                                                            Por favor ingrese la dirección completa.
+                                                            Por favor ingrese una etiqueta para esta dirección.
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label required-field">Calle</label>
+                                                        <input type="text" class="form-control"
+                                                            name="direcciones[0].calle" required>
+                                                        <div class="invalid-feedback">
+                                                            Por favor ingrese la calle.
                                                         </div>
                                                     </div>
                                                 </div>
 
+                                                <!-- Distrito y Referencia -->
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label required-field">Distrito</label>
+                                                        <input type="text" class="form-control"
+                                                            name="direcciones[0].distrito" required>
+                                                        <div class="invalid-feedback">
+                                                            Por favor ingrese el distrito.
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Referencia</label>
+                                                        <input type="text" class="form-control"
+                                                            name="direcciones[0].referencia">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Ciudad, Departamento, Código Postal -->
                                                 <div class="row">
                                                     <div class="col-md-4 mb-3">
                                                         <label class="form-label required-field">Ciudad</label>
@@ -313,7 +373,7 @@
                                                         <label
                                                             class="form-label required-field">Departamento/Estado</label>
                                                         <input type="text" class="form-control"
-                                                            name="direcciones[0].departamento" required>
+                                                            name="direcciones[0].departamentoEstado" required>
                                                         <div class="invalid-feedback">
                                                             Por favor ingrese el departamento.
                                                         </div>
@@ -325,6 +385,7 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- País y Tipo Dirección -->
                                                 <div class="row">
                                                     <div class="col-md-6 mb-3">
                                                         <label class="form-label required-field">País</label>
@@ -346,15 +407,18 @@
                                                     <div class="col-md-6 mb-3">
                                                         <label class="form-label">Tipo de Dirección</label>
                                                         <select class="form-select" name="direcciones[0].tipoDireccion">
-                                                            <option value="Principal">Principal</option>
-                                                            <option value="Sucursal">Sucursal</option>
-                                                            <option value="Almacén">Almacén</option>
-                                                            <option value="Oficina">Oficina</option>
+                                                            <option value="">Seleccionar...</option>
+                                                            <option value="FISCAL">Fiscal</option>
+                                                            <option value="ENVIO">Envío</option>
+                                                            <option value="FACTURACION">Facturación</option>
+                                                            <option value="DEVOLUCION">Devolución</option>
+                                                            <option value="OTRO">Otro</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
 
                                         <button type="button" class="btn btn-outline-primary"
                                             onclick="agregarDireccion()">+ Agregar Dirección</button>
@@ -379,75 +443,98 @@
         function agregarDireccion() {
             const container = document.getElementById('direccionesContainer');
             const nuevaDireccion = `
-                <div class="direccion-item border rounded p-3 mb-3" data-index="${direccionIndex}">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="mb-0">Dirección ${direccionIndex + 1}</h6>
-                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarDireccion(${direccionIndex})">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label class="form-label required-field">Dirección Completa</label>
-                            <input type="text" class="form-control" name="direcciones[${direccionIndex}].direccionCompleta" required>
-                            <div class="invalid-feedback">
-                                Por favor ingrese la dirección completa.
-                            </div>
+            <div class="direccion-item border rounded p-3 mb-3" data-index="${direccionIndex}">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">Dirección ${direccionIndex + 1}</h6>
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarDireccion(${direccionIndex})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label required-field">Etiqueta</label>
+                        <input type="text" class="form-control" name="direcciones[${direccionIndex}].etiqueta" required>
+                        <div class="invalid-feedback">
+                            Por favor ingrese una etiqueta.
                         </div>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label required-field">Ciudad</label>
-                            <input type="text" class="form-control" name="direcciones[${direccionIndex}].ciudad" required>
-                            <div class="invalid-feedback">
-                                Por favor ingrese la ciudad.
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label required-field">Departamento/Estado</label>
-                            <input type="text" class="form-control" name="direcciones[${direccionIndex}].departamento" required>
-                            <div class="invalid-feedback">
-                                Por favor ingrese el departamento.
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Código Postal</label>
-                            <input type="text" class="form-control" name="direcciones[${direccionIndex}].codigoPostal">
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label required-field">País</label>
-                            <select class="form-select" name="direcciones[${direccionIndex}].pais" required>
-                                <option value="">Seleccionar...</option>
-                                <option value="Colombia" selected>Colombia</option>
-                                <option value="Argentina">Argentina</option>
-                                <option value="Brasil">Brasil</option>
-                                <option value="Chile">Chile</option>
-                                <option value="Ecuador">Ecuador</option>
-                                <option value="Perú">Perú</option>
-                                <option value="Venezuela">Venezuela</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Por favor seleccione un país.
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tipo de Dirección</label>
-                            <select class="form-select" name="direcciones[${direccionIndex}].tipoDireccion">
-                                <option value="Principal">Principal</option>
-                                <option value="Sucursal" selected>Sucursal</option>
-                                <option value="Almacén">Almacén</option>
-                                <option value="Oficina">Oficina</option>
-                            </select>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label required-field">Calle</label>
+                        <input type="text" class="form-control" name="direcciones[${direccionIndex}].calle" required>
+                        <div class="invalid-feedback">
+                            Por favor ingrese la calle.
                         </div>
                     </div>
                 </div>
-            `;
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label required-field">Distrito</label>
+                        <input type="text" class="form-control" name="direcciones[${direccionIndex}].distrito" required>
+                        <div class="invalid-feedback">
+                            Por favor ingrese el distrito.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Referencia</label>
+                        <input type="text" class="form-control" name="direcciones[${direccionIndex}].referencia">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label required-field">Ciudad</label>
+                        <input type="text" class="form-control" name="direcciones[${direccionIndex}].ciudad" required>
+                        <div class="invalid-feedback">
+                            Por favor ingrese la ciudad.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label required-field">Departamento/Estado</label>
+                        <input type="text" class="form-control" name="direcciones[${direccionIndex}].departamentoEstado" required>
+                        <div class="invalid-feedback">
+                            Por favor ingrese el departamento.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Código Postal</label>
+                        <input type="text" class="form-control" name="direcciones[${direccionIndex}].codigoPostal">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label required-field">País</label>
+                        <select class="form-select" name="direcciones[${direccionIndex}].pais" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="Colombia">Colombia</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Brasil">Brasil</option>
+                            <option value="Chile">Chile</option>
+                            <option value="Ecuador">Ecuador</option>
+                            <option value="Perú">Perú</option>
+                            <option value="Venezuela">Venezuela</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor seleccione un país.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Tipo de Dirección</label>
+                        <select class="form-select" name="direcciones[${direccionIndex}].tipoDireccion">
+                            <option value="">Seleccionar...</option>
+                            <option value="FISCAL">Fiscal</option>
+                            <option value="ENVIO">Envío</option>
+                            <option value="FACTURACION">Facturación</option>
+                            <option value="DEVOLUCION">Devolución</option>
+                            <option value="OTRO">Otro</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        `;
 
             container.insertAdjacentHTML('beforeend', nuevaDireccion);
             direccionIndex++;
@@ -460,6 +547,7 @@
             }
         }
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

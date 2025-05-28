@@ -26,14 +26,19 @@ public class ProveedorMapper {
                 .categoriaProductosProveedor(dto.getCategoriaProductosProveedor())
                 .build();
 
-        if (dto.getDirecciones() != null) {
-            List<DireccionProveedor> direcciones = dto.getDirecciones().stream().map(d ->
+        if (dto.getDirecciones() != null) { // Verifica si hay direcciones en el DTO
+            List<DireccionProveedor> direcciones = dto.getDirecciones().stream()
+            .map(d ->
                     DireccionProveedor.builder()
                             .etiqueta(d.getEtiqueta())
                             .calle(d.getCalle())
                             .distrito(d.getDistrito())
                             .ciudad(d.getCiudad())
+                            .departamentoEstado(d.getDepartamentoEstado())
+                            .codigoPostal(d.getCodigoPostal())
+                            .pais(d.getPais())
                             .referencia(d.getReferencia())
+                            .tipoDireccion(d.getTipoDireccion()) 
                             .proveedor(proveedor)
                             .build()
             ).collect(Collectors.toList());
@@ -67,7 +72,11 @@ public class ProveedorMapper {
                             d.getCalle(),
                             d.getDistrito(),
                             d.getCiudad(),
-                            d.getReferencia()
+                            d.getDepartamentoEstado(),
+                            d.getCodigoPostal(),
+                            d.getPais(),
+                            d.getReferencia(),
+                            d.getTipoDireccion()
                     )
             ).collect(Collectors.toList());
 
