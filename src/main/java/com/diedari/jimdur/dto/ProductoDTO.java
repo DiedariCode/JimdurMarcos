@@ -1,0 +1,68 @@
+package com.diedari.jimdur.dto;
+
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ProductoDTO {
+
+    private Long idProducto;
+
+    @NotBlank(message = "El código SKU es obligatorio")
+    @Size(max = 50, message = "El SKU no puede exceder 50 caracteres")
+    private String sku;
+
+    @NotBlank(message = "El nombre del producto es obligatorio")
+    @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
+    private String nombre;
+
+    @Size(max = 255, message = "La descripción no puede exceder 255 caracteres")
+    private String descripcion;
+
+    @NotNull(message = "El precio es obligatorio")
+    @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
+    private Double precio;
+
+    @DecimalMin(value = "0.0", message = "El descuento no puede ser negativo")
+    @DecimalMax(value = "100.0", message = "El descuento no puede ser mayor a 100%")
+    private Double descuento;
+
+    private Double precioOferta;
+
+    @NotNull(message = "La categoría es obligatoria")
+    private Long idCategoria;
+
+    @NotNull(message = "La marca es obligatoria")
+    private Long idMarca;
+
+    @NotNull(message = "El estado es obligatorio")
+    private Boolean activo;
+
+    // Para el formulario
+    private String nombreCategoria;
+    private String nombreMarca;
+
+    // Para las imágenes
+    private List<MultipartFile> imagenes;
+    private List<String> imagenesExistentes;
+
+    // Para los proveedores
+    private List<ProductoProveedorDTO> proveedores;
+
+    // Para mostrar en vista
+    private String slug;
+    private String tipoDescuento;
+}

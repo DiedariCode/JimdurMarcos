@@ -1,31 +1,25 @@
 package com.diedari.jimdur.service;
 
 import java.util.List;
+
+import com.diedari.jimdur.dto.ProductoDTO;
 import com.diedari.jimdur.model.Producto;
 
 public interface ProductoService {
-    
-    // Método para obtener todos los productos 
-    public List<Producto> listarTodosLosProductos();
 
-    // Método para obtener un producto por su ID
-    public Producto obtenerProductoPorId(Long id);
+    ProductoDTO guardarProducto(ProductoDTO productoDTO);
 
-    // Método para crear un nuevo producto y guardarlo en la base de datos
-    public Producto guardarProductoNuevo(Producto producto);
+    ProductoDTO actualizarProducto(ProductoDTO productoDTO);
 
-    // Método para actualizar un producto existente
-    public Producto actualizarProducto(Producto producto);
+    List<ProductoDTO> obtenerTodosLosProductos();
 
-    // Método para eliminar un producto por su ID
-    public void eliminarProducto(Long id);
+    ProductoDTO obtenerProductoPorId(Long id);
 
-    // Método para listar los últimos productos agregados ESTO PARA EL INDEX QUE TENGO ESO :V
-    public List<Producto> listarUltimosProductos(int cantidad);
+    void eliminarProducto(Long id);
 
-    // Metodo para obtener producto por slug
-    public Producto obtenerProductoPorSlug(String slug);
+    boolean existeSkuProducto(String sku, Long idProducto);
 
-    // Método para obtener productos por estado
-    public List<Producto> obtenerProductoPorEstado(boolean activo);
+    List<Producto> obtenerProductoPorEstado(boolean estado);
+
+    Producto obtenerProductoPorSlug(String slug);
 }

@@ -32,7 +32,7 @@ public class CategoriaController {
         List<Categoria> categorias = categoriaService.obtenerTodasLasCategorias();
         model.addAttribute("categorias", categorias);
         model.addAttribute("categoria", new Categoria()); // Para el formulario de nueva categoria
-        model.addAttribute("productos", productoService.listarTodosLosProductos()); // Vista para listar categorias
+        model.addAttribute("productos", productoService.obtenerTodosLosProductos()); // Vista para listar categorias
 
 
         model.addAttribute("claseActiva", "categoria");
@@ -56,7 +56,7 @@ public class CategoriaController {
 
         model.addAttribute("categorias", categorias);
         model.addAttribute("categoria", new Categoria()); // Para el formulario de nueva categoría
-        model.addAttribute("productos", productoService.listarTodosLosProductos()); // Vista para listar categorías
+        model.addAttribute("productos", productoService.obtenerTodosLosProductos()); // Vista para listar categorías
 
         return "admin/categoria/listar";
     }
@@ -66,7 +66,7 @@ public class CategoriaController {
         List<Categoria> categorias = categoriaService.obtenerCategoriaPorNombre(nombre); 
         model.addAttribute("categorias", categorias);
         model.addAttribute("categoria", new Categoria()); // Para el formulario de nueva categoria
-        model.addAttribute("productos", productoService.listarTodosLosProductos()); // Vista para listar categorias
+        model.addAttribute("productos", productoService.obtenerTodosLosProductos()); // Vista para listar categorias
 
         return "admin/categoria/listar";
     }
@@ -75,7 +75,7 @@ public class CategoriaController {
     @GetMapping("/agregar")
     public String nuevaCategoriaForm(Model model) {
         model.addAttribute("categoria", new Categoria());
-        model.addAttribute("productos", productoService.listarTodosLosProductos()); // Vista para agregar categoria
+        model.addAttribute("productos", productoService.obtenerTodosLosProductos()); // Vista para agregar categoria
         return "admin/categoria/nueva";
     }
 
@@ -92,7 +92,7 @@ public class CategoriaController {
         Categoria categoria = categoriaService.obtenerCategoriaPorId(id);
         if (categoria != null) {
             model.addAttribute("categoria", categoria);
-            model.addAttribute("productos", productoService.listarTodosLosProductos()); // Vista para editar categoria
+            model.addAttribute("productos", productoService.obtenerTodosLosProductos()); // Vista para editar categoria
             return "admin/categoria/editar";
         } else {
             return "redirect:/admin/categorias"; // Redirige a la lista de categorias si no se encuentra la categoria

@@ -22,18 +22,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ImagenProducto {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_imagen")
     private Long idImagen;
-    
-    @Column(name = "url_imagen")
+
+    @Column(name = "nombre_archivo")
     @Size(max = 255, message = "La URL de imagen no puede exceder 255 caracteres")
-    private String urlImagen;
-    
+    private String nombreArchivo;
+
+    @Column(name = "es_portada")
+    private Boolean esPortada; // Indica si es la imagen principal del producto
+
     // Relaciones
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto")
     private Producto producto;
+
+    public static class ImagenProductoBuilder {
+        public ImagenProductoBuilder nombreArchivo(String nombreArchivo) {
+            this.nombreArchivo = nombreArchivo;
+            return this;
+        }
+    }
 }

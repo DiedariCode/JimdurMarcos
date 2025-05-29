@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "Direccion_Proveedor")
@@ -69,6 +70,7 @@ public class DireccionProveedor {
     // Relaciones
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_proveedor")
+    @ToString.Exclude
     private Proveedor proveedor;
 
     public enum TipoDireccion {
