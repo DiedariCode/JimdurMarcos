@@ -1,86 +1,38 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Productos - Repuestos JimDur</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .sidebar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        .product-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        .status-badge {
-            font-size: 0.75rem;
-        }
-        .action-buttons .btn {
-            margin: 2px;
-            padding: 0.25rem 0.5rem;
-        }
-        .card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .table-responsive {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-        }
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JIMDUR Admin - Gestión de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- ICONOS BOOTSTRAP -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- CSS de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- ICONOS FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- CSS PERSONALIZADO: SIDEBAR -->
+    <link rel="stylesheet" th:href="@{/css/admin/productos.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar.css}">
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
-                <div class="position-sticky pt-3">
-                    <div class="text-center text-white mb-4">
-                        <h4><i class="fas fa-motorcycle"></i> JimDur</h4>
-                        <small>Repuestos & Accesorios</small>
-                    </div>
-                    <ul class="nav flex-column text-white">
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white active bg-white bg-opacity-25 rounded" href="#"><i class="fas fa-box"></i> Productos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#"><i class="fas fa-truck"></i> Proveedores</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#"><i class="fas fa-warehouse"></i> Inventario</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#"><i class="fas fa-shopping-cart"></i> Pedidos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#"><i class="fas fa-users"></i> Usuarios</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-            <!-- Main content -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 ms-auto px-4 py-4 content-wrapper animate-fade">
                 <!-- Header -->
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2"><i class="fas fa-box me-2"></i>Gestión de Productos</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalProducto">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#modalProducto">
                             <i class="fas fa-plus"></i> Nuevo Producto
                         </button>
                     </div>
@@ -153,7 +105,8 @@
                         <tbody id="tablaProductos">
                             <!-- Ejemplo de datos -->
                             <tr>
-                                <td><img src="https://via.placeholder.com/80x80/6c757d/ffffff?text=Pastillas" class="product-image" alt="Producto"></td>
+                                <td><img src="https://via.placeholder.com/80x80/6c757d/ffffff?text=Pastillas"
+                                        class="product-image" alt="Producto"></td>
                                 <td><span class="badge bg-secondary">BRK001</span></td>
                                 <td>
                                     <strong>Pastillas de Freno Delanteras</strong><br>
@@ -180,7 +133,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><img src="https://via.placeholder.com/80x80/6c757d/ffffff?text=Filtro" class="product-image" alt="Producto"></td>
+                                <td><img src="https://via.placeholder.com/80x80/6c757d/ffffff?text=Filtro"
+                                        class="product-image" alt="Producto"></td>
                                 <td><span class="badge bg-secondary">FLT002</span></td>
                                 <td>
                                     <strong>Filtro de Aceite</strong><br>
@@ -207,7 +161,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><img src="https://via.placeholder.com/80x80/6c757d/ffffff?text=Cadena" class="product-image" alt="Producto"></td>
+                                <td><img src="https://via.placeholder.com/80x80/6c757d/ffffff?text=Cadena"
+                                        class="product-image" alt="Producto"></td>
                                 <td><span class="badge bg-secondary">CHN003</span></td>
                                 <td>
                                     <strong>Cadena de Transmisión 428H</strong><br>
@@ -341,7 +296,136 @@
                                 </select>
                             </div>
                         </div>
-                        
+
+                        <!-- Sección de Proveedores -->
+                        <hr class="mt-4">
+                        <h6><i class="fas fa-truck"></i> Información de Proveedores</h6>
+                        <div id="proveedoresContainer">
+                            <div class="row proveedor-item bg-light p-3 rounded mb-3">
+                                <div class="col-md-6">
+                                    <label for="proveedor_1" class="form-label">Proveedor</label>
+                                    <select class="form-select" id="proveedor_1">
+                                        <option value="">Seleccionar proveedor</option>
+                                        <option value="1">Distribuidora Pérez SAC</option>
+                                        <option value="2">Repuestos Lima EIRL</option>
+                                        <option value="3">Importaciones Moto SRL</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="precio_compra_1" class="form-label">Precio Compra</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">S/.</span>
+                                        <input type="number" class="form-control" id="precio_compra_1" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="stock_1" class="form-label">Stock Inicial</label>
+                                    <input type="number" class="form-control" id="stock_1" min="0">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="agregarProveedor()">
+                            <i class="fas fa-plus"></i> Agregar Otro Proveedor
+                        </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarProducto()">
+                        <i class="fas fa-save"></i> Guardar Producto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar producto -->
+    <div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalProductoLabel">
+                        <i class="fas fa-plus-circle"></i> Nuevo Producto
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formProducto">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="sku" class="form-label">SKU *</label>
+                                <input type="text" class="form-control" id="sku" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="nombre" class="form-label">Nombre del Producto *</label>
+                                <input type="text" class="form-control" id="nombre" required>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcion" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label for="categoria" class="form-label">Categoría *</label>
+                                <select class="form-select" id="categoria" required>
+                                    <option value="">Seleccionar categoría</option>
+                                    <option value="1">Frenos</option>
+                                    <option value="2">Motor</option>
+                                    <option value="3">Suspensión</option>
+                                    <option value="4">Eléctrico</option>
+                                    <option value="5">Transmisión</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="marca" class="form-label">Marca *</label>
+                                <select class="form-select" id="marca" required>
+                                    <option value="">Seleccionar marca</option>
+                                    <option value="1">Honda</option>
+                                    <option value="2">Yamaha</option>
+                                    <option value="3">Suzuki</option>
+                                    <option value="4">Kawasaki</option>
+                                    <option value="5">Generic</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="precio" class="form-label">Precio de Venta *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">S/.</span>
+                                    <input type="number" class="form-control" id="precio" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="descuento" class="form-label">Descuento (%)</label>
+                                <input type="number" class="form-control" id="descuento" step="0.01" min="0" max="100">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="precio_oferta" class="form-label">Precio Oferta</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">S/.</span>
+                                    <input type="number" class="form-control" id="precio_oferta" step="0.01" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label for="imagenes" class="form-label">Imágenes del Producto</label>
+                                <input type="file" class="form-control" id="imagenes" multiple accept="image/*">
+                                <small class="text-muted">Seleccione una o varias imágenes</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="activo" class="form-label">Estado</label>
+                                <select class="form-select" id="activo">
+                                    <option value="1">Activo</option>
+                                    <option value="0">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- Sección de Proveedores -->
                         <hr class="mt-4">
                         <h6><i class="fas fa-truck"></i> Información de Proveedores</h6>
@@ -385,7 +469,8 @@
     </div>
 
     <!-- Modal para gestionar inventario -->
-    <div class="modal fade" id="modalInventario" tabindex="-1" aria-labelledby="modalInventarioLabel" aria-hidden="true">
+    <div class="modal fade" id="modalInventario" tabindex="-1" aria-labelledby="modalInventarioLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -447,36 +532,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        let contadorProveedores = 1;
-
-        // Calcular precio de oferta cuando cambia el descuento
-        document.getElementById('descuento').addEventListener('input', function() {
-            const precio = parseFloat(document.getElementById('precio').value) || 0;
-            const descuento = parseFloat(this.value) || 0;
-            const precioOferta = precio - (precio * descuento / 100);
-            document.getElementById('precio_oferta').value = precioOferta.toFixed(2);
-        });
-
-        // Funciones principales
-        function aplicarFiltros() {
-            const search = document.getElementById('searchProduct').value;
-            const categoria = document.getElementById('filterCategoria').value;
-            const marca = document.getElementById('filterMarca').value;
-            const estado = document.getElementById('filterEstado').value;
-            
-            console.log('Aplicando filtros:', { search, categoria, marca, estado });
-            // Aquí implementarías la lógica de filtrado con tu backend
-            alert('Filtros aplicados. Implementar con backend.');
-        }
-
-        function limpiarFiltros() {
-            document.getElementById('searchProduct').value = '';
-            document.getElementById('filterCategoria').value = '';
-            document.getElementById('filterMarca').value = '';
-            document.getElementById('filterEstado').value = '';
-            console.log('Filtros limpiados');
-        }
-
         function verProducto(id) {
             console.log('Ver producto ID:', id);
             // Implementar modal de vista detallada
@@ -503,317 +558,7 @@
                 alert('Producto eliminado (implementar con backend)');
             }
         }
-
-        function guardarProducto() {
-            const formData = new FormData();
-            
-            // Datos básicos del producto
-            formData.append('sku', document.getElementById('sku').value);
-            formData.append('nombre', document.getElementById('nombre').value);
-            formData.append('descripcion', document.getElementById('descripcion').value);
-            formData.append('categoria', document.getElementById('categoria').value);
-            formData.append('marca', document.getElementById('marca').value);
-            formData.append('precio', document.getElementById('precio').value);
-            formData.append('descuento', document.getElementById('descuento').value);
-            formData.append('precio_oferta', document.getElementById('precio_oferta').value);
-            formData.append('activo', document.getElementById('activo').value);
-
-            // Imágenes
-            const imagenes = document.getElementById('imagenes').files;
-            for (let i = 0; i < imagenes.length; i++) {
-                formData.append('imagenes[]', imagenes[i]);
-            }
-
-            // Datos de proveedores
-            const proveedores = [];
-            for (let i = 1; i <= contadorProveedores; i++) {
-                const proveedorSelect = document.getElementById('proveedor_' + i);
-                const precioCompra = document.getElementById('precio_compra_' + i);
-                const stock = document.getElementById('stock_' + i);
-                
-                if (proveedorSelect && proveedorSelect.value) {
-                    proveedores.push({
-                        id_proveedor: proveedorSelect.value,
-                        precio_compra: precioCompra.value,
-                        stock: stock.value
-                    });
-                }
-            }
-            formData.append('proveedores', JSON.stringify(proveedores));
-
-            console.log('Datos del producto a guardar:', formData);
-            
-            // Aquí enviarías los datos al backend
-            alert('Producto guardado exitosamente (implementar con backend)');
-            
-            // Cerrar modal y limpiar formulario
-            bootstrap.Modal.getInstance(document.getElementById('modalProducto')).hide();
-            document.getElementById('formProducto').reset();
-        }
-
-        function agregarProveedor() {
-            contadorProveedores++;
-            const container = document.getElementById('proveedoresContainer');
-            const nuevoProveedor = `
-                <div class="row proveedor-item bg-light p-3 rounded mb-3">
-                    <div class="col-md-6">
-                        <label for="proveedor_${contadorProveedores}" class="form-label">Proveedor</label>
-                        <select class="form-select" id="proveedor_${contadorProveedores}">
-                            <option value="">Seleccionar proveedor</option>
-                            <option value="1">Distribuidora Pérez SAC</option>
-                            <option value="2">Repuestos Lima EIRL</option>
-                            <option value="3">Importaciones Moto SRL</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="precio_compra_${contadorProveedores}" class="form-label">Precio Compra</label>
-                        <div class="input-group">
-                            <span class="input-group-text">S/.</span>
-                            <input type="number" class="form-control" id="precio_compra_${contadorProveedores}" step="0.01">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="stock_${contadorProveedores}" class="form-label">Stock</label>
-                        <input type="number" class="form-control" id="stock_${contadorProveedores}" min="0">
-                    </div>
-                    <div class="col-md-1 d-flex align-items-end">
-                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="this.closest('.proveedor-item').remove()">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            container.insertAdjacentHTML('beforeend', nuevoProveedor);
-        }
-
-        // Funciones adicionales para el manejo de la tabla
-        function actualizarTablaProductos(productos) {
-            const tbody = document.getElementById('tablaProductos');
-            tbody.innerHTML = '';
-            
-            productos.forEach(producto => {
-                const fila = `
-                    <tr>
-                        <td><img src="${producto.imagen || 'https://via.placeholder.com/80x80/6c757d/ffffff?text=Sin+Img'}" class="product-image" alt="Producto"></td>
-                        <td><span class="badge bg-secondary">${producto.sku}</span></td>
-                        <td>
-                            <strong>${producto.nombre}</strong><br>
-                            <small class="text-muted">${producto.descripcion}</small>
-                        </td>
-                        <td><span class="badge bg-info">${producto.categoria}</span></td>
-                        <td><span class="badge bg-primary">${producto.marca}</span></td>
-                        <td><strong>S/. ${producto.precio}</strong></td>
-                        <td><span class="badge ${getStockBadgeClass(producto.stock)}">${producto.stock}</span></td>
-                        <td><span class="badge ${producto.activo ? 'bg-success' : 'bg-danger'} status-badge">${producto.activo ? 'Activo' : 'Inactivo'}</span></td>
-                        <td class="action-buttons">
-                            <button class="btn btn-sm btn-outline-primary" onclick="verProducto(${producto.id})">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-warning" onclick="editarProducto(${producto.id})">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-info" onclick="gestionarInventario(${producto.id})">
-                                <i class="fas fa-warehouse"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="eliminarProducto(${producto.id})">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                tbody.insertAdjacentHTML('beforeend', fila);
-            });
-        }
-
-        function getStockBadgeClass(stock) {
-            if (stock > 20) return 'bg-success';
-            if (stock > 5) return 'bg-warning';
-            return 'bg-danger';
-        }
-
-        // Función para cargar datos iniciales
-        function cargarProductos() {
-            // Simulación de datos - reemplazar con llamada al backend
-            const productosEjemplo = [
-                {
-                    id: 1,
-                    sku: 'BRK001',
-                    nombre: 'Pastillas de Freno Delanteras',
-                    descripcion: 'Compatible con Honda CBR 600',
-                    categoria: 'Frenos',
-                    marca: 'Honda',
-                    precio: '45.00',
-                    stock: 25,
-                    activo: true,
-                    imagen: 'https://via.placeholder.com/80x80/6c757d/ffffff?text=Pastillas'
-                },
-                {
-                    id: 2,
-                    sku: 'FLT002',
-                    nombre: 'Filtro de Aceite',
-                    descripcion: 'Para motores 150cc-250cc',
-                    categoria: 'Motor',
-                    marca: 'Yamaha',
-                    precio: '18.50',
-                    stock: 8,
-                    activo: true,
-                    imagen: 'https://via.placeholder.com/80x80/6c757d/ffffff?text=Filtro'
-                },
-                {
-                    id: 3,
-                    sku: 'CHN003',
-                    nombre: 'Cadena de Transmisión 428H',
-                    descripcion: '120 eslabones, alta resistencia',
-                    categoria: 'Transmisión',
-                    marca: 'Suzuki',
-                    precio: '75.00',
-                    stock: 2,
-                    activo: true,
-                    imagen: 'https://via.placeholder.com/80x80/6c757d/ffffff?text=Cadena'
-                }
-            ];
-            
-            actualizarTablaProductos(productosEjemplo);
-        }
-
-        // Función para exportar datos
-        function exportarProductos() {
-            console.log('Exportando productos...');
-            // Implementar exportación a Excel/CSV con el backend
-            alert('Función de exportación - implementar con backend');
-        }
-
-        // Función para importar productos masivamente
-        function importarProductos() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.csv,.xlsx,.xls';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    console.log('Archivo seleccionado para importar:', file.name);
-                    // Implementar importación masiva con el backend
-                    alert('Archivo seleccionado: ' + file.name + '\nImplementar importación con backend');
-                }
-            };
-            input.click();
-        }
-
-        // Función para generar reporte de stock bajo
-        function reporteStockBajo() {
-            console.log('Generando reporte de stock bajo...');
-            // Implementar reporte con el backend
-            alert('Reporte de stock bajo - implementar con backend');
-        }
-
-        // Eventos del DOM
-        document.addEventListener('DOMContentLoaded', function() {
-            cargarProductos();
-            
-            // Event listener para búsqueda en tiempo real
-            document.getElementById('searchProduct').addEventListener('input', function() {
-                const query = this.value.toLowerCase();
-                const filas = document.querySelectorAll('#tablaProductos tr');
-                
-                filas.forEach(fila => {
-                    const texto = fila.textContent.toLowerCase();
-                    fila.style.display = texto.includes(query) ? '' : 'none';
-                });
-            });
-
-            // Limpiar formulario cuando se cierre el modal
-            document.getElementById('modalProducto').addEventListener('hidden.bs.modal', function() {
-                document.getElementById('formProducto').reset();
-                document.getElementById('modalProductoLabel').innerHTML = '<i class="fas fa-plus-circle"></i> Nuevo Producto';
-                
-                // Limpiar proveedores adicionales
-                const proveedoresContainer = document.getElementById('proveedoresContainer');
-                const proveedoresExtra = proveedoresContainer.querySelectorAll('.proveedor-item:not(:first-child)');
-                proveedoresExtra.forEach(item => item.remove());
-                contadorProveedores = 1;
-            });
-        });
-
-        // Funciones para integración con backend (endpoints sugeridos)
-        async function obtenerProductos(filtros = {}) {
-            try {
-                const params = new URLSearchParams(filtros);
-                const response = await fetch(`/api/productos?${params}`);
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error('Error al obtener productos:', error);
-                return [];
-            }
-        }
-
-        async function guardarProductoBackend(formData) {
-            try {
-                const response = await fetch('/api/productos', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                if (response.ok) {
-                    const resultado = await response.json();
-                    console.log('Producto guardado:', resultado);
-                    return resultado;
-                } else {
-                    throw new Error('Error al guardar producto');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al guardar el producto');
-                return null;
-            }
-        }
-
-        async function actualizarInventarioBackend(idProducto, ajustes) {
-            try {
-                const response = await fetch(`/api/inventario/${idProducto}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(ajustes)
-                });
-                
-                if (response.ok) {
-                    const resultado = await response.json();
-                    console.log('Inventario actualizado:', resultado);
-                    return resultado;
-                } else {
-                    throw new Error('Error al actualizar inventario');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al actualizar el inventario');
-                return null;
-            }
-        }
-
-        // Funciones adicionales para mejorar la UX
-        function toggleProductoEstado(id, nuevoEstado) {
-            if (confirm(`¿Deseas ${nuevoEstado ? 'activar' : 'desactivar'} este producto?`)) {
-                console.log(`Cambiar estado producto ${id} a ${nuevoEstado}`);
-                // Implementar con backend
-                // PUT /api/productos/{id}/estado
-            }
-        }
-
-        function duplicarProducto(id) {
-            if (confirm('¿Deseas crear una copia de este producto?')) {
-                console.log('Duplicar producto ID:', id);
-                // Implementar duplicación con backend
-                // POST /api/productos/{id}/duplicar
-            }
-        }
-
-        function verHistorialMovimientos(idProducto) {
-            console.log('Ver historial de movimientos del producto:', idProducto);
-            // Implementar modal con historial de inventario
-            // GET /api/productos/{id}/movimientos
-        }
     </script>
 </body>
+
 </html>

@@ -56,9 +56,6 @@ public class Producto {
     @DecimalMin(value = "0.0", inclusive = false)
     private Double precio;
 
-    @Column(name = "imagen_url", length = 255)
-    private String imagenUrl;
-
     @Column(name = "slug", unique = true, length = 150, nullable = false)
     @NotBlank(message = "El slug es obligatorio")
     @Size(max = 150)
@@ -92,9 +89,8 @@ public class Producto {
     @NotNull(message = "La categoría es obligatoria")
     private Categoria categoria;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ubicacion")
-    private Ubicaciones ubicacion;
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductoProveedor> productoProveedores;
 
     // Relaciones OneToMany para imágenes, pedidos, etc.
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -108,4 +104,13 @@ public class Producto {
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetalleBoleta> detallesBoleta;
+
+    // Compatibilidad con otros productos
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CompatibilidadProducto> compatibilidades;
+    
+    // Especificaciones del producto
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<EspecificacionProducto> especificaciones;
+
 }

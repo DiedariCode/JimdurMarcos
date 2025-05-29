@@ -25,30 +25,29 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Ubicaciones {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ubicacion")
     private Long idUbicacion;
-    
+
     @Column(name = "nombre")
     @Size(max = 255, message = "El nombre no puede exceder 255 caracteres")
     private String nombre;
-    
+
     @Column(name = "descripcion")
     @Size(max = 255, message = "La descripción no puede exceder 255 caracteres")
     private String descripcion;
-    
+
     @Column(name = "codigo", unique = true)
     @Size(max = 255, message = "El código no puede exceder 255 caracteres")
     private String codigo;
-    
+
     @Column(name = "capacidad")
     @Min(value = 0, message = "La capacidad no puede ser negativa")
     private Integer capacidad;
-    
-    // Relaciones
-    @OneToMany(mappedBy = "ubicacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Producto> productos;
-}
 
+    @OneToMany(mappedBy = "ubicacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Inventario> inventarios;
+
+}

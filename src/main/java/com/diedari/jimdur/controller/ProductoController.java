@@ -40,7 +40,7 @@ public class ProductoController {
     private ProveedorService proveedorService;
 
     // Listar productos
-    @GetMapping("/")
+    @GetMapping
     public String listarProductosForm(Model model) {
         List<Producto> productos = productoService.listarTodosLosProductos();
         model.addAttribute("productos", productos);
@@ -50,7 +50,7 @@ public class ProductoController {
         model.addAttribute("ubicacion", ubicacionService.listarUbicaciones());
         model.addAttribute("claseActiva", "productos");
 
-        return "admin/productos/listar"; // Usamos el layout principal
+        return "admin/productos/productos"; // Usamos el layout principal
     }
 
     // Formulario para nuevo producto
@@ -62,8 +62,6 @@ public class ProductoController {
         model.addAttribute("categorias", categoriaService.obtenerCategoriaPorEstado(true));
 
         model.addAttribute("marcas", marcaService.obtenerMarcasPorEstado(true));
-
-        model.addAttribute("ubicacion", ubicacionService.listarUbicaciones());
 
         model.addAttribute("proveedores", proveedorService.listarProveedores());
 

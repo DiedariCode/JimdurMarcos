@@ -90,14 +90,17 @@ public class Proveedor {
     @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DireccionProveedor> direcciones;
 
-    @ManyToMany(mappedBy = "proveedores", fetch = FetchType.LAZY)
-    private List<Producto> productos;
+    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductoProveedor> productoProveedores;
 
     public Set<String> obtenerCategorias() {
-        if (productos == null) {
+        if (productoProveedores == null) {
             return Collections.emptySet();
         }
-        return productos.stream()
+
+        return productoProveedores.stream()
+                .map(pp -> pp.getProducto())
+                .filter(producto -> producto != null && producto.getCategoria() != null)
                 .map(producto -> producto.getCategoria().getNombreCategoria())
                 .collect(Collectors.toSet());
     }

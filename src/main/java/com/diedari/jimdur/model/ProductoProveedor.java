@@ -30,12 +30,10 @@ public class ProductoProveedor {
     @Column(name = "id_proveedor")
     private Long idProveedor;
 
-    @Column(name = "precio_compra")
+    @Column(name = "precio_compra", nullable = false)
     private Double precioCompra;
-
-    @Column(name = "precio_venta")
-    private Double precioVenta;
     
+
     // Relaciones
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto", insertable = false, updatable = false)
