@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -75,8 +76,73 @@ public class ProductoController {
         return "admin/productos/nuevo";
     }
 
-    @PostMapping("/guardar")
-    public String guardarProducto(@Valid @ModelAttribute("producto") ProductoDTO producto,
+    @PostMapping("/crear")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> crearProducto(@Valid @ModelAttribute("producto") ProductoDTO producto,
+            BindingResult result) {
+        Map<String, Object> response = new HashMap<>();
+
+        // Validar SKU único
+        if (productoService.existeSkuProducto(producto.getSku(), null)) {
+            response.put("success", false);
+            response.put("message", "El SKU ya existe");
+            return ResponseEntity.ok(response);
+        }
+
+        if (result.hasErrors()) {
+            response.put("success", false);
+            response.put("message", "Error en la validación del formulario");
+            return ResponseEntity.ok(response);
+        }
+
+        try {
+            // Limpiar listas que no se usarán en esta fase
+            producto.setProveedores(new ArrayList<>());
+            
+            ProductoDTO productoGuardado = productoService.guardarProducto(producto);
+            
+            response.put("success", true);
+            response.put("message", "Producto creado exitosamente");
+            response.put("idProducto", productoGuardado.getIdProducto());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error al guardar el producto: " + e.getMessage());
+            return ResponseEntity.ok(response);
+        }
+    }
+
+    @PostMapping("/guardar-proveedores")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> guardarProveedores(@RequestBody Map<String, Object> request) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            Long idProducto = Long.valueOf(request.get("idProducto").toString());
+            List<Map<String, Object>> proveedoresData = (List<Map<String, Object>>) request.get("proveedores");
+            
+            List<ProductoProveedorDTO> proveedores = proveedoresData.stream()
+                .map(data -> ProductoProveedorDTO.builder()
+                    .idProducto(idProducto)
+                    .idProveedor(Long.valueOf(data.get("idProveedor").toString()))
+                    .precioCompra(Double.valueOf(data.get("precioCompra").toString()))
+                    .build())
+                .collect(Collectors.toList());
+
+            productoService.guardarProveedoresProducto(idProducto, proveedores);
+            
+            response.put("success", true);
+            response.put("message", "Proveedores guardados exitosamente");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error al guardar los proveedores: " + e.getMessage());
+        }
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/editar")
+    public String editarProducto(@Valid @ModelAttribute("producto") ProductoDTO producto,
             BindingResult result,
             Model model,
             RedirectAttributes redirectAttributes) {
@@ -88,7 +154,7 @@ public class ProductoController {
 
         if (result.hasErrors()) {
             cargarDatosFormulario(model, producto);
-            return "admin/productos/nuevo";
+            return "admin/productos/editar";
         }
 
         try {
@@ -103,18 +169,13 @@ public class ProductoController {
                 producto.getCompatibilidades().removeIf(c -> c.getModeloCompatible() == null || c.getModeloCompatible().trim().isEmpty());
             }
 
-            if (producto.getIdProducto() != null) {
-                productoService.actualizarProducto(producto);
-                redirectAttributes.addFlashAttribute("success", "Producto actualizado exitosamente");
-            } else {
-                productoService.guardarProducto(producto);
-                redirectAttributes.addFlashAttribute("success", "Producto creado exitosamente");
-            }
+            productoService.actualizarProducto(producto);
+            redirectAttributes.addFlashAttribute("success", "Producto actualizado exitosamente");
             return "redirect:/admin/productos";
         } catch (Exception e) {
             cargarDatosFormulario(model, producto);
-            model.addAttribute("error", "Error al guardar el producto: " + e.getMessage());
-            return "admin/productos/nuevo";
+            model.addAttribute("error", "Error al actualizar el producto: " + e.getMessage());
+            return "admin/productos/editar";
         }
     }
 
@@ -205,11 +266,30 @@ public class ProductoController {
 
         List<Categoria> categorias = categoriaRepository.findByEstadoActivaTrueOrderByNombreCategoriaAsc();
         List<Marca> marcas = marcaRepository.findByEstadoMarcaTrueOrderByNombreMarcaAsc();
-        List<Proveedor> proveedores = proveedorRepository.findByEstadoActivoOrderByNombreAsc("Activo");
+        
+        // Obtener y filtrar proveedores
+        List<Proveedor> todosLosProveedores = proveedorRepository.findAll();
+        System.out.println("\n=== DIAGNÓSTICO DE PROVEEDORES ===");
+        System.out.println("Total de proveedores encontrados: " + todosLosProveedores.size());
+        
+        // Filtrar y mapear a DTO simplificado
+        List<Map<String, Object>> proveedoresDTO = todosLosProveedores.stream()
+                .filter(p -> "1".equals(p.getEstadoActivo()))
+                .map(p -> {
+                    Map<String, Object> dto = new HashMap<>();
+                    dto.put("idProveedor", p.getIdProveedor());
+                    dto.put("nombre", p.getNombre());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+        
+        System.out.println("\n=== DATOS A ENVIAR ===");
+        System.out.println("Número de proveedores en datos: " + proveedoresDTO.size());
+        proveedoresDTO.forEach(p -> System.out.println("Proveedor a enviar: " + p.get("nombre")));
 
         datos.put("categorias", categorias);
         datos.put("marcas", marcas);
-        datos.put("proveedores", proveedores);
+        datos.put("proveedores", proveedoresDTO);
 
         return ResponseEntity.ok(datos);
     }

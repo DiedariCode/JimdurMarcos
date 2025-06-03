@@ -3,6 +3,7 @@ package com.diedari.jimdur.service;
 import java.util.List;
 
 import com.diedari.jimdur.dto.ProductoDTO;
+import com.diedari.jimdur.dto.ProductoProveedorDTO;
 import com.diedari.jimdur.model.Producto;
 
 public interface ProductoService {
@@ -22,4 +23,6 @@ public interface ProductoService {
     List<Producto> obtenerProductoPorEstado(boolean estado);
 
     Producto obtenerProductoPorSlug(String slug);
+
+    void guardarProveedoresProducto(Long idProducto, List<ProductoProveedorDTO> proveedores);
 }

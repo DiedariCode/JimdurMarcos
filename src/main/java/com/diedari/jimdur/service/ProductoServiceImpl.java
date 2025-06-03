@@ -1,6 +1,7 @@
 package com.diedari.jimdur.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,79 +49,90 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     @Transactional
     public ProductoDTO guardarProducto(ProductoDTO productoDTO) {
-        productoMapper.calcularPrecioOferta(productoDTO);
-        Producto producto = productoMapper.toEntity(productoDTO);
+        // FASE 1: Guardar el producto principal
+        Producto productoGuardado = guardarProductoPrincipal(productoDTO);
 
-        // Generar slug si no existe
-        if (producto.getSlug() == null || producto.getSlug().trim().isEmpty()) {
-            producto.setSlug(generateSlug(producto.getNombre()));
-        }
+        // FASE 2: Guardar todas las relaciones
+        guardarRelacionesProducto(productoGuardado, productoDTO);
 
+        return productoMapper.toDTO(productoGuardado);
+    }
+
+    private Producto guardarProductoPrincipal(ProductoDTO productoDTO) {
+        // Validar y obtener entidades relacionadas
         Categoria categoria = categoriaRepository.findById(productoDTO.getIdCategoria())
                 .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+        
         Marca marca = marcaRepository.findById(productoDTO.getIdMarca())
                 .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
 
+        // Crear el producto
+        Producto producto = productoMapper.toEntity(productoDTO);
         producto.setCategoria(categoria);
         producto.setMarca(marca);
+        
+        // Guardar y retornar el producto
+        return productoRepository.save(producto);
+    }
 
-        producto = productoRepository.save(producto);
-
+    private void guardarRelacionesProducto(Producto productoGuardado, ProductoDTO productoDTO) {
+        // 1. Guardar imágenes
         if (productoDTO.getImagenes() != null && !productoDTO.getImagenes().isEmpty()) {
-            guardarImagenes(producto, productoDTO.getImagenes());
+            guardarImagenes(productoGuardado, productoDTO.getImagenes());
         }
-
+        
+        // 2. Guardar relaciones con proveedores
         if (productoDTO.getProveedores() != null && !productoDTO.getProveedores().isEmpty()) {
-            guardarProveedores(producto, productoDTO.getProveedores());
+            guardarProveedores(productoGuardado, productoDTO.getProveedores());
         }
-
+        
+        // 3. Guardar especificaciones
         if (productoDTO.getEspecificaciones() != null && !productoDTO.getEspecificaciones().isEmpty()) {
-            guardarEspecificaciones(producto, productoDTO.getEspecificaciones());
+            guardarEspecificaciones(productoGuardado, productoDTO.getEspecificaciones());
         }
-
+        
+        // 4. Guardar compatibilidades
         if (productoDTO.getCompatibilidades() != null && !productoDTO.getCompatibilidades().isEmpty()) {
-            guardarCompatibilidades(producto, productoDTO.getCompatibilidades());
+            guardarCompatibilidades(productoGuardado, productoDTO.getCompatibilidades());
         }
-
-        return productoMapper.toDTO(producto);
     }
 
     @Override
     @Transactional
     public ProductoDTO actualizarProducto(ProductoDTO productoDTO) {
-        Producto productoExistente = productoRepository.findById(productoDTO.getIdProducto())
+        // Validar que el producto existe
+        final Producto productoExistente = productoRepository.findById(productoDTO.getIdProducto())
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        productoMapper.calcularPrecioOferta(productoDTO);
+        // Validar y obtener entidades relacionadas
+        Categoria categoria = categoriaRepository.findById(productoDTO.getIdCategoria())
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+        
+        Marca marca = marcaRepository.findById(productoDTO.getIdMarca())
+                .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
 
+        // Actualizar datos básicos del producto
         productoExistente.setSku(productoDTO.getSku());
         productoExistente.setNombre(productoDTO.getNombre());
         productoExistente.setDescripcion(productoDTO.getDescripcion());
         productoExistente.setPrecio(productoDTO.getPrecio());
         productoExistente.setDescuento(productoDTO.getDescuento());
         productoExistente.setPrecioOferta(productoDTO.getPrecioOferta());
-        productoExistente.setActivo(productoDTO.getActivo());
         productoExistente.setTipoDescuento(productoDTO.getTipoDescuento());
-
-        Categoria categoria = categoriaRepository.findById(productoDTO.getIdCategoria())
-                .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
-        Marca marca = marcaRepository.findById(productoDTO.getIdMarca())
-                .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
-
+        productoExistente.setActivo(productoDTO.getActivo());
         productoExistente.setCategoria(categoria);
         productoExistente.setMarca(marca);
 
-        if (!productoExistente.getNombre().equals(productoDTO.getNombre())) {
-            productoExistente.setSlug(generateSlug(productoDTO.getNombre()));
-        }
-
-        productoExistente = productoRepository.save(productoExistente);
-
+        // Actualizar las relaciones
         if (productoDTO.getImagenes() != null && !productoDTO.getImagenes().isEmpty()) {
+            // Eliminar imágenes antiguas y guardar las nuevas
+            imagenProductoRepository.deleteByProducto(productoExistente);
             guardarImagenes(productoExistente, productoDTO.getImagenes());
         }
 
         if (productoDTO.getProveedores() != null) {
+            // Establecer el ID del producto en cada ProductoProveedor
+            productoDTO.getProveedores().forEach(pp -> pp.setIdProducto(productoExistente.getIdProducto()));
             actualizarProveedores(productoExistente, productoDTO.getProveedores());
         }
 
@@ -132,7 +144,9 @@ public class ProductoServiceImpl implements ProductoService {
             actualizarCompatibilidades(productoExistente, productoDTO.getCompatibilidades());
         }
 
-        return productoMapper.toDTO(productoExistente);
+        // Guardar los cambios
+        final Producto productoActualizado = productoRepository.save(productoExistente);
+        return productoMapper.toDTO(productoActualizado);
     }
 
     @Override
@@ -179,20 +193,35 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     private void guardarProveedores(Producto producto, List<ProductoProveedorDTO> proveedoresDTO) {
+        if (proveedoresDTO == null || proveedoresDTO.isEmpty()) {
+            return;
+        }
+
         for (ProductoProveedorDTO proveedorDTO : proveedoresDTO) {
-            if (proveedorDTO.getIdProveedor() != null) {
-                Proveedor proveedor = proveedorRepository.findById(proveedorDTO.getIdProveedor())
-                        .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+            // Solo procesar si hay un proveedor seleccionado y precio de compra
+            if (proveedorDTO.getIdProveedor() != null && proveedorDTO.getPrecioCompra() != null) {
+                try {
+                    // Obtener el proveedor
+                    Proveedor proveedor = proveedorRepository.findById(proveedorDTO.getIdProveedor())
+                            .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
 
-                ProductoProveedor productoProveedor = ProductoProveedor.builder()
-                        .idProducto(producto.getIdProducto())
-                        .idProveedor(proveedor.getIdProveedor())
-                        .precioCompra(proveedorDTO.getPrecioCompra())
-                        .producto(producto)
-                        .proveedor(proveedor)
-                        .build();
+                    // Crear la relación con los IDs correctos
+                    ProductoProveedor productoProveedor = ProductoProveedor.builder()
+                            .idProducto(producto.getIdProducto())
+                            .idProveedor(proveedor.getIdProveedor())
+                            .precioCompra(proveedorDTO.getPrecioCompra())
+                            .build();
 
-                productoProveedorRepository.save(productoProveedor);
+                    // Establecer las relaciones bidireccionales
+                    productoProveedor.setProducto(producto);
+                    productoProveedor.setProveedor(proveedor);
+
+                    // Guardar la relación
+                    productoProveedorRepository.save(productoProveedor);
+
+                } catch (Exception e) {
+                    throw new RuntimeException("Error al guardar la relación producto-proveedor: " + e.getMessage());
+                }
             }
         }
     }
@@ -265,5 +294,38 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public Producto obtenerProductoPorSlug(String slug) {
         return productoRepository.findBySlug(slug);
+    }
+
+    @Override
+    @Transactional
+    public void guardarProveedoresProducto(Long idProducto, List<ProductoProveedorDTO> proveedores) {
+        // Obtener el producto
+        Producto producto = productoRepository.findById(idProducto)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        // Eliminar proveedores existentes
+        productoProveedorRepository.deleteByIdProducto(idProducto);
+
+        // Guardar los nuevos proveedores
+        for (ProductoProveedorDTO proveedorDTO : proveedores) {
+            if (proveedorDTO.getIdProveedor() != null && proveedorDTO.getPrecioCompra() != null) {
+                try {
+                    Proveedor proveedor = proveedorRepository.findById(proveedorDTO.getIdProveedor())
+                            .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+
+                    ProductoProveedor productoProveedor = ProductoProveedor.builder()
+                            .idProducto(idProducto)
+                            .idProveedor(proveedor.getIdProveedor())
+                            .precioCompra(proveedorDTO.getPrecioCompra())
+                            .producto(producto)
+                            .proveedor(proveedor)
+                            .build();
+
+                    productoProveedorRepository.save(productoProveedor);
+                } catch (Exception e) {
+                    throw new RuntimeException("Error al guardar la relación producto-proveedor: " + e.getMessage());
+                }
+            }
+        }
     }
 }

@@ -25,6 +25,23 @@
     <!-- Plugin preview JS -->
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
 
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <style>
+        .was-validated .form-control:invalid,
+        .was-validated .form-select:invalid {
+            border-color: #dc3545;
+        }
+        .was-validated .form-control:valid,
+        .was-validated .form-select:valid {
+            border-color: #198754;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -66,9 +83,14 @@
                             data-bs-target="#compatibilidad" type="button" role="tab" aria-controls="compatibilidad"
                             aria-selected="false">Compatibilidad</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="proveedor-tab" data-bs-toggle="tab"
+                            data-bs-target="#proveedor" type="button" role="tab" aria-controls="proveedor"
+                            aria-selected="false">Proveedores</button>
+                    </li>
                 </ul>
 
-                <form th:action="@{/admin/productos/guardar}" th:object="${producto}" method="post"
+                <form th:action="@{/admin/productos/crear}" th:object="${producto}" method="post"
                     enctype="multipart/form-data" id="formProducto">
                     <input type="hidden" th:field="*{idProducto}">
 
@@ -161,34 +183,12 @@
                                 </div>
                             </div>
 
-                            <div id="proveedoresContainer" class="mt-3">
-                                <h4>Proveedores</h4>
-                                <div th:each="proveedor, iterStat : ${producto.proveedores}" class="row proveedor-item bg-light p-3 rounded mb-3">
-                                    <input type="hidden" th:field="*{proveedores[__${iterStat.index}__].idProveedor}">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Proveedor</label>
-                                        <select class="form-select" th:field="*{proveedores[__${iterStat.index}__].idProveedor}">
-                                            <option value="">Seleccionar proveedor</option>
-                                            <option th:each="prov : ${proveedores}" th:value="${prov.idProveedor}"
-                                                th:text="${prov.nombre}"></option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">Precio Compra</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">S/.</span>
-                                            <input type="number" class="form-control" th:field="*{proveedores[__${iterStat.index}__].precioCompra}" step="0.01" min="0">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 d-flex align-items-end">
-                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarProveedor(this)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-primary" onclick="nextTab('imagenes-tab')">
+                                        Continuar <i class="fas fa-arrow-right"></i>
+                                    </button>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarProveedor()">
-                                    <i class="fas fa-plus"></i> Agregar Proveedor
-                                </button>
                             </div>
                         </div>
 
@@ -202,6 +202,16 @@
                                 <small class="form-text text-muted">
                                     Puede subir hasta 5 imágenes. La primera será la imagen principal del producto.
                                 </small>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-secondary" onclick="previousTab('general-tab')">
+                                        <i class="fas fa-arrow-left"></i> Anterior
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="nextTab('especificaciones-tab')">
+                                        Continuar <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -232,6 +242,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-secondary" onclick="previousTab('imagenes-tab')">
+                                        <i class="fas fa-arrow-left"></i> Anterior
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="nextTab('compatibilidad-tab')">
+                                        Continuar <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Tab Compatibilidad -->
@@ -257,17 +277,47 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-secondary" onclick="previousTab('especificaciones-tab')">
+                                        <i class="fas fa-arrow-left"></i> Anterior
+                                    </button>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save"></i> Guardar Producto
+                                    </button>
+                                    <a href="/admin/productos" class="btn btn-danger">
+                                        <i class="fas fa-times"></i> Cancelar
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Guardar Producto
-                            </button>
-                            <a href="/admin/productos" class="btn btn-secondary">
-                                <i class="fas fa-times"></i> Cancelar
-                            </a>
+                        <!-- Tab Proveedores -->
+                        <div class="tab-pane fade" id="proveedor" role="tabpanel" aria-labelledby="proveedor-tab">
+                            <div id="proveedoresContainer" style="display: none;">
+                                <h4>Proveedores del Producto</h4>
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarProveedor()">
+                                            <i class="fas fa-plus"></i> Agregar Proveedor
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Aquí irán los proveedores dinámicamente -->
+                            </div>
+                            <div class="alert alert-info" id="proveedoresInfo">
+                                <i class="fas fa-info-circle"></i> Esta sección estará disponible después de guardar el producto.
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-secondary" onclick="previousTab('compatibilidad-tab')">
+                                        <i class="fas fa-arrow-left"></i> Anterior
+                                    </button>
+                                    <button type="button" class="btn btn-success" onclick="guardarProveedores()" id="btnGuardarProveedores" style="display: none;">
+                                        <i class="fas fa-save"></i> Guardar Proveedores
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -277,6 +327,9 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
     <script>
         // Registrar el plugin de preview para FilePond
@@ -292,71 +345,246 @@
             name: 'imagenes[]' // Importante: debe coincidir con el nombre del campo en el DTO
         });
 
-        // Validar el formulario antes de enviar
+        // Función para validar campos requeridos en una pestaña
+        function validarPestanaActual() {
+            const pestanaActiva = document.querySelector('.tab-pane.active');
+            const camposRequeridos = pestanaActiva.querySelectorAll('[required]');
+            let esValido = true;
+
+            camposRequeridos.forEach(campo => {
+                if (!campo.value) {
+                    campo.classList.add('is-invalid');
+                    esValido = false;
+                } else {
+                    campo.classList.remove('is-invalid');
+                    campo.classList.add('is-valid');
+                }
+            });
+
+            return esValido;
+        }
+
+        // Función para ir a la siguiente pestaña
+        function nextTab(tabId) {
+            if (validarPestanaActual()) {
+                document.getElementById(tabId).click();
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor, complete todos los campos requeridos',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }
+
+        // Función para ir a la pestaña anterior
+        function previousTab(tabId) {
+            document.getElementById(tabId).click();
+        }
+
+        // Evento submit del formulario
         document.getElementById('formProducto').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Validar campos requeridos
-            if (!this.checkValidity()) {
-                e.stopPropagation();
-                this.classList.add('was-validated');
+
+            if (!validarPestanaActual()) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor, complete todos los campos requeridos',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
                 return;
             }
 
-            // Obtener los archivos de FilePond
-            const files = pond.getFiles().map(file => file.file);
-            
-            // Crear un FormData
             const formData = new FormData(this);
             
-            // Agregar los archivos al FormData
-            files.forEach((file, index) => {
+            // Agregar las imágenes de FilePond
+            const files = pond.getFiles().map(file => file.file);
+            files.forEach(file => {
                 formData.append('imagenes', file);
             });
 
-            // Enviar el formulario
+            // Mostrar indicador de carga
+            Swal.fire({
+                title: 'Guardando producto...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             fetch(this.action, {
                 method: 'POST',
                 body: formData
             })
-            .then(response => {
-                if (response.redirected) {
-                    window.location.href = response.url;
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.querySelector('input[name="idProducto"]').value = data.idProducto;
+                    
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: 'Producto guardado correctamente. Ahora puede agregar los proveedores.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        cargarProveedores().then(() => {
+                            const proveedorTab = document.getElementById('proveedor-tab');
+                            proveedorTab.disabled = false;
+                            const tab = new bootstrap.Tab(proveedorTab);
+                            tab.show();
+                        });
+                    });
                 } else {
-                    return response.text().then(html => {
-                        document.documentElement.innerHTML = html;
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message || 'Error al guardar el producto',
+                        icon: 'error',
+                        timer: 2000,
+                        showConfirmButton: false
                     });
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error al guardar el producto');
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al guardar el producto',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
             });
         });
 
-        // Función para agregar proveedor
+        // Cargar proveedores al iniciar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarProveedores();
+        });
+
+        // Agregar función para obtener token CSRF
+        function getCsrfToken() {
+            return document.querySelector("meta[name='_csrf']").getAttribute("content");
+        }
+
+        function getCsrfHeader() {
+            return document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+        }
+
+        // Modificar la función cargarProveedores
+        async function cargarProveedores() {
+            try {
+                const headers = {};
+                const csrfHeader = getCsrfHeader();
+                const csrfToken = getCsrfToken();
+                if (csrfHeader && csrfToken) {
+                    headers[csrfHeader] = csrfToken;
+                }
+
+                const response = await fetch('/admin/productos/api/datos-formulario', {
+                    headers: headers
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos: ' + response.status);
+                }
+                const data = await response.json();
+                
+                if (!data.proveedores || !Array.isArray(data.proveedores)) {
+                    console.error('No se recibieron proveedores válidos:', data);
+                    return;
+                }
+
+                console.log('Proveedores recibidos:', data.proveedores);
+                
+                const container = document.getElementById('proveedoresContainer');
+                const infoAlert = document.getElementById('proveedoresInfo');
+                const btnGuardarProveedores = document.getElementById('btnGuardarProveedores');
+                
+                if (!container) {
+                    console.error('No se encontró el contenedor de proveedores');
+                    return;
+                }
+                
+                // Mostrar contenedor de proveedores y ocultar mensaje informativo
+                container.style.display = 'block';
+                infoAlert.style.display = 'none';
+                btnGuardarProveedores.style.display = 'inline-block';
+                
+                // Limpiar el contenedor de proveedores existente
+                const itemsExistentes = container.querySelectorAll('.proveedor-item');
+                itemsExistentes.forEach(item => item.remove());
+                
+                // Agregar el primer proveedor
+                const proveedorItem = document.createElement('div');
+                proveedorItem.className = 'row proveedor-item bg-light p-3 rounded mb-3';
+                proveedorItem.innerHTML = `
+                    <div class="col-md-6">
+                        <label class="form-label">Proveedor</label>
+                        <select class="form-select" name="proveedor_id">
+                            <option value="">Seleccionar proveedor</option>
+                            ${data.proveedores.map(proveedor => 
+                                `<option value="${proveedor.idProveedor}">${proveedor.nombre}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Precio Compra</label>
+                        <div class="input-group">
+                            <span class="input-group-text">S/.</span>
+                            <input type="number" class="form-control" name="precio_compra" step="0.01" min="0">
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarProveedor(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // Insertar después del botón de agregar
+                const botonAgregar = container.querySelector('.row.mb-3');
+                if (botonAgregar) {
+                    botonAgregar.parentNode.insertBefore(proveedorItem, botonAgregar.nextSibling);
+                } else {
+                    container.appendChild(proveedorItem);
+                }
+            } catch (error) {
+                console.error('Error al cargar proveedores:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al cargar los proveedores: ' + error.message,
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }
+
+        // Modificar la función agregarProveedor
         function agregarProveedor() {
             const container = document.getElementById('proveedoresContainer');
-            const items = container.getElementsByClassName('proveedor-item');
-            const index = items.length;
+            const selectOriginal = container.querySelector('.proveedor-item select');
+            if (!selectOriginal) return;
 
             const nuevoItem = document.createElement('div');
             nuevoItem.className = 'row proveedor-item bg-light p-3 rounded mb-3';
             nuevoItem.innerHTML = `
-                <input type="hidden" name="proveedores[${index}].idProveedor">
                 <div class="col-md-6">
                     <label class="form-label">Proveedor</label>
-                    <select class="form-select" name="proveedores[${index}].idProveedor">
-                        <option value="">Seleccionar proveedor</option>
-                        ${Array.from(document.querySelectorAll('select[name$="].idProveedor"] option')).map(opt => 
-                            `<option value="${opt.value}">${opt.textContent}</option>`).join('')}
+                    <select class="form-select" name="proveedor_id">
+                        ${selectOriginal.innerHTML}
                     </select>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Precio Compra</label>
                     <div class="input-group">
                         <span class="input-group-text">S/.</span>
-                        <input type="number" class="form-control" name="proveedores[${index}].precioCompra" step="0.01" min="0">
+                        <input type="number" class="form-control" name="precio_compra" step="0.01" min="0">
                     </div>
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
@@ -365,8 +593,8 @@
                     </button>
                 </div>
             `;
-
-            container.insertBefore(nuevoItem, container.querySelector('button').parentElement.parentElement.nextSibling);
+            
+            container.appendChild(nuevoItem);
         }
 
         // Función para eliminar proveedor
@@ -503,6 +731,117 @@
             Array.from(items).forEach((item, idx) => {
                 item.querySelectorAll('[name]').forEach(input => {
                     input.name = input.name.replace(/\[\d+\]/, `[${idx}]`);
+                });
+            });
+        }
+
+        // Modificar la función guardarProveedores
+        function guardarProveedores() {
+            const idProducto = document.querySelector('input[name="idProducto"]').value;
+            if (!idProducto) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se encontró el ID del producto',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                return;
+            }
+
+            const proveedoresItems = document.querySelectorAll('.proveedor-item');
+            const proveedores = [];
+            let hayError = false;
+
+            proveedoresItems.forEach(item => {
+                const select = item.querySelector('select');
+                const input = item.querySelector('input[type="number"]');
+                
+                if (!select.value || !input.value) {
+                    hayError = true;
+                    return;
+                }
+
+                proveedores.push({
+                    idProveedor: select.value,
+                    precioCompra: input.value
+                });
+            });
+
+            if (hayError || proveedores.length === 0) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor, complete todos los campos de los proveedores',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                return;
+            }
+
+            // Mostrar indicador de carga
+            Swal.fire({
+                title: 'Guardando proveedores...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            // Agregar token CSRF a los headers
+            const csrfHeader = getCsrfHeader();
+            const csrfToken = getCsrfToken();
+            if (csrfHeader && csrfToken) {
+                headers[csrfHeader] = csrfToken;
+            }
+
+            fetch('/admin/productos/guardar-proveedores', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    idProducto: idProducto,
+                    proveedores: proveedores
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: 'Proveedores guardados correctamente',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = '/admin/productos';
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message || 'Error al guardar los proveedores',
+                        icon: 'error',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al guardar los proveedores: ' + error.message,
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
                 });
             });
         }

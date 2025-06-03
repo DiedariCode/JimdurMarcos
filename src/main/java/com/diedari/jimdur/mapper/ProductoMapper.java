@@ -100,6 +100,25 @@ public class ProductoMapper {
             producto.setSlug(generateSlug(dto.getNombre()));
         }
 
+        // Mapear proveedores
+        if (dto.getProveedores() != null) {
+            List<ProductoProveedor> proveedores = dto.getProveedores().stream()
+                    .filter(proveedorDTO -> proveedorDTO.getIdProveedor() != null && proveedorDTO.getPrecioCompra() != null)
+                    .map(proveedorDTO -> {
+                        ProductoProveedor productoProveedor = toProveedorEntity(proveedorDTO);
+                        if (productoProveedor != null) {
+                            productoProveedor.setProducto(producto);
+                            // Asegurarnos de que el ID del producto esté establecido
+                            if (producto.getIdProducto() != null) {
+                                productoProveedor.setIdProducto(producto.getIdProducto());
+                            }
+                        }
+                        return productoProveedor;
+                    })
+                    .collect(Collectors.toList());
+            producto.setProductoProveedores(proveedores);
+        }
+
         // Mapear especificaciones
         if (dto.getEspecificaciones() != null) {
             List<EspecificacionProducto> especificaciones = dto.getEspecificaciones().stream()
