@@ -79,7 +79,7 @@ public class Producto {
     private String tipoDescuento;
 
     // Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // carga perezosa para evitar problemas de rendimiento, no se carga la marca y categoría hasta que se necesite
     @JoinColumn(name = "id_marca", nullable = false)
     @NotNull(message = "La marca es obligatoria")
     private Marca marca;
