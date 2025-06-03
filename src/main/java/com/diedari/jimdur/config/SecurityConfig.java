@@ -14,14 +14,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/uploads/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin(Customizer.withDefaults()) // Usa el login por defecto
-            .logout(logout -> logout
-                .permitAll()
-            );
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/admin/productos/**",
+                                "/uploads/**",
+                                "/admin/productos/api/**"
+                                )
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(Customizer.withDefaults()) // Usa el login por defecto
+                .logout(logout -> logout
+                        .permitAll());
 
         return http.build();
     }
