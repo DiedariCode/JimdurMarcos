@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.diedari.jimdur.dto.CompatibilidadProductoDTO;
+import com.diedari.jimdur.dto.EspecificacionProductoDTO;
 import com.diedari.jimdur.dto.ProductoDTO;
 import com.diedari.jimdur.dto.ProductoProveedorDTO;
 import com.diedari.jimdur.model.Categoria;
@@ -52,25 +54,24 @@ public class ProductoController {
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         ProductoDTO producto = new ProductoDTO();
-
-        // 👇 Agrega una entrada vacía para mostrar una fila inicial
+        producto.setActivo(true); // Por defecto activo
+        
+        // Inicializar listas vacías
         producto.setProveedores(new ArrayList<>());
         producto.getProveedores().add(new ProductoProveedorDTO());
+        
+        producto.setEspecificaciones(new ArrayList<>());
+        producto.getEspecificaciones().add(new EspecificacionProductoDTO());
+        
+        producto.setCompatibilidades(new ArrayList<>());
+        producto.getCompatibilidades().add(new CompatibilidadProductoDTO());
 
-        List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
-        List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
-        List<Proveedor> proveedores = proveedorRepository.findAll();
-
-        model.addAttribute("producto", producto);
-        model.addAttribute("categorias", categorias);
-        model.addAttribute("marcas", marcas);
-        model.addAttribute("proveedores", proveedores);
-
+        cargarDatosFormulario(model, producto);
         return "admin/productos/nuevo";
     }
 
     @PostMapping("/guardar")
-    public String guardarProducto(@Valid @ModelAttribute ProductoDTO producto,
+    public String guardarProducto(@Valid @ModelAttribute("producto") ProductoDTO producto,
             BindingResult result,
             Model model,
             RedirectAttributes redirectAttributes) {
@@ -86,6 +87,17 @@ public class ProductoController {
         }
 
         try {
+            // Limpiar listas vacías
+            if (producto.getProveedores() != null) {
+                producto.getProveedores().removeIf(p -> p.getIdProveedor() == null);
+            }
+            if (producto.getEspecificaciones() != null) {
+                producto.getEspecificaciones().removeIf(e -> e.getNombre() == null || e.getNombre().trim().isEmpty());
+            }
+            if (producto.getCompatibilidades() != null) {
+                producto.getCompatibilidades().removeIf(c -> c.getModeloCompatible() == null || c.getModeloCompatible().trim().isEmpty());
+            }
+
             if (producto.getIdProducto() != null) {
                 productoService.actualizarProducto(producto);
                 redirectAttributes.addFlashAttribute("success", "Producto actualizado exitosamente");
@@ -106,7 +118,7 @@ public class ProductoController {
         try {
             ProductoDTO producto = productoService.obtenerProductoPorId(id);
             cargarDatosFormulario(model, producto);
-            return "admin/productos/formulario";
+            return "admin/productos/nuevo";
         } catch (RuntimeException e) {
             return "redirect:/admin/productos?error=not_found";
         }
@@ -132,6 +144,20 @@ public class ProductoController {
         } catch (RuntimeException e) {
             return "redirect:/admin/productos?error=not_found";
         }
+    }
+
+    private void cargarDatosFormulario(Model model, ProductoDTO producto) {
+        List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
+        List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
+        List<Proveedor> proveedores = proveedorRepository.findAll();
+
+        model.addAttribute("producto", producto);
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("marcas", marcas);
+        model.addAttribute("proveedores", proveedores);
+
+        String pageTitle = producto.getIdProducto() != null ? "Editar Producto" : "Nuevo Producto";
+        model.addAttribute("pageTitle", pageTitle);
     }
 
     // API REST para AJAX
@@ -181,19 +207,5 @@ public class ProductoController {
         datos.put("proveedores", proveedores);
 
         return ResponseEntity.ok(datos);
-    }
-
-    private void cargarDatosFormulario(Model model, ProductoDTO producto) {
-        List<Categoria> categorias = categoriaRepository.findByEstadoActivaTrueOrderByNombreCategoriaAsc();
-        List<Marca> marcas = marcaRepository.findByEstadoMarcaTrueOrderByNombreMarcaAsc();
-        List<Proveedor> proveedores = proveedorRepository.findByEstadoActivoOrderByNombreAsc("Activo");
-
-        model.addAttribute("producto", producto);
-        model.addAttribute("categorias", categorias);
-        model.addAttribute("marcas", marcas);
-        model.addAttribute("proveedores", proveedores);
-
-        String pageTitle = producto.getIdProducto() != null ? "Editar Producto" : "Nuevo Producto";
-        model.addAttribute("pageTitle", pageTitle);
     }
 }

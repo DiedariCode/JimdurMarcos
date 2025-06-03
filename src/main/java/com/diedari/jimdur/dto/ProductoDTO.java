@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -42,6 +43,9 @@ public class ProductoDTO {
 
     private Double precioOferta;
 
+    @Size(max = 20, message = "El tipo de descuento no puede exceder 20 caracteres")
+    private String tipoDescuento;
+
     @NotNull(message = "La categoría es obligatoria")
     private Long idCategoria;
 
@@ -51,18 +55,32 @@ public class ProductoDTO {
     @NotNull(message = "El estado es obligatorio")
     private Boolean activo;
 
+    private String slug;
+
     // Para el formulario
     private String nombreCategoria;
     private String nombreMarca;
 
     // Para las imágenes
     private List<MultipartFile> imagenes;
-    private List<String> imagenesExistentes;
 
     // Para los proveedores
-    private List<ProductoProveedorDTO> proveedores;
+    private List<ProductoProveedorDTO> proveedores = new ArrayList<>();
 
-    // Para mostrar en vista
-    private String slug;
-    private String tipoDescuento;
+    // Para las especificaciones
+    private List<EspecificacionProductoDTO> especificaciones = new ArrayList<>();
+
+    // Para las compatibilidades
+    private List<CompatibilidadProductoDTO> compatibilidades = new ArrayList<>();
+
+    // Constructor con valores por defecto
+    public ProductoDTO(String sku, String nombre) {
+        this.sku = sku;
+        this.nombre = nombre;
+        this.activo = true;
+        this.descuento = 0.0;
+        this.proveedores = new ArrayList<>();
+        this.especificaciones = new ArrayList<>();
+        this.compatibilidades = new ArrayList<>();
+    }
 }

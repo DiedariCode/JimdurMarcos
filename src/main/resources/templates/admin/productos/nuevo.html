@@ -16,12 +16,8 @@
     <!-- CSS FilePond -->
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
 
-    <!-- CSS FilePond -->
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-
     <!-- Plugin preview CSS -->
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-        rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
 
     <!-- JS FilePond -->
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
@@ -40,8 +36,7 @@
 
             <!-- Content area (columna derecha) -->
             <main class="col-md-9 col-lg-10 py-4 px-5 ms-auto">
-                <div
-                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Producto</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
@@ -55,8 +50,7 @@
                 <ul class="nav nav-tabs" id="productoTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general"
-                            type="button" role="tab" aria-controls="general" aria-selected="true">Información
-                            General</button>
+                            type="button" role="tab" aria-controls="general" aria-selected="true">Información General</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="imagenes-tab" data-bs-toggle="tab" data-bs-target="#imagenes"
@@ -74,40 +68,32 @@
                     </li>
                 </ul>
 
-
                 <form th:action="@{/admin/productos/guardar}" th:object="${producto}" method="post"
                     enctype="multipart/form-data" id="formProducto">
                     <input type="hidden" th:field="*{idProducto}">
 
                     <div class="tab-content mt-3" id="productoTabsContent">
                         <!-- Tab Información General -->
-                        <div class="tab-pane fade show active" id="general" role="tabpanel"
-                            aria-labelledby="general-tab">
-
-                            <!-- TODO: Aquí va todo tu código actual de Información General -->
+                        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="sku" class="form-label">SKU *</label>
                                     <input type="text" class="form-control" th:field="*{sku}" id="sku" required>
-                                    <div th:if="${#fields.hasErrors('sku')}" class="text-danger small"
-                                        th:errors="*{sku}"></div>
+                                    <div th:if="${#fields.hasErrors('sku')}" class="text-danger small" th:errors="*{sku}"></div>
                                     <div id="sku-feedback" class="text-danger small" style="display: none;"></div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="nombre" class="form-label">Nombre del Producto *</label>
                                     <input type="text" class="form-control" th:field="*{nombre}" id="nombre" required>
-                                    <div th:if="${#fields.hasErrors('nombre')}" class="text-danger small"
-                                        th:errors="*{nombre}"></div>
+                                    <div th:if="${#fields.hasErrors('nombre')}" class="text-danger small" th:errors="*{nombre}"></div>
                                 </div>
                             </div>
 
                             <div class="row mt-3">
                                 <div class="col-12">
                                     <label for="descripcion" class="form-label">Descripción</label>
-                                    <textarea class="form-control" th:field="*{descripcion}" id="descripcion"
-                                        rows="3"></textarea>
-                                    <div th:if="${#fields.hasErrors('descripcion')}" class="text-danger small"
-                                        th:errors="*{descripcion}"></div>
+                                    <textarea class="form-control" th:field="*{descripcion}" id="descripcion" rows="3"></textarea>
+                                    <div th:if="${#fields.hasErrors('descripcion')}" class="text-danger small" th:errors="*{descripcion}"></div>
                                 </div>
                             </div>
 
@@ -117,22 +103,18 @@
                                     <select class="form-select" th:field="*{idCategoria}" id="categoria" required>
                                         <option value="">Seleccionar categoría</option>
                                         <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
-                                            th:text="${categoria.nombreCategoria}">
-                                        </option>
+                                            th:text="${categoria.nombreCategoria}"></option>
                                     </select>
-                                    <div th:if="${#fields.hasErrors('idCategoria')}" class="text-danger small"
-                                        th:errors="*{idCategoria}"></div>
+                                    <div th:if="${#fields.hasErrors('idCategoria')}" class="text-danger small" th:errors="*{idCategoria}"></div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="marca" class="form-label">Marca *</label>
                                     <select class="form-select" th:field="*{idMarca}" id="marca" required>
                                         <option value="">Seleccionar marca</option>
                                         <option th:each="marca : ${marcas}" th:value="${marca.id}"
-                                            th:text="${marca.nombreMarca}">
-                                        </option>
+                                            th:text="${marca.nombreMarca}"></option>
                                     </select>
-                                    <div th:if="${#fields.hasErrors('idMarca')}" class="text-danger small"
-                                        th:errors="*{idMarca}"></div>
+                                    <div th:if="${#fields.hasErrors('idMarca')}" class="text-danger small" th:errors="*{idMarca}"></div>
                                 </div>
                             </div>
 
@@ -141,102 +123,139 @@
                                     <label for="precio" class="form-label">Precio de Venta *</label>
                                     <div class="input-group">
                                         <span class="input-group-text">S/.</span>
-                                        <input type="number" class="form-control" th:field="*{precio}" id="precio"
-                                            step="0.01" required>
+                                        <input type="number" class="form-control" th:field="*{precio}" id="precio" step="0.01" min="0.01" required>
                                     </div>
-                                    <div th:if="${#fields.hasErrors('precio')}" class="text-danger small"
-                                        th:errors="*{precio}"></div>
+                                    <div th:if="${#fields.hasErrors('precio')}" class="text-danger small" th:errors="*{precio}"></div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="descuento" class="form-label">Descuento (%)</label>
-                                    <input type="number" class="form-control" th:field="*{descuento}" id="descuento"
-                                        step="0.01" min="0" max="100">
-                                    <div th:if="${#fields.hasErrors('descuento')}" class="text-danger small"
-                                        th:errors="*{descuento}"></div>
+                                    <input type="number" class="form-control" th:field="*{descuento}" id="descuento" step="0.01" min="0" max="100">
+                                    <div th:if="${#fields.hasErrors('descuento')}" class="text-danger small" th:errors="*{descuento}"></div>
                                 </div>
+                                <div class="col-md-4">
+                                    <label for="tipoDescuento" class="form-label">Tipo de Descuento</label>
+                                    <select class="form-select" th:field="*{tipoDescuento}" id="tipoDescuento">
+                                        <option value="">Sin descuento</option>
+                                        <option value="PORCENTAJE">Porcentaje</option>
+                                        <option value="MONTO_FIJO">Monto Fijo</option>
+                                        <option value="PROMOCION">Promoción</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
                                 <div class="col-md-4">
                                     <label for="precio_oferta" class="form-label">Precio Oferta</label>
                                     <div class="input-group">
                                         <span class="input-group-text">S/.</span>
-                                        <input type="number" class="form-control" th:field="*{precioOferta}"
-                                            id="precio_oferta" step="0.01" readonly>
+                                        <input type="number" class="form-control" th:field="*{precioOferta}" id="precio_oferta" step="0.01" readonly>
                                     </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="activo" class="form-label">Estado *</label>
+                                    <select class="form-select" th:field="*{activo}" id="activo" required>
+                                        <option th:value="true">Activo</option>
+                                        <option th:value="false">Inactivo</option>
+                                    </select>
+                                    <div th:if="${#fields.hasErrors('activo')}" class="text-danger small" th:errors="*{activo}"></div>
                                 </div>
                             </div>
 
                             <div id="proveedoresContainer" class="mt-3">
-                                <!-- Proveedores existentes -->
-                                <div th:each="proveedor, iterStat : ${producto.proveedores}"
-                                    class="row proveedor-item bg-light p-3 rounded mb-3">
-                                    <input type="hidden" th:name="'proveedores[' + ${iterStat.index} + '].idProveedor'"
-                                        th:value="${proveedor.idProveedor}">
-
+                                <h4>Proveedores</h4>
+                                <div th:each="proveedor, iterStat : ${producto.proveedores}" class="row proveedor-item bg-light p-3 rounded mb-3">
+                                    <input type="hidden" th:field="*{proveedores[__${iterStat.index}__].idProveedor}">
                                     <div class="col-md-6">
                                         <label class="form-label">Proveedor</label>
-                                        <select class="form-select"
-                                            th:name="'proveedores[' + ${iterStat.index} + '].idProveedor'">
+                                        <select class="form-select" th:field="*{proveedores[__${iterStat.index}__].idProveedor}">
                                             <option value="">Seleccionar proveedor</option>
                                             <option th:each="prov : ${proveedores}" th:value="${prov.idProveedor}"
-                                                th:text="${prov.nombre}"
-                                                th:selected="${prov.idProveedor == proveedor.idProveedor}">
-                                            </option>
+                                                th:text="${prov.nombre}"></option>
                                         </select>
                                     </div>
-
                                     <div class="col-md-4">
                                         <label class="form-label">Precio Compra</label>
                                         <div class="input-group">
                                             <span class="input-group-text">S/.</span>
-                                            <input type="number" class="form-control"
-                                                th:name="'proveedores[' + ${iterStat.index} + '].precioCompra'"
-                                                th:value="${proveedor.precioCompra}" step="0.01" min="0">
+                                            <input type="number" class="form-control" th:field="*{proveedores[__${iterStat.index}__].precioCompra}" step="0.01" min="0">
                                         </div>
                                     </div>
-
                                     <div class="col-md-2 d-flex align-items-end">
-                                        <button type="button" class="btn btn-sm btn-outline-success"
-                                            onclick="agregarProveedor()">
-                                            <i class="fas fa-plus"></i>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarProveedor(this)">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
-
                                 </div>
+                                <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarProveedor()">
+                                    <i class="fas fa-plus"></i> Agregar Proveedor
+                                </button>
                             </div>
                         </div>
 
                         <!-- Tab Imágenes -->
-
                         <div class="tab-pane fade" id="imagenes" role="tabpanel" aria-labelledby="imagenes-tab">
                             <div class="mb-3">
                                 <label for="imagenesProducto" class="form-label">
                                     Seleccione hasta 5 imágenes (la primera será portada)
                                 </label>
-                                <input type="file" class="filepond" id="imagenesProducto" name="imagenes" multiple
-                                    accept="image/*" data-max-files="5" />
+                                <input type="file" class="filepond" th:field="*{imagenes}" multiple accept="image/*" data-max-files="5" />
                                 <small class="form-text text-muted">
                                     Puede subir hasta 5 imágenes. La primera será la imagen principal del producto.
                                 </small>
                             </div>
                         </div>
 
-
                         <!-- Tab Especificaciones -->
-                        <div class="tab-pane fade" id="especificaciones" role="tabpanel"
-                            aria-labelledby="especificaciones-tab">
-                            <!-- Aquí va el contenido para las especificaciones -->
-                            <div class="mb-3">
-                                <label for="especificaciones" class="form-label">Especificaciones</label>
-                                <textarea class="form-control" id="especificaciones" rows="5"></textarea>
+                        <div class="tab-pane fade" id="especificaciones" role="tabpanel" aria-labelledby="especificaciones-tab">
+                            <div id="especificacionesContainer">
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarEspecificacion()">
+                                            <i class="fas fa-plus"></i> Agregar Especificación
+                                        </button>
+                                    </div>
+                                </div>
+                                <div th:each="especificacion, iterStat : ${producto.especificaciones}" class="row especificacion-item mb-3">
+                                    <input type="hidden" th:field="*{especificaciones[__${iterStat.index}__].id}">
+                                    <div class="col-md-5">
+                                        <label class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" th:field="*{especificaciones[__${iterStat.index}__].nombre}" required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-label">Valor</label>
+                                        <input type="text" class="form-control" th:field="*{especificaciones[__${iterStat.index}__].valor}" required>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarEspecificacion(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Tab Compatibilidad -->
-                        <div class="tab-pane fade" id="compatibilidad" role="tabpanel"
-                            aria-labelledby="compatibilidad-tab">
-                            <!-- Aquí va el contenido para compatibilidad -->
-                            <div class="mb-3">
-                                <label for="compatibilidad" class="form-label">Compatibilidad</label>
-                                <textarea class="form-control" id="compatibilidad" rows="5"></textarea>
+                        <div class="tab-pane fade" id="compatibilidad" role="tabpanel" aria-labelledby="compatibilidad-tab">
+                            <div id="compatibilidadesContainer">
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarCompatibilidad()">
+                                            <i class="fas fa-plus"></i> Agregar Modelo Compatible
+                                        </button>
+                                    </div>
+                                </div>
+                                <div th:each="compatibilidad, iterStat : ${producto.compatibilidades}" class="row compatibilidad-item mb-3">
+                                    <input type="hidden" th:field="*{compatibilidades[__${iterStat.index}__].id}">
+                                    <div class="col-md-10">
+                                        <label class="form-label">Modelo Compatible</label>
+                                        <input type="text" class="form-control" th:field="*{compatibilidades[__${iterStat.index}__].modeloCompatible}" required>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarCompatibilidad(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -260,68 +279,233 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        // Registrar el plugin de preview para FilePond
+        FilePond.registerPlugin(FilePondPluginImagePreview);
+
+        // Crear FilePond para el input
+        const pond = FilePond.create(document.querySelector('input[type="file"].filepond'), {
+            labelIdle: 'Arrastra y suelta tus imágenes o <span class="filepond--label-action"> Examina </span>',
+            maxFiles: 5,
+            allowMultiple: true,
+            instantUpload: false,
+            acceptedFileTypes: ['image/*'],
+            name: 'imagenes[]' // Importante: debe coincidir con el nombre del campo en el DTO
+        });
+
+        // Validar el formulario antes de enviar
+        document.getElementById('formProducto').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validar campos requeridos
+            if (!this.checkValidity()) {
+                e.stopPropagation();
+                this.classList.add('was-validated');
+                return;
+            }
+
+            // Obtener los archivos de FilePond
+            const files = pond.getFiles().map(file => file.file);
+            
+            // Crear un FormData
+            const formData = new FormData(this);
+            
+            // Agregar los archivos al FormData
+            files.forEach((file, index) => {
+                formData.append('imagenes', file);
+            });
+
+            // Enviar el formulario
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.text().then(html => {
+                        document.documentElement.innerHTML = html;
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al guardar el producto');
+            });
+        });
+
+        // Función para agregar proveedor
         function agregarProveedor() {
             const container = document.getElementById('proveedoresContainer');
             const items = container.getElementsByClassName('proveedor-item');
             const index = items.length;
 
-            // Crea un nuevo elemento usando una plantilla básica (puedes ajustar el HTML si lo cambiaste)
             const nuevoItem = document.createElement('div');
             nuevoItem.className = 'row proveedor-item bg-light p-3 rounded mb-3';
             nuevoItem.innerHTML = `
-            <input type="hidden" name="proveedores[${index}].idProveedor">
-
-            <div class="col-md-6">
-                <label class="form-label">Proveedor</label>
-                <select class="form-select" name="proveedores[${index}].idProveedor">
-                    <option value="">Seleccionar proveedor</option>
-                    ${Array.from(document.querySelectorAll('[name="proveedores[0].idProveedor"] option'))
-                    .map(opt => `<option value="${opt.value}">${opt.textContent}</option>`).join('')}
-                </select>
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label">Precio Compra</label>
-                <div class="input-group">
-                    <span class="input-group-text">S/.</span>
-                    <input type="number" class="form-control" name="proveedores[${index}].precioCompra"
-                        step="0.01" min="0">
+                <input type="hidden" name="proveedores[${index}].idProveedor">
+                <div class="col-md-6">
+                    <label class="form-label">Proveedor</label>
+                    <select class="form-select" name="proveedores[${index}].idProveedor">
+                        <option value="">Seleccionar proveedor</option>
+                        ${Array.from(document.querySelectorAll('select[name$="].idProveedor"] option')).map(opt => 
+                            `<option value="${opt.value}">${opt.textContent}</option>`).join('')}
+                    </select>
                 </div>
-            </div>
+                <div class="col-md-4">
+                    <label class="form-label">Precio Compra</label>
+                    <div class="input-group">
+                        <span class="input-group-text">S/.</span>
+                        <input type="number" class="form-control" name="proveedores[${index}].precioCompra" step="0.01" min="0">
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarProveedor(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
 
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarProveedor(this)">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
-
-            container.appendChild(nuevoItem);
+            container.insertBefore(nuevoItem, container.querySelector('button').parentElement.parentElement.nextSibling);
         }
 
+        // Función para eliminar proveedor
         function eliminarProveedor(btn) {
             const proveedorItem = btn.closest('.proveedor-item');
             proveedorItem.remove();
+            reindexarItems('proveedor-item', 'proveedores');
+        }
 
-            // Reindexar los name attributes
-            const items = document.querySelectorAll('#proveedoresContainer .proveedor-item');
-            items.forEach((item, idx) => {
+        // Calcular precio de oferta automáticamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const precioInput = document.getElementById('precio');
+            const descuentoInput = document.getElementById('descuento');
+            const precioOfertaInput = document.getElementById('precio_oferta');
+
+            function calcularPrecioOferta() {
+                const precio = parseFloat(precioInput.value) || 0;
+                const descuento = parseFloat(descuentoInput.value) || 0;
+
+                if (precio > 0 && descuento > 0) {
+                    const precioOferta = precio - (precio * descuento / 100);
+                    precioOfertaInput.value = precioOferta.toFixed(2);
+                } else {
+                    precioOfertaInput.value = '';
+                }
+            }
+
+            precioInput.addEventListener('input', calcularPrecioOferta);
+            descuentoInput.addEventListener('input', calcularPrecioOferta);
+
+            // Validar SKU único
+            const skuInput = document.getElementById('sku');
+            const skuFeedback = document.getElementById('sku-feedback');
+            let timeoutId;
+
+            skuInput.addEventListener('input', function() {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(function() {
+                    const sku = skuInput.value;
+                    if (sku) {
+                        fetch('/admin/productos/api/validar-sku', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                sku: sku,
+                                idProducto: document.querySelector('input[name="idProducto"]').value
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.existe) {
+                                skuFeedback.textContent = 'Este SKU ya existe';
+                                skuFeedback.style.display = 'block';
+                                skuInput.setCustomValidity('SKU duplicado');
+                            } else {
+                                skuFeedback.style.display = 'none';
+                                skuInput.setCustomValidity('');
+                            }
+                        });
+                    }
+                }, 500);
+            });
+        });
+
+        // Funciones para especificaciones
+        function agregarEspecificacion() {
+            const container = document.getElementById('especificacionesContainer');
+            const items = container.getElementsByClassName('especificacion-item');
+            const index = items.length;
+
+            const nuevoItem = document.createElement('div');
+            nuevoItem.className = 'row especificacion-item mb-3';
+            nuevoItem.innerHTML = `
+                <input type="hidden" name="especificaciones[${index}].id">
+                <div class="col-md-5">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" name="especificaciones[${index}].nombre" required>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">Valor</label>
+                    <input type="text" class="form-control" name="especificaciones[${index}].valor" required>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarEspecificacion(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            container.insertBefore(nuevoItem, container.querySelector('button').parentElement.parentElement.nextSibling);
+        }
+
+        function eliminarEspecificacion(btn) {
+            const especificacionItem = btn.closest('.especificacion-item');
+            especificacionItem.remove();
+            reindexarItems('especificacion-item', 'especificaciones');
+        }
+
+        // Funciones para compatibilidades
+        function agregarCompatibilidad() {
+            const container = document.getElementById('compatibilidadesContainer');
+            const items = container.getElementsByClassName('compatibilidad-item');
+            const index = items.length;
+
+            const nuevoItem = document.createElement('div');
+            nuevoItem.className = 'row compatibilidad-item mb-3';
+            nuevoItem.innerHTML = `
+                <input type="hidden" name="compatibilidades[${index}].id">
+                <div class="col-md-10">
+                    <label class="form-label">Modelo Compatible</label>
+                    <input type="text" class="form-control" name="compatibilidades[${index}].modeloCompatible" required>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarCompatibilidad(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            container.insertBefore(nuevoItem, container.querySelector('button').parentElement.parentElement.nextSibling);
+        }
+
+        function eliminarCompatibilidad(btn) {
+            const compatibilidadItem = btn.closest('.compatibilidad-item');
+            compatibilidadItem.remove();
+            reindexarItems('compatibilidad-item', 'compatibilidades');
+        }
+
+        // Función genérica para reindexar items
+        function reindexarItems(className, fieldName) {
+            const items = document.getElementsByClassName(className);
+            Array.from(items).forEach((item, idx) => {
                 item.querySelectorAll('[name]').forEach(input => {
                     input.name = input.name.replace(/\[\d+\]/, `[${idx}]`);
                 });
             });
         }
-
-        // Registrar el plugin de preview para FilePond
-        FilePond.registerPlugin(FilePondPluginImagePreview);
-
-        // Crear FilePond para el input
-        FilePond.create(document.querySelector('input.filepond'), {
-            labelIdle: 'Arrastra y suelta tus imágenes o <span class="filepond--label-action"> Examina </span>',
-            maxFiles: 5,
-            allowMultiple: true,
-            instantUpload: false,
-        });
     </script>
 </body>
 

@@ -13,8 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.diedari.jimdur.dto.AgregarProveedorDTO;
 import com.diedari.jimdur.mapper.ProveedorMapper;
 import com.diedari.jimdur.model.Proveedor;
-import com.diedari.jimdur.service.CategoriaService;
-import com.diedari.jimdur.service.ProductoService;
 import com.diedari.jimdur.service.ProveedorService;
 
 @Controller
@@ -23,12 +21,6 @@ public class ProveedorController {
 
     @Autowired
     private ProveedorService proveedorService;
-
-    @Autowired
-    private ProductoService productoService;    
-
-    @Autowired
-    private CategoriaService categoriaService;
 
     @GetMapping
     public String listarProveedores(Model model) {

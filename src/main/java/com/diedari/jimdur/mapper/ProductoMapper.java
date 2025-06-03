@@ -1,16 +1,24 @@
 package com.diedari.jimdur.mapper;
 
+import com.diedari.jimdur.dto.CompatibilidadProductoDTO;
+import com.diedari.jimdur.dto.EspecificacionProductoDTO;
 import com.diedari.jimdur.dto.ProductoDTO;
 import com.diedari.jimdur.dto.ProductoProveedorDTO;
 import com.diedari.jimdur.model.*;
+import com.diedari.jimdur.service.FileStorageService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class ProductoMapper {
+
+    private final FileStorageService fileStorageService;
 
     public ProductoDTO toDTO(Producto producto) {
         if (producto == null) {
@@ -41,20 +49,28 @@ public class ProductoMapper {
                    .nombreMarca(producto.getMarca().getNombreMarca());
         }
 
-        // Mapear imágenes existentes
-        if (producto.getImagenes() != null) {
-            List<String> imagenesExistentes = producto.getImagenes().stream()
-                    .map(ImagenProducto::getNombreArchivo)
-                    .collect(Collectors.toList());
-            builder.imagenesExistentes(imagenesExistentes);
-        }
-
         // Mapear proveedores
         if (producto.getProductoProveedores() != null) {
             List<ProductoProveedorDTO> proveedoresDTO = producto.getProductoProveedores().stream()
                     .map(this::toProveedorDTO)
                     .collect(Collectors.toList());
             builder.proveedores(proveedoresDTO);
+        }
+
+        // Mapear especificaciones
+        if (producto.getEspecificaciones() != null) {
+            List<EspecificacionProductoDTO> especificacionesDTO = producto.getEspecificaciones().stream()
+                    .map(this::toEspecificacionDTO)
+                    .collect(Collectors.toList());
+            builder.especificaciones(especificacionesDTO);
+        }
+
+        // Mapear compatibilidades
+        if (producto.getCompatibilidades() != null) {
+            List<CompatibilidadProductoDTO> compatibilidadesDTO = producto.getCompatibilidades().stream()
+                    .map(this::toCompatibilidadDTO)
+                    .collect(Collectors.toList());
+            builder.compatibilidades(compatibilidadesDTO);
         }
 
         return builder.build();
@@ -65,7 +81,7 @@ public class ProductoMapper {
             return null;
         }
 
-        Producto.ProductoBuilder builder = Producto.builder()
+        Producto producto = Producto.builder()
                 .idProducto(dto.getIdProducto())
                 .sku(dto.getSku())
                 .nombre(dto.getNombre())
@@ -74,16 +90,45 @@ public class ProductoMapper {
                 .descuento(dto.getDescuento())
                 .precioOferta(dto.getPrecioOferta())
                 .activo(dto.getActivo())
-                .tipoDescuento(dto.getTipoDescuento());
+                .tipoDescuento(dto.getTipoDescuento())
+                .build();
 
         // El slug se puede generar automáticamente
         if (dto.getSlug() != null) {
-            builder.slug(dto.getSlug());
+            producto.setSlug(dto.getSlug());
         } else if (dto.getNombre() != null) {
-            builder.slug(generateSlug(dto.getNombre()));
+            producto.setSlug(generateSlug(dto.getNombre()));
         }
 
-        return builder.build();
+        // Mapear especificaciones
+        if (dto.getEspecificaciones() != null) {
+            List<EspecificacionProducto> especificaciones = dto.getEspecificaciones().stream()
+                    .map(especificacionDTO -> {
+                        EspecificacionProducto especificacion = toEspecificacionEntity(especificacionDTO);
+                        if (especificacion != null) {
+                            especificacion.setProducto(producto);
+                        }
+                        return especificacion;
+                    })
+                    .collect(Collectors.toList());
+            producto.setEspecificaciones(especificaciones);
+        }
+
+        // Mapear compatibilidades
+        if (dto.getCompatibilidades() != null) {
+            List<CompatibilidadProducto> compatibilidades = dto.getCompatibilidades().stream()
+                    .map(compatibilidadDTO -> {
+                        CompatibilidadProducto compatibilidad = toCompatibilidadEntity(compatibilidadDTO);
+                        if (compatibilidad != null) {
+                            compatibilidad.setProducto(producto);
+                        }
+                        return compatibilidad;
+                    })
+                    .collect(Collectors.toList());
+            producto.setCompatibilidades(compatibilidades);
+        }
+
+        return producto;
     }
 
     public ProductoProveedorDTO toProveedorDTO(ProductoProveedor productoProveedor) {
@@ -116,6 +161,54 @@ public class ProductoMapper {
                 .build();
     }
 
+    public EspecificacionProductoDTO toEspecificacionDTO(EspecificacionProducto especificacion) {
+        if (especificacion == null) {
+            return null;
+        }
+
+        return EspecificacionProductoDTO.builder()
+                .id(especificacion.getId())
+                .nombre(especificacion.getNombre())
+                .valor(especificacion.getValor())
+                .idProducto(especificacion.getProducto() != null ? especificacion.getProducto().getIdProducto() : null)
+                .build();
+    }
+
+    public EspecificacionProducto toEspecificacionEntity(EspecificacionProductoDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        return EspecificacionProducto.builder()
+                .id(dto.getId())
+                .nombre(dto.getNombre())
+                .valor(dto.getValor())
+                .build();
+    }
+
+    public CompatibilidadProductoDTO toCompatibilidadDTO(CompatibilidadProducto compatibilidad) {
+        if (compatibilidad == null) {
+            return null;
+        }
+
+        return CompatibilidadProductoDTO.builder()
+                .id(compatibilidad.getId())
+                .modeloCompatible(compatibilidad.getModeloCompatible())
+                .idProducto(compatibilidad.getProducto() != null ? compatibilidad.getProducto().getIdProducto() : null)
+                .build();
+    }
+
+    public CompatibilidadProducto toCompatibilidadEntity(CompatibilidadProductoDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        return CompatibilidadProducto.builder()
+                .id(dto.getId())
+                .modeloCompatible(dto.getModeloCompatible())
+                .build();
+    }
+
     public List<ProductoDTO> toDTOList(List<Producto> productos) {
         if (productos == null) {
             return new ArrayList<>();
@@ -137,12 +230,12 @@ public class ProductoMapper {
     }
 
     // Método para calcular precio de oferta
-    public void calcularPrecioOferta(ProductoDTO dto) {
-        if (dto.getPrecio() != null && dto.getDescuento() != null && dto.getDescuento() > 0) {
-            double precioOferta = dto.getPrecio() - (dto.getPrecio() * dto.getDescuento() / 100);
-            dto.setPrecioOferta(Math.round(precioOferta * 100.0) / 100.0);
+    public void calcularPrecioOferta(ProductoDTO productoDTO) {
+        if (productoDTO.getPrecio() != null && productoDTO.getDescuento() != null && productoDTO.getDescuento() > 0) {
+            double precioOferta = productoDTO.getPrecio() - (productoDTO.getPrecio() * productoDTO.getDescuento() / 100);
+            productoDTO.setPrecioOferta(Math.round(precioOferta * 100.0) / 100.0); // Redondear a 2 decimales
         } else {
-            dto.setPrecioOferta(null);
+            productoDTO.setPrecioOferta(null);
         }
     }
 }
