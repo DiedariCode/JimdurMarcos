@@ -63,6 +63,7 @@ public class ProductoDTO {
 
     // Para las imágenes
     private List<MultipartFile> imagenes;
+    private List<ImagenProductoDTO> imagenesGuardadas;
 
     // Para los proveedores
     private List<ProductoProveedorDTO> proveedores = new ArrayList<>();

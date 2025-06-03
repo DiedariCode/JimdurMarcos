@@ -111,6 +111,15 @@ public class ProductoServiceImpl implements ProductoService {
         Marca marca = marcaRepository.findById(productoDTO.getIdMarca())
                 .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
 
+        // Primero, eliminar todas las relaciones existentes
+        // Es importante hacer esto antes de cualquier otra operación
+        especificacionProductoRepository.deleteByProducto(productoExistente);
+        compatibilidadProductoRepository.deleteByProducto(productoExistente);
+        productoProveedorRepository.deleteByIdProducto(productoExistente.getIdProducto());
+
+        // Forzar la sincronización con la base de datos
+        productoRepository.flush();
+
         // Actualizar datos básicos del producto
         productoExistente.setSku(productoDTO.getSku());
         productoExistente.setNombre(productoDTO.getNombre());
@@ -123,29 +132,50 @@ public class ProductoServiceImpl implements ProductoService {
         productoExistente.setCategoria(categoria);
         productoExistente.setMarca(marca);
 
-        // Actualizar las relaciones
+        // Guardar los cambios básicos
+        Producto productoActualizado = productoRepository.saveAndFlush(productoExistente);
+
+        // Actualizar las relaciones solo si hay datos nuevos y válidos
+        if (productoDTO.getProveedores() != null && !productoDTO.getProveedores().isEmpty()) {
+            List<ProductoProveedorDTO> proveedoresValidos = productoDTO.getProveedores().stream()
+                .filter(p -> p.getIdProveedor() != null && p.getPrecioCompra() != null)
+                .collect(Collectors.toList());
+            if (!proveedoresValidos.isEmpty()) {
+                guardarProveedores(productoActualizado, proveedoresValidos);
+            }
+        }
+
+        if (productoDTO.getEspecificaciones() != null && !productoDTO.getEspecificaciones().isEmpty()) {
+            List<EspecificacionProductoDTO> especificacionesValidas = productoDTO.getEspecificaciones().stream()
+                .filter(e -> e.getNombre() != null && !e.getNombre().trim().isEmpty() 
+                    && e.getValor() != null && !e.getValor().trim().isEmpty())
+                .collect(Collectors.toList());
+            if (!especificacionesValidas.isEmpty()) {
+                guardarEspecificaciones(productoActualizado, especificacionesValidas);
+            }
+        }
+
+        if (productoDTO.getCompatibilidades() != null && !productoDTO.getCompatibilidades().isEmpty()) {
+            List<CompatibilidadProductoDTO> compatibilidadesValidas = productoDTO.getCompatibilidades().stream()
+                .filter(c -> c.getModeloCompatible() != null && !c.getModeloCompatible().trim().isEmpty())
+                .collect(Collectors.toList());
+            if (!compatibilidadesValidas.isEmpty()) {
+                guardarCompatibilidades(productoActualizado, compatibilidadesValidas);
+            }
+        }
+
+        // Actualizar imágenes si hay nuevas
         if (productoDTO.getImagenes() != null && !productoDTO.getImagenes().isEmpty()) {
-            // Eliminar imágenes antiguas y guardar las nuevas
-            imagenProductoRepository.deleteByProducto(productoExistente);
-            guardarImagenes(productoExistente, productoDTO.getImagenes());
+            guardarImagenes(productoActualizado, productoDTO.getImagenes());
         }
 
-        if (productoDTO.getProveedores() != null) {
-            // Establecer el ID del producto en cada ProductoProveedor
-            productoDTO.getProveedores().forEach(pp -> pp.setIdProducto(productoExistente.getIdProducto()));
-            actualizarProveedores(productoExistente, productoDTO.getProveedores());
-        }
+        // Forzar la sincronización final
+        productoRepository.flush();
 
-        if (productoDTO.getEspecificaciones() != null) {
-            actualizarEspecificaciones(productoExistente, productoDTO.getEspecificaciones());
-        }
+        // Recargar el producto para obtener todas las relaciones actualizadas
+        productoActualizado = productoRepository.findById(productoActualizado.getIdProducto())
+                .orElseThrow(() -> new RuntimeException("Error al recargar el producto"));
 
-        if (productoDTO.getCompatibilidades() != null) {
-            actualizarCompatibilidades(productoExistente, productoDTO.getCompatibilidades());
-        }
-
-        // Guardar los cambios
-        final Producto productoActualizado = productoRepository.save(productoExistente);
         return productoMapper.toDTO(productoActualizado);
     }
 
@@ -247,21 +277,6 @@ public class ProductoServiceImpl implements ProductoService {
         }
     }
 
-    private void actualizarProveedores(Producto producto, List<ProductoProveedorDTO> proveedoresDTO) {
-        productoProveedorRepository.deleteByIdProducto(producto.getIdProducto());
-        guardarProveedores(producto, proveedoresDTO);
-    }
-
-    private void actualizarEspecificaciones(Producto producto, List<EspecificacionProductoDTO> especificacionesDTO) {
-        especificacionProductoRepository.deleteByProducto(producto);
-        guardarEspecificaciones(producto, especificacionesDTO);
-    }
-
-    private void actualizarCompatibilidades(Producto producto, List<CompatibilidadProductoDTO> compatibilidadesDTO) {
-        compatibilidadProductoRepository.deleteByProducto(producto);
-        guardarCompatibilidades(producto, compatibilidadesDTO);
-    }
-
     private String generateSlug(String nombre) {
         if (nombre == null)
             return "";
@@ -327,5 +342,18 @@ public class ProductoServiceImpl implements ProductoService {
                 }
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public void eliminarImagen(Long idImagen) {
+        ImagenProducto imagen = imagenProductoRepository.findById(idImagen)
+                .orElseThrow(() -> new RuntimeException("Imagen no encontrada"));
+
+        // Eliminar el archivo físico
+        fileStorageService.eliminarImagenProducto(imagen.getNombreArchivo());
+
+        // Eliminar el registro de la base de datos
+        imagenProductoRepository.delete(imagen);
     }
 }

@@ -142,25 +142,49 @@ public class ProductoController {
     }
 
     @PostMapping("/editar")
-    public String editarProducto(@Valid @ModelAttribute("producto") ProductoDTO producto,
-            BindingResult result,
-            Model model,
-            RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> editarProducto(@Valid @ModelAttribute ProductoDTO producto, 
+            BindingResult result) {
+        Map<String, Object> response = new HashMap<>();
 
         // Validar SKU único
         if (productoService.existeSkuProducto(producto.getSku(), producto.getIdProducto())) {
-            result.rejectValue("sku", "error.producto", "El SKU ya existe");
+            response.put("success", false);
+            response.put("message", "El SKU ya existe");
+            return ResponseEntity.ok(response);
+        }
+
+        // Validar que haya al menos un proveedor
+        if (producto.getProveedores() == null || producto.getProveedores().isEmpty()) {
+            response.put("success", false);
+            response.put("message", "Debe agregar al menos un proveedor");
+            return ResponseEntity.ok(response);
+        }
+
+        // Validar que haya al menos una especificación
+        if (producto.getEspecificaciones() == null || producto.getEspecificaciones().isEmpty()) {
+            response.put("success", false);
+            response.put("message", "Debe agregar al menos una especificación");
+            return ResponseEntity.ok(response);
+        }
+
+        // Validar que haya al menos una compatibilidad
+        if (producto.getCompatibilidades() == null || producto.getCompatibilidades().isEmpty()) {
+            response.put("success", false);
+            response.put("message", "Debe agregar al menos una compatibilidad");
+            return ResponseEntity.ok(response);
         }
 
         if (result.hasErrors()) {
-            cargarDatosFormulario(model, producto);
-            return "admin/productos/editar";
+            response.put("success", false);
+            response.put("message", "Error en la validación del formulario");
+            return ResponseEntity.ok(response);
         }
 
         try {
-            // Limpiar listas vacías
+            // Limpiar elementos vacíos antes de guardar
             if (producto.getProveedores() != null) {
-                producto.getProveedores().removeIf(p -> p.getIdProveedor() == null);
+                producto.getProveedores().removeIf(p -> p.getIdProveedor() == null || p.getPrecioCompra() == null);
             }
             if (producto.getEspecificaciones() != null) {
                 producto.getEspecificaciones().removeIf(e -> e.getNombre() == null || e.getNombre().trim().isEmpty());
@@ -169,13 +193,17 @@ public class ProductoController {
                 producto.getCompatibilidades().removeIf(c -> c.getModeloCompatible() == null || c.getModeloCompatible().trim().isEmpty());
             }
 
-            productoService.actualizarProducto(producto);
-            redirectAttributes.addFlashAttribute("success", "Producto actualizado exitosamente");
-            return "redirect:/admin/productos";
+            // Actualizar el producto
+            ProductoDTO productoActualizado = productoService.actualizarProducto(producto);
+            
+            response.put("success", true);
+            response.put("message", "Producto actualizado exitosamente");
+            response.put("idProducto", productoActualizado.getIdProducto());
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            cargarDatosFormulario(model, producto);
-            model.addAttribute("error", "Error al actualizar el producto: " + e.getMessage());
-            return "admin/productos/editar";
+            response.put("success", false);
+            response.put("message", "Error al actualizar el producto: " + e.getMessage());
+            return ResponseEntity.ok(response);
         }
     }
 
@@ -183,10 +211,46 @@ public class ProductoController {
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
         try {
             ProductoDTO producto = productoService.obtenerProductoPorId(id);
-            cargarDatosFormulario(model, producto);
-            return "admin/productos/nuevo";
-        } catch (RuntimeException e) {
-            return "redirect:/admin/productos?error=not_found";
+            if (producto == null) {
+                return "redirect:/admin/productos?error=not_found";
+            }
+            
+            // Cargar datos necesarios para el formulario
+            List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
+            List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
+            List<Proveedor> proveedores = proveedorRepository.findAll();
+
+            // Asegurarse de que las listas nunca sean null
+            if (producto.getProveedores() == null) {
+                producto.setProveedores(new ArrayList<>());
+            }
+            if (producto.getEspecificaciones() == null) {
+                producto.setEspecificaciones(new ArrayList<>());
+            }
+            if (producto.getCompatibilidades() == null) {
+                producto.setCompatibilidades(new ArrayList<>());
+            }
+            
+            // Si no hay elementos, agregar uno vacío para el formulario
+            if (producto.getProveedores().isEmpty()) {
+                producto.getProveedores().add(new ProductoProveedorDTO());
+            }
+            if (producto.getEspecificaciones().isEmpty()) {
+                producto.getEspecificaciones().add(new EspecificacionProductoDTO());
+            }
+            if (producto.getCompatibilidades().isEmpty()) {
+                producto.getCompatibilidades().add(new CompatibilidadProductoDTO());
+            }
+
+            model.addAttribute("producto", producto);
+            model.addAttribute("categorias", categorias);
+            model.addAttribute("marcas", marcas);
+            model.addAttribute("proveedores", proveedores);
+            model.addAttribute("pageTitle", "Editar Producto");
+            
+            return "admin/productos/editar";
+        } catch (Exception e) {
+            return "redirect:/admin/productos?error=" + e.getMessage();
         }
     }
 
@@ -292,5 +356,20 @@ public class ProductoController {
         datos.put("proveedores", proveedoresDTO);
 
         return ResponseEntity.ok(datos);
+    }
+
+    @PostMapping("/eliminar-imagen/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> eliminarImagen(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            productoService.eliminarImagen(id);
+            response.put("success", true);
+            response.put("message", "Imagen eliminada exitosamente");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error al eliminar la imagen: " + e.getMessage());
+        }
+        return ResponseEntity.ok(response);
     }
 }

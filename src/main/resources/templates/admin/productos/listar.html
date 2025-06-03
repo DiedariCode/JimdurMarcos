@@ -73,10 +73,10 @@
                                         <!-- Imagen -->
                                         <td>
                                             <div class="product-img-wrapper">
-                                                <img th:if="${not #lists.isEmpty(producto.imagenes)}" 
-                                                     th:src="@{'/uploads/productos/' + ${producto.imagenes[0].nombreArchivo}}"
+                                                <img th:if="${not #lists.isEmpty(producto.imagenesGuardadas)}" 
+                                                     th:src="@{'/uploads/productos/' + ${producto.imagenesGuardadas[0].rutaImagen}}"
                                                      class="product-img" alt="Imagen producto">
-                                                <div th:unless="${not #lists.isEmpty(producto.imagenes)}" 
+                                                <div th:unless="${not #lists.isEmpty(producto.imagenesGuardadas)}" 
                                                      class="product-img-placeholder">
                                                     <i class="fas fa-box fa-2x"></i>
                                                 </div>

@@ -25,4 +25,6 @@ public interface ProductoService {
     Producto obtenerProductoPorSlug(String slug);
 
     void guardarProveedoresProducto(Long idProducto, List<ProductoProveedorDTO> proveedores);
+
+    void eliminarImagen(Long idImagen);
 }

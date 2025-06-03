@@ -54,13 +54,13 @@
                     <div class="collapse show mt-1" id="collapseProductos">
                         <ul class="nav flex-column ms-3 border-start border-secondary ps-2">
                             <li class="nav-item mt-1">
-                                <a th:href="@{/admin/productos/}" class="nav-link text-dark py-1"
+                                <a th:href="@{/admin/productos}" class="nav-link text-dark py-1"
                                     th:classappend="${claseActiva == 'productos'} ? 'sub-active'">
                                     <i class="bi bi-list-ul me-2 small"></i>Listar Productos
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a th:href="@{/admin/productos/agregar}" class="nav-link text-dark py-1"
+                                <a th:href="@{/admin/productos/nuevo}" class="nav-link text-dark py-1"
                                     th:classappend="${claseActiva == 'agregar'} ? 'sub-active'">
                                     <i class="bi bi-plus-circle me-2 small"></i>Agregar Producto
                                 </a>

@@ -2,6 +2,7 @@ package com.diedari.jimdur.mapper;
 
 import com.diedari.jimdur.dto.CompatibilidadProductoDTO;
 import com.diedari.jimdur.dto.EspecificacionProductoDTO;
+import com.diedari.jimdur.dto.ImagenProductoDTO;
 import com.diedari.jimdur.dto.ProductoDTO;
 import com.diedari.jimdur.dto.ProductoProveedorDTO;
 import com.diedari.jimdur.model.*;
@@ -47,6 +48,20 @@ public class ProductoMapper {
         if (producto.getMarca() != null) {
             builder.idMarca(producto.getMarca().getId())
                    .nombreMarca(producto.getMarca().getNombreMarca());
+        }
+
+        // Mapear imágenes
+        if (producto.getImagenes() != null && !producto.getImagenes().isEmpty()) {
+            List<ImagenProductoDTO> imagenesDTO = producto.getImagenes().stream()
+                .map(imagen -> ImagenProductoDTO.builder()
+                    .id(imagen.getIdImagen())
+                    .rutaImagen(imagen.getNombreArchivo())
+                    .esPortada(imagen.getEsPortada())
+                    .build())
+                .collect(Collectors.toList());
+            builder.imagenesGuardadas(imagenesDTO);
+        } else {
+            builder.imagenesGuardadas(new ArrayList<>()); // Asegurar que nunca sea null
         }
 
         // Mapear proveedores
