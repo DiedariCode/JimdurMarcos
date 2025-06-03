@@ -46,9 +46,9 @@ public class Producto {
     @Size(max = 100)
     private String nombre;
 
-    @Column(name = "descripcion", nullable = false, length = 255)
+    @Column(name = "descripcion", nullable = false, length = 500)
     @NotBlank(message = "La descripción del producto es obligatoria")
-    @Size(max = 255)
+    @Size(max = 500)
     private String descripcion;
 
     @Column(name = "precio", nullable = false)
