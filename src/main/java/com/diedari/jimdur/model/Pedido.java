@@ -37,25 +37,29 @@ public class Pedido {
     @Column(name = "id_pedido")
     private Long idPedido;
     
-    @Column(name = "fecha")
+    @Column(name = "fecha", nullable = false)
+    @NotNull(message = "La fecha es obligatoria")
     private LocalDateTime fecha;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado")
+    @Column(name = "estado", nullable = false)
+    @NotNull(message = "El estado es obligatorio")
     private EstadoPedido estado;
     
-    @Column(name = "total")
+    @Column(name = "total", nullable = false)
     @NotNull(message = "El total es obligatorio")
     @DecimalMin(value = "0.0", message = "El total no puede ser negativo")
     private Double total;
     
     // Relaciones
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "id_usuario", nullable = false)
+    @NotNull(message = "El usuario es obligatorio")
     private Usuario usuario;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_direccion")
+    @JoinColumn(name = "id_direccion", nullable = false)
+    @NotNull(message = "La dirección es obligatoria")
     private Direccion direccion;
     
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

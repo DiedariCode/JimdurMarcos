@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,12 +33,14 @@ public class Carrito {
     @Column(name = "id_carrito")
     private Long idCarrito;
     
-    @Column(name = "fecha_creacion")
+    @Column(name = "fecha_creacion", nullable = false)
+    @NotNull(message = "La fecha de creación es obligatoria")
     private LocalDateTime fechaCreacion;
     
     // Relaciones
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "id_usuario", nullable = false)
+    @NotNull(message = "El usuario es obligatorio")
     private Usuario usuario;
     
     @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

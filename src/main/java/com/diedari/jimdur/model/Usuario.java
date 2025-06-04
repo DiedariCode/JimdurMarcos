@@ -14,6 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,16 +33,18 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false)
+    @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 255, message = "El nombre no puede exceder 255 caracteres")
     private String nombre;
 
-    @Column(name = "correo")
+    @Column(name = "correo", unique = true, nullable = false)
+    @NotBlank(message = "El correo es obligatorio")
     @Email(message = "El correo debe tener un formato válido")
     @Size(max = 255, message = "El correo no puede exceder 255 caracteres")
     private String correo;
 
-    @Column(name = "contrasena")
+    @Column(name = "contrasena", nullable = false)
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(max = 255, message = "La contraseña no puede exceder 255 caracteres")
     private String contrasena;
@@ -50,10 +53,12 @@ public class Usuario {
     @Size(max = 255, message = "El teléfono no puede exceder 255 caracteres")
     private String telefono;
 
-    @Column(name = "rol")
+    @Column(name = "rol", nullable = false)
+    @NotNull(message = "El rol es obligatorio")
     private Byte rol;
 
-    @Column(name = "fecha_reg")
+    @Column(name = "fecha_reg", nullable = false)
+    @NotNull(message = "La fecha de registro es obligatoria")
     private LocalDateTime fechaReg;
 
     // Relaciones

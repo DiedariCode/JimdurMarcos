@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -24,7 +25,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Producto")
+@Table(name = "Producto",
+       uniqueConstraints = {
+           @UniqueConstraint(columnNames = {"sku"}, name = "uk_producto_sku"),
+           @UniqueConstraint(columnNames = {"slug"}, name = "uk_producto_slug"),
+           @UniqueConstraint(columnNames = {"nombre", "id_marca"}, name = "uk_producto_nombre_marca")
+       })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,19 +33,23 @@ public class Pago {
     private Long idPago;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "metodo")
+    @Column(name = "metodo", nullable = false)
+    @NotNull(message = "El método de pago es obligatorio")
     private MetodoPago metodo;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado")
+    @Column(name = "estado", nullable = false)
+    @NotNull(message = "El estado del pago es obligatorio")
     private EstadoPago estado;
     
-    @Column(name = "fecha_pago")
+    @Column(name = "fecha_pago", nullable = false)
+    @NotNull(message = "La fecha de pago es obligatoria")
     private LocalDateTime fechaPago;
     
     // Relaciones
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pedido", unique = true)
+    @JoinColumn(name = "id_pedido", unique = true, nullable = false)
+    @NotNull(message = "El pedido es obligatorio")
     private Pedido pedido;
     
     public enum MetodoPago {

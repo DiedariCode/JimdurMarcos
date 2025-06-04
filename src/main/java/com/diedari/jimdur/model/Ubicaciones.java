@@ -12,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +33,8 @@ public class Ubicaciones {
     @Column(name = "id_ubicacion")
     private Long idUbicacion;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false)
+    @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 255, message = "El nombre no puede exceder 255 caracteres")
     private String nombre;
 
@@ -39,11 +42,13 @@ public class Ubicaciones {
     @Size(max = 255, message = "La descripción no puede exceder 255 caracteres")
     private String descripcion;
 
-    @Column(name = "codigo", unique = true)
+    @Column(name = "codigo", unique = true, nullable = false)
+    @NotBlank(message = "El código es obligatorio")
     @Size(max = 255, message = "El código no puede exceder 255 caracteres")
     private String codigo;
 
-    @Column(name = "capacidad")
+    @Column(name = "capacidad", nullable = false)
+    @NotNull(message = "La capacidad es obligatoria")
     @Min(value = 0, message = "La capacidad no puede ser negativa")
     private Integer capacidad;
 

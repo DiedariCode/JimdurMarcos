@@ -13,6 +13,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,19 +34,23 @@ public class Direccion {
     @Column(name = "id_direccion")
     private Long idDireccion;
     
-    @Column(name = "etiqueta")
+    @Column(name = "etiqueta", nullable = false)
+    @NotBlank(message = "La etiqueta es obligatoria")
     @Size(max = 255, message = "La etiqueta no puede exceder 255 caracteres")
     private String etiqueta;
     
-    @Column(name = "calle")
+    @Column(name = "calle", nullable = false)
+    @NotBlank(message = "La calle es obligatoria")
     @Size(max = 255, message = "La calle no puede exceder 255 caracteres")
     private String calle;
     
-    @Column(name = "distrito")
+    @Column(name = "distrito", nullable = false)
+    @NotBlank(message = "El distrito es obligatorio")
     @Size(max = 255, message = "El distrito no puede exceder 255 caracteres")
     private String distrito;
     
-    @Column(name = "ciudad")
+    @Column(name = "ciudad", nullable = false)
+    @NotBlank(message = "La ciudad es obligatoria")
     @Size(max = 255, message = "La ciudad no puede exceder 255 caracteres")
     private String ciudad;
     
@@ -54,7 +60,8 @@ public class Direccion {
     
     // Relaciones
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "id_usuario", nullable = false)
+    @NotNull(message = "El usuario es obligatorio")
     private Usuario usuario;
     
     @OneToMany(mappedBy = "direccion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
