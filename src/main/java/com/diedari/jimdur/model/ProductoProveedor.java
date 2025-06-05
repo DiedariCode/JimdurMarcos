@@ -43,11 +43,9 @@ public class ProductoProveedor {
     // Relaciones
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto", insertable = false, updatable = false)
-    @NotNull(message = "El producto es obligatorio")
     private Producto producto;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_proveedor", insertable = false, updatable = false)
-    @NotNull(message = "El proveedor es obligatorio")
     private Proveedor proveedor;
 }

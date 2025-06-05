@@ -311,39 +311,53 @@ public class ProductoServiceImpl implements ProductoService {
         return productoRepository.findBySlug(slug);
     }
 
-@Override
-@Transactional
-public void guardarProveedoresProducto(Long idProducto, List<ProductoProveedorDTO> proveedores) {
-    // Obtener el producto (por si necesitas validar o lanzar excepción)
-    Producto producto = productoRepository.findById(idProducto)
-            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-    
-    // Eliminar proveedores existentes
-    productoProveedorRepository.deleteByIdProducto(idProducto);
+    @Override
+    @Transactional
+    public void guardarProveedoresProducto(Long idProducto, List<ProductoProveedorDTO> proveedores) {
+        try {
+            // Obtener el producto y verificar que existe
+            Producto producto = productoRepository.findById(idProducto)
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+            
+            // Eliminar proveedores existentes y forzar flush para asegurar que la eliminación se complete
+            productoProveedorRepository.deleteByIdProducto(idProducto);
+            productoProveedorRepository.flush();
 
-    // Guardar los nuevos proveedores
-    for (ProductoProveedorDTO proveedorDTO : proveedores) {
-        if (proveedorDTO.getIdProveedor() != null && proveedorDTO.getPrecioCompra() != null) {
-            try {
-                // Validar que el proveedor exista
-                Proveedor proveedor = proveedorRepository.findById(proveedorDTO.getIdProveedor())
-                        .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
-
-                // Construir la entidad solo con IDs y precioCompra
-                ProductoProveedor productoProveedor = new ProductoProveedor();
-                productoProveedor.setIdProducto(idProducto);
-                productoProveedor.setIdProveedor(proveedor.getIdProveedor());
-                productoProveedor.setPrecioCompra(proveedorDTO.getPrecioCompra());
-
-                // No seteamos producto ni proveedor porque son insertable=false, updatable=false
-
-                productoProveedorRepository.save(productoProveedor);
-            } catch (Exception e) {
-                throw new RuntimeException("Error al guardar la relación producto-proveedor: " + e.getMessage());
+            // Validar la lista de proveedores
+            if (proveedores == null || proveedores.isEmpty()) {
+                return; // Si no hay proveedores, terminamos aquí
             }
+
+            // Guardar los nuevos proveedores
+            for (ProductoProveedorDTO proveedorDTO : proveedores) {
+                if (proveedorDTO.getIdProveedor() != null && proveedorDTO.getPrecioCompra() != null) {
+                    // Validar que el proveedor exista
+                    Proveedor proveedor = proveedorRepository.findById(proveedorDTO.getIdProveedor())
+                            .orElseThrow(() -> new RuntimeException("Proveedor no encontrado: " + proveedorDTO.getIdProveedor()));
+
+                    // Construir la entidad con los IDs y el precio
+                    ProductoProveedor productoProveedor = ProductoProveedor.builder()
+                            .idProducto(idProducto)
+                            .idProveedor(proveedorDTO.getIdProveedor())
+                            .precioCompra(proveedorDTO.getPrecioCompra())
+                            .build();
+
+                    try {
+                        // Guardar y flush para detectar errores temprano
+                        productoProveedorRepository.saveAndFlush(productoProveedor);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al guardar proveedor " + proveedorDTO.getIdProveedor() + 
+                                                " para producto " + idProducto + ": " + e.getMessage());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Log del error para debugging
+            e.printStackTrace();
+            // Relanzar la excepción con un mensaje más descriptivo
+            throw new RuntimeException("Error al guardar la relación producto-proveedor: " + e.getMessage(), e);
         }
     }
-}
 
     @Override
     @Transactional

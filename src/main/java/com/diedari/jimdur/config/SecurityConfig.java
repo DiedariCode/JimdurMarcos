@@ -37,7 +37,9 @@ public class SecurityConfig {
                                                                 "/js/**",
                                                                 "/image/**",
                                                                 "/",
-                                                                "/admin/productos/api/**")
+                                                                "/admin/productos/api/**",
+                                                                "/admin/productos/crear",
+                                                                "/admin/productos/editar/**")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
@@ -52,7 +54,10 @@ public class SecurityConfig {
                                                 .logoutSuccessUrl("/")
                                                 .permitAll())
                                 .csrf(csrf -> csrf
-                                                .ignoringRequestMatchers("/api/verification/**")); // Ignorar CSRF para API
+                                                .ignoringRequestMatchers("/api/verification/**", 
+                                                                       "/admin/productos/api/**",
+                                                                       "/admin/productos/crear",
+                                                                       "/admin/productos/editar/**")); // Ignorar CSRF para API
 
                 return http.build();
         }
