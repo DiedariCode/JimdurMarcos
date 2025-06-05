@@ -30,8 +30,8 @@ public class HomeController {
 
     @GetMapping
     public String index(Model model) {
-        List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
-        model.addAttribute("categorias", categorias);
+        // List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
+        // model.addAttribute("categorias", categorias);
 
         // NAVBAR DINAMICA:
         model.addAttribute("activePage", "inicio");

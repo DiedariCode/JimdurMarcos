@@ -73,77 +73,96 @@
                                         <!-- Imagen -->
                                         <td>
                                             <div class="product-img-wrapper">
-                                                <img th:if="${not #lists.isEmpty(producto.imagenesGuardadas)}" 
-                                                     th:src="@{'/uploads/productos/' + ${producto.imagenesGuardadas[0].rutaImagen}}"
-                                                     class="product-img" alt="Imagen producto">
-                                                <div th:unless="${not #lists.isEmpty(producto.imagenesGuardadas)}" 
-                                                     class="product-img-placeholder">
+                                                <img th:if="${not #lists.isEmpty(producto.imagenesGuardadas)}"
+                                                    th:src="@{'/uploads/productos/' + ${producto.imagenesGuardadas[0].rutaImagen}}"
+                                                    class="product-img" alt="Imagen producto">
+                                                <div th:unless="${not #lists.isEmpty(producto.imagenesGuardadas)}"
+                                                    class="product-img-placeholder">
                                                     <i class="fas fa-box fa-2x"></i>
                                                 </div>
                                             </div>
                                         </td>
-                                        
+
                                         <!-- Información -->
                                         <td>
                                             <div class="d-flex flex-column">
-                                                <div class="fw-medium mb-1" th:text="${producto.nombre}">Nombre del producto</div>
-                                                <div class="text-muted small mb-1" th:text="${producto.sku}">SKU-001</div>
-                                                <small class="text-muted" th:text="${#strings.abbreviate(producto.descripcion, 50)}">Descripción corta...</small>
+                                                <div class="fw-medium mb-1" th:text="${producto.nombre}">Nombre del
+                                                    producto</div>
+                                                <div class="text-muted small mb-1" th:text="${producto.sku}">SKU-001
+                                                </div>
+                                                <small class="text-muted"
+                                                    th:text="${#strings.abbreviate(producto.descripcion, 50)}">Descripción
+                                                    corta...</small>
                                             </div>
                                         </td>
-                                        
+
                                         <!-- Categoría -->
                                         <td>
-                                            <span class="badge text-bg-info" th:text="${producto.nombreCategoria}">Categoría</span>
+                                            <span class="badge text-bg-info"
+                                                th:text="${producto.nombreCategoria}">Categoría</span>
                                         </td>
-                                        
+
                                         <!-- Marca -->
                                         <td>
-                                            <span class="badge text-bg-secondary" th:text="${producto.nombreMarca}">Marca</span>
+                                            <span class="badge text-bg-secondary"
+                                                th:text="${producto.nombreMarca}">Marca</span>
                                         </td>
-                                        
+
                                         <!-- Precios -->
                                         <td>
                                             <div class="d-flex flex-column">
                                                 <div class="mb-1">
                                                     <span class="text-muted small">Precio:</span>
-                                                    <span class="fw-medium" th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">S/ 0.00</span>
+                                                    <span class="fw-medium"
+                                                        th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">S/
+                                                        0.00</span>
                                                 </div>
                                                 <div th:if="${producto.descuento > 0}" class="mb-1">
                                                     <span class="text-danger small">Descuento:</span>
-                                                    <span class="text-danger" th:text="${producto.descuento + '%'}">0%</span>
+                                                    <span class="text-danger"
+                                                        th:text="${producto.descuento + '%'}">0%</span>
                                                 </div>
                                                 <div th:if="${producto.precioOferta != null}">
                                                     <span class="text-success small">Precio final:</span>
-                                                    <span class="fw-medium text-success" th:text="'S/ ' + ${#numbers.formatDecimal(producto.precioOferta, 1, 2)}">S/ 0.00</span>
+                                                    <span class="fw-medium text-success"
+                                                        th:text="'S/ ' + ${#numbers.formatDecimal(producto.precioOferta, 1, 2)}">S/
+                                                        0.00</span>
                                                 </div>
                                             </div>
                                         </td>
-                                        
+
                                         <!-- Estado -->
                                         <td>
-                                            <span class="badge" th:classappend="${producto.activo ? 'text-bg-success' : 'text-bg-secondary'}" 
-                                                  th:text="${producto.activo ? 'Activo' : 'Inactivo'}">Estado</span>
+                                            <span class="badge"
+                                                th:classappend="${producto.activo ? 'text-bg-success' : 'text-bg-secondary'}"
+                                                th:text="${producto.activo ? 'Activo' : 'Inactivo'}">Estado</span>
                                         </td>
-                                        
+
                                         <!-- Acciones -->
                                         <td>
                                             <div class="d-flex justify-content-center gap-2">
-                                                <a th:href="@{/admin/productos/{id}/detalle(id=${producto.idProducto})}" 
-                                                   class="btn btn-sm btn-info" title="Ver detalles">
+                                                <a th:href="@{/admin/productos/{id}/detalle(id=${producto.idProducto})}"
+                                                    class="btn btn-sm btn-info" title="Ver detalles">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a th:href="@{/admin/productos/{id}/editar(id=${producto.idProducto})}" 
-                                                   class="btn btn-sm btn-warning" title="Editar">
+                                                <a th:href="@{/admin/productos/{id}/editar(id=${producto.idProducto})}"
+                                                    class="btn btn-sm btn-warning" title="Editar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form th:action="@{/admin/productos/{id}/eliminar(id=${producto.idProducto})}" 
-                                                      method="post" class="d-inline"
-                                                      onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
-                                                    <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                                <form
+                                                    th:action="@{/admin/productos/{id}/eliminar(id=${producto.idProducto})}"
+                                                    method="post" class="d-inline"
+                                                    onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+
+                                                    <!-- Token CSRF para seguridad -->
+                                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        title="Eliminar">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
+
                                             </div>
                                         </td>
                                     </tr>

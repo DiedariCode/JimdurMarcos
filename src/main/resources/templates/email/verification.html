@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de cuenta - Jimdur</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .verification-code {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 32px;
+            letter-spacing: 5px;
+            margin: 20px 0;
+            border: 2px dashed #764ba2;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666;
+        }
+        .button {
+            background-color: #764ba2;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="cid:logo" alt="Jimdur Logo" style="max-width: 200px;">
+        </div>
+        
+        <h2>¡Bienvenido a Jimdur!</h2>
+        
+        <p>Gracias por registrarte. Para completar tu registro, por favor ingresa el siguiente código de verificación en la página de verificación:</p>
+        
+        <div class="verification-code" th:text="${verificationCode}">123456</div>
+        
+        <p>Este código expirará en 5 minutos por razones de seguridad.</p>
+        
+        <p>Si no solicitaste esta verificación, puedes ignorar este correo.</p>
+        
+        <div class="footer">
+            <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
+            <p>&copy; 2024 Jimdur. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html> 
