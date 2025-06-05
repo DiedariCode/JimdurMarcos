@@ -49,7 +49,7 @@ public class ProductoController {
         List<ProductoDTO> productos = productoService.obtenerTodosLosProductos();
         List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
         List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
-        
+
         model.addAttribute("productos", productos);
         model.addAttribute("categorias", categorias);
         model.addAttribute("marcas", marcas);
@@ -61,14 +61,14 @@ public class ProductoController {
     public String mostrarFormularioNuevo(Model model) {
         ProductoDTO producto = new ProductoDTO();
         producto.setActivo(true); // Por defecto activo
-        
+
         // Inicializar listas vacías
         producto.setProveedores(new ArrayList<>());
         producto.getProveedores().add(new ProductoProveedorDTO());
-        
+
         producto.setEspecificaciones(new ArrayList<>());
         producto.getEspecificaciones().add(new EspecificacionProductoDTO());
-        
+
         producto.setCompatibilidades(new ArrayList<>());
         producto.getCompatibilidades().add(new CompatibilidadProductoDTO());
 
@@ -98,9 +98,9 @@ public class ProductoController {
         try {
             // Limpiar listas que no se usarán en esta fase
             producto.setProveedores(new ArrayList<>());
-            
+
             ProductoDTO productoGuardado = productoService.guardarProducto(producto);
-            
+
             response.put("success", true);
             response.put("message", "Producto creado exitosamente");
             response.put("idProducto", productoGuardado.getIdProducto());
@@ -116,34 +116,36 @@ public class ProductoController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> guardarProveedores(@RequestBody Map<String, Object> request) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             Long idProducto = Long.valueOf(request.get("idProducto").toString());
             List<Map<String, Object>> proveedoresData = (List<Map<String, Object>>) request.get("proveedores");
-            
-            List<ProductoProveedorDTO> proveedores = proveedoresData.stream()
-                .map(data -> ProductoProveedorDTO.builder()
-                    .idProducto(idProducto)
-                    .idProveedor(Long.valueOf(data.get("idProveedor").toString()))
-                    .precioCompra(Double.valueOf(data.get("precioCompra").toString()))
-                    .build())
-                .collect(Collectors.toList());
 
+            List<ProductoProveedorDTO> proveedores = proveedoresData.stream()
+                    .map(data -> ProductoProveedorDTO.builder()
+                            .idProducto(idProducto)
+                            .idProveedor(Long.valueOf(data.get("idProveedor").toString()))
+                            .precioCompra(Double.valueOf(data.get("precioCompra").toString()))
+                            .build())
+                    .collect(Collectors.toList());
+
+            System.out.println(">>> Llamando a productoService.guardarProveedoresProducto con ID: " + idProducto);
             productoService.guardarProveedoresProducto(idProducto, proveedores);
-            
+            System.out.println(">>> Llamada completada");
+
             response.put("success", true);
             response.put("message", "Proveedores guardados exitosamente");
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Error al guardar los proveedores: " + e.getMessage());
         }
-        
+
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/editar")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> editarProducto(@Valid @ModelAttribute ProductoDTO producto, 
+    public ResponseEntity<Map<String, Object>> editarProducto(@Valid @ModelAttribute ProductoDTO producto,
             BindingResult result) {
         Map<String, Object> response = new HashMap<>();
 
@@ -190,12 +192,13 @@ public class ProductoController {
                 producto.getEspecificaciones().removeIf(e -> e.getNombre() == null || e.getNombre().trim().isEmpty());
             }
             if (producto.getCompatibilidades() != null) {
-                producto.getCompatibilidades().removeIf(c -> c.getModeloCompatible() == null || c.getModeloCompatible().trim().isEmpty());
+                producto.getCompatibilidades()
+                        .removeIf(c -> c.getModeloCompatible() == null || c.getModeloCompatible().trim().isEmpty());
             }
 
             // Actualizar el producto
             ProductoDTO productoActualizado = productoService.actualizarProducto(producto);
-            
+
             response.put("success", true);
             response.put("message", "Producto actualizado exitosamente");
             response.put("idProducto", productoActualizado.getIdProducto());
@@ -214,7 +217,7 @@ public class ProductoController {
             if (producto == null) {
                 return "redirect:/admin/productos?error=not_found";
             }
-            
+
             // Cargar datos necesarios para el formulario
             List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
             List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
@@ -230,7 +233,7 @@ public class ProductoController {
             if (producto.getCompatibilidades() == null) {
                 producto.setCompatibilidades(new ArrayList<>());
             }
-            
+
             // Si no hay elementos, agregar uno vacío para el formulario
             if (producto.getProveedores().isEmpty()) {
                 producto.getProveedores().add(new ProductoProveedorDTO());
@@ -247,7 +250,7 @@ public class ProductoController {
             model.addAttribute("marcas", marcas);
             model.addAttribute("proveedores", proveedores);
             model.addAttribute("pageTitle", "Editar Producto");
-            
+
             return "admin/productos/editar";
         } catch (Exception e) {
             return "redirect:/admin/productos?error=" + e.getMessage();
@@ -330,15 +333,15 @@ public class ProductoController {
 
         List<Categoria> categorias = categoriaRepository.findByEstadoActivaTrueOrderByNombreCategoriaAsc();
         List<Marca> marcas = marcaRepository.findByEstadoMarcaTrueOrderByNombreMarcaAsc();
-        
+
         // Obtener y filtrar proveedores
         List<Proveedor> todosLosProveedores = proveedorRepository.findAll();
         System.out.println("\n=== DIAGNÓSTICO DE PROVEEDORES ===");
         System.out.println("Total de proveedores encontrados: " + todosLosProveedores.size());
-        
+
         // Filtrar y mapear a DTO simplificado
         List<Map<String, Object>> proveedoresDTO = todosLosProveedores.stream()
-                .filter(p -> "1".equals(p.getEstadoActivo()))
+                .filter(p -> "Activo".equals(p.getEstadoActivo()))
                 .map(p -> {
                     Map<String, Object> dto = new HashMap<>();
                     dto.put("idProveedor", p.getIdProveedor());
@@ -346,7 +349,7 @@ public class ProductoController {
                     return dto;
                 })
                 .collect(Collectors.toList());
-        
+
         System.out.println("\n=== DATOS A ENVIAR ===");
         System.out.println("Número de proveedores en datos: " + proveedoresDTO.size());
         proveedoresDTO.forEach(p -> System.out.println("Proveedor a enviar: " + p.get("nombre")));

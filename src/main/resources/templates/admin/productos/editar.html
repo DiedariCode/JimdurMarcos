@@ -17,13 +17,14 @@
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
 
     <!-- Plugin preview CSS -->
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+        rel="stylesheet" />
 
     <!-- SweetAlert2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
 <body>
@@ -35,7 +36,8 @@
 
             <!-- Content area (columna derecha) -->
             <main class="col-md-9 col-lg-10 py-4 px-5 ms-auto">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Editar Producto</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
@@ -49,7 +51,8 @@
                 <ul class="nav nav-tabs" id="productoTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general"
-                            type="button" role="tab" aria-controls="general" aria-selected="true">Información General</button>
+                            type="button" role="tab" aria-controls="general" aria-selected="true">Información
+                            General</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="imagenes-tab" data-bs-toggle="tab" data-bs-target="#imagenes"
@@ -73,26 +76,31 @@
 
                     <div class="tab-content mt-3" id="productoTabsContent">
                         <!-- Tab Información General -->
-                        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                        <div class="tab-pane fade show active" id="general" role="tabpanel"
+                            aria-labelledby="general-tab">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="sku" class="form-label">SKU *</label>
                                     <input type="text" class="form-control" th:field="*{sku}" id="sku" required>
-                                    <div th:if="${#fields.hasErrors('sku')}" class="text-danger small" th:errors="*{sku}"></div>
+                                    <div th:if="${#fields.hasErrors('sku')}" class="text-danger small"
+                                        th:errors="*{sku}"></div>
                                     <div id="sku-feedback" class="text-danger small" style="display: none;"></div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="nombre" class="form-label">Nombre del Producto *</label>
                                     <input type="text" class="form-control" th:field="*{nombre}" id="nombre" required>
-                                    <div th:if="${#fields.hasErrors('nombre')}" class="text-danger small" th:errors="*{nombre}"></div>
+                                    <div th:if="${#fields.hasErrors('nombre')}" class="text-danger small"
+                                        th:errors="*{nombre}"></div>
                                 </div>
                             </div>
 
                             <div class="row mt-3">
                                 <div class="col-12">
                                     <label for="descripcion" class="form-label">Descripción</label>
-                                    <textarea class="form-control" th:field="*{descripcion}" id="descripcion" rows="3"></textarea>
-                                    <div th:if="${#fields.hasErrors('descripcion')}" class="text-danger small" th:errors="*{descripcion}"></div>
+                                    <textarea class="form-control" th:field="*{descripcion}" id="descripcion"
+                                        rows="3"></textarea>
+                                    <div th:if="${#fields.hasErrors('descripcion')}" class="text-danger small"
+                                        th:errors="*{descripcion}"></div>
                                 </div>
                             </div>
 
@@ -104,7 +112,8 @@
                                         <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
                                             th:text="${categoria.nombreCategoria}"></option>
                                     </select>
-                                    <div th:if="${#fields.hasErrors('idCategoria')}" class="text-danger small" th:errors="*{idCategoria}"></div>
+                                    <div th:if="${#fields.hasErrors('idCategoria')}" class="text-danger small"
+                                        th:errors="*{idCategoria}"></div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="marca" class="form-label">Marca *</label>
@@ -113,7 +122,8 @@
                                         <option th:each="marca : ${marcas}" th:value="${marca.id}"
                                             th:text="${marca.nombreMarca}"></option>
                                     </select>
-                                    <div th:if="${#fields.hasErrors('idMarca')}" class="text-danger small" th:errors="*{idMarca}"></div>
+                                    <div th:if="${#fields.hasErrors('idMarca')}" class="text-danger small"
+                                        th:errors="*{idMarca}"></div>
                                 </div>
                             </div>
 
@@ -122,14 +132,18 @@
                                     <label for="precio" class="form-label">Precio de Venta *</label>
                                     <div class="input-group">
                                         <span class="input-group-text">S/.</span>
-                                        <input type="number" class="form-control" th:field="*{precio}" id="precio" step="0.01" min="0.01" required>
+                                        <input type="number" class="form-control" th:field="*{precio}" id="precio"
+                                            step="0.01" min="0.01" required>
                                     </div>
-                                    <div th:if="${#fields.hasErrors('precio')}" class="text-danger small" th:errors="*{precio}"></div>
+                                    <div th:if="${#fields.hasErrors('precio')}" class="text-danger small"
+                                        th:errors="*{precio}"></div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="descuento" class="form-label">Descuento (%)</label>
-                                    <input type="number" class="form-control" th:field="*{descuento}" id="descuento" step="0.01" min="0" max="100">
-                                    <div th:if="${#fields.hasErrors('descuento')}" class="text-danger small" th:errors="*{descuento}"></div>
+                                    <input type="number" class="form-control" th:field="*{descuento}" id="descuento"
+                                        step="0.01" min="0" max="100">
+                                    <div th:if="${#fields.hasErrors('descuento')}" class="text-danger small"
+                                        th:errors="*{descuento}"></div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="tipoDescuento" class="form-label">Tipo de Descuento</label>
@@ -147,7 +161,8 @@
                                     <label for="precio_oferta" class="form-label">Precio Oferta</label>
                                     <div class="input-group">
                                         <span class="input-group-text">S/.</span>
-                                        <input type="number" class="form-control" th:field="*{precioOferta}" id="precio_oferta" step="0.01" readonly>
+                                        <input type="number" class="form-control" th:field="*{precioOferta}"
+                                            id="precio_oferta" step="0.01" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -156,36 +171,44 @@
                                         <option th:value="true">Activo</option>
                                         <option th:value="false">Inactivo</option>
                                     </select>
-                                    <div th:if="${#fields.hasErrors('activo')}" class="text-danger small" th:errors="*{activo}"></div>
+                                    <div th:if="${#fields.hasErrors('activo')}" class="text-danger small"
+                                        th:errors="*{activo}"></div>
                                 </div>
                             </div>
 
                             <div id="proveedoresContainer" class="mt-3">
                                 <h4>Proveedores</h4>
-                                <div th:each="proveedor, iterStat : ${producto.proveedores}" class="row proveedor-item bg-light p-3 rounded mb-3">
+                                <div th:each="proveedor, iterStat : ${producto.proveedores}"
+                                    class="row proveedor-item bg-light p-3 rounded mb-3">
                                     <input type="hidden" th:field="*{proveedores[__${iterStat.index}__].idProveedor}">
                                     <div class="col-md-6">
                                         <label class="form-label">Proveedor</label>
-                                        <select class="form-select" th:field="*{proveedores[__${iterStat.index}__].idProveedor}">
+                                        <select class="form-select"
+                                            th:field="*{proveedores[__${iterStat.index}__].idProveedor}">
                                             <option value="">Seleccionar proveedor</option>
                                             <option th:each="prov : ${proveedores}" th:value="${prov.idProveedor}"
                                                 th:text="${prov.nombre}"></option>
                                         </select>
+
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Precio Compra</label>
                                         <div class="input-group">
                                             <span class="input-group-text">S/.</span>
-                                            <input type="number" class="form-control" th:field="*{proveedores[__${iterStat.index}__].precioCompra}" step="0.01" min="0">
+                                            <input type="number" class="form-control"
+                                                th:field="*{proveedores[__${iterStat.index}__].precioCompra}"
+                                                step="0.01" min="0">
                                         </div>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-end">
-                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarProveedor(this)">
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                            onclick="eliminarProveedor(this)">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarProveedor()">
+                                <button type="button" class="btn btn-sm btn-outline-success"
+                                    onclick="agregarProveedor()">
                                     <i class="fas fa-plus"></i> Agregar Proveedor
                                 </button>
                             </div>
@@ -205,10 +228,11 @@
                                         <div class="row" id="imagenesActuales">
                                             <div th:each="imagen : ${producto.imagenesGuardadas}" class="col-md-3 mb-3">
                                                 <div class="card">
-                                                    <img th:src="@{'/uploads/productos/' + ${imagen.rutaImagen}}" class="card-img-top img-fluid" alt="Imagen del producto">
+                                                    <img th:src="@{'/uploads/productos/' + ${imagen.rutaImagen}}"
+                                                        class="card-img-top img-fluid" alt="Imagen del producto">
                                                     <div class="card-body">
-                                                        <button type="button" class="btn btn-sm btn-danger" 
-                                                                th:onclick="'eliminarImagen(' + ${imagen.id} + ')'">
+                                                        <button type="button" class="btn btn-sm btn-danger"
+                                                            th:onclick="'eliminarImagen(' + ${imagen.id} + ')'">
                                                             <i class="fas fa-trash"></i> Eliminar
                                                         </button>
                                                     </div>
@@ -217,7 +241,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <input type="file" class="filepond" th:field="*{imagenes}" multiple accept="image/*" data-max-files="5" />
+                                <input type="file" class="filepond" th:field="*{imagenes}" multiple accept="image/*"
+                                    data-max-files="5" />
                                 <small class="form-text text-muted">
                                     Puede subir hasta 5 imágenes. La primera será la imagen principal del producto.
                                 </small>
@@ -225,27 +250,33 @@
                         </div>
 
                         <!-- Tab Especificaciones -->
-                        <div class="tab-pane fade" id="especificaciones" role="tabpanel" aria-labelledby="especificaciones-tab">
+                        <div class="tab-pane fade" id="especificaciones" role="tabpanel"
+                            aria-labelledby="especificaciones-tab">
                             <div id="especificacionesContainer">
                                 <div class="row mb-3">
                                     <div class="col-12">
-                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarEspecificacion()">
+                                        <button type="button" class="btn btn-sm btn-outline-success"
+                                            onclick="agregarEspecificacion()">
                                             <i class="fas fa-plus"></i> Agregar Especificación
                                         </button>
                                     </div>
                                 </div>
-                                <div th:each="especificacion, iterStat : ${producto.especificaciones}" class="row especificacion-item mb-3">
+                                <div th:each="especificacion, iterStat : ${producto.especificaciones}"
+                                    class="row especificacion-item mb-3">
                                     <input type="hidden" th:field="*{especificaciones[__${iterStat.index}__].id}">
                                     <div class="col-md-5">
                                         <label class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" th:field="*{especificaciones[__${iterStat.index}__].nombre}" required>
+                                        <input type="text" class="form-control"
+                                            th:field="*{especificaciones[__${iterStat.index}__].nombre}" required>
                                     </div>
                                     <div class="col-md-5">
                                         <label class="form-label">Valor</label>
-                                        <input type="text" class="form-control" th:field="*{especificaciones[__${iterStat.index}__].valor}" required>
+                                        <input type="text" class="form-control"
+                                            th:field="*{especificaciones[__${iterStat.index}__].valor}" required>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-end">
-                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarEspecificacion(this)">
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                            onclick="eliminarEspecificacion(this)">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -254,23 +285,29 @@
                         </div>
 
                         <!-- Tab Compatibilidad -->
-                        <div class="tab-pane fade" id="compatibilidad" role="tabpanel" aria-labelledby="compatibilidad-tab">
+                        <div class="tab-pane fade" id="compatibilidad" role="tabpanel"
+                            aria-labelledby="compatibilidad-tab">
                             <div id="compatibilidadesContainer">
                                 <div class="row mb-3">
                                     <div class="col-12">
-                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarCompatibilidad()">
+                                        <button type="button" class="btn btn-sm btn-outline-success"
+                                            onclick="agregarCompatibilidad()">
                                             <i class="fas fa-plus"></i> Agregar Modelo Compatible
                                         </button>
                                     </div>
                                 </div>
-                                <div th:each="compatibilidad, iterStat : ${producto.compatibilidades}" class="row compatibilidad-item mb-3">
+                                <div th:each="compatibilidad, iterStat : ${producto.compatibilidades}"
+                                    class="row compatibilidad-item mb-3">
                                     <input type="hidden" th:field="*{compatibilidades[__${iterStat.index}__].id}">
                                     <div class="col-md-10">
                                         <label class="form-label">Modelo Compatible</label>
-                                        <input type="text" class="form-control" th:field="*{compatibilidades[__${iterStat.index}__].modeloCompatible}" required>
+                                        <input type="text" class="form-control"
+                                            th:field="*{compatibilidades[__${iterStat.index}__].modeloCompatible}"
+                                            required>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-end">
-                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarCompatibilidad(this)">
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                            onclick="eliminarCompatibilidad(this)">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -330,92 +367,86 @@
         }
 
         // Validar el formulario antes de enviar
-        document.getElementById('formProducto').addEventListener('submit', function(e) {
+        document.getElementById('formProducto').addEventListener('submit', function (e) {
             e.preventDefault();
-            
-            // Validar campos requeridos
+
             if (!this.checkValidity()) {
                 e.stopPropagation();
                 this.classList.add('was-validated');
                 return;
             }
 
-            // Validar que haya al menos un proveedor
             const proveedores = document.querySelectorAll('.proveedor-item');
             if (proveedores.length === 0) {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Debe agregar al menos un proveedor',
-                    icon: 'error',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
+                Swal.fire({ title: 'Error', text: 'Debe agregar al menos un proveedor', icon: 'error', timer: 2000, showConfirmButton: false });
                 return;
             }
 
-            // Validar que haya al menos una especificación
             const especificaciones = document.querySelectorAll('.especificacion-item');
             if (especificaciones.length === 0) {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Debe agregar al menos una especificación',
-                    icon: 'error',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
+                Swal.fire({ title: 'Error', text: 'Debe agregar al menos una especificación', icon: 'error', timer: 2000, showConfirmButton: false });
                 return;
             }
 
-            // Validar que haya al menos una compatibilidad
             const compatibilidades = document.querySelectorAll('.compatibilidad-item');
             if (compatibilidades.length === 0) {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Debe agregar al menos una compatibilidad',
-                    icon: 'error',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
+                Swal.fire({ title: 'Error', text: 'Debe agregar al menos una compatibilidad', icon: 'error', timer: 2000, showConfirmButton: false });
                 return;
             }
 
-            // Obtener los archivos de FilePond
             const files = pond.getFiles().map(file => file.file);
-            
-            // Crear un FormData
             const formData = new FormData(this);
-            
-            // Agregar los archivos al FormData
-            files.forEach(file => {
-                formData.append('imagenes', file);
-            });
+            files.forEach(file => formData.append('imagenes', file));
 
-            // Mostrar indicador de carga
-            Swal.fire({
-                title: 'Guardando cambios...',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-
-            // Agregar token CSRF al header
             const headers = {};
             const csrfHeader = getCsrfHeader();
             const csrfToken = getCsrfToken();
-            if (csrfHeader && csrfToken) {
-                headers[csrfHeader] = csrfToken;
-            }
+            if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
 
-            // Enviar el formulario
+            Swal.fire({ title: 'Guardando cambios...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            // Paso 1: guardar el producto
             fetch(this.action, {
                 method: 'POST',
                 headers: headers,
-                body: formData
+                body: formData // incluyes archivos (imágenes) y datos del producto.
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Producto actualizado:', data);
+                    if (!data.success) {
+                        throw new Error(data.message || 'Error al actualizar el producto');
+                    }
+
+                    const idProducto = data.idProducto; // Guardar el ID del producto actualizado que el backend devuelve.
+
+                    // Paso 2: preparar y enviar proveedores
+                    const proveedoresData = Array.from(document.querySelectorAll('.proveedor-item')).map(item => {
+                        return {
+                            idProveedor: item.querySelector('select').value,
+                            precioCompra: item.querySelector('input[type="number"]').value
+                        };
+                    });
+
+                    return fetch('/admin/productos/guardar-proveedores', {
+                        method: 'POST',
+                        headers: {
+                            ...headers,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            idProducto: idProducto,
+                            proveedores: proveedoresData
+                        })
+                    });
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Proveedores guardados:', data);
+                    if (!data.success) {
+                        throw new Error(data.message || 'Error al guardar los proveedores');
+                    }
+
                     Swal.fire({
                         title: '¡Éxito!',
                         text: 'Producto actualizado correctamente',
@@ -425,26 +456,17 @@
                     }).then(() => {
                         window.location.href = '/admin/productos';
                     });
-                } else {
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                     Swal.fire({
                         title: 'Error',
-                        text: data.message || 'Error al actualizar el producto',
+                        text: error.message || 'Error en el proceso de actualización',
                         icon: 'error',
                         timer: 2000,
                         showConfirmButton: false
                     });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Error al actualizar el producto',
-                    icon: 'error',
-                    timer: 2000,
-                    showConfirmButton: false
                 });
-            });
         });
 
         // Modificar la validación de SKU
@@ -452,15 +474,15 @@
         const skuFeedback = document.getElementById('sku-feedback');
         let timeoutId;
 
-        skuInput.addEventListener('input', function() {
+        skuInput.addEventListener('input', function () {
             clearTimeout(timeoutId);
-            timeoutId = setTimeout(function() {
+            timeoutId = setTimeout(function () {
                 const sku = skuInput.value;
                 if (sku) {
                     const headers = {
                         'Content-Type': 'application/json'
                     };
-                    
+
                     const csrfHeader = getCsrfHeader();
                     const csrfToken = getCsrfToken();
                     if (csrfHeader && csrfToken) {
@@ -475,17 +497,17 @@
                             idProducto: document.querySelector('input[name="idProducto"]').value
                         })
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.existe) {
-                            skuFeedback.textContent = 'Este SKU ya existe';
-                            skuFeedback.style.display = 'block';
-                            skuInput.setCustomValidity('SKU duplicado');
-                        } else {
-                            skuFeedback.style.display = 'none';
-                            skuInput.setCustomValidity('');
-                        }
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.existe) {
+                                skuFeedback.textContent = 'Este SKU ya existe';
+                                skuFeedback.style.display = 'block';
+                                skuInput.setCustomValidity('SKU duplicado');
+                            } else {
+                                skuFeedback.style.display = 'none';
+                                skuInput.setCustomValidity('');
+                            }
+                        });
                 }
             }, 500);
         });
@@ -504,8 +526,8 @@
                     <label class="form-label">Proveedor</label>
                     <select class="form-select" name="proveedores[${index}].idProveedor">
                         <option value="">Seleccionar proveedor</option>
-                        ${Array.from(document.querySelectorAll('select[name$="].idProveedor"] option')).map(opt => 
-                            `<option value="${opt.value}">${opt.textContent}</option>`).join('')}
+                        ${Array.from(document.querySelectorAll('select[name$="].idProveedor"] option')).map(opt =>
+                `<option value="${opt.value}">${opt.textContent}</option>`).join('')}
                     </select>
                 </div>
                 <div class="col-md-4">
@@ -533,7 +555,7 @@
         }
 
         // Calcular precio de oferta automáticamente
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const precioInput = document.getElementById('precio');
             const descuentoInput = document.getElementById('descuento');
             const precioOfertaInput = document.getElementById('precio_oferta');
@@ -644,7 +666,7 @@
                     const headers = {
                         'Content-Type': 'application/json'
                     };
-                    
+
                     const csrfHeader = getCsrfHeader();
                     const csrfToken = getCsrfToken();
                     if (csrfHeader && csrfToken) {
@@ -655,40 +677,40 @@
                         method: 'POST',
                         headers: headers
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Eliminar la imagen del DOM
-                            document.querySelector(`[onclick="eliminarImagen(${idImagen})"]`)
-                                .closest('.col-md-3').remove();
-                            
-                            Swal.fire({
-                                title: '¡Eliminada!',
-                                text: 'La imagen ha sido eliminada.',
-                                icon: 'success',
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                        } else {
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Eliminar la imagen del DOM
+                                document.querySelector(`[onclick="eliminarImagen(${idImagen})"]`)
+                                    .closest('.col-md-3').remove();
+
+                                Swal.fire({
+                                    title: '¡Eliminada!',
+                                    text: 'La imagen ha sido eliminada.',
+                                    icon: 'success',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: data.message || 'Error al eliminar la imagen',
+                                    icon: 'error',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
                             Swal.fire({
                                 title: 'Error',
-                                text: data.message || 'Error al eliminar la imagen',
+                                text: 'Error al eliminar la imagen',
                                 icon: 'error',
                                 timer: 2000,
                                 showConfirmButton: false
                             });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Error al eliminar la imagen',
-                            icon: 'error',
-                            timer: 2000,
-                            showConfirmButton: false
                         });
-                    });
                 }
             });
         }

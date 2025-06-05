@@ -311,38 +311,39 @@ public class ProductoServiceImpl implements ProductoService {
         return productoRepository.findBySlug(slug);
     }
 
-    @Override
-    @Transactional
-    public void guardarProveedoresProducto(Long idProducto, List<ProductoProveedorDTO> proveedores) {
-        // Obtener el producto
-        Producto producto = productoRepository.findById(idProducto)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+@Override
+@Transactional
+public void guardarProveedoresProducto(Long idProducto, List<ProductoProveedorDTO> proveedores) {
+    // Obtener el producto (por si necesitas validar o lanzar excepción)
+    Producto producto = productoRepository.findById(idProducto)
+            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+    
+    // Eliminar proveedores existentes
+    productoProveedorRepository.deleteByIdProducto(idProducto);
 
-        // Eliminar proveedores existentes
-        productoProveedorRepository.deleteByIdProducto(idProducto);
+    // Guardar los nuevos proveedores
+    for (ProductoProveedorDTO proveedorDTO : proveedores) {
+        if (proveedorDTO.getIdProveedor() != null && proveedorDTO.getPrecioCompra() != null) {
+            try {
+                // Validar que el proveedor exista
+                Proveedor proveedor = proveedorRepository.findById(proveedorDTO.getIdProveedor())
+                        .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
 
-        // Guardar los nuevos proveedores
-        for (ProductoProveedorDTO proveedorDTO : proveedores) {
-            if (proveedorDTO.getIdProveedor() != null && proveedorDTO.getPrecioCompra() != null) {
-                try {
-                    Proveedor proveedor = proveedorRepository.findById(proveedorDTO.getIdProveedor())
-                            .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+                // Construir la entidad solo con IDs y precioCompra
+                ProductoProveedor productoProveedor = new ProductoProveedor();
+                productoProveedor.setIdProducto(idProducto);
+                productoProveedor.setIdProveedor(proveedor.getIdProveedor());
+                productoProveedor.setPrecioCompra(proveedorDTO.getPrecioCompra());
 
-                    ProductoProveedor productoProveedor = ProductoProveedor.builder()
-                            .idProducto(idProducto)
-                            .idProveedor(proveedor.getIdProveedor())
-                            .precioCompra(proveedorDTO.getPrecioCompra())
-                            .producto(producto)
-                            .proveedor(proveedor)
-                            .build();
+                // No seteamos producto ni proveedor porque son insertable=false, updatable=false
 
-                    productoProveedorRepository.save(productoProveedor);
-                } catch (Exception e) {
-                    throw new RuntimeException("Error al guardar la relación producto-proveedor: " + e.getMessage());
-                }
+                productoProveedorRepository.save(productoProveedor);
+            } catch (Exception e) {
+                throw new RuntimeException("Error al guardar la relación producto-proveedor: " + e.getMessage());
             }
         }
     }
+}
 
     @Override
     @Transactional

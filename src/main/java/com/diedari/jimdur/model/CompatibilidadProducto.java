@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -19,11 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "CompatibilidadProducto",
-       uniqueConstraints = {
-           @UniqueConstraint(columnNames = {"id_producto", "modelo_compatible"},
-                           name = "uk_producto_modelo_compatible")
-       })
+@Table(name = "CompatibilidadProducto")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
