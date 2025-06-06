@@ -62,7 +62,7 @@ public class ProductoServiceImpl implements ProductoService {
         // Validar y obtener entidades relacionadas
         Categoria categoria = categoriaRepository.findById(productoDTO.getIdCategoria())
                 .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
-        
+
         Marca marca = marcaRepository.findById(productoDTO.getIdMarca())
                 .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
 
@@ -70,7 +70,7 @@ public class ProductoServiceImpl implements ProductoService {
         Producto producto = productoMapper.toEntity(productoDTO);
         producto.setCategoria(categoria);
         producto.setMarca(marca);
-        
+
         // Guardar y retornar el producto
         return productoRepository.save(producto);
     }
@@ -80,17 +80,17 @@ public class ProductoServiceImpl implements ProductoService {
         if (productoDTO.getImagenes() != null && !productoDTO.getImagenes().isEmpty()) {
             guardarImagenes(productoGuardado, productoDTO.getImagenes());
         }
-        
+
         // 2. Guardar relaciones con proveedores
         if (productoDTO.getProveedores() != null && !productoDTO.getProveedores().isEmpty()) {
             guardarProveedores(productoGuardado, productoDTO.getProveedores());
         }
-        
+
         // 3. Guardar especificaciones
         if (productoDTO.getEspecificaciones() != null && !productoDTO.getEspecificaciones().isEmpty()) {
             guardarEspecificaciones(productoGuardado, productoDTO.getEspecificaciones());
         }
-        
+
         // 4. Guardar compatibilidades
         if (productoDTO.getCompatibilidades() != null && !productoDTO.getCompatibilidades().isEmpty()) {
             guardarCompatibilidades(productoGuardado, productoDTO.getCompatibilidades());
@@ -107,7 +107,7 @@ public class ProductoServiceImpl implements ProductoService {
         // Validar y obtener entidades relacionadas
         Categoria categoria = categoriaRepository.findById(productoDTO.getIdCategoria())
                 .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
-        
+
         Marca marca = marcaRepository.findById(productoDTO.getIdMarca())
                 .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
 
@@ -119,7 +119,11 @@ public class ProductoServiceImpl implements ProductoService {
 
         // Forzar la sincronización con la base de datos
         productoRepository.flush();
-
+        /*
+         * Fuerza que los cambios pendientes en la persistencia (en la memoria) se sincronicen inmediatamente con la base de datos.
+         * En otras palabras, envía a la base de datos todas las operaciones pendientes (inserciones, actualizaciones, eliminaciones) que están     acumuladas en el contexto de persistencia, sin cerrar la transacción.
+         */
+        
         // Actualizar datos básicos del producto
         productoExistente.setSku(productoDTO.getSku());
         productoExistente.setNombre(productoDTO.getNombre());
@@ -138,8 +142,8 @@ public class ProductoServiceImpl implements ProductoService {
         // Actualizar las relaciones solo si hay datos nuevos y válidos
         if (productoDTO.getProveedores() != null && !productoDTO.getProveedores().isEmpty()) {
             List<ProductoProveedorDTO> proveedoresValidos = productoDTO.getProveedores().stream()
-                .filter(p -> p.getIdProveedor() != null && p.getPrecioCompra() != null)
-                .collect(Collectors.toList());
+                    .filter(p -> p.getIdProveedor() != null && p.getPrecioCompra() != null)
+                    .collect(Collectors.toList());
             if (!proveedoresValidos.isEmpty()) {
                 guardarProveedores(productoActualizado, proveedoresValidos);
             }
@@ -147,9 +151,9 @@ public class ProductoServiceImpl implements ProductoService {
 
         if (productoDTO.getEspecificaciones() != null && !productoDTO.getEspecificaciones().isEmpty()) {
             List<EspecificacionProductoDTO> especificacionesValidas = productoDTO.getEspecificaciones().stream()
-                .filter(e -> e.getNombre() != null && !e.getNombre().trim().isEmpty() 
-                    && e.getValor() != null && !e.getValor().trim().isEmpty())
-                .collect(Collectors.toList());
+                    .filter(e -> e.getNombre() != null && !e.getNombre().trim().isEmpty()
+                            && e.getValor() != null && !e.getValor().trim().isEmpty())
+                    .collect(Collectors.toList());
             if (!especificacionesValidas.isEmpty()) {
                 guardarEspecificaciones(productoActualizado, especificacionesValidas);
             }
@@ -157,8 +161,8 @@ public class ProductoServiceImpl implements ProductoService {
 
         if (productoDTO.getCompatibilidades() != null && !productoDTO.getCompatibilidades().isEmpty()) {
             List<CompatibilidadProductoDTO> compatibilidadesValidas = productoDTO.getCompatibilidades().stream()
-                .filter(c -> c.getModeloCompatible() != null && !c.getModeloCompatible().trim().isEmpty())
-                .collect(Collectors.toList());
+                    .filter(c -> c.getModeloCompatible() != null && !c.getModeloCompatible().trim().isEmpty())
+                    .collect(Collectors.toList());
             if (!compatibilidadesValidas.isEmpty()) {
                 guardarCompatibilidades(productoActualizado, compatibilidadesValidas);
             }
@@ -318,8 +322,9 @@ public class ProductoServiceImpl implements ProductoService {
             // Obtener el producto y verificar que existe
             Producto producto = productoRepository.findById(idProducto)
                     .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-            
-            // Eliminar proveedores existentes y forzar flush para asegurar que la eliminación se complete
+
+            // Eliminar proveedores existentes y forzar flush para asegurar que la
+            // eliminación se complete
             productoProveedorRepository.deleteByIdProducto(idProducto);
             productoProveedorRepository.flush();
 
@@ -333,7 +338,8 @@ public class ProductoServiceImpl implements ProductoService {
                 if (proveedorDTO.getIdProveedor() != null && proveedorDTO.getPrecioCompra() != null) {
                     // Validar que el proveedor exista
                     Proveedor proveedor = proveedorRepository.findById(proveedorDTO.getIdProveedor())
-                            .orElseThrow(() -> new RuntimeException("Proveedor no encontrado: " + proveedorDTO.getIdProveedor()));
+                            .orElseThrow(() -> new RuntimeException(
+                                    "Proveedor no encontrado: " + proveedorDTO.getIdProveedor()));
 
                     // Construir la entidad con los IDs y el precio
                     ProductoProveedor productoProveedor = ProductoProveedor.builder()
@@ -346,8 +352,8 @@ public class ProductoServiceImpl implements ProductoService {
                         // Guardar y flush para detectar errores temprano
                         productoProveedorRepository.saveAndFlush(productoProveedor);
                     } catch (Exception e) {
-                        throw new RuntimeException("Error al guardar proveedor " + proveedorDTO.getIdProveedor() + 
-                                                " para producto " + idProducto + ": " + e.getMessage());
+                        throw new RuntimeException("Error al guardar proveedor " + proveedorDTO.getIdProveedor() +
+                                " para producto " + idProducto + ": " + e.getMessage());
                     }
                 }
             }

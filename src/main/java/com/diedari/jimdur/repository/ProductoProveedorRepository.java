@@ -13,7 +13,15 @@ import java.util.List;
 
 @Repository
 public interface ProductoProveedorRepository extends JpaRepository<ProductoProveedor, ProductoProveedorId> {
-
+    /*
+     * 
+     * Elimina todos los registros ProductoProveedor que tengan un producto específico.
+     * 
+     * @Transactional: La operación se realiza dentro de una transacción.
+     * @Modifying: Indica que la consulta modifica datos (no es SELECT).
+     * clearAutomatically = true y flushAutomatically = true: Ayudan a mantener el
+     * contexto de persistencia sincronizado con la base de datos.
+     */
     @Transactional
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("DELETE FROM ProductoProveedor pp WHERE pp.idProducto = :idProducto")

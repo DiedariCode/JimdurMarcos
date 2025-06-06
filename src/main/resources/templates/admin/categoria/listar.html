@@ -44,14 +44,16 @@
                     <div class="row g-3">
                         <!-- Formulario de búsqueda -->
                         <div class="col-md-7">
-                            <form th:action="@{/admin/categorias/filtrar/nombre}" method="get"
+                            <form th:action="@{/admin/categorias}" method="get"
                                 class="d-flex align-items-center">
                                 <div class="input-group">
                                     <span class="input-group-text bg-transparent border-end-0">
                                         <i class="fas fa-search text-muted"></i>
                                     </span>
-                                    <input type="text" class="form-control border-start-0 ps-0" name="nombre"
-                                        placeholder="Buscar por nombre o descripción..." />
+                                    <input type="text" class="form-control border-start-0 ps-0" name="nombreCategoria"
+                                        th:value="${nombreCategoria}" placeholder="Buscar por nombre..." />
+                                    <input type="hidden" name="sortField" th:value="${sortField}" />
+                                    <input type="hidden" name="sortDirection" th:value="${sortDirection}" />
                                     <button type="submit" class="btn btn-primary">Buscar</button>
                                 </div>
                             </form>
@@ -79,12 +81,22 @@
                             <table class="table data-table m-0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 20%">Categoría</th>
+                                        <th style="width: 20%">
+                                            <a th:href="@{'/admin/categorias?sortField=nombreCategoria&sortDirection=' + ${reverseSortDirection}}">
+                                                Categoría
+                                                <i class="fas" th:classappend="${sortField == 'nombreCategoria' ? (sortDirection == 'asc' ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'}"></i>
+                                            </a>
+                                        </th>
                                         <th style="width: 30%">Descripción</th>
                                         <th style="width: 10%">Icono Bootstrap</th>
                                         <th style="width: 20%">Slug (Campo Único)</th>
                                         <th style="width: 10%">Productos</th>
-                                        <th style="width: 5%">Estado</th>
+                                        <th style="width: 5%">
+                                            <a th:href="@{'/admin/categorias?sortField=estadoActiva&sortDirection=' + ${reverseSortDirection}}">
+                                                Estado
+                                                <i class="fas" th:classappend="${sortField == 'estadoActiva' ? (sortDirection == 'asc' ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'}"></i>
+                                            </a>
+                                        </th>
                                         <th style="width: 5%" class="text-center">Acciones</th>
                                     </tr>
                                 </thead>
@@ -148,39 +160,49 @@
                 </div>
 
                 <!-- Paginación -->
-                <div class="d-flex flex-column align-items-center">
+                <div class="d-flex flex-column align-items-center" th:if="${totalPages > 0}">
                     <nav aria-label="Navegación de páginas">
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Primera">
+                            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                <a class="page-link" 
+                                   th:href="@{'/admin/categorias?page=0&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombreCategoria != null ? '&nombreCategoria=' + nombreCategoria : ''}}"
+                                   aria-label="Primera">
                                     <i class="fas fa-angle-double-left"></i>
                                 </a>
                             </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Anterior">
+                            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{'/admin/categorias?page=' + ${currentPage - 1} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombreCategoria != null ? '&nombreCategoria=' + nombreCategoria : ''}}"
+                                   aria-label="Anterior">
                                     <i class="fas fa-angle-left"></i>
                                 </a>
                             </li>
-                            <li class="page-item" th:each="page : ${pages}"
-                                th:classappend="${page == currentPage} ? 'active'">
-                                <a class="page-link" th:href="@{/admin/categorias/{page}(page=${page})}"
-                                    th:text="${page}">1</a>
+                            <li class="page-item" 
+                                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                th:classappend="${i == currentPage} ? 'active'">
+                                <a class="page-link"
+                                   th:href="@{'/admin/categorias?page=' + ${i} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombreCategoria != null ? '&nombreCategoria=' + nombreCategoria : ''}}"
+                                   th:text="${i + 1}">1</a>
                             </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Siguiente">
+                            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{'/admin/categorias?page=' + ${currentPage + 1} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombreCategoria != null ? '&nombreCategoria=' + nombreCategoria : ''}}"
+                                   aria-label="Siguiente">
                                     <i class="fas fa-angle-right"></i>
                                 </a>
                             </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Última">
+                            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{'/admin/categorias?page=' + ${totalPages - 1} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombreCategoria != null ? '&nombreCategoria=' + nombreCategoria : ''}}"
+                                   aria-label="Última">
                                     <i class="fas fa-angle-double-right"></i>
                                 </a>
                             </li>
                         </ul>
                     </nav>
                     <div class="pagination-info">
-                        Mostrando <span class="fw-medium" th:text="${categorias.size()}">10</span> de
-                        <span class="fw-medium" th:text="${totalCategorias}">100</span> categorías en total
+                        Mostrando <span class="fw-medium" th:text="${categorias.numberOfElements}">10</span> de
+                        <span class="fw-medium" th:text="${totalItems}">100</span> categorías en total
                     </div>
                 </div>
             </main>

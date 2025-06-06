@@ -3,6 +3,10 @@ package com.diedari.jimdur.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +14,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.diedari.jimdur.model.Categoria;
+import com.diedari.jimdur.repository.CategoriaRepository;
+import com.diedari.jimdur.repository.ProductoRepository;
 import com.diedari.jimdur.service.CategoriaService;
 import com.diedari.jimdur.service.ProductoService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin/categorias")
@@ -26,15 +32,49 @@ public class CategoriaController {
     @Autowired
     private CategoriaService categoriaService;
 
-    // Aqui se lista todas las categorias
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
+    // // Aqui se lista todas las categorias
+    // @GetMapping
+    // public String listarTodasLasCategorias(Model model) {
+    //     List<Categoria> categorias = categoriaService.obtenerTodasLasCategorias();
+    //     model.addAttribute("categorias", categorias);
+    //     model.addAttribute("categoria", new Categoria()); // Para el formulario de nueva categoria
+    //     model.addAttribute("productos", productoService.obtenerTodosLosProductos()); // Vista para listar categorias
+
+
+    //     model.addAttribute("claseActiva", "categoria");
+
+    //     return "admin/categoria/listar";
+    // }
+
+    // Aqui es para listar categoria usando pageable
     @GetMapping
-    public String listarTodasLasCategorias(Model model) {
-        List<Categoria> categorias = categoriaService.obtenerTodasLasCategorias();
+    public String listarCategoriasPageable(Model model,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "id") String sortField,
+        @RequestParam(defaultValue = "asc") String sortDirection,
+        @RequestParam(required = false) String nombreCategoria
+    ) {
+        
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField));
+        Page<Categoria> categorias;
+        if (nombreCategoria != null && !nombreCategoria.isEmpty()) {
+            categorias = categoriaRepository.findByNombreCategoriaContainingIgnoreCase(nombreCategoria, pageable);
+        } else {
+            categorias = categoriaRepository.findAll(pageable);
+        }
+
         model.addAttribute("categorias", categorias);
-        model.addAttribute("categoria", new Categoria()); // Para el formulario de nueva categoria
-        model.addAttribute("productos", productoService.obtenerTodosLosProductos()); // Vista para listar categorias
-
-
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", categorias.getTotalPages());
+        model.addAttribute("totalItems", categorias.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
+        model.addAttribute("nombreCategoria", nombreCategoria);
         model.addAttribute("claseActiva", "categoria");
 
         return "admin/categoria/listar";
