@@ -157,10 +157,9 @@
                                 <div class="col-md-4">
                                     <label for="tipoDescuento" class="form-label">Tipo de Descuento</label>
                                     <select class="form-select" th:field="*{tipoDescuento}" id="tipoDescuento">
-                                        <option value="">Sin descuento</option>
+                                        <option value=""selected>Sin descuento</option>
                                         <option value="PORCENTAJE">Porcentaje</option>
                                         <option value="MONTO_FIJO">Monto Fijo</option>
-                                        <option value="PROMOCION">Promoción</option>
                                     </select>
                                 </div>
                             </div>
@@ -608,22 +607,50 @@
         document.addEventListener('DOMContentLoaded', function() {
             const precioInput = document.getElementById('precio');
             const descuentoInput = document.getElementById('descuento');
+            const tipoDescuentoSelect = document.getElementById('tipoDescuento');
             const precioOfertaInput = document.getElementById('precio_oferta');
 
+            // Función para habilitar/deshabilitar el input de descuento
+            function toggleDescuentoInput() {
+                const tipoDescuento = tipoDescuentoSelect.value;
+                if (tipoDescuento === "") {
+                    descuentoInput.disabled = true;
+                    descuentoInput.value = "";
+                    precioOfertaInput.value = "";
+                } else {
+                    descuentoInput.disabled = false;
+                }
+            }
+
+            // Función para calcular el precio de oferta
             function calcularPrecioOferta() {
                 const precio = parseFloat(precioInput.value) || 0;
                 const descuento = parseFloat(descuentoInput.value) || 0;
+                const tipoDescuento = tipoDescuentoSelect.value;
 
-                if (precio > 0 && descuento > 0) {
-                    const precioOferta = precio - (precio * descuento / 100);
+                if (precio > 0 && descuento > 0 && tipoDescuento) {
+                    let precioOferta;
+                    if (tipoDescuento === 'PORCENTAJE') {
+                        precioOferta = precio - (precio * descuento / 100);
+                    } else if (tipoDescuento === 'MONTO_FIJO') {
+                        precioOferta = precio - descuento;
+                    }
                     precioOfertaInput.value = precioOferta.toFixed(2);
                 } else {
                     precioOfertaInput.value = '';
                 }
             }
 
+            // Event listeners
             precioInput.addEventListener('input', calcularPrecioOferta);
             descuentoInput.addEventListener('input', calcularPrecioOferta);
+            tipoDescuentoSelect.addEventListener('change', function() {
+                toggleDescuentoInput();
+                calcularPrecioOferta();
+            });
+
+            // Inicializar estado del input de descuento
+            toggleDescuentoInput();
 
             // Validar SKU único
             const skuInput = document.getElementById('sku');
