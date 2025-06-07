@@ -3,6 +3,10 @@ package com.diedari.jimdur.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,27 +18,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.diedari.jimdur.model.Marca;
+import com.diedari.jimdur.repository.MarcaRepository;
 import com.diedari.jimdur.service.MarcaService;
 
 @Controller
 @RequestMapping("/admin/marca")
 public class MarcaController {
-    
+
+    private final MarcaRepository marcaRepository;
+
     @Autowired
     private MarcaService marcaService;
 
+    MarcaController(MarcaRepository marcaRepository) {
+        this.marcaRepository = marcaRepository;
+    }
+
+    // Listar marcas usando pageable
     @GetMapping
-    public String listarTodasLasMarcas(Model model){
-        model.addAttribute("marcas", marcaService.listarTodasLasMarcas());
+    public String listarMarcasPageable(Model model,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "id") String sortField,
+        @RequestParam(defaultValue = "asc") String sortDirection,
+        @RequestParam(required = false) String nombreMarca
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField));
+        Page<Marca> marcas;
 
-        model.addAttribute("claseActiva", "marca");
+        if (nombreMarca != null && !nombreMarca.isEmpty()) {
+            marcas = marcaRepository.findByNombreMarcaContainingIgnoreCase(nombreMarca, pageable);
+        } else {
+            marcas = marcaRepository.findAll(pageable);
+        }
 
-        return "admin/marca/listar";
-        
+        model.addAttribute("marcas", marcas);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", marcas.getTotalPages());
+        model.addAttribute("totalItems", marcas.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
+        model.addAttribute("nombreMarca", nombreMarca);
+
+        return "admin/marca/listar"; 
     }
 
     @GetMapping("/filtrar/estado")
-    public String filtrarMarcasPorEstado (@RequestParam("estado") String activo, Model model) {
+    public String filtrarMarcasPorEstado(@RequestParam("estado") String activo, Model model) {
         List<Marca> marcas;
         if ("activa".equalsIgnoreCase(activo)) {
             marcas = marcaService.obtenerMarcasPorEstado(true); // Obtenemos las activas
@@ -48,7 +79,7 @@ public class MarcaController {
     }
 
     @GetMapping("/filtrar/nombre")
-    public String filtrarMarcasPorNombre (@RequestParam("nombre") String nombre , Model model) {
+    public String filtrarMarcasPorNombre(@RequestParam("nombre") String nombre, Model model) {
         List<Marca> marcas = marcaService.obtenerMarcaPorNombres(nombre);
         model.addAttribute("marcas", marcas);
         return "admin/marca/listar";
@@ -61,7 +92,7 @@ public class MarcaController {
     }
 
     @PostMapping("/agregar")
-    public String guardarMarca (@ModelAttribute Marca marca) {
+    public String guardarMarca(@ModelAttribute Marca marca) {
         marcaService.guardarMarcaNuevo(marca);
         return "redirect:/admin/marca"; // Redirige a la lista de marcas después de guardar
     } 
