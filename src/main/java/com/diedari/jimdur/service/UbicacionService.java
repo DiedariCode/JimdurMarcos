@@ -10,5 +10,4 @@ public interface UbicacionService {
     public Ubicaciones guardarUbicacion(Ubicaciones ubicacion);
     public void eliminarUbicacion(Integer idUbicacion);
     public Ubicaciones actualizarUbicacion(Ubicaciones ubicacion);
-    
 }

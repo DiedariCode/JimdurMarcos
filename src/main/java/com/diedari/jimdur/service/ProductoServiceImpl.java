@@ -11,6 +11,7 @@ import com.diedari.jimdur.dto.CompatibilidadProductoDTO;
 import com.diedari.jimdur.dto.EspecificacionProductoDTO;
 import com.diedari.jimdur.dto.ProductoDTO;
 import com.diedari.jimdur.dto.ProductoProveedorDTO;
+import com.diedari.jimdur.dto.UbicacionDTO;
 import com.diedari.jimdur.mapper.ProductoMapper;
 import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.model.CompatibilidadProducto;
@@ -20,6 +21,7 @@ import com.diedari.jimdur.model.Marca;
 import com.diedari.jimdur.model.Producto;
 import com.diedari.jimdur.model.ProductoProveedor;
 import com.diedari.jimdur.model.Proveedor;
+import com.diedari.jimdur.model.Ubicaciones;
 import com.diedari.jimdur.repository.CategoriaRepository;
 import com.diedari.jimdur.repository.CompatibilidadProductoRepository;
 import com.diedari.jimdur.repository.EspecificacionProductoRepository;
@@ -397,5 +399,15 @@ public class ProductoServiceImpl implements ProductoService {
 
         // Eliminar el registro de la base de datos
         imagenProductoRepository.delete(imagen);
+    }
+    public UbicacionDTO convertirAUbicacionDTO(Ubicaciones ubicacion) {
+        return UbicacionDTO.builder()
+            .idUbicacion(ubicacion.getIdUbicacion())
+            .nombre(ubicacion.getNombre())
+            .descripcion(ubicacion.getDescripcion())
+            .codigo(ubicacion.getCodigo())
+            .capacidad(ubicacion.getCapacidad())
+            .tipoUbicacion(ubicacion.getTipoUbicacion())
+            .build();
     }
 }
