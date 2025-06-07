@@ -52,11 +52,11 @@
 
                 <div class="row g-4">
                     <div class="col-6 col-md-4 col-lg-2" th:each="categoria : ${categorias}">
-                        <a th:href="@{'/categoria/' + ${categoria.slug}}" class="text-decoration-none">
+                        <a th:href="@{'/categoria/' + ${categoria.slugCategoria}}" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm category-card">
                                 <div class="card-body text-center">
                                     <i th:class="'bi ' + ${categoria.iconoCategoria} + ' category-icon'"></i>
-                                    <h5 class="card-title mt-3" th:text="${categoria.nombre}">Nombre</h5>
+                                    <h5 class="card-title mt-3" th:text="${categoria.nombreCategoria}">Nombre</h5>
                                 </div>
                             </div>
                         </a>

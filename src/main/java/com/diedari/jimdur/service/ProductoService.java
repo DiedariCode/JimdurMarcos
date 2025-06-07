@@ -20,11 +20,13 @@ public interface ProductoService {
 
     boolean existeSkuProducto(String sku, Long idProducto);
 
-    List<Producto> obtenerProductoPorEstado(boolean estado);
+    List<Producto> obtenerProductoPorEstado(boolean activo);
 
     Producto obtenerProductoPorSlug(String slug);
 
     void guardarProveedoresProducto(Long idProducto, List<ProductoProveedorDTO> proveedores);
 
     void eliminarImagen(Long idImagen);
+
+    void actualizarPortada(Long idImagen);
 }

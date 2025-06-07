@@ -25,6 +25,36 @@
 
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <style>
+        .card-img-top {
+            width: 100%;
+            height: 200px; /* Altura fija para todas las imágenes */
+            object-fit: cover; /* Mantiene la proporción y cubre el espacio */
+        }
+
+        .card {
+            height: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        #imagenesActuales .col-md-3,
+        #imagenesPreview .col-md-3 {
+            margin-bottom: 20px;
+            height: 350px; /* Altura fija para los contenedores de las tarjetas */
+        }
+
+        .form-check {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -218,7 +248,7 @@
                         <div class="tab-pane fade" id="imagenes" role="tabpanel" aria-labelledby="imagenes-tab">
                             <div class="mb-3">
                                 <label for="imagenesProducto" class="form-label">
-                                    Seleccione hasta 5 imágenes (la primera será portada)
+                                    Seleccione hasta 5 imágenes y marque cuál será la portada
                                 </label>
                                 <div class="row mb-3">
                                     <div class="col-12">
@@ -231,6 +261,14 @@
                                                     <img th:src="@{'/uploads/productos/' + ${imagen.rutaImagen}}"
                                                         class="card-img-top img-fluid" alt="Imagen del producto">
                                                     <div class="card-body">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input portada-check" type="radio" 
+                                                                   name="portadaExistente" th:id="'portada_' + ${imagen.id}"
+                                                                   th:checked="${imagen.esPortada}">
+                                                            <label class="form-check-label" th:for="'portada_' + ${imagen.id}">
+                                                                Usar como portada
+                                                            </label>
+                                                        </div>
                                                         <button type="button" class="btn btn-sm btn-danger"
                                                             th:onclick="'eliminarImagen(' + ${imagen.id} + ')'">
                                                             <i class="fas fa-trash"></i> Eliminar
@@ -243,8 +281,11 @@
                                 </div>
                                 <input type="file" class="filepond" th:field="*{imagenes}" multiple accept="image/*"
                                     data-max-files="5" />
+                                <div id="imagenesPreview" class="row mt-3">
+                                    <!-- Aquí se mostrarán las previsualizaciones de las nuevas imágenes -->
+                                </div>
                                 <small class="form-text text-muted">
-                                    Puede subir hasta 5 imágenes. La primera será la imagen principal del producto.
+                                    Puede subir hasta 5 imágenes. Seleccione una como portada.
                                 </small>
                             </div>
                         </div>
@@ -347,6 +388,62 @@
         // Registrar el plugin de preview para FilePond
         FilePond.registerPlugin(FilePondPluginImagePreview);
 
+        // Función para actualizar la portada
+        function actualizarPortada(idImagen) {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            const csrfHeader = getCsrfHeader();
+            const csrfToken = getCsrfToken();
+            if (csrfHeader && csrfToken) {
+                headers[csrfHeader] = csrfToken;
+            }
+
+            fetch(`/admin/productos/actualizar-portada/${idImagen}`, {
+                method: 'POST',
+                headers: headers
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: '¡Actualizada!',
+                        text: 'La portada ha sido actualizada.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message || 'Error al actualizar la portada',
+                        icon: 'error',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al actualizar la portada',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            });
+        }
+
+        // Agregar event listeners para los radio buttons de portada
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('portada-check') && e.target.name === 'portadaExistente') {
+                const idImagen = e.target.id.split('_')[1];
+                actualizarPortada(idImagen);
+            }
+        });
+
         // Crear FilePond para el input
         const pond = FilePond.create(document.querySelector('input[type="file"].filepond'), {
             labelIdle: 'Arrastra y suelta tus imágenes o <span class="filepond--label-action"> Examina </span>',
@@ -354,8 +451,144 @@
             allowMultiple: true,
             instantUpload: false,
             acceptedFileTypes: ['image/*'],
-            name: 'imagenes[]' // Importante: debe coincidir con el nombre del campo en el DTO
+            name: 'imagenes[]', // Importante: debe coincidir con el nombre del campo en el DTO
+            onaddfile: (error, file) => {
+                if (!error) {
+                    createImagePreview(file);
+                }
+            },
+            onremovefile: (error, file) => {
+                if (!error) {
+                    removeImagePreview(file);
+                }
+            }
         });
+
+        // Función para crear la previsualización de la imagen
+        function createImagePreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewContainer = document.getElementById('imagenesPreview');
+                const col = document.createElement('div');
+                col.className = 'col-md-3 mb-3';
+                col.setAttribute('data-filepond-file-id', file.id);
+                
+                col.innerHTML = `
+                    <div class="card">
+                        <img src="${e.target.result}" class="card-img-top" alt="Preview">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input portada-check" type="radio" 
+                                       name="portada" id="portada_${file.id}">
+                                <label class="form-check-label" for="portada_${file.id}">
+                                    Usar como portada
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                previewContainer.appendChild(col);
+
+                // Si no hay ninguna portada seleccionada, seleccionar esta
+                const existingPortada = document.querySelector('input[name="portadaExistente"]:checked, input[name="portada"]:checked');
+                if (!existingPortada) {
+                    col.querySelector('.portada-check').checked = true;
+                }
+            };
+            reader.readAsDataURL(file.file);
+        }
+
+        // Función para eliminar la previsualización
+        function removeImagePreview(file) {
+            const preview = document.querySelector(`[data-filepond-file-id="${file.id}"]`);
+            if (preview) {
+                const wasPortada = preview.querySelector('.portada-check').checked;
+                preview.remove();
+                
+                // Si la imagen eliminada era la portada, seleccionar la primera disponible
+                if (wasPortada) {
+                    const firstRadio = document.querySelector('.portada-check');
+                    if (firstRadio) {
+                        firstRadio.checked = true;
+                    }
+                }
+            }
+        }
+
+        // Función para eliminar imagen existente
+        function eliminarImagen(idImagen) {
+            Swal.fire({
+                title: '¿Está seguro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const headers = {
+                        'Content-Type': 'application/json'
+                    };
+
+                    const csrfHeader = getCsrfHeader();
+                    const csrfToken = getCsrfToken();
+                    if (csrfHeader && csrfToken) {
+                        headers[csrfHeader] = csrfToken;
+                    }
+
+                    fetch(`/admin/productos/eliminar-imagen/${idImagen}`, {
+                        method: 'POST',
+                        headers: headers
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const elementoImagen = document.querySelector(`[onclick="eliminarImagen(${idImagen})"]`)
+                                .closest('.col-md-3');
+                            
+                            const wasPortada = elementoImagen.querySelector('.portada-check').checked;
+                            elementoImagen.remove();
+
+                            // Si la imagen eliminada era la portada, seleccionar otra
+                            if (wasPortada) {
+                                const primerRadio = document.querySelector('.portada-check');
+                                if (primerRadio) {
+                                    primerRadio.checked = true;
+                                }
+                            }
+
+                            Swal.fire({
+                                title: '¡Eliminada!',
+                                text: 'La imagen ha sido eliminada.',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: data.message || 'Error al eliminar la imagen',
+                                icon: 'error',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al eliminar la imagen',
+                            icon: 'error',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    });
+                }
+            });
+        }
 
         // Agregar funciones para CSRF
         function getCsrfToken() {
@@ -647,71 +880,6 @@
                 item.querySelectorAll('[name]').forEach(input => {
                     input.name = input.name.replace(/\[\d+\]/, `[${idx}]`);
                 });
-            });
-        }
-
-        // Función para eliminar imagen
-        function eliminarImagen(idImagen) {
-            Swal.fire({
-                title: '¿Está seguro?',
-                text: "Esta acción no se puede deshacer",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const headers = {
-                        'Content-Type': 'application/json'
-                    };
-
-                    const csrfHeader = getCsrfHeader();
-                    const csrfToken = getCsrfToken();
-                    if (csrfHeader && csrfToken) {
-                        headers[csrfHeader] = csrfToken;
-                    }
-
-                    fetch(`/admin/productos/eliminar-imagen/${idImagen}`, {
-                        method: 'POST',
-                        headers: headers
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Eliminar la imagen del DOM
-                                document.querySelector(`[onclick="eliminarImagen(${idImagen})"]`)
-                                    .closest('.col-md-3').remove();
-
-                                Swal.fire({
-                                    title: '¡Eliminada!',
-                                    text: 'La imagen ha sido eliminada.',
-                                    icon: 'success',
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: data.message || 'Error al eliminar la imagen',
-                                    icon: 'error',
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'Error al eliminar la imagen',
-                                icon: 'error',
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                        });
-                }
             });
         }
     </script>

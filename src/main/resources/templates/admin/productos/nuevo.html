@@ -40,6 +40,33 @@
         .was-validated .form-select:valid {
             border-color: #198754;
         }
+
+        .card-img-top {
+            width: 100%;
+            height: 200px; /* Altura fija para todas las imágenes */
+            object-fit: cover; /* Mantiene la proporción y cubre el espacio */
+        }
+
+        .card {
+            height: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        #imagenesPreview .col-md-3 {
+            margin-bottom: 20px;
+            height: 350px; /* Altura fija para los contenedores de las tarjetas */
+        }
+
+        .form-check {
+            margin-bottom: 10px;
+        }
     </style>
 
 </head>
@@ -195,11 +222,14 @@
                         <div class="tab-pane fade" id="imagenes" role="tabpanel" aria-labelledby="imagenes-tab">
                             <div class="mb-3">
                                 <label for="imagenesProducto" class="form-label">
-                                    Seleccione hasta 5 imágenes (la primera será portada)
+                                    Seleccione hasta 5 imágenes y marque cuál será la portada
                                 </label>
                                 <input type="file" class="filepond" th:field="*{imagenes}" multiple accept="image/*" data-max-files="5" />
+                                <div id="imagenesPreview" class="row mt-3">
+                                    <!-- Aquí se mostrarán las previsualizaciones -->
+                                </div>
                                 <small class="form-text text-muted">
-                                    Puede subir hasta 5 imágenes. La primera será la imagen principal del producto.
+                                    Puede subir hasta 5 imágenes. Seleccione una como portada.
                                 </small>
                             </div>
                             <div class="row mt-4">
@@ -341,8 +371,64 @@
             allowMultiple: true,
             instantUpload: false,
             acceptedFileTypes: ['image/*'],
-            name: 'imagenes[]' // Importante: debe coincidir con el nombre del campo en el DTO
+            name: 'imagenes[]', // Importante: debe coincidir con el nombre del campo en el DTO
+            onaddfile: (error, file) => {
+                if (!error) {
+                    createImagePreview(file);
+                }
+            },
+            onremovefile: (error, file) => {
+                if (!error) {
+                    removeImagePreview(file);
+                }
+            }
         });
+
+        // Función para crear la previsualización de la imagen
+        function createImagePreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewContainer = document.getElementById('imagenesPreview');
+                const col = document.createElement('div');
+                col.className = 'col-md-3 mb-3';
+                col.setAttribute('data-filepond-file-id', file.id);
+                
+                col.innerHTML = `
+                    <div class="card">
+                        <img src="${e.target.result}" class="card-img-top" alt="Preview">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input portada-check" type="radio" 
+                                       name="portada" id="portada_${file.id}" 
+                                       ${previewContainer.children.length === 0 ? 'checked' : ''}>
+                                <label class="form-check-label" for="portada_${file.id}">
+                                    Usar como portada
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                previewContainer.appendChild(col);
+            };
+            reader.readAsDataURL(file.file);
+        }
+
+        // Función para eliminar la previsualización
+        function removeImagePreview(file) {
+            const preview = document.querySelector(`[data-filepond-file-id="${file.id}"]`);
+            if (preview) {
+                const wasPortada = preview.querySelector('.portada-check').checked;
+                preview.remove();
+                
+                // Si la imagen eliminada era la portada, seleccionar la primera disponible
+                if (wasPortada) {
+                    const firstRadio = document.querySelector('.portada-check');
+                    if (firstRadio) {
+                        firstRadio.checked = true;
+                    }
+                }
+            }
+        }
 
         // Función para validar campos requeridos en una pestaña
         function validarPestanaActual() {
@@ -400,10 +486,21 @@
 
             const formData = new FormData(this);
             
-            // Agregar las imágenes de FilePond
-            const files = pond.getFiles().map(file => file.file);
+            // Obtener las imágenes de FilePond en el orden correcto
+            const files = pond.getFiles();
+            const portadaId = document.querySelector('.portada-check:checked')?.id.split('_')[1];
+            
+            // Primero agregar la imagen de portada
+            const portadaFile = files.find(file => file.id === portadaId);
+            if (portadaFile) {
+                formData.append('imagenes', portadaFile.file);
+            }
+            
+            // Luego agregar el resto de imágenes
             files.forEach(file => {
-                formData.append('imagenes', file);
+                if (file.id !== portadaId) {
+                    formData.append('imagenes', file.file);
+                }
             });
 
             // Mostrar indicador de carga

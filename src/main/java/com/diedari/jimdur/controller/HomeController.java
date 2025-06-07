@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.diedari.jimdur.model.Categoria;
-import com.diedari.jimdur.model.Producto;
+import com.diedari.jimdur.dto.ProductoDTO;
 import com.diedari.jimdur.service.CategoriaService;
 import com.diedari.jimdur.service.MarcaService;
 import com.diedari.jimdur.service.ProductoService;
@@ -30,8 +30,8 @@ public class HomeController {
 
     @GetMapping
     public String index(Model model) {
-        // List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
-        // model.addAttribute("categorias", categorias);
+        List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
+        model.addAttribute("categorias", categorias);
 
         // NAVBAR DINAMICA:
         model.addAttribute("activePage", "inicio");
@@ -49,7 +49,8 @@ public class HomeController {
 
     @GetMapping("/productos")
     public String productosForm(Model model) {
-        List<Producto> productos = productoService.obtenerProductoPorEstado(true);
+        List<ProductoDTO> productos = productoService.obtenerTodosLosProductos();
+        
         model.addAttribute("productos", productos);
 
         model.addAttribute("categorias", categoriaService.obtenerCategoriaPorEstado(true));
@@ -75,10 +76,9 @@ public class HomeController {
 
     @GetMapping("/producto/{slug}")
     public String detalleProductoForm(@PathVariable String slug, Model model) {
-        // NAVBAR DINAMICA:
-        Producto producto = productoService.obtenerProductoPorSlug(slug);
+        ProductoDTO producto = productoService.obtenerProductoPorId(productoService.obtenerProductoPorSlug(slug).getIdProducto());
         if (producto == null) {
-            return "redirect:/productos"; // Redirigir a la lista de productos si no se encuentra el producto
+            return "redirect:/productos";
         }
         model.addAttribute("producto", producto);
         return "/user/detalle-producto";

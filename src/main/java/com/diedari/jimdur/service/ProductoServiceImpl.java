@@ -226,6 +226,27 @@ public class ProductoServiceImpl implements ProductoService {
         }
     }
 
+    @Override
+    @Transactional
+    public void actualizarPortada(Long idImagen) {
+        // Obtener la imagen seleccionada
+        ImagenProducto nuevaPortada = imagenProductoRepository.findById(idImagen)
+                .orElseThrow(() -> new RuntimeException("Imagen no encontrada"));
+
+        // Obtener el producto asociado
+        Producto producto = nuevaPortada.getProducto();
+
+        // Actualizar todas las imágenes del producto: poner esPortada = false
+        producto.getImagenes().forEach(img -> {
+            img.setEsPortada(false);
+            imagenProductoRepository.save(img);
+        });
+
+        // Establecer la nueva portada
+        nuevaPortada.setEsPortada(true);
+        imagenProductoRepository.save(nuevaPortada);
+    }
+
     private void guardarProveedores(Producto producto, List<ProductoProveedorDTO> proveedoresDTO) {
         if (proveedoresDTO == null || proveedoresDTO.isEmpty()) {
             return;
@@ -306,8 +327,8 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public List<Producto> obtenerProductoPorEstado(boolean estado) {
-        return productoRepository.findByActivo(estado);
+    public List<Producto> obtenerProductoPorEstado(boolean activo) {
+        return productoRepository.findByActivo(activo);
     }
 
     @Override

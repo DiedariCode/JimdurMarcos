@@ -375,4 +375,19 @@ public class ProductoController {
         }
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/actualizar-portada/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> actualizarPortada(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            productoService.actualizarPortada(id);
+            response.put("success", true);
+            response.put("message", "Portada actualizada exitosamente");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error al actualizar la portada: " + e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
 }

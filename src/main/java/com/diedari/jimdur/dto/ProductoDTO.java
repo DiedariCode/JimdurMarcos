@@ -30,7 +30,7 @@ public class ProductoDTO {
     @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
     private String nombre;
 
-    @Size(max = 500, message = "La descripción no puede exceder 500 caracteres")
+    @Size(max = 1000, message = "La descripción no puede exceder 1000 caracteres")
     private String descripcion;
 
     @NotNull(message = "El precio es obligatorio")
