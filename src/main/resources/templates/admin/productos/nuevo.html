@@ -117,7 +117,7 @@
                     </li>
                 </ul>
 
-                <form th:action="@{/admin/productos/crear}" th:object="${producto}" method="post"
+                <form th:action="@{/api/productos/crear}" th:object="${producto}" method="post"
                     enctype="multipart/form-data" id="formProducto">
                     <input type="hidden" th:field="*{idProducto}">
 
@@ -581,7 +581,7 @@
                     headers[csrfHeader] = csrfToken;
                 }
 
-                const response = await fetch('/admin/productos/api/datos-formulario', {
+                const response = await fetch('/api/productos/rest/datos-formulario', {
                     headers: headers
                 });
 
@@ -923,7 +923,7 @@
                 headers[csrfHeader] = csrfToken;
             }
 
-            fetch('/admin/productos/guardar-proveedores', {
+            fetch('/api/productos/guardar-proveedores', {
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify({

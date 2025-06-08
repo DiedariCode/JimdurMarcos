@@ -100,7 +100,7 @@
                     </li>
                 </ul>
 
-                <form th:action="@{/admin/productos/editar}" th:object="${producto}" method="post"
+                <form th:action="@{/api/productos/editar}" th:object="${producto}" method="post"
                     enctype="multipart/form-data" id="formProducto">
                     <input type="hidden" th:field="*{idProducto}">
 
@@ -400,7 +400,7 @@
                 headers[csrfHeader] = csrfToken;
             }
 
-            fetch(`/admin/productos/actualizar-portada/${idImagen}`, {
+            fetch(`/api/productos/actualizar-portada/${idImagen}`, {
                 method: 'POST',
                 headers: headers
             })
@@ -538,7 +538,7 @@
                         headers[csrfHeader] = csrfToken;
                     }
 
-                    fetch(`/admin/productos/eliminar-imagen/${idImagen}`, {
+                    fetch(`/api/productos/eliminar-imagen/${idImagen}`, {
                         method: 'POST',
                         headers: headers
                     })
@@ -661,7 +661,7 @@
                         };
                     });
 
-                    return fetch('/admin/productos/guardar-proveedores', {
+                    return fetch('/api/productos/guardar-proveedores', {
                         method: 'POST',
                         headers: {
                             ...headers,
@@ -722,7 +722,7 @@
                         headers[csrfHeader] = csrfToken;
                     }
 
-                    fetch('/admin/productos/api/validar-sku', {
+                    fetch('/api/productos/rest/validar-sku', {
                         method: 'POST',
                         headers: headers,
                         body: JSON.stringify({
