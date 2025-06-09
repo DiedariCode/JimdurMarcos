@@ -317,8 +317,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <form id="formCambiarEstado" method="post" style="display: inline;">
-                        <input type="hidden" name="_method" value="PATCH">
-                        <input type="hidden" name="nuevoEstado" id="nuevoEstado">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
                         <button type="submit" class="btn btn-primary" id="btnConfirmarEstado">
                             Confirmar Cambio
                         </button>
@@ -344,6 +343,25 @@
             
             // Mostrar el modal
             const modal = new bootstrap.Modal(document.getElementById('modalEliminar'));
+            modal.show();
+        }
+
+        function toggleEstado(btn) {
+            const idProveedor = btn.getAttribute('data-id');
+            const nombreProveedor = btn.getAttribute('data-nombre');
+            const estadoActual = btn.getAttribute('data-estado');
+            const nuevoEstado = estadoActual === 'Activo' ? 'Inactivo' : 'Activo';
+            
+            // Actualizar el texto del modal
+            document.getElementById('accionEstado').textContent = estadoActual === 'Activo' ? 'desactivar' : 'activar';
+            document.getElementById('nombreProveedorEstado').textContent = nombreProveedor;
+            
+            // Actualizar la acción del formulario
+            const formCambiarEstado = document.getElementById('formCambiarEstado');
+            formCambiarEstado.action = `/admin/proveedor/${idProveedor}/cambiar-estado`;
+            
+            // Mostrar el modal
+            const modal = new bootstrap.Modal(document.getElementById('modalCambiarEstado'));
             modal.show();
         }
     </script>

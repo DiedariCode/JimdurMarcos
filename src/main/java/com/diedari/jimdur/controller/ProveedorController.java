@@ -156,4 +156,29 @@ public class ProveedorController {
         }
         return "redirect:/admin/proveedor";
     }
+
+    @PostMapping("/{id}/cambiar-estado")
+    public String cambiarEstado(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            Proveedor proveedor = proveedorService.obtenerProveedorPorId(id);
+            if (proveedor == null) {
+                redirectAttributes.addFlashAttribute("mensaje", "Proveedor no encontrado");
+                redirectAttributes.addFlashAttribute("tipo", "error");
+                return "redirect:/admin/proveedor";
+            }
+
+            // Cambiar el estado
+            String nuevoEstado = "Activo".equals(proveedor.getEstadoActivo()) ? "Inactivo" : "Activo";
+            proveedor.setEstadoActivo(nuevoEstado);
+            proveedorService.guardarProveedor(proveedor);
+
+            redirectAttributes.addFlashAttribute("mensaje", "Estado del proveedor actualizado exitosamente");
+            redirectAttributes.addFlashAttribute("tipo", "success");
+        } catch (Exception e) {
+            logger.error("Error al cambiar estado del proveedor", e);
+            redirectAttributes.addFlashAttribute("mensaje", "Error al cambiar el estado del proveedor: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("tipo", "error");
+        }
+        return "redirect:/admin/proveedor";
+    }
 }
