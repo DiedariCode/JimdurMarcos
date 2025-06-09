@@ -220,7 +220,7 @@
                                                     </a>
 
                                                     <!-- Botón Editar -->
-                                                    <a th:href="@{/admin/proveedor/editar/{id}(id=${proveedor.idProveedor})}"
+                                                    <a th:href="@{/admin/proveedor/{id}/editar(id=${proveedor.idProveedor})}"
                                                         class="btn btn-outline-warning btn-sm btn-sm-custom"
                                                         title="Editar proveedor" data-bs-toggle="tooltip">
                                                         <i class="bi bi-pencil"></i>
@@ -289,7 +289,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <form id="formEliminar" method="post" style="display: inline;">
-                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
                         <button type="submit" class="btn btn-danger">
                             <i class="bi bi-trash me-1"></i>Eliminar Definitivamente
                         </button>
@@ -330,6 +330,23 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function confirmarEliminacion(btn) {
+            const idProveedor = btn.getAttribute('data-id');
+            const nombreProveedor = btn.getAttribute('data-nombre');
+            
+            // Actualizar el texto del modal
+            document.getElementById('nombreProveedorEliminar').textContent = nombreProveedor;
+            
+            // Actualizar la acción del formulario
+            const formEliminar = document.getElementById('formEliminar');
+            formEliminar.action = `/admin/proveedor/eliminar/${idProveedor}`;
+            
+            // Mostrar el modal
+            const modal = new bootstrap.Modal(document.getElementById('modalEliminar'));
+            modal.show();
+        }
+    </script>
 </body>
 
 </html>

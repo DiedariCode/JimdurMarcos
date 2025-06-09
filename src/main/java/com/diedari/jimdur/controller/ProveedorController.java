@@ -3,6 +3,7 @@ package com.diedari.jimdur.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +16,15 @@ import com.diedari.jimdur.mapper.ProveedorMapper;
 import com.diedari.jimdur.model.Proveedor;
 import com.diedari.jimdur.service.ProveedorService;
 
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 @RequestMapping("/admin/proveedor")
 public class ProveedorController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProveedorController.class);
 
     @Autowired
     private ProveedorService proveedorService;
@@ -35,40 +42,118 @@ public class ProveedorController {
     }
 
     @PostMapping("/agregar")
-    public String agregarProveedor(@ModelAttribute AgregarProveedorDTO proveedorDTO) {
+    public String agregarProveedor(@Valid @ModelAttribute AgregarProveedorDTO proveedorDTO, 
+                                 BindingResult result,
+                                 Model model,
+                                 RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            logger.warn("Errores de validación al agregar proveedor: {}", result.getAllErrors());
+            model.addAttribute("proveedorDTO", proveedorDTO);
+            return "admin/proveedor/nuevo";
+        }
 
-        Proveedor proveedor = ProveedorMapper.toEntity(proveedorDTO);
+        try {
+            Proveedor proveedor = ProveedorMapper.toEntity(proveedorDTO);
+            proveedorService.guardarProveedor(proveedor);
+            redirectAttributes.addFlashAttribute("mensaje", "Proveedor agregado exitosamente");
+            redirectAttributes.addFlashAttribute("tipo", "success");
+            return "redirect:/admin/proveedor";
+        } catch (Exception e) {
+            logger.error("Error al agregar proveedor", e);
+            model.addAttribute("proveedorDTO", proveedorDTO);
+            model.addAttribute("mensaje", "Error al agregar el proveedor: " + e.getMessage());
+            model.addAttribute("tipo", "error");
+            return "admin/proveedor/nuevo";
+        }
+    }
 
-        proveedorService.guardarProveedor(proveedor);
+    @GetMapping("/{id}/editar")
+    public String mostrarFormularioEditar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        logger.debug("Mostrando formulario de edición para proveedor ID: {}", id);
+        try {
+            Proveedor proveedor = proveedorService.obtenerProveedorPorId(id);
+            if (proveedor == null) {
+                logger.warn("Proveedor no encontrado con ID: {}", id);
+                redirectAttributes.addFlashAttribute("mensaje", "Proveedor no encontrado");
+                redirectAttributes.addFlashAttribute("tipo", "error");
+                return "redirect:/admin/proveedor";
+            }
 
-        return "redirect:/admin/proveedor";
+            AgregarProveedorDTO proveedorDTO = ProveedorMapper.toDTO(proveedor);
+            logger.debug("ProveedorDTO creado: {}", proveedorDTO);
+            model.addAttribute("proveedorDTO", proveedorDTO);
+            return "admin/proveedor/editar";
+        } catch (Exception e) {
+            logger.error("Error al cargar proveedor para editar", e);
+            redirectAttributes.addFlashAttribute("mensaje", "Error al cargar el proveedor: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("tipo", "error");
+            return "redirect:/admin/proveedor";
+        }
+    }
+
+    @PostMapping("/{id}/editar")
+    public String editarProveedor(@PathVariable Long id, 
+                                @Valid @ModelAttribute("proveedorDTO") AgregarProveedorDTO proveedorDTO,
+                                BindingResult result,
+                                Model model,
+                                RedirectAttributes redirectAttributes) {
+        logger.debug("Iniciando edición de proveedor ID: {}", id);
+        logger.debug("DTO recibido: {}", proveedorDTO);
+        
+        if (result.hasErrors()) {
+            logger.warn("Errores de validación al editar proveedor: {}", result.getAllErrors());
+            model.addAttribute("proveedorDTO", proveedorDTO);
+            model.addAttribute("mensaje", "Por favor corrija los errores en el formulario");
+            model.addAttribute("tipo", "error");
+            return "admin/proveedor/editar";
+        }
+
+        try {
+            Proveedor proveedorExistente = proveedorService.obtenerProveedorPorId(id);
+            if (proveedorExistente == null) {
+                logger.warn("Proveedor no encontrado con ID: {}", id);
+                redirectAttributes.addFlashAttribute("mensaje", "Proveedor no encontrado");
+                redirectAttributes.addFlashAttribute("tipo", "error");
+                return "redirect:/admin/proveedor";
+            }
+
+            logger.debug("Proveedor existente encontrado: {}", proveedorExistente);
+            Proveedor proveedorActualizado = ProveedorMapper.toEntity(proveedorDTO);
+            proveedorActualizado.setIdProveedor(id);
+            
+            // Aseguramos que las direcciones mantengan la referencia al proveedor
+            if (proveedorActualizado.getDirecciones() != null) {
+                proveedorActualizado.getDirecciones().forEach(d -> {
+                    d.setProveedor(proveedorActualizado);
+                    logger.debug("Dirección configurada: {}", d);
+                });
+            }
+            
+            proveedorService.guardarProveedor(proveedorActualizado);
+            logger.info("Proveedor actualizado exitosamente: {}", proveedorActualizado);
+            redirectAttributes.addFlashAttribute("mensaje", "Proveedor actualizado exitosamente");
+            redirectAttributes.addFlashAttribute("tipo", "success");
+            return "redirect:/admin/proveedor";
+        } catch (Exception e) {
+            logger.error("Error al actualizar proveedor", e);
+            model.addAttribute("proveedorDTO", proveedorDTO);
+            model.addAttribute("mensaje", "Error al actualizar el proveedor: " + e.getMessage());
+            model.addAttribute("tipo", "error");
+            return "admin/proveedor/editar";
+        }
     }
 
     @PostMapping("/eliminar/{id}")
     public String eliminarProveedor(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             proveedorService.eliminarProveedor(id);
-            redirectAttributes.addAttribute("mensaje", "Proveedor eliminado exitosamente");
-            redirectAttributes.addAttribute("tipo", "success");
+            redirectAttributes.addFlashAttribute("mensaje", "Proveedor eliminado exitosamente");
+            redirectAttributes.addFlashAttribute("tipo", "success");
         } catch (Exception e) {
-            redirectAttributes.addAttribute("mensaje", "Error al eliminar el proveedor");
-            redirectAttributes.addAttribute("tipo", "error");
+            logger.error("Error al eliminar proveedor", e);
+            redirectAttributes.addFlashAttribute("mensaje", "Error al eliminar el proveedor: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("tipo", "error");
         }
-        return "redirect:/admin/proveedor/listar";
+        return "redirect:/admin/proveedor";
     }
-
-    // @PostMappings("/cambiar-estado/{id}")
-    // public String cambiarEstado(@PathVariable Long id, @RequestParam String nuevoEstado,
-    //         RedirectAttributes redirectAttributes) {
-    //     try {
-    //         proveedorService.cambiarEstado(id, nuevoEstado);
-    //         redirectAttributes.addAttribute("mensaje", "Estado actualizado exitosamente");
-    //         redirectAttributes.addAttribute("tipo", "success");
-    //     } catch (Exception e) {
-    //         redirectAttributes.addAttribute("mensaje", "Error al cambiar el estado");
-    //         redirectAttributes.addAttribute("tipo", "error");
-    //     }
-    //     return "redirect:/admin/proveedor/listar";
-    // }
-
 }

@@ -26,8 +26,7 @@ public class AgregarProveedorDTO {
     private String sitioWebContacto;
     private String horarioAtencionContacto;
 
-    // **Quitamos esta línea porque no está en la entidad**
-    // private String categoriaProductosProveedor;
+    private Long idProveedor;
 
     // Lista de direcciones del proveedor
     private List<DireccionProveedorDTO> direcciones;

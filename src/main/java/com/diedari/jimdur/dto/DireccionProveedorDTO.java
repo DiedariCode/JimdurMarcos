@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DireccionProveedorDTO {
 
+    private Long idDireccionProveedor;
+
     private String etiqueta;
 
     private String calle;
@@ -21,15 +23,11 @@ public class DireccionProveedorDTO {
 
     private String departamentoEstado;
 
-
     private String codigoPostal;
-
 
     private String pais;
 
-
     private String referencia;
-
 
     private TipoDireccion tipoDireccion;
 }
