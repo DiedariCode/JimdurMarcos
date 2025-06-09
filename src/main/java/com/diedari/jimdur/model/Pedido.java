@@ -1,12 +1,14 @@
 package com.diedari.jimdur.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,149 +17,61 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "Pedido")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Pedido {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idPedido;
-
-    private Date fecha;
-
+    @Column(name = "id_pedido")
+    private Long idPedido;
+    
+    @Column(name = "fecha", nullable = false)
+    @NotNull(message = "La fecha es obligatoria")
+    private LocalDateTime fecha;
+    
     @Enumerated(EnumType.STRING)
-    private Estado estado;
-
+    @Column(name = "estado", nullable = false)
+    @NotNull(message = "El estado es obligatorio")
+    private EstadoPedido estado;
+    
+    @Column(name = "total", nullable = false)
+    @NotNull(message = "El total es obligatorio")
+    @DecimalMin(value = "0.0", message = "El total no puede ser negativo")
     private Double total;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    
+    // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    @NotNull(message = "El usuario es obligatorio")
     private Usuario usuario;
-
-    @ManyToOne
-    @JoinColumn(name = "id_direccion")
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_direccion", nullable = false)
+    @NotNull(message = "La dirección es obligatoria")
     private Direccion direccion;
-
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetallePedido> detalles;
-
-    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    
+    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Pago pago;
-
-    @OneToOne(mappedBy = "pedido")
+    
+    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Boleta boleta;
-
-    // Constructor vacío (obligatorio para JPA)
-    public Pedido() {
-    }
-
-    // Constructor con todos los campos
-    public Pedido(Integer idPedido, Date fecha, Estado estado, Double total, Usuario usuario,
-            Direccion direccion, List<DetallePedido> detalles, Pago pago, Boleta boleta) {
-        this.idPedido = idPedido;
-        this.fecha = fecha;
-        this.estado = estado;
-        this.total = total;
-        this.usuario = usuario;
-        this.direccion = direccion;
-        this.detalles = detalles;
-        this.pago = pago;
-        this.boleta = boleta;
-    }
-
-    // Getters y Setters
-
-    public Integer getIdPedido() {
-        return idPedido;
-    }
-
-    public void setIdPedido(Integer idPedido) {
-        this.idPedido = idPedido;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
-
-    public Double getTotal() {
-        return total;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Direccion getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
-
-    public List<DetallePedido> getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(List<DetallePedido> detalles) {
-        this.detalles = detalles;
-    }
-
-    public Pago getPago() {
-        return pago;
-    }
-
-    public void setPago(Pago pago) {
-        this.pago = pago;
-    }
-
-    public Boleta getBoleta() {
-        return boleta;
-    }
-
-    public void setBoleta(Boleta boleta) {
-        this.boleta = boleta;
-    }
-
-    // toString (opcional)
-    @Override
-    public String toString() {
-        return "Pedido{" +
-                "idPedido=" + idPedido +
-                ", fecha=" + fecha +
-                ", estado=" + estado +
-                ", total=" + total +
-                ", usuario=" + (usuario != null ? usuario.getId() : null) +
-                ", direccion=" + (direccion != null ? direccion.getIdDireccion() : null) +
-                ", detalles=" + (detalles != null ? detalles.size() : 0) +
-                ", pago=" + (pago != null ? pago.getIdPago() : null) +
-                ", boleta=" + (boleta != null ? boleta.getIdBoleta() : null) +
-                '}';
-    }
-
-    // Enumeración Estado
-    public enum Estado {
+    
+    public enum EstadoPedido {
         pendiente, pagado, enviado, entregado, cancelado
     }
 }

@@ -13,289 +13,962 @@
     <!-- ICONOS FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <!-- CSS personalizado -->
-    <link rel="stylesheet" th:href="@{/css/shared/sidebar.css}">
+    <!-- CSS FilePond -->
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+
+    <!-- Plugin preview CSS -->
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+
+    <!-- JS FilePond -->
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+
+    <!-- Plugin preview JS -->
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <style>
+        .was-validated .form-control:invalid,
+        .was-validated .form-select:invalid {
+            border-color: #dc3545;
+        }
+        .was-validated .form-control:valid,
+        .was-validated .form-select:valid {
+            border-color: #198754;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 200px; /* Altura fija para todas las imágenes */
+            object-fit: cover; /* Mantiene la proporción y cubre el espacio */
+        }
+
+        .card {
+            height: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        #imagenesPreview .col-md-3 {
+            margin-bottom: 20px;
+            height: 350px; /* Altura fija para los contenedores de las tarjetas */
+        }
+
+        .form-check {
+            margin-bottom: 10px;
+        }
+    </style>
+
 </head>
 
 <body>
-    <!-- Sidebar area (columna izquierda) -->
+    <!-- Main content -->
     <div class="container-fluid">
         <div class="row">
+            <!-- Sidebar area (columna izquierda) -->
             <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-            <div class="col-md-9 col-lg-10 py-4 px-5 ms-auto">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Agregar Nuevo Producto</h3>
-                    </div>
-                    <div class="card-body">
-                        <form th:action="@{/admin/productos/agregar}" th:object="${producto}" method="post"
-                            enctype="multipart/form-data" class="needs-validation" novalidate>
-
-                            <!-- Información básica del producto -->
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Información Básica</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row g-3">
-                                        <!-- Nombre del producto -->
-                                        <div class="col-md-6">
-                                            <label for="nombre" class="form-label">Nombre del Producto*</label>
-                                            <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
-                                                required>
-                                            <div class="invalid-feedback">
-                                                Por favor ingrese el nombre del producto.
-                                            </div>
-                                        </div>
-
-                                        <!-- Descripción -->
-                                        <div class="col-12">
-                                            <label for="descripcion" class="form-label">Descripción*</label>
-                                            <textarea class="form-control" id="descripcion" th:field="*{descripcion}"
-                                                rows="4" required></textarea>
-                                            <div class="invalid-feedback">
-                                                Por favor ingrese una descripción.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Información de categorización -->
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h5 class="mb-0"><i class="fas fa-tags me-2"></i>Categorización</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row g-3">
-                                        <!-- Categoría -->
-                                        <div class="col-md-4">
-                                            <label for="categoria" class="form-label">Categoría*</label>
-                                            <select class="form-select" id="categoria" th:field="*{categoria.id}"
-                                                required>
-                                                <option value="" selected disabled>Seleccione una categoría</option>
-                                                <option th:each="cat : ${categorias}" th:value="${cat.id}"
-                                                    th:text="${cat.nombre}"></option>
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Por favor seleccione una categoría.
-                                            </div>
-                                        </div>
-
-                                        <!-- Marca -->
-                                        <div class="col-md-4">
-                                            <label for="marca" class="form-label">Marca*</label>
-                                            <select class="form-select" id="marca" th:field="*{marca.id}" required>
-                                                <option value="" selected disabled>Seleccione una marca</option>
-                                                <option th:each="m : ${marcas}" th:value="${m.id}"
-                                                    th:text="${m.nombre}"></option>
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Por favor seleccione una marca.
-                                            </div>
-                                        </div>
-
-                                        <!-- Ubicación -->
-                                        <div class="col-md-4">
-                                            <label for="ubicacion" class="form-label">Ubicación</label>
-                                            <select class="form-select" id="ubicacion"
-                                                th:field="*{ubicacion.idUbicacion}">
-                                                <option value="" selected disabled>Sin ubicación</option>
-                                                <option th:each="ubi : ${ubicacion}" th:value="${ubi.idUbicacion}"
-                                                    th:text="${ubi.nombre}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Información de precios y stock -->
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h5 class="mb-0"><i class="fas fa-dollar-sign me-2"></i>Precios y Stock</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row g-3">
-                                        <!-- Precio normal -->
-                                        <div class="col-md-3">
-                                            <label for="precio" class="form-label">Precio normal*</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">S/</span>
-                                                <input type="number" class="form-control" id="precio"
-                                                    th:field="*{precio}" step="0.01" min="0" required>
-                                            </div>
-                                            <div class="invalid-feedback">
-                                                Por favor ingrese un precio válido.
-                                            </div>
-                                        </div>
-
-                                        <!-- Stock -->
-                                        <div class="col-md-3">
-                                            <label for="stock" class="form-label">Stock disponible*</label>
-                                            <input type="number" class="form-control" id="stock" th:field="*{stock}"
-                                                min="0" required>
-                                            <div class="invalid-feedback">
-                                                Por favor ingrese el stock disponible.
-                                            </div>
-                                        </div>
-
-                                        <!-- Tipo de descuento -->
-                                        <div class="col-md-2">
-                                            <label for="tipoDescuento" class="form-label">Tipo descuento</label>
-                                            <select class="form-select" id="tipoDescuento" th:field="*{tipoDescuento}">
-                                                <option value="">Sin descuento</option>
-                                                <option value="porcentaje">Porcentaje (%)</option>
-                                                <option value="monto">Monto fijo (S/)</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Valor del descuento -->
-                                        <div class="col-md-2">
-                                            <label for="descuento" class="form-label">Valor descuento</label>
-                                            <input type="number" class="form-control" id="descuento"
-                                                th:field="*{descuento}" step="0.01" min="0">
-                                            <small class="form-text text-muted">% o S/ según tipo</small>
-                                        </div>
-
-                                        <!-- Precio oferta (calculado) -->
-                                        <div class="col-md-2">
-                                            <label for="precioOferta" class="form-label">Precio oferta</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">S/</span>
-                                                <input type="number" class="form-control" id="precioOferta"
-                                                    th:field="*{precioOferta}" step="0.01" min="0" readonly>
-                                            </div>
-                                            <small class="form-text text-muted">Se calcula automáticamente</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Proveedor y estado -->
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h5 class="mb-0"><i class="fas fa-truck me-2"></i>Proveedor y Estado</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row g-3">
-                                        <!-- Proveedor principal -->
-                                        <div class="col-md-6">
-                                            <label for="proveedor" class="form-label">Proveedor de este
-                                                producto*</label>
-                                            <select class="form-select" id="proveedor" th:field="*{proveedor.idProveedor}" required>
-                                                <option value="" selected disabled>Seleccione un proveedor</option>
-                                                <option th:each="prove : ${proveedores}"
-                                                    th:value="${prove.idProveedor}" th:text="${prove.nombre}">
-                                                </option>
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Por favor seleccione un proveedor.
-                                            </div>
-                                        </div>
-                                
-                                        <!-- Estado (activo/inactivo) -->
-                                        <div class="col-md-6">
-                                            <label class="form-label d-block">Estado del producto</label>
-                                            <div class="form-check form-check-inline mt-2">
-                                                <input class="form-check-input" type="radio" id="activoSi"
-                                                    th:field="*{activo}" th:value="true" checked>
-                                                <label class="form-check-label" for="activoSi">
-                                                    <span class="badge bg-success">Activo</span>
-                                                </label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="activoNo"
-                                                    th:field="*{activo}" th:value="false">
-                                                <label class="form-check-label" for="activoNo">
-                                                    <span class="badge bg-danger">Inactivo</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Imágenes -->
-                            <div class="mb-3">
-                                <label for="imagenPrincipal" class="form-label">Imagen principal (URL)</label>
-                                <input type="text" class="form-control" th:field="*{imagenURL}"
-                                    placeholder="https://ejemplo.com/imagen1.jpg">
-                            </div>
-
-                            <!-- Botones de acción -->
-                            <div class="d-flex justify-content-between mt-4">
-                                <a th:href="@{/admin/productos/}" class="btn btn-secondary">
-                                    <i class="fas fa-arrow-left me-1"></i> Cancelar
-                                </a>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save me-1"></i> Guardar Producto
-                                </button>
-                            </div>
-                        </form>
+            <!-- Content area (columna derecha) -->
+            <main class="col-md-9 col-lg-10 py-4 px-5 ms-auto">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Producto</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <a href="/admin/productos" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <ul class="nav nav-tabs" id="productoTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general"
+                            type="button" role="tab" aria-controls="general" aria-selected="true">Información General</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="imagenes-tab" data-bs-toggle="tab" data-bs-target="#imagenes"
+                            type="button" role="tab" aria-controls="imagenes" aria-selected="false">Imágenes</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="especificaciones-tab" data-bs-toggle="tab"
+                            data-bs-target="#especificaciones" type="button" role="tab" aria-controls="especificaciones"
+                            aria-selected="false">Especificaciones</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="compatibilidad-tab" data-bs-toggle="tab"
+                            data-bs-target="#compatibilidad" type="button" role="tab" aria-controls="compatibilidad"
+                            aria-selected="false">Compatibilidad</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="proveedor-tab" data-bs-toggle="tab"
+                            data-bs-target="#proveedor" type="button" role="tab" aria-controls="proveedor"
+                            aria-selected="false">Proveedores</button>
+                    </li>
+                </ul>
+
+                <form th:action="@{/api/productos/crear}" th:object="${producto}" method="post"
+                    enctype="multipart/form-data" id="formProducto">
+                    <input type="hidden" th:field="*{idProducto}">
+
+                    <div class="tab-content mt-3" id="productoTabsContent">
+                        <!-- Tab Información General -->
+                        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="sku" class="form-label">SKU *</label>
+                                    <input type="text" class="form-control" th:field="*{sku}" id="sku" required>
+                                    <div th:if="${#fields.hasErrors('sku')}" class="text-danger small" th:errors="*{sku}"></div>
+                                    <div id="sku-feedback" class="text-danger small" style="display: none;"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="nombre" class="form-label">Nombre del Producto *</label>
+                                    <input type="text" class="form-control" th:field="*{nombre}" id="nombre" required>
+                                    <div th:if="${#fields.hasErrors('nombre')}" class="text-danger small" th:errors="*{nombre}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <label for="descripcion" class="form-label">Descripción</label>
+                                    <textarea class="form-control" th:field="*{descripcion}" id="descripcion" rows="3"></textarea>
+                                    <div th:if="${#fields.hasErrors('descripcion')}" class="text-danger small" th:errors="*{descripcion}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label for="categoria" class="form-label">Categoría *</label>
+                                    <select class="form-select" th:field="*{idCategoria}" id="categoria" required>
+                                        <option value="">Seleccionar categoría</option>
+                                        <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
+                                            th:text="${categoria.nombreCategoria}"></option>
+                                    </select>
+                                    <div th:if="${#fields.hasErrors('idCategoria')}" class="text-danger small" th:errors="*{idCategoria}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="marca" class="form-label">Marca *</label>
+                                    <select class="form-select" th:field="*{idMarca}" id="marca" required>
+                                        <option value="">Seleccionar marca</option>
+                                        <option th:each="marca : ${marcas}" th:value="${marca.id}"
+                                            th:text="${marca.nombreMarca}"></option>
+                                    </select>
+                                    <div th:if="${#fields.hasErrors('idMarca')}" class="text-danger small" th:errors="*{idMarca}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label for="precio" class="form-label">Precio de Venta *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">S/.</span>
+                                        <input type="number" class="form-control" th:field="*{precio}" id="precio" step="0.01" min="0.01" required>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('precio')}" class="text-danger small" th:errors="*{precio}"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="descuento" class="form-label">Descuento (%)</label>
+                                    <input type="number" class="form-control" th:field="*{descuento}" id="descuento" step="0.01" min="0" max="100">
+                                    <div th:if="${#fields.hasErrors('descuento')}" class="text-danger small" th:errors="*{descuento}"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="tipoDescuento" class="form-label">Tipo de Descuento</label>
+                                    <select class="form-select" th:field="*{tipoDescuento}" id="tipoDescuento">
+                                        <option value=""selected>Sin descuento</option>
+                                        <option value="PORCENTAJE">Porcentaje</option>
+                                        <option value="MONTO_FIJO">Monto Fijo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label for="precio_oferta" class="form-label">Precio Oferta</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">S/.</span>
+                                        <input type="number" class="form-control" th:field="*{precioOferta}" id="precio_oferta" step="0.01" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="activo" class="form-label">Estado *</label>
+                                    <select class="form-select" th:field="*{activo}" id="activo" required>
+                                        <option th:value="true">Activo</option>
+                                        <option th:value="false">Inactivo</option>
+                                    </select>
+                                    <div th:if="${#fields.hasErrors('activo')}" class="text-danger small" th:errors="*{activo}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-primary" onclick="nextTab('imagenes-tab')">
+                                        Continuar <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Imágenes -->
+                        <div class="tab-pane fade" id="imagenes" role="tabpanel" aria-labelledby="imagenes-tab">
+                            <div class="mb-3">
+                                <label for="imagenesProducto" class="form-label">
+                                    Seleccione hasta 5 imágenes y marque cuál será la portada
+                                </label>
+                                <input type="file" class="filepond" th:field="*{imagenes}" multiple accept="image/*" data-max-files="5" />
+                                <div id="imagenesPreview" class="row mt-3">
+                                    <!-- Aquí se mostrarán las previsualizaciones -->
+                                </div>
+                                <small class="form-text text-muted">
+                                    Puede subir hasta 5 imágenes. Seleccione una como portada.
+                                </small>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-secondary" onclick="previousTab('general-tab')">
+                                        <i class="fas fa-arrow-left"></i> Anterior
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="nextTab('especificaciones-tab')">
+                                        Continuar <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Especificaciones -->
+                        <div class="tab-pane fade" id="especificaciones" role="tabpanel" aria-labelledby="especificaciones-tab">
+                            <div id="especificacionesContainer">
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarEspecificacion()">
+                                            <i class="fas fa-plus"></i> Agregar Especificación
+                                        </button>
+                                    </div>
+                                </div>
+                                <div th:each="especificacion, iterStat : ${producto.especificaciones}" class="row especificacion-item mb-3">
+                                    <input type="hidden" th:field="*{especificaciones[__${iterStat.index}__].id}">
+                                    <div class="col-md-5">
+                                        <label class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" th:field="*{especificaciones[__${iterStat.index}__].nombre}" required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-label">Valor</label>
+                                        <input type="text" class="form-control" th:field="*{especificaciones[__${iterStat.index}__].valor}" required>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarEspecificacion(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-secondary" onclick="previousTab('imagenes-tab')">
+                                        <i class="fas fa-arrow-left"></i> Anterior
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="nextTab('compatibilidad-tab')">
+                                        Continuar <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Compatibilidad -->
+                        <div class="tab-pane fade" id="compatibilidad" role="tabpanel" aria-labelledby="compatibilidad-tab">
+                            <div id="compatibilidadesContainer">
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarCompatibilidad()">
+                                            <i class="fas fa-plus"></i> Agregar Modelo Compatible
+                                        </button>
+                                    </div>
+                                </div>
+                                <div th:each="compatibilidad, iterStat : ${producto.compatibilidades}" class="row compatibilidad-item mb-3">
+                                    <input type="hidden" th:field="*{compatibilidades[__${iterStat.index}__].id}">
+                                    <div class="col-md-10">
+                                        <label class="form-label">Modelo Compatible</label>
+                                        <input type="text" class="form-control" th:field="*{compatibilidades[__${iterStat.index}__].modeloCompatible}" required>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarCompatibilidad(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-secondary" onclick="previousTab('especificaciones-tab')">
+                                        <i class="fas fa-arrow-left"></i> Anterior
+                                    </button>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save"></i> Guardar Producto
+                                    </button>
+                                    <a href="/admin/productos" class="btn btn-danger">
+                                        <i class="fas fa-times"></i> Cancelar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Proveedores -->
+                        <div class="tab-pane fade" id="proveedor" role="tabpanel" aria-labelledby="proveedor-tab">
+                            <div id="proveedoresContainer" style="display: none;">
+                                <h4>Proveedores del Producto</h4>
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="agregarProveedor()">
+                                            <i class="fas fa-plus"></i> Agregar Proveedor
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Aquí irán los proveedores dinámicamente -->
+                            </div>
+                            <div class="alert alert-info" id="proveedoresInfo">
+                                <i class="fas fa-info-circle"></i> Esta sección estará disponible después de guardar el producto.
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-secondary" onclick="previousTab('compatibilidad-tab')">
+                                        <i class="fas fa-arrow-left"></i> Anterior
+                                    </button>
+                                    <button type="button" class="btn btn-success" onclick="guardarProveedores()" id="btnGuardarProveedores" style="display: none;">
+                                        <i class="fas fa-save"></i> Guardar Proveedores
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </main>
         </div>
     </div>
-    </div>
 
-    <!-- Bootstrap JS y Popper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script para validación y previsualización de imágenes -->
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
     <script>
-        // Validación de formulario Bootstrap
-        (() => {
-            'use strict'
-            const forms = document.querySelectorAll('.needs-validation')
+        // Registrar el plugin de preview para FilePond
+        FilePond.registerPlugin(FilePondPluginImagePreview);
 
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
-
-        // Cálculo automático del precio de oferta
-        document.addEventListener('DOMContentLoaded', function () {
-            const precioInput = document.getElementById('precio');
-            const tipoDescuentoSelect = document.getElementById('tipoDescuento');
-            const descuentoInput = document.getElementById('descuento');
-            const precioOfertaInput = document.getElementById('precioOferta');
-
-            function calcularPrecioOferta() {
-                const precio = parseFloat(precioInput.value) || 0;
-                const tipoDescuento = tipoDescuentoSelect.value;
-                const descuento = parseFloat(descuentoInput.value) || 0;
-
-                let precioOferta = precio;
-
-                if (tipoDescuento === 'porcentaje' && descuento > 0) {
-                    precioOferta = precio - (precio * (descuento / 100));
-                } else if (tipoDescuento === 'monto' && descuento > 0) {
-                    precioOferta = precio - descuento;
+        // Crear FilePond para el input
+        const pond = FilePond.create(document.querySelector('input[type="file"].filepond'), {
+            labelIdle: 'Arrastra y suelta tus imágenes o <span class="filepond--label-action"> Examina </span>',
+            maxFiles: 5,
+            allowMultiple: true,
+            instantUpload: false,
+            acceptedFileTypes: ['image/*'],
+            name: 'imagenes[]', // Importante: debe coincidir con el nombre del campo en el DTO
+            onaddfile: (error, file) => {
+                if (!error) {
+                    createImagePreview(file);
                 }
+            },
+            onremovefile: (error, file) => {
+                if (!error) {
+                    removeImagePreview(file);
+                }
+            }
+        });
 
-                // Asegurar que el precio de oferta no sea negativo
-                precioOferta = Math.max(0, precioOferta);
+        // Función para crear la previsualización de la imagen
+        function createImagePreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewContainer = document.getElementById('imagenesPreview');
+                const col = document.createElement('div');
+                col.className = 'col-md-3 mb-3';
+                col.setAttribute('data-filepond-file-id', file.id);
+                
+                col.innerHTML = `
+                    <div class="card">
+                        <img src="${e.target.result}" class="card-img-top" alt="Preview">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input portada-check" type="radio" 
+                                       name="portada" id="portada_${file.id}" 
+                                       ${previewContainer.children.length === 0 ? 'checked' : ''}>
+                                <label class="form-check-label" for="portada_${file.id}">
+                                    Usar como portada
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                previewContainer.appendChild(col);
+            };
+            reader.readAsDataURL(file.file);
+        }
 
-                // Redondear a 2 decimales y actualizar el campo
-                precioOfertaInput.value = precioOferta.toFixed(2);
+        // Función para eliminar la previsualización
+        function removeImagePreview(file) {
+            const preview = document.querySelector(`[data-filepond-file-id="${file.id}"]`);
+            if (preview) {
+                const wasPortada = preview.querySelector('.portada-check').checked;
+                preview.remove();
+                
+                // Si la imagen eliminada era la portada, seleccionar la primera disponible
+                if (wasPortada) {
+                    const firstRadio = document.querySelector('.portada-check');
+                    if (firstRadio) {
+                        firstRadio.checked = true;
+                    }
+                }
+            }
+        }
+
+        // Función para validar campos requeridos en una pestaña
+        function validarPestanaActual() {
+            const pestanaActiva = document.querySelector('.tab-pane.active');
+            const camposRequeridos = pestanaActiva.querySelectorAll('[required]');
+            let esValido = true;
+
+            camposRequeridos.forEach(campo => {
+                if (!campo.value) {
+                    campo.classList.add('is-invalid');
+                    esValido = false;
+                } else {
+                    campo.classList.remove('is-invalid');
+                    campo.classList.add('is-valid');
+                }
+            });
+
+            return esValido;
+        }
+
+        // Función para ir a la siguiente pestaña
+        function nextTab(tabId) {
+            if (validarPestanaActual()) {
+                document.getElementById(tabId).click();
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor, complete todos los campos requeridos',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }
+
+        // Función para ir a la pestaña anterior
+        function previousTab(tabId) {
+            document.getElementById(tabId).click();
+        }
+
+        // Evento submit del formulario
+        document.getElementById('formProducto').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!validarPestanaActual()) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor, complete todos los campos requeridos',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                return;
             }
 
-            // Evento para recalcular cuando cambian los valores
-            precioInput.addEventListener('input', calcularPrecioOferta);
-            tipoDescuentoSelect.addEventListener('change', calcularPrecioOferta);
-            descuentoInput.addEventListener('input', calcularPrecioOferta);
+            const formData = new FormData(this);
+            
+            // Obtener las imágenes de FilePond en el orden correcto
+            const files = pond.getFiles();
+            const portadaId = document.querySelector('.portada-check:checked')?.id.split('_')[1];
+            
+            // Primero agregar la imagen de portada
+            const portadaFile = files.find(file => file.id === portadaId);
+            if (portadaFile) {
+                formData.append('imagenes', portadaFile.file);
+            }
+            
+            // Luego agregar el resto de imágenes
+            files.forEach(file => {
+                if (file.id !== portadaId) {
+                    formData.append('imagenes', file.file);
+                }
+            });
 
-            // Calcular al cargar la página
-            calcularPrecioOferta();
+            // Mostrar indicador de carga
+            Swal.fire({
+                title: 'Guardando producto...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.querySelector('input[name="idProducto"]').value = data.idProducto;
+                    
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: 'Producto guardado correctamente. Ahora puede agregar los proveedores.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        cargarProveedores().then(() => {
+                            const proveedorTab = document.getElementById('proveedor-tab');
+                            proveedorTab.disabled = false;
+                            const tab = new bootstrap.Tab(proveedorTab);
+                            tab.show();
+                        });
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message || 'Error al guardar el producto',
+                        icon: 'error',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al guardar el producto',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            });
         });
+
+        // Cargar proveedores al iniciar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarProveedores();
+        });
+
+        // Agregar función para obtener token CSRF
+        function getCsrfToken() {
+            return document.querySelector("meta[name='_csrf']").getAttribute("content");
+        }
+
+        function getCsrfHeader() {
+            return document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+        }
+
+        // Modificar la función cargarProveedores
+        async function cargarProveedores() {
+            try {
+                const headers = {};
+                const csrfHeader = getCsrfHeader();
+                const csrfToken = getCsrfToken();
+                if (csrfHeader && csrfToken) {
+                    headers[csrfHeader] = csrfToken;
+                }
+
+                const response = await fetch('/api/productos/rest/datos-formulario', {
+                    headers: headers
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos: ' + response.status);
+                }
+                const data = await response.json();
+                
+                if (!data.proveedores || !Array.isArray(data.proveedores)) {
+                    console.error('No se recibieron proveedores válidos:', data);
+                    return;
+                }
+
+                console.log('Proveedores recibidos:', data.proveedores);
+                
+                const container = document.getElementById('proveedoresContainer');
+                const infoAlert = document.getElementById('proveedoresInfo');
+                const btnGuardarProveedores = document.getElementById('btnGuardarProveedores');
+                
+                if (!container) {
+                    console.error('No se encontró el contenedor de proveedores');
+                    return;
+                }
+                
+                // Mostrar contenedor de proveedores y ocultar mensaje informativo
+                container.style.display = 'block';
+                infoAlert.style.display = 'none';
+                btnGuardarProveedores.style.display = 'inline-block';
+                
+                // Limpiar el contenedor de proveedores existente
+                const itemsExistentes = container.querySelectorAll('.proveedor-item');
+                itemsExistentes.forEach(item => item.remove());
+                
+                // Agregar el primer proveedor
+                const proveedorItem = document.createElement('div');
+                proveedorItem.className = 'row proveedor-item bg-light p-3 rounded mb-3';
+                proveedorItem.innerHTML = `
+                    <div class="col-md-6">
+                        <label class="form-label">Proveedor</label>
+                        <select class="form-select" name="proveedor_id">
+                            <option value="">Seleccionar proveedor</option>
+                            ${data.proveedores.map(proveedor => 
+                                `<option value="${proveedor.idProveedor}">${proveedor.nombre}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Precio Compra</label>
+                        <div class="input-group">
+                            <span class="input-group-text">S/.</span>
+                            <input type="number" class="form-control" name="precio_compra" step="0.01" min="0">
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarProveedor(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // Insertar después del botón de agregar
+                const botonAgregar = container.querySelector('.row.mb-3');
+                if (botonAgregar) {
+                    botonAgregar.parentNode.insertBefore(proveedorItem, botonAgregar.nextSibling);
+                } else {
+                    container.appendChild(proveedorItem);
+                }
+            } catch (error) {
+                console.error('Error al cargar proveedores:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al cargar los proveedores: ' + error.message,
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }
+
+        // Modificar la función agregarProveedor
+        function agregarProveedor() {
+            const container = document.getElementById('proveedoresContainer');
+            const selectOriginal = container.querySelector('.proveedor-item select');
+            if (!selectOriginal) return;
+
+            const nuevoItem = document.createElement('div');
+            nuevoItem.className = 'row proveedor-item bg-light p-3 rounded mb-3';
+            nuevoItem.innerHTML = `
+                <div class="col-md-6">
+                    <label class="form-label">Proveedor</label>
+                    <select class="form-select" name="proveedor_id">
+                        ${selectOriginal.innerHTML}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Precio Compra</label>
+                    <div class="input-group">
+                        <span class="input-group-text">S/.</span>
+                        <input type="number" class="form-control" name="precio_compra" step="0.01" min="0">
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarProveedor(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            
+            container.appendChild(nuevoItem);
+        }
+
+        // Función para eliminar proveedor
+        function eliminarProveedor(btn) {
+            const proveedorItem = btn.closest('.proveedor-item');
+            proveedorItem.remove();
+            reindexarItems('proveedor-item', 'proveedores');
+        }
+
+        // Calcular precio de oferta automáticamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const precioInput = document.getElementById('precio');
+            const descuentoInput = document.getElementById('descuento');
+            const tipoDescuentoSelect = document.getElementById('tipoDescuento');
+            const precioOfertaInput = document.getElementById('precio_oferta');
+
+            // Función para habilitar/deshabilitar el input de descuento
+            function toggleDescuentoInput() {
+                const tipoDescuento = tipoDescuentoSelect.value;
+                if (tipoDescuento === "") {
+                    descuentoInput.disabled = true;
+                    descuentoInput.value = "";
+                    precioOfertaInput.value = "";
+                } else {
+                    descuentoInput.disabled = false;
+                }
+            }
+
+            // Función para calcular el precio de oferta
+            function calcularPrecioOferta() {
+                const precio = parseFloat(precioInput.value) || 0;
+                const descuento = parseFloat(descuentoInput.value) || 0;
+                const tipoDescuento = tipoDescuentoSelect.value;
+
+                if (precio > 0 && descuento > 0 && tipoDescuento) {
+                    let precioOferta;
+                    if (tipoDescuento === 'PORCENTAJE') {
+                        precioOferta = precio - (precio * descuento / 100);
+                    } else if (tipoDescuento === 'MONTO_FIJO') {
+                        precioOferta = precio - descuento;
+                    }
+                    precioOfertaInput.value = precioOferta.toFixed(2);
+                } else {
+                    precioOfertaInput.value = '';
+                }
+            }
+
+            // Event listeners
+            precioInput.addEventListener('input', calcularPrecioOferta);
+            descuentoInput.addEventListener('input', calcularPrecioOferta);
+            tipoDescuentoSelect.addEventListener('change', function() {
+                toggleDescuentoInput();
+                calcularPrecioOferta();
+            });
+
+            // Inicializar estado del input de descuento
+            toggleDescuentoInput();
+
+            // Validar SKU único
+            const skuInput = document.getElementById('sku');
+            const skuFeedback = document.getElementById('sku-feedback');
+            let timeoutId;
+
+            skuInput.addEventListener('input', function() {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(function() {
+                    const sku = skuInput.value;
+                    if (sku) {
+                        fetch('/admin/productos/api/validar-sku', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                sku: sku,
+                                idProducto: document.querySelector('input[name="idProducto"]').value
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.existe) {
+                                skuFeedback.textContent = 'Este SKU ya existe';
+                                skuFeedback.style.display = 'block';
+                                skuInput.setCustomValidity('SKU duplicado');
+                            } else {
+                                skuFeedback.style.display = 'none';
+                                skuInput.setCustomValidity('');
+                            }
+                        });
+                    }
+                }, 500);
+            });
+        });
+
+        // Funciones para especificaciones
+        function agregarEspecificacion() {
+            const container = document.getElementById('especificacionesContainer');
+            const items = container.getElementsByClassName('especificacion-item');
+            const index = items.length;
+
+            const nuevoItem = document.createElement('div');
+            nuevoItem.className = 'row especificacion-item mb-3';
+            nuevoItem.innerHTML = `
+                <input type="hidden" name="especificaciones[${index}].id">
+                <div class="col-md-5">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" name="especificaciones[${index}].nombre" required>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">Valor</label>
+                    <input type="text" class="form-control" name="especificaciones[${index}].valor" required>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarEspecificacion(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            container.insertBefore(nuevoItem, container.querySelector('button').parentElement.parentElement.nextSibling);
+        }
+
+        function eliminarEspecificacion(btn) {
+            const especificacionItem = btn.closest('.especificacion-item');
+            especificacionItem.remove();
+            reindexarItems('especificacion-item', 'especificaciones');
+        }
+
+        // Funciones para compatibilidades
+        function agregarCompatibilidad() {
+            const container = document.getElementById('compatibilidadesContainer');
+            const items = container.getElementsByClassName('compatibilidad-item');
+            const index = items.length;
+
+            const nuevoItem = document.createElement('div');
+            nuevoItem.className = 'row compatibilidad-item mb-3';
+            nuevoItem.innerHTML = `
+                <input type="hidden" name="compatibilidades[${index}].id">
+                <div class="col-md-10">
+                    <label class="form-label">Modelo Compatible</label>
+                    <input type="text" class="form-control" name="compatibilidades[${index}].modeloCompatible" required>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarCompatibilidad(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            container.insertBefore(nuevoItem, container.querySelector('button').parentElement.parentElement.nextSibling);
+        }
+
+        function eliminarCompatibilidad(btn) {
+            const compatibilidadItem = btn.closest('.compatibilidad-item');
+            compatibilidadItem.remove();
+            reindexarItems('compatibilidad-item', 'compatibilidades');
+        }
+
+        // Función genérica para reindexar items
+        function reindexarItems(className, fieldName) {
+            const items = document.getElementsByClassName(className);
+            Array.from(items).forEach((item, idx) => {
+                item.querySelectorAll('[name]').forEach(input => {
+                    input.name = input.name.replace(/\[\d+\]/, `[${idx}]`);
+                });
+            });
+        }
+
+        // Modificar la función guardarProveedores
+        function guardarProveedores() {
+            const idProducto = document.querySelector('input[name="idProducto"]').value;
+            if (!idProducto) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se encontró el ID del producto',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                return;
+            }
+
+            const proveedoresItems = document.querySelectorAll('.proveedor-item');
+            const proveedores = [];
+            let hayError = false;
+
+            proveedoresItems.forEach(item => {
+                const select = item.querySelector('select');
+                const input = item.querySelector('input[type="number"]');
+                
+                if (!select.value || !input.value) {
+                    hayError = true;
+                    return;
+                }
+
+                proveedores.push({
+                    idProveedor: select.value,
+                    precioCompra: input.value
+                });
+            });
+
+            if (hayError || proveedores.length === 0) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor, complete todos los campos de los proveedores',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                return;
+            }
+
+            // Mostrar indicador de carga
+            Swal.fire({
+                title: 'Guardando proveedores...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            // Agregar token CSRF a los headers
+            const csrfHeader = getCsrfHeader();
+            const csrfToken = getCsrfToken();
+            if (csrfHeader && csrfToken) {
+                headers[csrfHeader] = csrfToken;
+            }
+
+            fetch('/api/productos/guardar-proveedores', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    idProducto: idProducto,
+                    proveedores: proveedores
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: 'Proveedores guardados correctamente',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = '/admin/productos';
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message || 'Error al guardar los proveedores',
+                        icon: 'error',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al guardar los proveedores: ' + error.message,
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            });
+        }
     </script>
 </body>
 

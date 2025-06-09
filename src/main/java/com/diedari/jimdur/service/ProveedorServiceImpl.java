@@ -41,5 +41,9 @@ public class ProveedorServiceImpl implements ProveedorService {
        
         return proveedorRepository.save(proveedor);
     }
-    
+
+    @Override
+    public List<Proveedor> obtenerTodosLosProveedores() {
+        return proveedorRepository.findAll();
+    }
 }

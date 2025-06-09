@@ -1,0 +1,157 @@
+/* Variables */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --text-color: #2c3e50;
+    --light-gray: #f5f6fa;
+    --border-radius: 10px;
+    --box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos generales */
+body.login-page {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+}
+
+/* Contenedor del login */
+.login-box {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* Logo */
+.login-logo {
+    max-width: 150px;
+    margin-bottom: 1rem;
+}
+
+/* Título */
+.login-box h2 {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+/* Inputs */
+.form-control {
+    border: 1px solid #e1e1e1;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.input-group-text {
+    background-color: white;
+    border: 1px solid #e1e1e1;
+    color: var(--primary-color);
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: var(--secondary-color);
+}
+
+/* Botón de mostrar contraseña */
+.toggle-password {
+    border-left: none;
+}
+
+.toggle-password:focus {
+    box-shadow: none;
+}
+
+/* Checkbox personalizado */
+.form-check-input:checked {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* Enlaces */
+.forgot-password, .register-link {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover, .register-link:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* Botón de inicio de sesión */
+.btn-primary {
+    background: linear-gradient(to right, var(--secondary-color), #2980b9);
+    border: none;
+    padding: 0.75rem;
+    font-weight: 500;
+    transition: transform 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+/* Alertas personalizadas */
+.alert {
+    border-radius: var(--border-radius);
+    border: none;
+}
+
+.alert-danger {
+    background-color: #fff3f3;
+    color: var(--accent-color);
+}
+
+.alert-success {
+    background-color: #f0fff4;
+    color: #2ecc71;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-box {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .login-box {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .login-logo {
+        max-width: 120px;
+    }
+}
+
+/* Efectos hover en inputs */
+.form-control:hover {
+    border-color: var(--secondary-color);
+}
+
+/* Efecto de focus en el contenedor */
+.login-box:focus-within {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo para el botón de cerrar alertas */
+.btn-close:focus {
+    box-shadow: none;
+} 

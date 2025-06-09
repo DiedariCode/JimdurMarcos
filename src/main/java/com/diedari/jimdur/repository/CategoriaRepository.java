@@ -2,6 +2,8 @@ package com.diedari.jimdur.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,14 +14,18 @@ import com.diedari.jimdur.model.Categoria;
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     // Aquí puedes agregar métodos personalizados si es necesario
 
-    // Método para encontrar una categoría por su estado "activa"
-    public List<Categoria> findByActiva(boolean activa);
+    // Buscar por estadoActiva (nombre correcto del campo)
+    List<Categoria> findByEstadoActiva(boolean estadoActiva);
 
-    // Método para encontrar una categoría por su nombre
-    public List<Categoria> findByNombre(String nombre);
+    // Buscar por nombreCategoria
+    List<Categoria> findByNombreCategoria(String nombreCategoria);
 
-    // Método para encontrar una categoría por su nombre o descripción, ignorando mayúsculas y minúsculas
-    public List<Categoria> findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(String nombre,
-            String descripcion);
+    // Buscar por nombreCategoria o descripcionCategoria (ignorando mayúsculas)
+    List<Categoria> findByNombreCategoriaContainingIgnoreCaseOrDescripcionCategoriaContainingIgnoreCase(
+            String nombreCategoria, String descripcionCategoria);
 
+    List<Categoria> findByEstadoActivaTrueOrderByNombreCategoriaAsc();
+
+    // Buscar por nombreCategoria con paginación
+    Page<Categoria> findByNombreCategoriaContainingIgnoreCase(String nombreCategoria, Pageable pageable);
 }

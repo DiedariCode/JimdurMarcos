@@ -2,13 +2,13 @@ package com.diedari.jimdur.service;
 
 import java.util.List;
 
-import com.diedari.jimdur.model.Ubicacion;
+import com.diedari.jimdur.model.Ubicaciones;
 
 public interface UbicacionService {
-    public List<Ubicacion> listarUbicaciones();
-    public Ubicacion obtenerUbicacionPorId(Integer idUbicacion);
-    public Ubicacion guardarUbicacion(Ubicacion ubicacion);
+    public List<Ubicaciones> listarUbicaciones();
+    public Ubicaciones obtenerUbicacionPorId(Integer idUbicacion);
+    public Ubicaciones guardarUbicacion(Ubicaciones ubicacion);
     public void eliminarUbicacion(Integer idUbicacion);
-    public Ubicacion actualizarUbicacion(Ubicacion ubicacion);
+    public Ubicaciones actualizarUbicacion(Ubicaciones ubicacion);
     
 }

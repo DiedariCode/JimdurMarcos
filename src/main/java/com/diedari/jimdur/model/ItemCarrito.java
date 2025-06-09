@@ -1,79 +1,52 @@
 package com.diedari.jimdur.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "ItemCarrito")
+@Table(name = "Item_Carrito",
+       uniqueConstraints = {
+           @UniqueConstraint(columnNames = {"id_carrito", "id_producto"},
+                           name = "uk_carrito_producto")
+       })
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ItemCarrito {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idItem;
-
+    @Column(name = "id_item")
+    private Long idItem;
+    
+    @Column(name = "cantidad", nullable = false)
+    @NotNull(message = "La cantidad es obligatoria")
+    @Min(value = 1, message = "La cantidad debe ser mayor a 0")
     private Integer cantidad;
-
-    @ManyToOne
-    @JoinColumn(name = "id_carrito")
+    
+    // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_carrito", nullable = false)
+    @NotNull(message = "El carrito es obligatorio")
     private Carrito carrito;
-
-    @ManyToOne
-    @JoinColumn(name = "id_producto")
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_producto", nullable = false)
+    @NotNull(message = "El producto es obligatorio")
     private Producto producto;
-
-    // Constructor vacío (obligatorio para JPA)
-    public ItemCarrito() {
-    }
-
-    // Constructor con todos los campos
-    public ItemCarrito(Integer idItem, Integer cantidad, Carrito carrito, Producto producto) {
-        this.idItem = idItem;
-        this.cantidad = cantidad;
-        this.carrito = carrito;
-        this.producto = producto;
-    }
-
-    // Getters y Setters
-
-    public Integer getIdItem() {
-        return idItem;
-    }
-
-    public void setIdItem(Integer idItem) {
-        this.idItem = idItem;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Carrito getCarrito() {
-        return carrito;
-    }
-
-    public void setCarrito(Carrito carrito) {
-        this.carrito = carrito;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    // toString (opcional)
-    @Override
-    public String toString() {
-        return "ItemCarrito{" +
-                "idItem=" + idItem +
-                ", cantidad=" + cantidad +
-                ", carrito=" + (carrito != null ? carrito.getIdCarrito() : null) +
-                ", producto=" + (producto != null ? producto.getIdProducto() : null) +
-                '}';
-    }
 }

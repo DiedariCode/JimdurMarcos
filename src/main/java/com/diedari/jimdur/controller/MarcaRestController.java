@@ -44,21 +44,21 @@ public class MarcaRestController {
         return marcaService.obtenerMarcasPorEstado(activo);
     }
 
-    @PutMapping("/actualizar/{id}")
-    public Marca actualizarMarca(@PathVariable Long id, @RequestBody Marca marca) {
-        Marca actual = marcaService.obtenerMarcaPorId(id);
-        if (actual != null) {
-            actual.setNombre(marca.getNombre());
-            actual.setDescripcion(marca.getDescripcion());
-            actual.setLogoUrl(marca.getLogoUrl());
-            actual.setPaisOrigen(marca.getPaisOrigen());
-            actual.setSitioWeb(marca.getSitioWeb());
-            actual.setActivo(marca.isActivo());
-            return marcaService.actualizarMarca(actual);
-        } else {
-            return null;
-        }
-    }
+    // @PutMapping("/actualizar/{id}")
+    // public Marca actualizarMarca(@PathVariable Long id, @RequestBody Marca marca) {
+    //     Marca actual = marcaService.obtenerMarcaPorId(id);
+    //     if (actual != null) {
+    //         actual.setNombre(marca.getNombre());
+    //         actual.setDescripcion(marca.getDescripcion());
+    //         actual.setLogoUrl(marca.getLogoUrl());
+    //         actual.setPaisOrigen(marca.getPaisOrigen());
+    //         actual.setSitioWeb(marca.getSitioWeb());
+    //         actual.setActivo(marca.isActivo());
+    //         return marcaService.actualizarMarca(actual);
+    //     } else {
+    //         return null;
+    //     }
+    // }
     
     @PostMapping("/crear")
     public Marca crearMarca(@RequestBody Marca marca) {

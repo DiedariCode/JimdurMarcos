@@ -1,134 +1,161 @@
 package com.diedari.jimdur.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.diedari.jimdur.dto.CompatibilidadProductoDTO;
+import com.diedari.jimdur.dto.EspecificacionProductoDTO;
+import com.diedari.jimdur.dto.ProductoDTO;
+import com.diedari.jimdur.dto.ProductoProveedorDTO;
 import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.model.Marca;
-import com.diedari.jimdur.model.Producto;
-import com.diedari.jimdur.service.CategoriaService;
-import com.diedari.jimdur.service.MarcaService;
+import com.diedari.jimdur.model.Proveedor;
+import com.diedari.jimdur.repository.CategoriaRepository;
+import com.diedari.jimdur.repository.MarcaRepository;
+import com.diedari.jimdur.repository.ProveedorRepository;
 import com.diedari.jimdur.service.ProductoService;
-import com.diedari.jimdur.service.ProveedorService;
-import com.diedari.jimdur.service.UbicacionService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/admin/productos")
+@RequiredArgsConstructor
 public class ProductoController {
 
-    @Autowired
-    private ProductoService productoService;
+    private final ProductoService productoService;
+    private final CategoriaRepository categoriaRepository;
+    private final MarcaRepository marcaRepository;
+    private final ProveedorRepository proveedorRepository;
 
-    @Autowired
-    private CategoriaService categoriaService;
+    @GetMapping
+    public String listarProductos(Model model) {
+        List<ProductoDTO> productos = productoService.obtenerTodosLosProductos();
+        List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
+        List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
 
-    @Autowired
-    private MarcaService marcaService;
-
-    @Autowired
-    private UbicacionService ubicacionService;
-
-    @Autowired
-    private ProveedorService proveedorService;
-
-    // Listar productos
-    @GetMapping("/")
-    public String listarProductosForm(Model model) {
-        List<Producto> productos = productoService.listarTodosLosProductos();
         model.addAttribute("productos", productos);
-        model.addAttribute("producto", new Producto()); // Para el formulario de nuevo producto
-        model.addAttribute("categorias", categoriaService.obtenerTodasLasCategorias());
-        model.addAttribute("marcas", marcaService.listarTodasLasMarcas());
-        model.addAttribute("ubicacion", ubicacionService.listarUbicaciones());
-        model.addAttribute("claseActiva", "productos");
-
-        return "admin/productos/listar"; // Usamos el layout principal
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("marcas", marcas);
+        model.addAttribute("pageTitle", "Gestión de Productos");
+        return "admin/productos/listar";
     }
 
-    // Formulario para nuevo producto
-    @GetMapping("/agregar")
-    public String nuevoProductoForm(Model model) {
+    @GetMapping("/nuevo")
+    public String mostrarFormularioNuevo(Model model) {
+        ProductoDTO producto = new ProductoDTO();
+        producto.setActivo(true); // Por defecto activo
 
-        model.addAttribute("producto", new Producto());
+        // Inicializar listas vacías
+        producto.setProveedores(new ArrayList<>());
+        producto.getProveedores().add(new ProductoProveedorDTO());
 
-        model.addAttribute("categorias", categoriaService.obtenerCategoriaPorEstado(true));
+        producto.setEspecificaciones(new ArrayList<>());
+        producto.getEspecificaciones().add(new EspecificacionProductoDTO());
 
-        model.addAttribute("marcas", marcaService.obtenerMarcasPorEstado(true));
+        producto.setCompatibilidades(new ArrayList<>());
+        producto.getCompatibilidades().add(new CompatibilidadProductoDTO());
 
-        model.addAttribute("ubicacion", ubicacionService.listarUbicaciones());
-
-        model.addAttribute("proveedores", proveedorService.listarProveedores());
-
-        model.addAttribute("claseActiva", "agregar");
-
-        return "admin/productos/nuevo"; // Usamos el layout principal
+        cargarDatosFormulario(model, producto);
+        return "admin/productos/nuevo";
     }
 
-    // Guardar nuevo producto
-    @PostMapping("/agregar")
-    public String guardarProducto(@ModelAttribute Producto producto) {
-        productoService.guardarProductoNuevo(producto);
-        return "redirect:/admin/productos/"; // Redirige a la lista de productos
-    }
+    @GetMapping("/{id}/editar")
+    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+        try {
+            ProductoDTO producto = productoService.obtenerProductoPorId(id);
+            if (producto == null) {
+                return "redirect:/admin/productos?error=not_found";
+            }
 
-    // Editar producto
-    @GetMapping("/editar/{id}")
-    public String editarProducto(@PathVariable Long id, Model model) {
-        Producto producto = productoService.obtenerProductoPorId(id);
-        if (producto != null) {
+            // Cargar datos necesarios para el formulario
+            List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
+            List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
+            List<Proveedor> proveedores = proveedorRepository.findAll();
+
+            // Asegurarse de que las listas nunca sean null
+            if (producto.getProveedores() == null) {
+                producto.setProveedores(new ArrayList<>());
+            }
+            if (producto.getEspecificaciones() == null) {
+                producto.setEspecificaciones(new ArrayList<>());
+            }
+            if (producto.getCompatibilidades() == null) {
+                producto.setCompatibilidades(new ArrayList<>());
+            }
+
+            // Si no hay elementos, agregar uno vacío para el formulario
+            if (producto.getProveedores().isEmpty()) {
+                producto.getProveedores().add(new ProductoProveedorDTO());
+            }
+            if (producto.getEspecificaciones().isEmpty()) {
+                producto.getEspecificaciones().add(new EspecificacionProductoDTO());
+            }
+            if (producto.getCompatibilidades().isEmpty()) {
+                producto.getCompatibilidades().add(new CompatibilidadProductoDTO());
+            }
+
             model.addAttribute("producto", producto);
-
-            List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
             model.addAttribute("categorias", categorias);
-
-            List<Marca> marcas = marcaService.obtenerMarcasPorEstado(true);
             model.addAttribute("marcas", marcas);
-
-            model.addAttribute("ubicacion", ubicacionService.listarUbicaciones());
-
-            model.addAttribute("proveedores", proveedorService.listarProveedores());
+            model.addAttribute("proveedores", proveedores);
+            model.addAttribute("pageTitle", "Editar Producto");
 
             return "admin/productos/editar";
-        } else {
-            return "redirect:/admin/productos/";
+        } catch (Exception e) {
+            return "redirect:/admin/productos?error=" + e.getMessage();
         }
     }
 
-    // Actualizar producto
-    @PostMapping("/actualizar/{id}")
-    public String actualizarProducto(@PathVariable Long id, @ModelAttribute Producto producto) {
-        Producto actual = productoService.obtenerProductoPorId(id);
-        if (actual != null) {
-            actual.setNombre(producto.getNombre());
-            actual.setImagenURL(producto.getImagenURL());
-            actual.setDescripcion(producto.getDescripcion());
-            actual.setCategoria(producto.getCategoria());
-            actual.setPrecio(producto.getPrecio());
-            actual.setStock(producto.getStock());
-            actual.setProveedor(producto.getProveedor());
-            actual.setCategoria(producto.getCategoria());
-            actual.setMarca(producto.getMarca());
-            actual.setDescuento(producto.getDescuento());
-            actual.setTipoDescuento(producto.getTipoDescuento());
-            actual.setActivo(producto.isActivo());
-            actual.calcularPrecioOferta();
-            productoService.actualizarProducto(actual);
+    @PostMapping("/{id}/eliminar")
+    public String eliminarProducto(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            productoService.eliminarProducto(id);
+            redirectAttributes.addFlashAttribute("success", "Producto eliminado exitosamente");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar el producto: " + e.getMessage());
         }
-        return "redirect:/admin/productos/";
+        return "redirect:/admin/productos";
     }
 
-    // Eliminar producto
-    @GetMapping("/eliminar/{id}")
-    public String eliminarProducto(@PathVariable Long id) {
-        productoService.eliminarProducto(id);
-        return "redirect:/admin/productos/";
+    @GetMapping("/{id}/detalle")
+    public String verDetalle(@PathVariable Long id, Model model) {
+        try {
+            ProductoDTO producto = productoService.obtenerProductoPorId(id);
+            model.addAttribute("producto", producto);
+            return "admin/productos/detalle";
+        } catch (RuntimeException e) {
+            return "redirect:/admin/productos?error=not_found";
+        }
+    }
+
+    private void cargarDatosFormulario(Model model, ProductoDTO producto) {
+        List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
+        List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
+        List<Proveedor> proveedores = proveedorRepository.findAll();
+
+        model.addAttribute("producto", producto);
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("marcas", marcas);
+        model.addAttribute("proveedores", proveedores);
+
+        String pageTitle = producto.getIdProducto() != null ? "Editar Producto" : "Nuevo Producto";
+        model.addAttribute("pageTitle", pageTitle);
     }
 }

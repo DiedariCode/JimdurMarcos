@@ -45,12 +45,12 @@ public class MarcaServiceImpl implements MarcaService {
         if (nombre == null || nombre.isEmpty()) {
             return marcaRepository.findAll();
         }
-        return marcaRepository.findByNombre(nombre);
+        return marcaRepository.findByNombreMarca(nombre);
     }
 
     @Override
     public List<Marca> obtenerMarcasPorEstado(Boolean activo) {
-        return marcaRepository.findByActivo(activo);
+        return marcaRepository.findByEstadoMarca(activo);
     }
 
 }

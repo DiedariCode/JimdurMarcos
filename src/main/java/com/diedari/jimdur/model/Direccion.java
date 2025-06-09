@@ -2,7 +2,10 @@ package com.diedari.jimdur.model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,101 +13,57 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "Direccion")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Direccion {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idDireccion;
-
+    @Column(name = "id_direccion")
+    private Long idDireccion;
+    
+    @Column(name = "etiqueta", nullable = false)
+    @NotBlank(message = "La etiqueta es obligatoria")
+    @Size(max = 255, message = "La etiqueta no puede exceder 255 caracteres")
     private String etiqueta;
+    
+    @Column(name = "calle", nullable = false)
+    @NotBlank(message = "La calle es obligatoria")
+    @Size(max = 255, message = "La calle no puede exceder 255 caracteres")
     private String calle;
+    
+    @Column(name = "distrito", nullable = false)
+    @NotBlank(message = "El distrito es obligatorio")
+    @Size(max = 255, message = "El distrito no puede exceder 255 caracteres")
     private String distrito;
+    
+    @Column(name = "ciudad", nullable = false)
+    @NotBlank(message = "La ciudad es obligatoria")
+    @Size(max = 255, message = "La ciudad no puede exceder 255 caracteres")
     private String ciudad;
+    
+    @Column(name = "referencia")
+    @Size(max = 255, message = "La referencia no puede exceder 255 caracteres")
     private String referencia;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    
+    // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    @NotNull(message = "El usuario es obligatorio")
     private Usuario usuario;
-
-    @OneToMany(mappedBy = "direccion")
+    
+    @OneToMany(mappedBy = "direccion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pedido> pedidos;
-
-    public Direccion(Integer idDireccion, String etiqueta, String calle, String distrito, String ciudad,
-            String referencia, Usuario usuario, List<Pedido> pedidos) {
-        this.idDireccion = idDireccion;
-        this.etiqueta = etiqueta;
-        this.calle = calle;
-        this.distrito = distrito;
-        this.ciudad = ciudad;
-        this.referencia = referencia;
-        this.usuario = usuario;
-        this.pedidos = pedidos;
-    }
-
-    public Integer getIdDireccion() {
-        return idDireccion;
-    }
-
-    public void setIdDireccion(Integer idDireccion) {
-        this.idDireccion = idDireccion;
-    }
-
-    public String getEtiqueta() {
-        return etiqueta;
-    }
-
-    public void setEtiqueta(String etiqueta) {
-        this.etiqueta = etiqueta;
-    }
-
-    public String getCalle() {
-        return calle;
-    }
-
-    public void setCalle(String calle) {
-        this.calle = calle;
-    }
-
-    public String getDistrito() {
-        return distrito;
-    }
-
-    public void setDistrito(String distrito) {
-        this.distrito = distrito;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public String getReferencia() {
-        return referencia;
-    }
-
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public List<Pedido> getPedidos() {
-        return pedidos;
-    }
-
-    public void setPedidos(List<Pedido> pedidos) {
-        this.pedidos = pedidos;
-    }
-
 }

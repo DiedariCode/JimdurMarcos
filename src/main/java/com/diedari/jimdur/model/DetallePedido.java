@@ -1,102 +1,63 @@
 package com.diedari.jimdur.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "DetallePedido")
+@Table(name = "Detalle_Pedido",
+       uniqueConstraints = {
+           @UniqueConstraint(columnNames = {"id_pedido", "id_producto"},
+                           name = "uk_pedido_producto")
+       })
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class DetallePedido {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idDetalle;
-
+    @Column(name = "id_detalle")
+    private Long idDetalle;
+    
+    @Column(name = "cantidad", nullable = false)
+    @NotNull(message = "La cantidad es obligatoria")
+    @Min(value = 1, message = "La cantidad debe ser mayor a 0")
     private Integer cantidad;
+    
+    @Column(name = "precio_unitario", nullable = false)
+    @NotNull(message = "El precio unitario es obligatorio")
+    @DecimalMin(value = "0.0", inclusive = false, message = "El precio unitario debe ser mayor a 0")
     private Double precioUnitario;
+    
+    @Column(name = "subtotal", nullable = false)
+    @NotNull(message = "El subtotal es obligatorio")
+    @DecimalMin(value = "0.0", message = "El subtotal no puede ser negativo")
     private Double subtotal;
-
-    @ManyToOne
-    @JoinColumn(name = "id_pedido")
+    
+    // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pedido", nullable = false)
+    @NotNull(message = "El pedido es obligatorio")
     private Pedido pedido;
-
-    @ManyToOne
-    @JoinColumn(name = "id_producto")
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_producto", nullable = false)
+    @NotNull(message = "El producto es obligatorio")
     private Producto producto;
-
-    // Constructor vacío (obligatorio para JPA)
-    public DetallePedido() {
-    }
-
-    // Constructor con todos los campos
-    public DetallePedido(Integer idDetalle, Integer cantidad, Double precioUnitario, Double subtotal, Pedido pedido,
-            Producto producto) {
-        this.idDetalle = idDetalle;
-        this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
-        this.subtotal = subtotal;
-        this.pedido = pedido;
-        this.producto = producto;
-    }
-
-    // Getters y Setters
-
-    public Integer getIdDetalle() {
-        return idDetalle;
-    }
-
-    public void setIdDetalle(Integer idDetalle) {
-        this.idDetalle = idDetalle;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Double getPrecioUnitario() {
-        return precioUnitario;
-    }
-
-    public void setPrecioUnitario(Double precioUnitario) {
-        this.precioUnitario = precioUnitario;
-    }
-
-    public Double getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(Double subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    // toString (opcional)
-    @Override
-    public String toString() {
-        return "DetallePedido{" +
-                "idDetalle=" + idDetalle +
-                ", cantidad=" + cantidad +
-                ", precioUnitario=" + precioUnitario +
-                ", subtotal=" + subtotal +
-                ", pedido=" + (pedido != null ? pedido.getIdPedido() : null) +
-                ", producto=" + (producto != null ? producto.getIdProducto() : null) +
-                '}';
-    }
 }

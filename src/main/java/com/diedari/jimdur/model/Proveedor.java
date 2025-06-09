@@ -1,112 +1,109 @@
 package com.diedari.jimdur.model;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "Proveedor")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Proveedor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_proveedor")
     private Long idProveedor;
 
-    @Column(name = "nombre", nullable = false, length = 100)
-    private String nombre;
+    @Column(name = "nombre")
+    @NotBlank(message = "El nombre del proveedor es obligatorio")
+    @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
+    private String nombre; // nombreEmpresa
 
-    @Column(name = "correo", nullable = false, length = 100, unique = true)
-    private String correo;
+    @Column(name = "nombre_comercial")
+    @Size(max = 100, message = "El nombre comercial no puede exceder 100 caracteres")
+    private String nombreComercial;
 
-    @Column(name = "telefono", nullable = false, length = 15)
-    private String telefono;
-
-    @Column(name = "direccion", nullable = false, length = 200)
-    private String direccion;
-
-    @Column(name = "ruc", nullable = false)
+    @Column(name = "ruc", unique = true)
+    @NotBlank(message = "El RUC es obligatorio")
+    @Size(max = 255, message = "El RUC no puede exceder 255 caracteres")
     private String ruc;
 
-    @OneToMany(mappedBy = "proveedor")
-    @JsonIgnore
-    private List<Producto> productos;
+    @Column(name = "tipo_proveedor")
+    @Size(max = 50)
+    private String tipoProveedor;
 
-    public Long getIdProveedor() {
-        return idProveedor;
-    }
+    @Column(name = "estado_activo")
+    @Size(max = 50)
+    private String estadoActivo; // Ej: "Activo", "Inactivo"
 
-    public void setIdProveedor(Long idProveedor) {
-        this.idProveedor = idProveedor;
-    }
+    // Información de contacto
+    @Column(name = "nombre_contacto_principal")
+    @Size(max = 100)
+    private String nombreContactoPrincipal;
 
-    public String getNombre() {
-        return nombre;
-    }
+    @Column(name = "cargo_contacto")
+    @Size(max = 100)
+    private String cargoContacto;
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    @Column(name = "telefono")
+    @NotBlank(message = "El teléfono es obligatorio")
+    @Size(max = 15)
+    private String telefono;
 
-    public List<Producto> getProductos() {
-        return productos;
-    }
+    @Column(name = "correo", unique = true)
+    @NotBlank(message = "El correo es obligatorio")
+    @Email(message = "El correo debe tener un formato válido")
+    @Size(max = 100)
+    private String correo;
 
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
-    }
+    @Column(name = "sitio_web")
+    @Size(max = 255)
+    private String sitioWebContacto;
 
-    public Proveedor(Long idProveedor, String nombre, String correo, String telefono, String direccion,
-            List<Producto> productos, String ruc) {
-        this.idProveedor = idProveedor;
-        this.nombre = nombre;
-        this.correo = correo;
-        this.telefono = telefono;
-        this.direccion = direccion;
-        this.productos = productos;
-        this.ruc = ruc;
-    }
+    @Column(name = "horario_atencion")
+    @Size(max = 255)
+    private String horarioAtencionContacto;
 
-    public String getCorreo() {
-        return correo;
-    }
+    // Relaciones
+    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<DireccionProveedor> direcciones;
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
+    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductoProveedor> productoProveedores;
 
-    public String getTelefono() {
-        return telefono;
-    }
+    public Set<String> obtenerCategorias() {
+        if (productoProveedores == null) {
+            return Collections.emptySet();
+        }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public Proveedor() {
-    }
-
-    public String getRuc() {
-        return ruc;
-    }
-
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
+        return productoProveedores.stream()
+                .map(pp -> pp.getProducto())
+                .filter(producto -> producto != null && producto.getCategoria() != null)
+                .map(producto -> producto.getCategoria().getNombreCategoria())
+                .collect(Collectors.toSet());
     }
 
 }

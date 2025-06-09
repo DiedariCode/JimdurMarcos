@@ -44,19 +44,19 @@
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre de la categoría <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required oninput="generarSlug()" >
+                                    <input type="text" class="form-control" id="nombre" th:field="*{nombreCategoria}" required oninput="generarSlug()" >
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="descripcion" class="form-label">Descripción</label>
                                     <textarea class="form-control" id="descripcion" rows="3"
-                                        th:field="*{descripcion}"></textarea>
+                                        th:field="*{descripcionCategoria}"></textarea>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="slug" class="form-label">Slug <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="slug" th:field="*{slug}" required readonly>
-                                    <div class="form-text">El slug se usa en las URLs. Ejemplo: /categoria/<span th:text="*{slug}">aceites</span></div>
+                                    <input type="text" class="form-control" id="slug" th:field="*{slugCategoria}" required readonly>
+                                    <div class="form-text">El slug se usa en las URLs. Ejemplo: /categoria/<span th:text="*{slugCategoria}">aceites</span></div>
                                 </div>
 
                                 <div class="mb-3">
@@ -90,7 +90,7 @@
 
                                 <div class="mb-3 form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="activa"
-                                        th:field="*{activa}">
+                                        th:field="*{estadoActiva}">
                                     <label class="form-check-label" for="activa">Categoría activa</label>
                                 </div>
 

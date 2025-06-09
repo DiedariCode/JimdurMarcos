@@ -15,12 +15,28 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/user/all.css}">
+    <link rel="stylesheet" th:href="@{/css/user/producto-detalle.css}">
 
     <title>Catalogo Productos</title>
 </head>
 
 <body>
     <header th:replace="~{fragments/navbar :: navbar}"></header>
+
+    <!-- Image Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center modal-image-container">
+                    <img id="modalImage" class="img-fluid" alt="Imagen ampliada">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <main class="py-4">
         <div class="container">
             <!-- Breadcrumbs -->
@@ -38,25 +54,22 @@
                 <!-- Product Gallery -->
                 <div class="col-md-6">
                     <div class="product-gallery">
-                        <div class="main-image border rounded p-3 bg-white mb-3">
-                            <img th:src="${producto.imagenURL}" class="img-fluid" id="mainImage"
-                                th:alt="${producto.nombre}">
+                        <div class="main-image border rounded mb-3">
+                            <img th:if="${not #lists.isEmpty(producto.imagenesGuardadas)}"
+                                th:src="@{'/uploads/productos/' + ${producto.imagenesGuardadas[0].rutaImagen}}"
+                                class="img-fluid" id="mainImage" th:alt="${producto.nombre}">
+                            <img th:unless="${not #lists.isEmpty(producto.imagenesGuardadas)}"
+                                th:src="@{/image/no-image.png}"
+                                class="img-fluid" id="mainImage" th:alt="${producto.nombre}">
                         </div>
-                        <div class="thumbnails d-flex gap-2 overflow-auto pb-2">
-                            <!-- ! FALTA LA IMPLEMENTACION DE SEPARAR IMAGEN URL COMO ENTIDAD PARA SUBIR MAS -->
-                            <button class="thumbnail-btn border rounded p-1 active"
-                                data-img="https://placehold.co/600x600">
-                                <img src="https://placehold.co/80x80" class="img-fluid" alt="Aceite Motul - Vista 1">
-                            </button>
-                            <button class="thumbnail-btn border rounded p-1"
-                                data-img="https://placehold.co/600x600?text=Vista+2">
-                                <img src="https://placehold.co/80x80?text=Vista+2" class="img-fluid"
-                                    alt="Aceite Motul - Vista 2">
-                            </button>
-                            <button class="thumbnail-btn border rounded p-1"
-                                data-img="https://placehold.co/600x600?text=Vista+3">
-                                <img src="https://placehold.co/80x80?text=Vista+3" class="img-fluid"
-                                    alt="Aceite Motul - Vista 3">
+                        <div class="thumbnails d-flex gap-2 overflow-auto pb-2" th:if="${not #lists.isEmpty(producto.imagenesGuardadas)}">
+                            <button th:each="imagen : ${producto.imagenesGuardadas}" 
+                                class="thumbnail-btn border rounded"
+                                th:classappend="${imagen.esPortada} ? 'active' : ''"
+                                th:data-img="@{'/uploads/productos/' + ${imagen.rutaImagen}}">
+                                <img th:src="@{'/uploads/productos/' + ${imagen.rutaImagen}}" 
+                                    class="img-fluid"
+                                    th:alt="${producto.nombre + ' - Vista ' + imagenStat.count}">
                             </button>
                         </div>
                     </div>
@@ -67,17 +80,15 @@
                     <div class="product-info">
                         <!-- Brand & Category -->
                         <div class="d-flex align-items-center gap-2 mb-2">
-                            <a href="../marca/motul.html" class="text-decoration-none text-muted small"
-                                th:text="${producto.marca.nombre}">Motul</a>
+                            <span class="text-decoration-none text-muted small" th:text="${producto.nombreMarca}">Motul</span>
                             <span class="text-muted">•</span>
-                            <a href="../categoria/aceites.html" class="text-decoration-none text-muted small"
-                                th:text="${producto.categoria.nombre}">Aceites</a>
+                            <span class="text-decoration-none text-muted small" th:text="${producto.nombreCategoria}">Aceites</span>
                         </div>
 
                         <!-- Product Title -->
                         <h1 class="fw-bold mb-3" th:text="${producto.nombre}">Aceite Motul 5100 4T 15W50</h1>
 
-                        <!-- ! Rating falta implementacion -->
+                        <!-- Rating falta implementacion -->
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <div class="text-warning">
                                 <i class="bi bi-star-fill"></i>
@@ -93,29 +104,27 @@
                         <!-- Price -->
                         <div class="d-flex align-items-center gap-3 mb-3">
                             <span class="fs-3 fw-bold text-primary"
-                                th:text="'S/ ' + ${producto.precioOferta}">$10.625</span>
+                                th:text="'S/ ' + ${#numbers.formatDecimal(producto.precioOferta != null ? producto.precioOferta : producto.precio, 1, 2)}">$10.625</span>
                             <span class="fs-5 text-muted text-decoration-line-through" th:if="${producto.descuento > 0}"
-                                th:text="'S/ ' + ${producto.precio}">$12.500</span>
+                                th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">$12.500</span>
                             <span class="badge bg-danger"
-                                th:if="${producto.descuento > 0 and producto.tipoDescuento == 'PORCENTAJE'}"
+                                th:if="${producto.descuento > 0 and producto.tipoDescuento == 'porcentaje'}"
                                 th:text="'-' + ${producto.descuento} + '%'">-15%</span>
                         </div>
 
                         <!-- Short Description -->
-                        <p class="text-muted mb-4" th:text="${producto.descripcion}">Aceite semisintético de alta calidad para motores de 4 tiempos.
-                            Proporciona protección superior y rendimiento óptimo para tu motocicleta.</p>
+                        <p class="text-muted mb-4" th:text="${producto.descripcion}">Aceite semisintético de alta calidad para motores de 4 tiempos.</p>
 
                         <!-- Availability -->
                         <div class="d-flex align-items-center gap-2 mb-2">
                             <span class="fw-medium">Disponibilidad:</span>
-                            <span class="text-success">En stock (25 unidades)</span>
+                            <span class="text-success" th:text="${producto.activo ? 'En stock' : 'No disponible'}">En stock</span>
                         </div>
 
                         <!-- SKU -->
-                        <div class="text-danger fw-bold">PROXIMAMENTE</div>
                         <div class="d-flex align-items-center gap-2 mb-4">
                             <span class="fw-medium">SKU:</span>
-                            <span class="text-muted">MT-5100-15W50</span>
+                            <span class="text-muted" th:text="${producto.sku}">MT-5100-15W50</span>
                         </div>
 
                         <!-- Add to Cart -->
@@ -130,8 +139,7 @@
                                         <i class="bi bi-plus"></i>
                                     </button>
                                 </div>
-                                <button
-                                    class="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center gap-2">
+                                <button class="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center gap-2">
                                     <i class="bi bi-cart"></i>
                                     Agregar al carrito
                                 </button>
@@ -163,8 +171,7 @@
                             <div class="d-flex align-items-start gap-3">
                                 <i class="bi bi-credit-card text-primary fs-5"></i>
                                 <div>
-                                    <h6 class="fw-bold mb-1">Métodos de pago <span
-                                            class="text-danger">PROXIMAMENTE</span></h6>
+                                    <h6 class="fw-bold mb-1">Métodos de pago</h6>
                                     <p class="text-muted small mb-0">Tarjetas, transferencia y efectivo</p>
                                 </div>
                             </div>
@@ -197,64 +204,67 @@
                     </li>
                 </ul>
                 <div class="tab-content p-4 border border-top-0 rounded-bottom" id="productTabsContent">
+                    <!-- Description Tab -->
                     <div class="tab-pane fade show active" id="description" role="tabpanel"
                         aria-labelledby="description-tab">
-                        <p>Aceite de motor semisintético para motocicletas de 4 tiempos. Proporciona una excelente
-                            protección y rendimiento para motores de alta potencia.</p>
-
-                        <h5 class="fw-bold mt-4 mb-3">Características principales</h5>
-                        <ul>
-                            <li>Mejora la potencia y aceleración</li>
-                            <li>Excelente resistencia a altas temperaturas</li>
-                            <li>Protección superior contra el desgaste</li>
-                            <li>Ideal para motores con embrague húmedo</li>
-                            <li>Compatible con catalizadores</li>
-                        </ul>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h4 class="fw-bold mb-4">Descripción del Producto</h4>
+                                <p th:text="${producto.descripcion}">
+                                    Descripción detallada del producto...
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tab-pane fade" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">
+
+                    <!-- Specifications Tab -->
+                    <div class="tab-pane fade" id="specifications" role="tabpanel"
+                        aria-labelledby="specifications-tab">
+                        <h4 class="fw-bold mb-4">Especificaciones Técnicas</h4>
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-bordered">
                                 <tbody>
-                                    <tr>
-                                        <th scope="row" style="width: 30%;">Tipo</th>
-                                        <td>Semisintético</td>
+                                    <tr th:if="${#lists.isEmpty(producto.especificaciones)}">
+                                        <td colspan="2" class="text-center">No hay especificaciones disponibles</td>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">Viscosidad</th>
-                                        <td>15W50</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Capacidad</th>
-                                        <td>1 Litro</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Aplicación</th>
-                                        <td>Motores 4T</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Normas</th>
-                                        <td>API SL/SJ/SH/SG, JASO MA2</td>
+                                    <tr th:each="spec : ${producto.especificaciones}">
+                                        <th th:text="${spec.nombre}" class="w-25">Nombre Especificación</th>
+                                        <td th:text="${spec.valor}">Valor Especificación</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="compatibility" role="tabpanel" aria-labelledby="compatibility-tab">
-                        <h5 class="fw-bold mb-3">Modelos compatibles</h5>
-                        <ul>
-                            <li>Honda CB190R</li>
-                            <li>Yamaha FZ16</li>
-                            <li>Suzuki Gixxer</li>
-                            <li>Kawasaki Z400</li>
-                            <li>Y muchos más modelos de 4 tiempos</li>
-                        </ul>
+
+                    <!-- Compatibility Tab -->
+                    <div class="tab-pane fade" id="compatibility" role="tabpanel"
+                        aria-labelledby="compatibility-tab">
+                        <h4 class="fw-bold mb-4">Compatibilidad</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Modelo Compatible</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:if="${#lists.isEmpty(producto.compatibilidades)}">
+                                        <td class="text-center">No hay información de compatibilidad disponible</td>
+                                    </tr>
+                                    <tr th:each="comp : ${producto.compatibilidades}">
+                                        <td th:text="${comp.modeloCompatible}">Modelo Compatible</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+
+                    <!-- Reviews Tab -->
                     <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                         <div class="text-center py-5">
-                            <h5 class="fw-bold mb-3">Reseñas de clientes</h5>
-                            <p class="text-muted mb-4">Las reseñas de este producto estarán disponibles próximamente.
-                            </p>
-                            <button class="btn btn-primary">Escribir una reseña</button>
+                            <i class="bi bi-clock-history fs-1 text-muted mb-3"></i>
+                            <h4>Próximamente</h4>
+                            <p class="text-muted">Las reseñas estarán disponibles pronto.</p>
                         </div>
                     </div>
                 </div>
@@ -325,12 +335,12 @@
     </main>
     <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-    <!-- Bootstrap JS Bundle with Popper -->
+    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <!-- Custom JS -->
-
+    <script th:src="@{/js/user/producto-detalle.js}"></script>
 </body>
 
 </html>

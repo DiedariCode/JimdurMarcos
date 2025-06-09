@@ -1,147 +1,82 @@
 package com.diedari.jimdur.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "Usuario")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
-    private String correo;
-    private String contrasena;
+    @Column(name = "nombre", nullable = false)
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(max = 255, message = "El nombre no puede exceder 255 caracteres")
+    private String nombres;
+
+    @Column(name = "apellidos", nullable = false)
+    @NotBlank(message = "Los apellidos son obligatorios")
+    @Size(max = 255, message = "Los apellidos no pueden exceder 255 caracteres")
+    private String apellidos;
+
+    @Column(name = "correo", unique = true, nullable = false)
+    @NotBlank(message = "El correo es obligatorio")
+    @Email(message = "El correo debe tener un formato válido")
+    @Size(max = 255, message = "El correo no puede exceder 255 caracteres")
+    private String email;
+
+    @Column(name = "contrasena", nullable = false)
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(max = 255, message = "La contraseña no puede exceder 255 caracteres")
+    private String contrasenaHash;
+
+    @Column(name = "telefono")
+    @Size(max = 255, message = "El teléfono no puede exceder 255 caracteres")
     private String telefono;
 
-    private Rol rol;
+    @Column(name = "rol", nullable = false)
+    @NotNull(message = "El rol es obligatorio")
+    private String rol;
 
-    @Column(name = "fecha_reg")
-    private Date fechaRegistro;
+    @Column(name = "estado_cuenta", nullable = false)
+    @NotNull(message = "El estado de la cuenta es obligatorio")
+    private String estadoCuenta;
 
-    public enum Rol {
-        cliente, staff, admin
-    }
+    @Column(name = "fecha_registro", nullable = false)
+    @NotNull(message = "La fecha de registro es obligatoria")
+    private LocalDateTime fechaRegistro;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Relaciones
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Direccion> direcciones;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Carrito> carritos;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pedido> pedidos;
-
-    // Constructor por defecto
-    public Usuario() {
-    }
-
-    // Constructor para crear un nuevo usuario
-    public Usuario(Long id, String nombre, String correo, String contrasena, String telefono, Rol rol,
-            Date fechaRegistro, List<Direccion> direcciones, List<Carrito> carritos, List<Pedido> pedidos) {
-        this.id = id;
-        this.nombre = nombre;
-        this.correo = correo;
-        this.contrasena = contrasena;
-        this.telefono = telefono;
-        this.rol = rol;
-        this.fechaRegistro = fechaRegistro;
-        this.direcciones = direcciones;
-        this.carritos = carritos;
-        this.pedidos = pedidos;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public Rol getRol() {
-
-        return rol;
-    }
-    
-    public void setRol(Rol rol) {
-        this.rol = rol;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public List<Direccion> getDirecciones() {
-        return direcciones;
-    }
-
-    public void setDirecciones(List<Direccion> direcciones) {
-        this.direcciones = direcciones;
-    }
-
-    public List<Carrito> getCarritos() {
-        return carritos;
-    }
-
-    public void setCarritos(List<Carrito> carritos) {
-        this.carritos = carritos;
-    }
-
-    public List<Pedido> getPedidos() {
-        return pedidos;
-    }
-
-    public void setPedidos(List<Pedido> pedidos) {
-        this.pedidos = pedidos;
-    }
-
 }

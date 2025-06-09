@@ -1,108 +1,63 @@
 package com.diedari.jimdur.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "DetalleBoleta")
+@Table(name = "Detalle_Boleta",
+       uniqueConstraints = {
+           @UniqueConstraint(columnNames = {"id_boleta", "id_producto"},
+                           name = "uk_boleta_producto")
+       })
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class DetalleBoleta {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idDetalleBoleta;
-
+    @Column(name = "id_detalle_boleta")
+    private Long idDetalleBoleta;
+    
+    @Column(name = "cantidad", nullable = false)
+    @NotNull(message = "La cantidad es obligatoria")
+    @Min(value = 1, message = "La cantidad debe ser mayor a 0")
     private Integer cantidad;
+    
+    @Column(name = "precio_unitario", nullable = false)
+    @NotNull(message = "El precio unitario es obligatorio")
+    @DecimalMin(value = "0.0", inclusive = false, message = "El precio unitario debe ser mayor a 0")
     private Double precioUnitario;
+    
+    @Column(name = "subtotal", nullable = false)
+    @NotNull(message = "El subtotal es obligatorio")
+    @DecimalMin(value = "0.0", message = "El subtotal no puede ser negativo")
     private Double subtotal;
-
-    @ManyToOne
-    @JoinColumn(name = "id_boleta")
+    
+    // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_boleta", nullable = false)
+    @NotNull(message = "La boleta es obligatoria")
     private Boleta boleta;
-
-    @ManyToOne
-    @JoinColumn(name = "id_producto")
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_producto", nullable = false)
+    @NotNull(message = "El producto es obligatorio")
     private Producto producto;
-
-    // Constructor vacío (obligatorio para JPA)
-    public DetalleBoleta() {
-    }
-
-    // Constructor con todos los campos
-    public DetalleBoleta(Integer idDetalleBoleta, Integer cantidad, Double precioUnitario, Double subtotal,
-            Boleta boleta, Producto producto) {
-        this.idDetalleBoleta = idDetalleBoleta;
-        this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
-        this.subtotal = subtotal;
-        this.boleta = boleta;
-        this.producto = producto;
-    }
-
-    // Getters y Setters
-
-    public Integer getIdDetalleBoleta() {
-        return idDetalleBoleta;
-    }
-
-    public void setIdDetalleBoleta(Integer idDetalleBoleta) {
-        this.idDetalleBoleta = idDetalleBoleta;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Double getPrecioUnitario() {
-        return precioUnitario;
-    }
-
-    public void setPrecioUnitario(Double precioUnitario) {
-        this.precioUnitario = precioUnitario;
-    }
-
-    public Double getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(Double subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public Boleta getBoleta() {
-        return boleta;
-    }
-
-    public void setBoleta(Boleta boleta) {
-        this.boleta = boleta;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    // toString (opcional)
-    @Override
-    public String toString() {
-        return "DetalleBoleta{" +
-                "idDetalleBoleta=" + idDetalleBoleta +
-                ", cantidad=" + cantidad +
-                ", precioUnitario=" + precioUnitario +
-                ", subtotal=" + subtotal +
-                ", boleta=" + (boleta != null ? boleta.getIdBoleta() : null) +
-                ", producto=" + (producto != null ? producto.getIdProducto() : null) +
-                '}';
-    }
 }

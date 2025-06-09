@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.diedari.jimdur.model.Ubicacion;
+import com.diedari.jimdur.model.Ubicaciones;
 import com.diedari.jimdur.service.UbicacionService;
 
 @RestController
@@ -17,25 +17,25 @@ public class UbicacionRestController {
 
     // Listar todas las ubicaciones
     @GetMapping
-    public List<Ubicacion> listarUbicaciones() {
+    public List<Ubicaciones> listarUbicaciones() {
         return ubicacionService.listarUbicaciones();
     }
 
     // Obtener una ubicación por ID
     @GetMapping("/{id}")
-    public Ubicacion obtenerUbicacionPorId(@PathVariable Integer id) {
+    public Ubicaciones obtenerUbicacionPorId(@PathVariable Integer id) {
         return ubicacionService.obtenerUbicacionPorId(id);
     }
 
     // Guardar nueva ubicación
     @PostMapping
-    public Ubicacion guardarUbicacion(@RequestBody Ubicacion ubicacion) {
+    public Ubicaciones guardarUbicacion(@RequestBody Ubicaciones ubicacion) {
         return ubicacionService.guardarUbicacion(ubicacion);
     }
 
     // Actualizar ubicación existente
     @PutMapping("/{id}")
-    public Ubicacion actualizarUbicacion(@PathVariable Integer id, @RequestBody Ubicacion ubicacion) {
+    public Ubicaciones actualizarUbicacion(@PathVariable Long id, @RequestBody Ubicaciones ubicacion) {
         ubicacion.setIdUbicacion(id);
         return ubicacionService.actualizarUbicacion(ubicacion);
     }

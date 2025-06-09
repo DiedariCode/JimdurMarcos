@@ -50,18 +50,18 @@ public class CategoriaRestController {
     // Con el RequestBody se puede recibir un objeto completo
     // Osea pasa ese JSON a un objeto Categoria
 
-    @PutMapping("/actualizar/{id}")
-    public Categoria actualizarCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
-        Categoria actual = categoriaService.obtenerCategoriaPorId(id);
-        if (actual != null) {
-            actual.setNombre(categoria.getNombre());
-            actual.setDescripcion(categoria.getDescripcion());
-            actual.setActiva(categoria.isActiva());
-            return categoriaService.actualizarCategoria(actual);
-        } else {
-            return null;
-        }
-    }
+    // @PutMapping("/actualizar/{id}")
+    // public Categoria actualizarCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
+    //     Categoria actual = categoriaService.obtenerCategoriaPorId(id);
+    //     if (actual != null) {
+    //         actual.setNombre(categoria.getNombre());
+    //         actual.setDescripcion(categoria.getDescripcion());
+    //         actual.setActiva(categoria.isActiva());
+    //         return categoriaService.actualizarCategoria(actual);
+    //     } else {
+    //         return null;
+    //     }
+    // }
 
     @DeleteMapping("/{id}")
     public void eliminarCategoria(@PathVariable Long id) {

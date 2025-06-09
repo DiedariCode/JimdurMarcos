@@ -1,170 +1,370 @@
-<!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gestion de Proveedor de cada Producto</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- ICONOS BOOTSTRAP -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <!-- CSS de Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- ICONOS FONT AWESOME -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- CSS PERSONALIZADO: SIDEBAR -->
-    <link rel="stylesheet" th:href="@{/css/admin/productos.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proveedores | JIMDUR Repuestos</title>
+    <!-- BLOQUE DE LINKS FRAGMENTS -->
+    <th:block th:replace="~{fragments/head :: head-links}"></th:block>
     <link rel="stylesheet" th:href="@{/css/shared/sidebar.css}">
+
+    <style>
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .status-activo {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-inactivo {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .btn-actions {
+            white-space: nowrap;
+        }
+
+        .btn-sm-custom {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            margin: 0 1px;
+        }
+
+        .table-responsive {
+            border-radius: 0.375rem;
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .search-filters {
+            background-color: #f8f9fa;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tipo-proveedor {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+            <nav th:replace="~{fragments/sidebar :: sidebar}"></nav>
 
-            <!-- Main Content -->
-            <main class="col-md-9 col-lg-10 ms-auto px-4 py-4 content-wrapper animate-fade">
-                <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center page-header">
-                    <div>
-                        <h2>Gestión de Proveedores</h2>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mb-0 mt-1">
-                                <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Proveedor</li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <a th:href="@{/admin/proveedor/agregar}" class="btn btn-primary">
-                        <i class="fas fa-plus me-2"></i> Agregar Proveedor
-                    </a>
-                </div>
+            <!-- Contenido principal -->
+            <div class="col-md-9 col-lg-10 py-4 px-5 ms-auto">
+                <main class="main-content">
+                    <div class="container-fluid p-4">
 
-                <!-- Filtros -->
-                <div class="filters-card">
-                    <form th:action="@{/admin/proveedor/filtrar}" method="get">
-                        <div class="row g-3">
-                            <div class="col-md-10">
-                                <div class="input-group">
-                                    <span class="input-group-text bg-transparent border-end-0">
-                                        <i class="fas fa-search text-muted"></i>
-                                    </span>
-                                    <input type="text" class="form-control border-start-0 ps-0" name="busqueda"
-                                        placeholder="Buscar por nombre del proveedor...">
+                        <!-- Header -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h1 class="h3 mb-0">Gestión de Proveedores</h1>
+                                <p class="text-muted mb-0">Administra la información de tus proveedores</p>
+                            </div>
+                            <a href="/admin/proveedor/agregar" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-1"></i> Nuevo Proveedor
+                            </a>
+                        </div>
+
+                        <!-- Filtros de búsqueda -->
+                        <div class="search-filters">
+                            <div class="row">
+                                <div class="col-md-3 mb-2">
+                                    <label for="filtroTipo" class="form-label">Tipo de Proveedor</label>
+                                    <select class="form-select form-select-sm" id="filtroTipo">
+                                        <option value="">Todos los tipos</option>
+                                        <option value="fabricante">Fabricante</option>
+                                        <option value="distribuidor">Distribuidor</option>
+                                        <option value="mayorista">Mayorista</option>
+                                        <option value="importador">Importador</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <label for="filtroEstado" class="form-label">Estado</label>
+                                    <select class="form-select form-select-sm" id="filtroEstado">
+                                        <option value="">Todos los estados</option>
+                                        <option value="Activo">Activo</option>
+                                        <option value="Inactivo">Inactivo</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <label for="filtroCategoria" class="form-label">Categoría</label>
+                                    <select class="form-select form-select-sm" id="filtroCategoria">
+                                        <option value="">Todas las categorías</option>
+                                        <option value="Partes de Motor">Partes de Motor</option>
+                                        <option value="Sistema de Frenos">Sistema de Frenos</option>
+                                        <option value="Suspensión">Suspensión</option>
+                                        <option value="Transmisión">Transmisión</option>
+                                        <option value="Sistema Eléctrico">Sistema Eléctrico</option>
+                                        <option value="Carrocería">Carrocería</option>
+                                        <option value="Aceites y Lubricantes">Aceites y Lubricantes</option>
+                                        <option value="Filtros">Filtros</option>
+                                        <option value="Herramientas">Herramientas</option>
+                                        <option value="Múltiples Categorías">Múltiples Categorías</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-2 d-flex align-items-end">
+                                    <button class="btn btn-outline-secondary btn-sm me-2" onclick="limpiarFiltros()">
+                                        <i class="bi bi-x-circle"></i> Limpiar
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="exportarProveedores()">
+                                        <i class="bi bi-download"></i> Exportar
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary w-100">
-                                    <i class="fas fa-filter me-2"></i> Filtrar
-                                </button>
+                        </div>
+
+                        <!-- Tabla de proveedores -->
+                        <div class="card shadow-sm">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">
+                                        <i class="bi bi-building me-2"></i>Lista de Proveedores
+                                    </h5>
+                                    <span class="badge bg-primary"
+                                        th:text="'Total: ' + ${#lists.size(proveedores)}">Total: 0</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table id="tablaProveedores" class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Empresa</th>
+                                                <th>RUC</th>
+                                                <th>Tipo</th>
+                                                <th>Contacto</th>
+                                                <th>Teléfono</th>
+                                                <th>Categoría</th>
+                                                <th>Estado</th>
+                                                <th width="200">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="proveedor : ${proveedores}">
+                                                <td>
+                                                    <div>
+                                                        <strong th:text="${proveedor.nombre}">Empresa ABC</strong>
+                                                        <br>
+                                                        <small class="text-muted" th:text="${proveedor.nombreComercial}"
+                                                            th:if="${proveedor.nombreComercial}">Nombre
+                                                            Comercial</small>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <code th:text="${proveedor.ruc}">20123456789</code>
+                                                </td>
+                                                <td>
+                                                    <span class="tipo-proveedor text-capitalize"
+                                                        th:text="${proveedor.tipoProveedor}">Distribuidor</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <strong th:text="${proveedor.nombreContactoPrincipal}">Juan
+                                                            Pérez</strong>
+                                                        <br>
+                                                        <small class="text-muted" th:text="${proveedor.cargoContacto}"
+                                                            th:if="${proveedor.cargoContacto}">Gerente Ventas</small>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <i class="bi bi-telephone me-1"></i>
+                                                        <span th:text="${proveedor.telefono}">999-123-456</span>
+                                                        <br>
+                                                        <i class="bi bi-envelope me-1"></i>
+                                                        <small>
+                                                            <a th:href="'mailto:' + ${proveedor.correo}"
+                                                                th:text="${proveedor.correo}">email@empresa.com</a>
+                                                        </small>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        th:each="categoria, iterStat : ${proveedor.obtenerCategorias()}"
+                                                        th:if="${iterStat.index < 3}" class="badge bg-light text-dark"
+                                                        th:text="${categoria}">Categoria</span>
+
+                                                    <span th:if="${proveedor.obtenerCategorias().size() > 3}"
+                                                        class="badge bg-light text-dark">++</span>
+                                                </td>
+
+                                                <td>
+                                                    <span class="badge rounded-pill status-badge"
+                                                        th:classappend="${proveedor.estadoActivo == 'Activo'} ? 'status-activo' : 'status-inactivo'"
+                                                        th:text="${proveedor.estadoActivo}">Activo</span>
+                                                </td>
+                                                <td class="btn-actions">
+                                                    <!-- Botón Ver Detalle -->
+                                                    <a th:href="@{/admin/proveedor/detalle/{id}(id=${proveedor.idProveedor})}"
+                                                        class="btn btn-outline-info btn-sm btn-sm-custom"
+                                                        title="Ver detalle" data-bs-toggle="tooltip">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+
+                                                    <!-- Botón Editar -->
+                                                    <a th:href="@{/admin/proveedor/{id}/editar(id=${proveedor.idProveedor})}"
+                                                        class="btn btn-outline-warning btn-sm btn-sm-custom"
+                                                        title="Editar proveedor" data-bs-toggle="tooltip">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+
+                                                    <!-- Botón Eliminar -->
+                                                    <button type="button"
+                                                        class="btn btn-outline-danger btn-sm btn-sm-custom"
+                                                        title="Eliminar proveedor" data-bs-toggle="tooltip"
+                                                        onclick="confirmarEliminacion(this)"
+                                                        th:attr="data-id=${proveedor.idProveedor}, data-nombre=${proveedor.nombre}">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+
+                                                    <!-- Botón Estado Toggle -->
+                                                    <button type="button" class="btn btn-sm btn-sm-custom"
+                                                        th:classappend="${proveedor.estadoActivo == 'Activo'} ? 'btn-outline-secondary' : 'btn-outline-success'"
+                                                        th:title="${proveedor.estadoActivo == 'Activo'} ? 'Desactivar proveedor' : 'Activar proveedor'"
+                                                        data-bs-toggle="tooltip" onclick="toggleEstado(this)"
+                                                        th:attr="data-id=${proveedor.idProveedor}, data-estado=${proveedor.estadoActivo}, data-nombre=${proveedor.nombre}">
+                                                        <i
+                                                            th:class="${proveedor.estadoActivo == 'Activo'} ? 'bi bi-toggle-on' : 'bi bi-toggle-off'"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </form>
-                </div>
 
-                <!-- Tabla de Proveedor -->
-                <div class="card mb-4">
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table data-table m-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">Id</th>
-                                        <th class="text-center">Nombres</th>
-                                        <th class="text-center">Correo</th>
-                                        <th class="text-center">Teléfono</th>
-                                        <th class="text-center">Dirección</th>
-                                        <th class="text-center">RUC</th>
-                                        <th class="text-center">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="prove : ${proveedores}">
-                                        <!-- ID CAMPO -->
-                                        <td th:text="${prove.idProveedor}">ID PROVEEDOR</td>
-                                        <!-- NOMBRE CAMPO -->
-                                        <td th:text="${prove.nombre}">Nombre</td>
-                                        <!-- CORREO CAMPO -->
-                                        <td th:text="${prove.correo}">Correo</td>
-                                        <!-- TELEFONO CAMPO -->
-                                        <td th:text="${prove.telefono}">Teléfono</td>
-                                        <!-- DIRECCION CAMPO -->
-                                        <td th:text="${prove.direccion}">Dirección</td>
-                                        <!-- RUC CAMPO -->
-                                        <td th:text="${prove.ruc}">RUC</td>
-                                        <td>
-                                            <div class="d-flex justify-content-center gap-2">
-                                                <!-- Botón de editar -->
-                                                <a th:href="@{/admin/proveedor/editar/{id}(id=${prove.idProveedor})}"
-                                                    class="btn btn-warning btn-action" title="Editar">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <!-- Botón de eliminar -->
-                                                <a th:href="@{/admin/proveedor/eliminar/{id}(id=${prove.idProveedor})}"
-                                                    class="btn btn-danger btn-action" title="Eliminar"
-                                                    onclick="return confirm('¿Estás seguro de eliminar este proveedor?')">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr th:if="${noProveedores}">
-                                        <td colspan="12" class="text-center py-5">
-                                            <div class="text-muted">
-                                                <i class="fas fa-box-open fa-3x mb-3"></i>
-                                                <p class="mb-0">No se encontraron proveedores</p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <!-- Mensaje cuando no hay proveedores -->
+                        <div class="text-center py-5" th:if="${#lists.isEmpty(proveedores)}">
+                            <i class="bi bi-building display-1 text-muted"></i>
+                            <h4 class="text-muted mt-3">No hay proveedores registrados</h4>
+                            <p class="text-muted">Comienza agregando tu primer proveedor</p>
+                            <a href="/admin/proveedor/agregar" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-1"></i> Agregar Primer Proveedor
+                            </a>
                         </div>
                     </div>
-                </div>
-
-                <!-- Paginación -->
-                <div class="d-flex flex-column align-items-center">
-                    <nav aria-label="Navegación de páginas">
-                        <!-- <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Primera">
-                                    <i class="fas fa-angle-double-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Anterior">
-                                    <i class="fas fa-angle-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item" th:each="page : ${pages}"
-                                th:classappend="${page == currentPage} ? 'active'">
-                                <a class="page-link" th:href="@{/admin/productos/{page}(page=${page})}"
-                                    th:text="${page}">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Siguiente">
-                                    <i class="fas fa-angle-right"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Última">
-                                    <i class="fas fa-angle-double-right"></i>
-                                </a>
-                            </li>
-                        </ul> -->
-                    </nav>
-                    <!-- <div class="pagination-info">
-                        Mostrando <span class="fw-medium" th:text="${prove.size()}">10</span> de
-                        <span class="fw-medium" th:text="${totalProductos}">100</span> proveedores en total
-                    </div> -->
-                </div>
-            </main>
+                </main>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Modal de Confirmación de Eliminación -->
+    <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalEliminarLabel">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea eliminar el proveedor <strong id="nombreProveedorEliminar"></strong>?</p>
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Advertencia:</strong> Esta acción no se puede deshacer y eliminará toda la información
+                        relacionada.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form id="formEliminar" method="post" style="display: inline;">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-1"></i>Eliminar Definitivamente
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cambio de Estado -->
+    <div class="modal fade" id="modalCambiarEstado" tabindex="-1" aria-labelledby="modalCambiarEstadoLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCambiarEstadoLabel">
+                        <i class="bi bi-toggle-on me-2"></i>Cambiar Estado del Proveedor
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea <span id="accionEstado"></span> el proveedor <strong
+                            id="nombreProveedorEstado"></strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form id="formCambiarEstado" method="post" style="display: inline;">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-primary" id="btnConfirmarEstado">
+                            Confirmar Cambio
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function confirmarEliminacion(btn) {
+            const idProveedor = btn.getAttribute('data-id');
+            const nombreProveedor = btn.getAttribute('data-nombre');
+            
+            // Actualizar el texto del modal
+            document.getElementById('nombreProveedorEliminar').textContent = nombreProveedor;
+            
+            // Actualizar la acción del formulario
+            const formEliminar = document.getElementById('formEliminar');
+            formEliminar.action = `/admin/proveedor/eliminar/${idProveedor}`;
+            
+            // Mostrar el modal
+            const modal = new bootstrap.Modal(document.getElementById('modalEliminar'));
+            modal.show();
+        }
+
+        function toggleEstado(btn) {
+            const idProveedor = btn.getAttribute('data-id');
+            const nombreProveedor = btn.getAttribute('data-nombre');
+            const estadoActual = btn.getAttribute('data-estado');
+            const nuevoEstado = estadoActual === 'Activo' ? 'Inactivo' : 'Activo';
+            
+            // Actualizar el texto del modal
+            document.getElementById('accionEstado').textContent = estadoActual === 'Activo' ? 'desactivar' : 'activar';
+            document.getElementById('nombreProveedorEstado').textContent = nombreProveedor;
+            
+            // Actualizar la acción del formulario
+            const formCambiarEstado = document.getElementById('formCambiarEstado');
+            formCambiarEstado.action = `/admin/proveedor/${idProveedor}/cambiar-estado`;
+            
+            // Mostrar el modal
+            const modal = new bootstrap.Modal(document.getElementById('modalCambiarEstado'));
+            modal.show();
+        }
+    </script>
 </body>
 
 </html>

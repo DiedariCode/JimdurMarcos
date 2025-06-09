@@ -1,19 +1,14 @@
 package com.diedari.jimdur.service;
 
-import java.util.List;
-
-import com.diedari.jimdur.model.Usuario;
+import com.diedari.jimdur.dto.RegistroUsuarioDTO;
 
 public interface UsuarioService {
 
-    public List<Usuario> listarTodosLosUsuarios();
-
-    public Usuario guardarUsuario(Usuario usuario);
-
-    public Usuario obtenerUsuarioPorId(Long id);
-
-    public Usuario actualizarUsuario(Usuario usuario);
-
-    public void eliminarUsuario(Long id);
-
+    /**
+     * Crea un nuevo usuario en la base de datos.
+     *
+     * @param dto el objeto DTO que contiene la información del usuario a crear
+     */
+    void crearUsuario(RegistroUsuarioDTO dto);
 }
+

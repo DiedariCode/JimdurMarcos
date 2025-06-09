@@ -34,3 +34,7 @@ build/
 
 # Evitar subir configuración sensible
 src/main/resources/application.properties
+
+uploads/
+
+

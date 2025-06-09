@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jimdur - Registro</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+    <link th:href="@{/css/register.css}" rel="stylesheet">
+</head>
+<body class="register-page">
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-8 col-lg-6">
+                <div class="register-box">
+                    <!-- Logo -->
+                    <div class="text-center mb-4">
+                        <img th:src="@{/image/logos/logo_Jimdur_pequeno.png}" alt="Jimdur Logo" class="login-logo">
+                    </div>
+
+                    <!-- Título -->
+                    <h2 class="text-center mb-4">Crear una cuenta</h2>
+
+                    <!-- Mensajes de error/éxito -->
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <span th:text="${error}">Error message</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <span th:text="${success}">Success message</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Formulario de registro -->
+                    <form th:action="@{/user/registro}" th:object="${usuario}" method="post" class="register-form" id="registerForm">
+                        <!-- Paso 1: Información básica -->
+                        <div class="form-step" id="step-1">
+                            <!-- Nombre completo -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control" name="nombres" 
+                                                   placeholder="Nombres" th:field="*{nombres}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control" name="apellidos" 
+                                                   placeholder="Apellidos" th:field="*{apellidos}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Correo electrónico -->
+                            <div class="form-group mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <input type="email" class="form-control" name="email" 
+                                           placeholder="Correo electrónico" th:field="*{email}" required>
+                                </div>
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div class="form-group mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                    <input type="tel" class="form-control" name="telefono" 
+                                           placeholder="Teléfono" pattern="[0-9]{9}" 
+                                           title="Ingresa un número de teléfono válido de 9 dígitos" th:field="*{telefono}" required>
+                                </div>
+                            </div>
+
+                            <!-- Contraseña -->
+                            <div class="form-group mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input type="password" class="form-control" name="password" id="password"
+                                           placeholder="Contraseña" th:field="*{contrasena}" required>
+                                    <button type="button" class="btn btn-outline-secondary toggle-password">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="password-strength mt-2" id="passwordStrength"></div>
+                            </div>
+
+                            <!-- Confirmar Contraseña -->
+                            <div class="form-group mb-4">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input type="password" class="form-control" name="confirmPassword" 
+                                           placeholder="Confirmar contraseña" th:field="*{confirmContrasena}" required>
+                                    <button type="button" class="btn btn-outline-secondary toggle-password">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Términos y condiciones -->
+                            <div class="form-check mb-4">
+                                <input type="checkbox" class="form-check-input" id="terms" name="terms">
+                                <label class="form-check-label" for="terms">
+                                    Acepto los <a href="#" class="terms-link">términos y condiciones</a>
+                                </label>
+                            </div>
+
+                            <button type="button" class="btn btn-primary w-100 mb-3" id="next-to-verification">
+                                <i class="fas fa-arrow-right me-2"></i>Continuar
+                            </button>
+                        </div>
+
+                        <!-- Paso 2: Verificación de email -->
+                        <div class="form-step" id="step-2" style="display: none;">
+                            <div class="alert alert-info-custom mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="icon-circle me-2">
+                                        <i class="fas fa-envelope text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0 fw-medium">Verificación de email</h5>
+                                        <p class="mb-0 small">Paso 2 de 3</p>
+                                    </div>
+                                </div>
+                                <p class="mb-0 small">
+                                    Hemos enviado un código de verificación a <strong id="email-display">tu@email.com</strong>.
+                                    Por favor, introduce el código para continuar con el registro.
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="emailCode" class="form-label">Código de verificación</label>
+                                <input type="text" class="form-control verification-code" id="emailCode"
+                                    placeholder="123456" maxlength="6" required>
+                            </div>
+
+                            <div class="text-center mb-3">
+                                <p class="small text-muted mb-2">¿No has recibido el código?</p>
+                                <button type="button" class="btn btn-link p-0" id="resend-email-code">Reenviar código</button>
+                                <div class="small text-muted mt-1" id="email-countdown" style="display: none;">
+                                    Reenviar código (60s)
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary w-100" id="verify-email">Verificar email</button>
+                        </div>
+
+                        <!-- Paso 3: Completado -->
+                        <div class="form-step" id="step-3" style="display: none;">
+                            <div class="text-center mb-4">
+                                <div class="completion-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h2 class="fs-3 fw-bold mb-2">¡Verificación completada!</h2>
+                                <p class="text-muted">
+                                    Tu cuenta ha sido verificada correctamente. Ahora puedes iniciar sesión para disfrutar de todas las
+                                    funcionalidades de Jimdur.
+                                </p>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="fas fa-check-circle me-2"></i>Finalizar registro
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-0">¿Ya tienes una cuenta? <a th:href="@{/login}" class="login-link">Inicia sesión aquí</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script th:src="@{/js/register.js}"></script>
+</body>
+</html>
