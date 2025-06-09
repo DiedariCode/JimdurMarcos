@@ -53,9 +53,21 @@ public class ProductoRestController {
             return ResponseEntity.ok(response);
         }
 
+        // if (result.hasErrors()) {
+        //     response.put("success", false);
+        //     response.put("message", "Error en la validación del formulario");
+        //     return ResponseEntity.ok(response);
+        // }
+
         if (result.hasErrors()) {
+            List<String> errores = result.getFieldErrors().stream() // Convierte el objeto BindingResult en una lista de errores.
+                .map(error -> error.getDefaultMessage()) // Toma cada error y extraer su mensaje por defecto (el q se puso en el DTO).
+                .collect(Collectors.toList()); // Convierte la lista de errores en una lista de strings.
+        
             response.put("success", false);
-            response.put("message", "Error en la validación del formulario");
+            response.put("message", "Errores de validación");
+            response.put("errors", errores); // lista de errores específicos
+        
             return ResponseEntity.ok(response);
         }
 
