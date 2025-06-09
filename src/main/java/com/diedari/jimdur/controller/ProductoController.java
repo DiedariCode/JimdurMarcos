@@ -1,22 +1,14 @@
 package com.diedari.jimdur.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.diedari.jimdur.dto.CompatibilidadProductoDTO;
@@ -31,7 +23,6 @@ import com.diedari.jimdur.repository.MarcaRepository;
 import com.diedari.jimdur.repository.ProveedorRepository;
 import com.diedari.jimdur.service.ProductoService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -87,7 +78,7 @@ public class ProductoController {
             // Cargar datos necesarios para el formulario
             List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
             List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
-            List<Proveedor> proveedores = proveedorRepository.findAll();
+            List<Proveedor> proveedores = proveedorRepository.findByEstadoActivo("Activo");
 
             // Asegurarse de que las listas nunca sean null
             if (producto.getProveedores() == null) {

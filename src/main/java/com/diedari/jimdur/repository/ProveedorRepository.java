@@ -11,4 +11,6 @@ import com.diedari.jimdur.model.Proveedor;
 public interface ProveedorRepository extends JpaRepository<Proveedor, Long> {
 
     List<Proveedor> findByEstadoActivoOrderByNombreAsc(String estado);
+
+    List<Proveedor> findByEstadoActivo(String estadoActivo);
 }

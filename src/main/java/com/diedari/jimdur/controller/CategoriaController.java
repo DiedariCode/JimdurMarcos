@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.repository.CategoriaRepository;
-import com.diedari.jimdur.repository.ProductoRepository;
 import com.diedari.jimdur.service.CategoriaService;
 import com.diedari.jimdur.service.ProductoService;
 

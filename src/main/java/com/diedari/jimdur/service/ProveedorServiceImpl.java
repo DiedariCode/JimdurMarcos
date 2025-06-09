@@ -46,4 +46,9 @@ public class ProveedorServiceImpl implements ProveedorService {
     public List<Proveedor> obtenerTodosLosProveedores() {
         return proveedorRepository.findAll();
     }
+
+    @Override
+    public List<Proveedor> obtenerProveedoresActivos(String estadoActivo) {
+        return proveedorRepository.findByEstadoActivo(estadoActivo);
+    }
 }

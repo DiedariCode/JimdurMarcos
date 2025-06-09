@@ -18,4 +18,6 @@ public interface ProveedorService {
 
     public List<Proveedor> obtenerTodosLosProveedores();
 
+    public List<Proveedor> obtenerProveedoresActivos(String estadoActivo);
+
 }
