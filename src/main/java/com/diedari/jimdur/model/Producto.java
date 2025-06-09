@@ -1,6 +1,7 @@
 package com.diedari.jimdur.model;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -112,11 +113,11 @@ public class Producto {
     private List<DetalleBoleta> detallesBoleta;
 
     // Compatibilidad con otros productos
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CompatibilidadProducto> compatibilidades;
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<CompatibilidadProducto> compatibilidades = new ArrayList<>();
     
     // Especificaciones del producto
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<EspecificacionProducto> especificaciones;
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<EspecificacionProducto> especificaciones = new ArrayList<>();
 
 }

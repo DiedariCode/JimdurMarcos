@@ -193,9 +193,12 @@
                                         th:errors="*{precio}"></div>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="descuento" class="form-label">Descuento (%)</label>
-                                    <input type="number" class="form-control" th:field="*{descuento}" id="descuento"
-                                        step="0.01" min="0" max="100">
+                                    <label for="descuento" class="form-label">Descuento</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" th:field="*{descuento}" id="descuento"
+                                            step="0.01" min="0">
+                                        <span class="input-group-text" id="descuentoUnidad">%</span>
+                                    </div>
                                     <div th:if="${#fields.hasErrors('descuento')}" class="text-danger small"
                                         th:errors="*{descuento}"></div>
                                 </div>
@@ -772,13 +775,48 @@
                 const tipoDescuento = tipoDescuentoSelect.value;
 
                 if (precio > 0 && descuento > 0 && tipoDescuento) {
-                    let precioOferta;
-                    if (tipoDescuento === 'PORCENTAJE') {
-                        precioOferta = precio - (precio * descuento / 100);
-                    } else if (tipoDescuento === 'MONTO_FIJO') {
-                        precioOferta = precio - descuento;
-                    }
-                    precioOfertaInput.value = precioOferta.toFixed(2);
+                    fetch('/api/productos/rest/calcular-precio-oferta', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            [getCsrfHeader()]: getCsrfToken()
+                        },
+                        body: JSON.stringify({
+                            precio: precio,
+                            descuento: descuento,
+                            tipoDescuento: tipoDescuento === 'PORCENTAJE' ? 'porcentaje' : 'monto_fijo'
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        precioOfertaInput.value = data.precioOferta.toFixed(2);
+                        
+                        if (data.hayAdvertencia) {
+                            // Mostrar alerta de SweetAlert2
+                            Swal.fire({
+                                title: '¡Atención!',
+                                text: data.mensajeAdvertencia,
+                                icon: 'warning',
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+                            
+                            // Actualizar el valor del descuento si fue ajustado
+                            if (data.descuentoAjustado !== descuento) {
+                                descuentoInput.value = data.descuentoAjustado;
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al calcular el precio de oferta',
+                            icon: 'error',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    });
                 } else {
                     precioOfertaInput.value = '';
                 }
@@ -1015,6 +1053,48 @@
                     });
                 });
         }
+
+        // Prevenir valores negativos y caracteres no válidos en el input de descuento
+        document.getElementById('descuento').addEventListener('input', function(e) {
+            // Eliminar cualquier caracter que no sea número o punto decimal
+            let value = this.value.replace(/[^\d.-]/g, '');
+            
+            // Eliminar múltiples signos negativos y puntos decimales
+            value = value.replace(/-+/g, '-');      // Reemplazar múltiples negativos con uno solo
+            value = value.replace(/\.+/g, '.');     // Reemplazar múltiples puntos con uno solo
+            
+            // Asegurarse de que solo haya un signo negativo al principio
+            if (value.lastIndexOf('-') > 0) {
+                value = value.replace(/-/g, '');
+            }
+            
+            // Si es negativo o no es un número válido, limpiar el campo
+            const numValue = parseFloat(value);
+            if (isNaN(numValue) || numValue < 0) {
+                value = '';
+            }
+            
+            // Eliminar ceros al inicio si hay más de un dígito
+            if (value.length > 1 && value.startsWith('0') && !value.startsWith('0.')) {
+                value = value.replace(/^0+/, '');
+            }
+            
+            // Actualizar el valor del input
+            this.value = value;
+            
+            // Disparar el evento de cambio para recalcular el precio de oferta
+            this.dispatchEvent(new Event('change'));
+        });
+
+        // Actualizar el símbolo de la unidad según el tipo de descuento
+        document.getElementById('tipoDescuento').addEventListener('change', function() {
+            const unidadSpan = document.getElementById('descuentoUnidad');
+            const descuentoInput = document.getElementById('descuento');
+            unidadSpan.textContent = this.value === 'PORCENTAJE' ? '%' : 'S/.';
+            
+            // Limpiar el campo de descuento al cambiar el tipo
+            descuentoInput.value = '';
+        });
     </script>
 </body>
 

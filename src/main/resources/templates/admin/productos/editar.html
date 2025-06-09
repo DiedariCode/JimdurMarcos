@@ -169,19 +169,21 @@
                                         th:errors="*{precio}"></div>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="descuento" class="form-label">Descuento (%)</label>
-                                    <input type="number" class="form-control" th:field="*{descuento}" id="descuento"
-                                        step="0.01" min="0" max="100">
+                                    <label for="descuento" class="form-label">Descuento</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" th:field="*{descuento}" id="descuento"
+                                            step="0.01" min="0">
+                                        <span class="input-group-text" id="descuentoUnidad">%</span>
+                                    </div>
                                     <div th:if="${#fields.hasErrors('descuento')}" class="text-danger small"
                                         th:errors="*{descuento}"></div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="tipoDescuento" class="form-label">Tipo de Descuento</label>
                                     <select class="form-select" th:field="*{tipoDescuento}" id="tipoDescuento">
-                                        <option value="">Sin descuento</option>
+                                        <option value="" selected>Sin descuento</option>
                                         <option value="PORCENTAJE">Porcentaje</option>
                                         <option value="MONTO_FIJO">Monto Fijo</option>
-                                        <option value="PROMOCION">Promoción</option>
                                     </select>
                                 </div>
                             </div>
@@ -791,22 +793,136 @@
         document.addEventListener('DOMContentLoaded', function () {
             const precioInput = document.getElementById('precio');
             const descuentoInput = document.getElementById('descuento');
+            const tipoDescuentoSelect = document.getElementById('tipoDescuento');
             const precioOfertaInput = document.getElementById('precio_oferta');
 
+            // Función para habilitar/deshabilitar el input de descuento
+            function toggleDescuentoInput() {
+                const tipoDescuento = tipoDescuentoSelect.value;
+                if (tipoDescuento === "") {
+                    descuentoInput.disabled = true;
+                    descuentoInput.value = "";
+                    precioOfertaInput.value = "";
+                } else {
+                    descuentoInput.disabled = false;
+                }
+            }
+
+            // Función para calcular el precio de oferta
             function calcularPrecioOferta() {
                 const precio = parseFloat(precioInput.value) || 0;
                 const descuento = parseFloat(descuentoInput.value) || 0;
+                const tipoDescuento = tipoDescuentoSelect.value;
 
-                if (precio > 0 && descuento > 0) {
-                    const precioOferta = precio - (precio * descuento / 100);
-                    precioOfertaInput.value = precioOferta.toFixed(2);
+                if (precio > 0 && descuento > 0 && tipoDescuento) {
+                    fetch('/api/productos/rest/calcular-precio-oferta', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            [getCsrfHeader()]: getCsrfToken()
+                        },
+                        body: JSON.stringify({
+                            precio: precio,
+                            descuento: descuento,
+                            tipoDescuento: tipoDescuento === 'PORCENTAJE' ? 'porcentaje' : 'monto_fijo'
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        precioOfertaInput.value = data.precioOferta.toFixed(2);
+                        
+                        if (data.hayAdvertencia) {
+                            Swal.fire({
+                                title: '¡Atención!',
+                                text: data.mensajeAdvertencia,
+                                icon: 'warning',
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+                            
+                            if (data.descuentoAjustado !== descuento) {
+                                descuentoInput.value = data.descuentoAjustado;
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al calcular el precio de oferta',
+                            icon: 'error',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    });
                 } else {
                     precioOfertaInput.value = '';
                 }
             }
 
+            //! Validación y formateo del campo de descuento
+            descuentoInput.addEventListener('input', function(e) {
+                // Eliminar cualquier caracter que no sea número o punto decimal
+                let value = this.value.replace(/[^\d.-]/g, '');
+                
+                // Eliminar múltiples signos negativos y puntos decimales
+                value = value.replace(/-+/g, '-');      // Reemplazar múltiples negativos con uno solo
+                value = value.replace(/\.+/g, '.');     // Reemplazar múltiples puntos con uno solo
+                
+                // Asegurarse de que solo haya un signo negativo al principio
+                if (value.lastIndexOf('-') > 0) {
+                    value = value.replace(/-/g, '');
+                }
+                
+                // Si es negativo o no es un número válido, limpiar el campo
+                const numValue = parseFloat(value);
+                if (isNaN(numValue) || numValue < 0) {
+                    value = '';
+                }
+                
+                // Eliminar ceros al inicio si hay más de un dígito
+                if (value.length > 1 && value.startsWith('0') && !value.startsWith('0.')) {
+                    value = value.replace(/^0+/, '');
+                }
+                
+                // Actualizar el valor del input
+                this.value = value;
+                
+                // Disparar el evento de cambio para recalcular el precio de oferta
+                this.dispatchEvent(new Event('change'));
+            });
+
+            //! Event listeners para el cálculo de precios
             precioInput.addEventListener('input', calcularPrecioOferta);
             descuentoInput.addEventListener('input', calcularPrecioOferta);
+            tipoDescuentoSelect.addEventListener('change', function() {
+                const unidadSpan = document.getElementById('descuentoUnidad');
+                const descuentoInput = document.getElementById('descuento');
+                unidadSpan.textContent = this.value === 'PORCENTAJE' ? '%' : 'S/.';
+                
+                // Limpiar el campo de descuento al cambiar el tipo
+                descuentoInput.value = '';
+                toggleDescuentoInput();
+                calcularPrecioOferta();
+            });
+
+            //! ==========================================
+            //! SECCIÓN: MANEJO DE CSRF
+            //! ==========================================
+            function getCsrfToken() {
+                return document.querySelector("meta[name='_csrf']").getAttribute("content");
+            }
+
+            function getCsrfHeader() {
+                return document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+            }
+
+            //! Inicialización al cargar la página
+            toggleDescuentoInput();
+            
+            // Actualizar la unidad inicial según el tipo de descuento seleccionado
+            const unidadSpan = document.getElementById('descuentoUnidad');
+            unidadSpan.textContent = tipoDescuentoSelect.value === 'PORCENTAJE' ? '%' : 'S/.';
         });
 
         // Funciones para especificaciones

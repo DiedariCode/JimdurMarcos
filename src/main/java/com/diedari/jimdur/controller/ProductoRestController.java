@@ -203,17 +203,65 @@ public class ProductoRestController {
 
     @PostMapping("/rest/calcular-precio-oferta")
     @ResponseBody
-    public ResponseEntity<Map<String, Double>> calcularPrecioOferta(@RequestBody Map<String, Double> request) {
-        Double precio = request.get("precio");
-        Double descuento = request.get("descuento");
+    public ResponseEntity<Map<String, Object>> calcularPrecioOferta(@RequestBody Map<String, Object> request) {
+        Double precio = Double.valueOf(request.get("precio").toString());
+        Double descuento = Double.valueOf(request.get("descuento").toString());
+        String tipoDescuento = (String) request.get("tipoDescuento");
 
-        Map<String, Double> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
 
-        if (precio != null && descuento != null && descuento > 0) {
-            double precioOferta = precio - (precio * descuento / 100);
-            response.put("precioOferta", Math.round(precioOferta * 100.0) / 100.0);
+        if (precio != null && descuento != null) {
+            double precioOferta;
+            boolean hayAdvertencia = false;
+            String mensajeAdvertencia = "";
+            
+            // Validar valores negativos
+            if (descuento < 0) {
+                hayAdvertencia = true;
+                mensajeAdvertencia = "El descuento no puede ser negativo. Se ajustará automáticamente a 0.";
+                descuento = 0.0;
+            }
+            
+            if (descuento > 0) {
+                if ("porcentaje".equals(tipoDescuento)) {
+                    // Validar que el descuento no sea mayor a 100%
+                    if (descuento > 100) {
+                        hayAdvertencia = true;
+                        mensajeAdvertencia = "El descuento no puede ser mayor al 100%. Se ajustará automáticamente.";
+                        descuento = 100.0;
+                    }
+                    precioOferta = precio - (precio * descuento / 100);
+                } else {
+                    // Para monto fijo, el descuento no puede ser mayor que el precio
+                    if (descuento > precio) {
+                        hayAdvertencia = true;
+                        mensajeAdvertencia = "El descuento no puede ser mayor al precio. Se ajustará automáticamente.";
+                        descuento = precio;
+                    }
+                    precioOferta = precio - descuento;
+                }
+            } else {
+                precioOferta = precio;
+            }
+            
+            // Asegurar que el precio oferta no sea negativo
+            if (precioOferta < 0) {
+                hayAdvertencia = true;
+                mensajeAdvertencia = "El precio de oferta no puede ser negativo. Se ajustará automáticamente a 0.";
+                precioOferta = 0;
+            }
+            
+            // Redondear a 2 decimales
+            precioOferta = Math.round(precioOferta * 100.0) / 100.0;
+            
+            response.put("precioOferta", precioOferta);
+            response.put("hayAdvertencia", hayAdvertencia);
+            response.put("mensajeAdvertencia", mensajeAdvertencia);
+            response.put("descuentoAjustado", descuento);
         } else {
             response.put("precioOferta", null);
+            response.put("hayAdvertencia", false);
+            response.put("mensajeAdvertencia", "");
         }
 
         return ResponseEntity.ok(response);

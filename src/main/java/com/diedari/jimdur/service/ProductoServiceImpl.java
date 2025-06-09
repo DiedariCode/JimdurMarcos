@@ -282,24 +282,42 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     private void guardarEspecificaciones(Producto producto, List<EspecificacionProductoDTO> especificacionesDTO) {
-        for (EspecificacionProductoDTO especificacionDTO : especificacionesDTO) {
-            EspecificacionProducto especificacion = EspecificacionProducto.builder()
-                    .nombre(especificacionDTO.getNombre())
-                    .valor(especificacionDTO.getValor())
+        // Limpiar la lista actual
+        producto.getEspecificaciones().clear();
+        
+        // Crear y agregar las nuevas especificaciones
+        especificacionesDTO.stream()
+            .filter(dto -> dto.getNombre() != null && !dto.getNombre().trim().isEmpty())
+            .forEach(dto -> {
+                EspecificacionProducto especificacion = EspecificacionProducto.builder()
+                    .nombre(dto.getNombre())
+                    .valor(dto.getValor())
                     .producto(producto)
                     .build();
-            especificacionProductoRepository.save(especificacion);
-        }
+                producto.getEspecificaciones().add(especificacion);
+            });
+        
+        // Guardar el producto actualizado
+        productoRepository.saveAndFlush(producto);
     }
 
     private void guardarCompatibilidades(Producto producto, List<CompatibilidadProductoDTO> compatibilidadesDTO) {
-        for (CompatibilidadProductoDTO compatibilidadDTO : compatibilidadesDTO) {
-            CompatibilidadProducto compatibilidad = CompatibilidadProducto.builder()
-                    .modeloCompatible(compatibilidadDTO.getModeloCompatible())
+        // Limpiar la lista actual
+        producto.getCompatibilidades().clear();
+        
+        // Crear y agregar las nuevas compatibilidades
+        compatibilidadesDTO.stream()
+            .filter(dto -> dto.getModeloCompatible() != null && !dto.getModeloCompatible().trim().isEmpty())
+            .forEach(dto -> {
+                CompatibilidadProducto compatibilidad = CompatibilidadProducto.builder()
+                    .modeloCompatible(dto.getModeloCompatible())
                     .producto(producto)
                     .build();
-            compatibilidadProductoRepository.save(compatibilidad);
-        }
+                producto.getCompatibilidades().add(compatibilidad);
+            });
+        
+        // Guardar el producto actualizado
+        productoRepository.saveAndFlush(producto);
     }
 
     private String generateSlug(String nombre) {
