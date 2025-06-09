@@ -260,7 +260,7 @@
                                         <div class="row" id="imagenesActuales">
                                             <div th:each="imagen : ${producto.imagenesGuardadas}" class="col-md-3 mb-3">
                                                 <div class="card">
-                                                    <img th:src="@{'/uploads/productos/' + ${imagen.rutaImagen}}"
+                                                    <img th:src="@{'/uploads/productos/' + ${imagen.nombreArchivo}}"
                                                         class="card-img-top img-fluid" alt="Imagen del producto">
                                                     <div class="card-body">
                                                         <div class="form-check mb-2">
@@ -393,7 +393,7 @@
         // Función para actualizar la portada
         function actualizarPortada(idImagen) {
             const headers = {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json' // Le digo al servidor que el contenido es JSON
             };
 
             const csrfHeader = getCsrfHeader();
@@ -406,17 +406,20 @@
                 method: 'POST',
                 headers: headers
             })
-            .then(response => response.json())
+            .then(response => response.json()) // Convierte la respuesta a JSON
             .then(data => {
-                if (data.success) {
+                if (data.success) { // Si la respuesta es exitosa
                     Swal.fire({
                         title: '¡Actualizada!',
                         text: 'La portada ha sido actualizada.',
                         icon: 'success',
                         timer: 2000,
-                        showConfirmButton: false
+                        showConfirmButton: false,
+                    }).then(() => {
+                        window.location.href = '/admin/productos';
                     });
-                } else {
+                    
+                } else { // Si la respuesta no es exitosa
                     Swal.fire({
                         title: 'Error',
                         text: data.message || 'Error al actualizar la portada',

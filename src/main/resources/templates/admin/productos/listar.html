@@ -73,16 +73,15 @@
                                         <!-- Imagen -->
                                         <td>
                                             <div class="product-img-wrapper">
-                                                <img th:if="${not #lists.isEmpty(producto.imagenesGuardadas)}"
-                                                    th:src="@{'/uploads/productos/' + ${producto.imagenesGuardadas[0].rutaImagen}}"
-                                                    class="product-img" alt="Imagen producto">
-                                                <div th:unless="${not #lists.isEmpty(producto.imagenesGuardadas)}"
-                                                    class="product-img-placeholder">
+                                                <img th:if="${producto.rutaImagenPortada != null}"
+                                                     th:src="@{'/uploads/productos/' + ${producto.rutaImagenPortada}}"
+                                                     class="product-img" alt="Imagen producto">
+                                                <div th:if="${producto.rutaImagenPortada == null}" class="product-img-placeholder">
                                                     <i class="fas fa-box fa-2x"></i>
                                                 </div>
                                             </div>
                                         </td>
-
+                                        
                                         <!-- Información -->
                                         <td>
                                             <div class="d-flex flex-column">
@@ -155,7 +154,8 @@
                                                     onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
 
                                                     <!-- Token CSRF para seguridad -->
-                                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                                    <input type="hidden" th:name="${_csrf.parameterName}"
+                                                        th:value="${_csrf.token}" />
 
                                                     <button type="submit" class="btn btn-sm btn-danger"
                                                         title="Eliminar">

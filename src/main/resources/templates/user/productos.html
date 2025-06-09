@@ -8,7 +8,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- AOS CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
@@ -17,6 +18,136 @@
     <link rel="stylesheet" th:href="@{/css/user/all.css}">
 
     <title>Catalogo Productos</title>
+
+    <style>
+/* Contenedor de los controles */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.carousel-control-prev {
+    left: 10px;
+}
+
+.carousel-control-next {
+    right: 10px;
+}
+
+/* Hover effect */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Iconos de las flechas */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 16px;
+    height: 16px;
+    background-size: 16px 16px;
+}
+
+/* Alternativa: Flechas más estilizadas con bordes */
+.carousel-control-prev.style-2,
+.carousel-control-next.style-2 {
+    width: 45px;
+    height: 45px;
+    background-color: white;
+    border: 2px solid #007bff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-control-prev.style-2:hover,
+.carousel-control-next.style-2:hover {
+    background-color: #007bff;
+    border-color: #0056b3;
+}
+
+.carousel-control-prev.style-2 .carousel-control-prev-icon,
+.carousel-control-next.style-2 .carousel-control-next-icon {
+    filter: invert(1) sepia(1) saturate(5) hue-rotate(175deg);
+}
+
+.carousel-control-prev.style-2:hover .carousel-control-prev-icon,
+.carousel-control-next.style-2:hover .carousel-control-next-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* Estilo minimalista con solo bordes */
+.carousel-control-prev.minimal,
+.carousel-control-next.minimal {
+    width: 35px;
+    height: 35px;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 4px;
+}
+
+.carousel-control-prev.minimal:hover,    
+.carousel-control-next.minimal:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Flechas más grandes y visibles */
+.carousel-control-prev.large,
+.carousel-control-next.large {
+    width: 55px;
+    height: 55px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-control-prev.large .carousel-control-prev-icon,
+.carousel-control-next.large .carousel-control-next-icon {
+    width: 24px;
+    height: 24px;
+    background-size: 24px 24px;
+    filter: invert(1);
+}
+
+.carousel-control-prev.large:hover,
+.carousel-control-next.large:hover {
+    background-color: #007bff;
+    transform: translateY(-50%) scale(1.08);
+}
+
+/* Ocultar flechas por defecto y mostrar solo en hover del contenedor */
+.product-card .carousel-control-prev,
+.product-card .carousel-control-next {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .carousel-control-prev,
+.product-card:hover .carousel-control-next {
+    opacity: 0.8;
+}
+
+.product-card:hover .carousel-control-prev:hover,
+.product-card:hover .carousel-control-next:hover {
+    opacity: 1;
+}
+
+/* Responsivo - ocultar en móviles */
+@media (max-width: 768px) {
+    .carousel-control-prev,
+    .carousel-control-next {
+        display: none;
+    }
+}
+    </style>
 </head>
 
 <body>
@@ -124,22 +255,53 @@
                                     <span class="position-absolute top-0 end-0 badge bg-danger m-3"
                                         th:if="${producto.tipoDescuento == 'porcentaje' and producto.descuento > 0}"
                                         th:text="'-' + ${producto.descuento + '%' }"></span>
-                                    <img th:if="${not #lists.isEmpty(producto.imagenesGuardadas)}"
-                                        th:src="@{'/uploads/productos/' + ${producto.imagenesGuardadas[0].rutaImagen}}"
-                                        class="card-img-top product-img" th:alt="${producto.nombre}">
-                                    <img th:unless="${not #lists.isEmpty(producto.imagenesGuardadas)}"
-                                        th:src="@{/image/no-image.png}"
-                                        class="card-img-top product-img" th:alt="${producto.nombre}">
+
+                                    <!-- Carrusel si hay imágenes -->
+                                    <div th:if="${not #lists.isEmpty(producto.imagenesGuardadas)}"
+                                        th:id="'carousel-' + ${producto.idProducto}" class="carousel slide"
+                                        data-bs-ride="carousel">
+
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item"
+                                                th:each="img, stat : ${producto.imagenesGuardadas}"
+                                                th:classappend="${stat.index == 0} ? ' active'">
+                                                <img class="d-block w-100 product-img"
+                                                    th:src="@{'/uploads/productos/' + ${img.nombreArchivo}}"
+                                                    th:alt="${producto.nombre}">
+                                            </div>
+                                        </div>
+
+                                        <!-- Botones de control -->
+                                        <button class="carousel-control-prev" type="button"
+                                            th:attr="data-bs-target='#carousel-' + ${producto.idProducto}"
+                                            data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button"
+                                            th:attr="data-bs-target='#carousel-' + ${producto.idProducto}"
+                                            data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+
+                                    <!-- Imagen por defecto si no hay imágenes -->
+                                    <div th:if="${#lists.isEmpty(producto.imagenesGuardadas)}">
+                                        <img th:src="@{/image/no-image.png}" class="card-img-top product-img"
+                                            th:alt="${producto.nombre}">
+                                    </div>
                                 </div>
+
                                 <div class="card-body">
                                     <p class="text-muted small"
-                                        th:text="${producto.nombreCategoria} + ' | ' +  ${producto.nombreMarca}">Aceites |
-                                        Motul</p>
+                                        th:text="${producto.nombreCategoria} + ' | ' +  ${producto.nombreMarca}">
+                                        Aceites | Motul
+                                    </p>
                                     <h5 class="card-title product-title">
                                         <a th:href="@{'/producto/' + ${producto.slug}}"
-                                            class="text-decoration-none text-dark"
-                                            th:text="${producto.nombre}">Aceite Motul 5100 4T 15W50</a>
+                                            class="text-decoration-none text-dark" th:text="${producto.nombre}">Nombre
+                                            del Producto</a>
                                     </h5>
+
                                     <div class="d-flex align-items-center mb-2">
                                         <div class="text-warning me-1">
                                             <i class="bi bi-star-fill"></i>
@@ -147,18 +309,22 @@
                                         <span class="fw-medium small">4.8</span>
                                         <span class="text-muted small ms-1">(124)</span>
                                     </div>
+
                                     <div class="d-flex align-items-center">
                                         <span class="fw-bold text-primary fs-5"
-                                            th:text="'S/ ' + ${#numbers.formatDecimal(producto.precioOferta != null ? producto.precioOferta : producto.precio, 1, 2)}">$10.625</span>
+                                            th:text="'S/ ' + ${#numbers.formatDecimal(producto.precioOferta != null ? producto.precioOferta : producto.precio, 1, 2)}">
+                                            S/ 0.00
+                                        </span>
                                         <span class="text-muted text-decoration-line-through ms-2"
                                             th:if="${producto.descuento > 0}"
                                             th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">
-                                            $12.500
+                                            S/ 0.00
                                         </span>
                                     </div>
-                                    <p class="text-success small mt-1" th:text="'En stock'">
-                                        En stock</p>
+
+                                    <p class="text-success small mt-1" th:text="'En stock'">En stock</p>
                                 </div>
+
                                 <div class="card-footer bg-white border-top-0">
                                     <button class="btn btn-primary w-100">
                                         <i class="bi bi-cart me-2"></i>Agregar al carrito
@@ -167,6 +333,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     <!-- Pagination -->
                     <nav class="mt-5">

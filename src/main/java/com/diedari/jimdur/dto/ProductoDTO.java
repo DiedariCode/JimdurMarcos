@@ -85,4 +85,15 @@ public class ProductoDTO {
         this.especificaciones = new ArrayList<>();
         this.compatibilidades = new ArrayList<>();
     }
+
+    public String getRutaImagenPortada() {
+        if (imagenesGuardadas == null || imagenesGuardadas.isEmpty()) return null;
+    
+        return imagenesGuardadas.stream()
+            .filter(ImagenProductoDTO::getEsPortada)
+            .map(ImagenProductoDTO::getNombreArchivo) // ✅ Método de instancia sin paréntesis ni parámetros
+            .findFirst()
+            .orElse(null);
+    }
+    
 }

@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ImagenProductoDTO {
     private Long id;
-    private String rutaImagen;
+    private String nombreArchivo;
     private Boolean esPortada;
 } 
