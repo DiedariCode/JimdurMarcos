@@ -61,6 +61,7 @@
                                 <th>Nombre</th>
                                 <th>Capacidad</th>
                                 <th>Descripción</th>
+                                <th>Tipo de Ubicación</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -72,14 +73,15 @@
                                 <td th:text="${ubicacion.nombre}">Almacén Principal</td>
                                 <td th:text="${ubicacion.capacidad}">500</td>
                                 <td th:text="${ubicacion.descripcion}">Almacén principal para productos de alta rotación</td>
+                                <td th:text="${ubicacion.tipoUbicacion}">ESTANTE</td>
                                 <td class="action-buttons">
                                     <a th:href="@{/admin/ubicacion/editar/{id}(id=${ubicacion.idUbicacion})}" class="btn btn-warning btn-sm">
-                                        <i class="fas fa-edit"></i> Editar
+                                        <i class="fas fa-edit"></i> 
                                     </a>
                                     <a th:href="@{/admin/ubicacion/eliminar/{id}(id=${ubicacion.idUbicacion})}" 
                                        class="btn btn-danger btn-sm"
                                        onclick="return confirm('¿Está seguro de que desea eliminar esta ubicación?')">
-                                        <i class="fas fa-trash"></i> Eliminar
+                                        <i class="fas fa-trash"></i> 
                                     </a>
                                 </td>
                             </tr>

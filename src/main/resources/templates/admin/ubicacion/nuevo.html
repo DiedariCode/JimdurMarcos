@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,40 +18,46 @@
             max-width: 800px;
             margin: 0 auto;
         }
+
         .page-title {
             margin-bottom: 20px;
             color: #212529;
             border-bottom: 2px solid #dee2e6;
             padding-bottom: 10px;
         }
+
         .card {
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .card-header {
             background-color: #f8f9fa;
             border-bottom: 1px solid #dee2e6;
             padding: 15px 20px;
         }
+
         .btn-back {
             margin-right: 10px;
         }
     </style>
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
             <nav th:replace="~{fragments/sidebar :: sidebar}"></nav>
             <main class="col-md-9 col-lg-10 ms-auto px-4 py-4">
                 <h1 class="page-title">Nueva Ubicación</h1>
-                
+
                 <div class="form-container">
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title mb-0">Ingrese los datos de la ubicación</h5>
                         </div>
                         <div class="card-body">
-                            <form th:action="@{/admin/ubicacion/agregar}" th:object="${ubicacion}" method="post" class="needs-validation" novalidate>
+                            <form th:action="@{/admin/ubicacion/agregar}" th:object="${ubicacion}" method="post"
+                                class="needs-validation" novalidate>
                                 <div class="mb-3">
                                     <label for="codigo" class="form-label">Código</label>
                                     <input type="text" th:field="*{codigo}" class="form-control" id="codigo" required>
@@ -68,14 +75,26 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="capacidad" class="form-label">Capacidad</label>
-                                    <input type="number" th:field="*{capacidad}" class="form-control" id="capacidad" required>
+                                    <input type="number" th:field="*{capacidad}" class="form-control" id="capacidad"
+                                        required>
                                     <div class="invalid-feedback">
                                         La capacidad es obligatoria
                                     </div>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="tipoUbicacion" class="form-label">Tipo de Ubicación</label>
+                                    <select th:field="*{tipoUbicacion}" class="form-select" id="tipoUbicacion" required>
+                                        <option value="" disabled selected>Seleccione un tipo</option>
+                                        <option
+                                            th:each="tipo : ${T(com.diedari.jimdur.model.Ubicaciones.TipoUbicacion).values()}"
+                                            th:value="${tipo}" th:text="${tipo}"></option>
+                                    </select>
+                                    <div class="invalid-feedback">El tipo de ubicación es obligatorio</div>
+                                </div>
+                                <div class="mb-3">
                                     <label for="descripcion" class="form-label">Descripción</label>
-                                    <textarea th:field="*{descripcion}" class="form-control" id="descripcion" rows="3"></textarea>
+                                    <textarea th:field="*{descripcion}" class="form-control" id="descripcion"
+                                        rows="3"></textarea>
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <a th:href="@{/admin/ubicacion}" class="btn btn-secondary btn-back">
@@ -97,11 +116,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
         // Validación de formulario Bootstrap
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var forms = document.querySelectorAll('.needs-validation');
-            
-            Array.prototype.slice.call(forms).forEach(function(form) {
-                form.addEventListener('submit', function(event) {
+
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
                     if (!form.checkValidity()) {
                         event.preventDefault();
                         event.stopPropagation();
@@ -112,4 +131,5 @@
         });
     </script>
 </body>
+
 </html>
