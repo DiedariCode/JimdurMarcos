@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- CSS personalizado -->
     <link rel="stylesheet" th:href="@{/css/shared/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/marca.css}">
 </head>
 
 <body>
@@ -23,6 +24,7 @@
 
             <!-- Contenido principal -->
             <div class="col-md-9 col-lg-10 py-4 px-5 ms-auto">
+                <!-- Encabezado y botón de nueva marca -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0">Listado de Marcas</h2>
                     <a class="btn btn-primary" th:href="@{/admin/marca/agregar}">
@@ -30,36 +32,58 @@
                     </a>
                 </div>
 
-                <form class="row g-3 mb-3" th:action="@{/admin/marca/filtrar/nombre}" method="get">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="nombre" placeholder="Buscar por nombre...">
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-secondary">
-                            <i class="fas fa-search"></i> Buscar
-                        </button>
-                    </div>
-                </form>
+                <!-- Mensajes de alerta -->
+                <div th:if="${mensaje}" th:class="'alert alert-' + ${tipo}" role="alert">
+                    <span th:text="${mensaje}"></span>
+                </div>
 
-                <form class="mb-4" th:action="@{/admin/marca/filtrar/estado}" method="get">
-                    <select name="estado" class="form-select w-auto d-inline-block me-2">
-                        <option value=""> Filtrar por estado</option>
-                        <option value="activa">Activa</option>
-                        <option value="inactiva">Inactiva</option>
-                    </select>
-                    <button class="btn btn-outline-primary" type="submit">Filtrar</button>
-                </form>
+                <!-- Filtros -->
+                <div class="filters-wrapper mb-4">
+                    <div class="row g-3">
+                        <!-- Formulario de búsqueda -->
+                        <div class="col-md-7 w-100">
+                            <form th:action="@{/admin/marca}" method="get" class="d-flex align-items-center">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-transparent border-end-0">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0 ps-0" name="nombreMarca"
+                                        th:value="${nombreMarca}" placeholder="Buscar por nombre..." />
+                                    <input type="hidden" name="sortField" th:value="${sortField}" />
+                                    <input type="hidden" name="sortDirection" th:value="${sortDirection}" />
+                                    <select name="estadoMarca" class="form-select">
+                                        <option value="">Todos los estados</option>
+                                        <option value="activa" th:selected="${estadoMarca == 'activa'}">Activas</option>
+                                        <option value="inactiva" th:selected="${estadoMarca == 'inactiva'}">Inactivas</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Tabla -->
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Nombre</th>
+                                <th>
+                                    <a th:href="@{'/admin/marca?page=' + ${currentPage} + '&sortField=nombreMarca&sortDirection=' + ${reverseSortDirection} + ${nombreMarca != null ? '&nombreMarca=' + nombreMarca : ''} + ${estadoMarca != null ? '&estadoMarca=' + estadoMarca : ''}}">
+                                        Nombre
+                                        <i class="fas" th:classappend="${sortField == 'nombreMarca' ? (sortDirection == 'asc' ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'}"></i>
+                                    </a>
+                                </th>
                                 <th>Descripción</th>
-                                <th>Pais Origen</th>
-                                <th>SitioWeb</th>
+                                <th>País Origen</th>
+                                <th>Sitio Web</th>
                                 <th>Productos</th>
-                                <th>Estado</th>
+                                <th>
+                                    <a th:href="@{'/admin/marca?page=' + ${currentPage} + '&sortField=estadoMarca&sortDirection=' + ${reverseSortDirection} + ${nombreMarca != null ? '&nombreMarca=' + nombreMarca : ''} + ${estadoMarca != null ? '&estadoMarca=' + estadoMarca : ''}}">
+                                        Estado
+                                        <i class="fas" th:classappend="${sortField == 'estadoMarca' ? (sortDirection == 'asc' ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'}"></i>
+                                    </a>
+                                </th>
                                 <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -67,7 +91,7 @@
                             <tr th:each="marca : ${marcas}">
                                 <td th:text="${marca.nombreMarca}">Nombre</td>
                                 <td th:text="${#strings.abbreviate(marca.descripcionMarca, 60)}">Descripción</td>
-                                <td th:text="${marca.paisOrigenMarca}">Pais</td>
+                                <td th:text="${marca.paisOrigenMarca}">País</td>
                                 <td th:text="${marca.sitioWebMarca}">Sitio Web</td>
                                 <td th:text="${marca.productos.size()}">Productos</td>
                                 <td>
@@ -75,16 +99,13 @@
                                         th:text="${marca.estadoMarca} ? 'Activa' : 'Inactiva'">
                                     </span>
                                 </td>
-
                                 <td class="text-center">
-                                    <a th:href="@{/admin/marca/editar/{id}(id=${marca.id})}"
-                                        class="btn btn-warning btn-sm">
+                                    <a th:href="@{/admin/marca/editar/{id}(id=${marca.id})}" class="btn btn-warning btn-sm">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form th:action="@{/admin/marca/eliminar/{id}(id=${marca.id})}" method="post"
-                                        th:object="${marca}" style="display: inline-block;"
+                                        style="display: inline-block;"
                                         onsubmit="return confirm('¿Deseas eliminar esta marca?')">
-                                        <input type="hidden" name="_method" value="delete" />
                                         <button type="submit" class="btn btn-danger btn-sm">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -104,48 +125,47 @@
                 </div>
 
                 <!-- Paginación -->
-                <div class="d-flex flex-column align-items-center" th:if="${totalPages > 0}">
+                <div class="d-flex flex-column align-items-center mt-3" th:if="${totalPages > 0}">
                     <nav aria-label="Navegación de páginas">
                         <ul class="pagination">
                             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                                <a class="page-link" 
-                                   th:href="@{'/admin/marca?page=0&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombre != null ? '&nombre=' + nombre : ''}}"
-                                   aria-label="Primera">
+                                <a class="page-link"
+                                    th:href="@{'/admin/marca?page=0&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombreMarca != null ? '&nombreMarca=' + nombreMarca : ''} + ${estadoMarca != null ? '&estadoMarca=' + estadoMarca : ''}}"
+                                    aria-label="Primera">
                                     <i class="fas fa-angle-double-left"></i>
                                 </a>
                             </li>
                             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                                 <a class="page-link"
-                                   th:href="@{'/admin/marca?page=' + ${currentPage - 1} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombre != null ? '&nombre=' + nombre : ''}}"
-                                   aria-label="Anterior">
+                                    th:href="@{'/admin/marca?page=' + ${currentPage - 1} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombreMarca != null ? '&nombreMarca=' + nombreMarca : ''} + ${estadoMarca != null ? '&estadoMarca=' + estadoMarca : ''}}"
+                                    aria-label="Anterior">
                                     <i class="fas fa-angle-left"></i>
                                 </a>
                             </li>
-                            <li class="page-item" 
-                                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                                th:classappend="${i == currentPage} ? 'active'">
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                th:classappend="${currentPage == i} ? 'active'">
                                 <a class="page-link"
-                                   th:href="@{'/admin/marca?page=' + ${i} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombre != null ? '&nombre=' + nombre : ''}}"
-                                   th:text="${i + 1}">1</a>
+                                    th:href="@{'/admin/marca?page=' + ${i} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombreMarca != null ? '&nombreMarca=' + nombreMarca : ''} + ${estadoMarca != null ? '&estadoMarca=' + estadoMarca : ''}}"
+                                    th:text="${i + 1}">1</a>
                             </li>
                             <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                                 <a class="page-link"
-                                   th:href="@{'/admin/marca?page=' + ${currentPage + 1} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombre != null ? '&nombre=' + nombre : ''}}"
-                                   aria-label="Siguiente">
+                                    th:href="@{'/admin/marca?page=' + ${currentPage + 1} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombreMarca != null ? '&nombreMarca=' + nombreMarca : ''} + ${estadoMarca != null ? '&estadoMarca=' + estadoMarca : ''}}"
+                                    aria-label="Siguiente">
                                     <i class="fas fa-angle-right"></i>
                                 </a>
                             </li>
                             <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                                 <a class="page-link"
-                                   th:href="@{'/admin/marca?page=' + ${totalPages - 1} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombre != null ? '&nombre=' + nombre : ''}}"
-                                   aria-label="Última">
+                                    th:href="@{'/admin/marca?page=' + ${totalPages - 1} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${nombreMarca != null ? '&nombreMarca=' + nombreMarca : ''} + ${estadoMarca != null ? '&estadoMarca=' + estadoMarca : ''}}"
+                                    aria-label="Última">
                                     <i class="fas fa-angle-double-right"></i>
                                 </a>
                             </li>
                         </ul>
                     </nav>
                     <div class="pagination-info">
-                        Mostrando <span class="fw-medium" th:text="${marcas.numberOfElements}">10</span> de
+                        Mostrando <span class="fw-medium" th:text="${marcas.size()}">10</span> de
                         <span class="fw-medium" th:text="${totalItems}">100</span> marcas en total
                     </div>
                 </div>

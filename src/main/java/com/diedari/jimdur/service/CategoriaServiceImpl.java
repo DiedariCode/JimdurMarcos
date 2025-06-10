@@ -3,7 +3,10 @@ package com.diedari.jimdur.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.repository.CategoriaRepository;
@@ -56,5 +59,29 @@ public class CategoriaServiceImpl implements CategoriaService {
         }
         return categoriaRepository.findByNombreCategoria(nombre); 
     }
-    
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Categoria> obtenerCategoriasFiltradas(String nombreCategoria, String estadoCategoria, Pageable pageable) {
+        // Si no hay filtros, retornar todas las categorías paginadas
+        if ((nombreCategoria == null || nombreCategoria.isEmpty()) && 
+            (estadoCategoria == null || estadoCategoria.isEmpty())) {
+            return categoriaRepository.findAll(pageable);
+        }
+
+        // Si solo hay filtro por nombre
+        if (estadoCategoria == null || estadoCategoria.isEmpty()) {
+            return categoriaRepository.findByNombreCategoriaContainingIgnoreCase(nombreCategoria, pageable);
+        }
+
+        // Si solo hay filtro por estado
+        if (nombreCategoria == null || nombreCategoria.isEmpty()) {
+            Boolean estado = "activa".equalsIgnoreCase(estadoCategoria);
+            return categoriaRepository.findByEstadoActiva(estado, pageable);
+        }
+
+        // Si hay ambos filtros
+        Boolean estado = "activa".equalsIgnoreCase(estadoCategoria);
+        return categoriaRepository.findByNombreCategoriaContainingIgnoreCaseAndEstadoActiva(nombreCategoria, estado, pageable);
+    }
 }

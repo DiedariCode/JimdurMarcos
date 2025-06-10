@@ -2,6 +2,9 @@ package com.diedari.jimdur.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.diedari.jimdur.model.Categoria;
 
 public interface CategoriaService {
@@ -18,4 +21,11 @@ public interface CategoriaService {
     List<Categoria> obtenerCategoriaPorEstado(boolean activa); // Obtener una categoría por estado (activa/inactiva)
 
     List<Categoria> obtenerCategoriaPorNombre(String nombre); // Obtener una categoría por nombre
+
+    // Método para obtener categorías filtradas con paginación
+    Page<Categoria> obtenerCategoriasFiltradas(
+        String nombreCategoria,
+        String estadoCategoria,
+        Pageable pageable
+    );
 }
