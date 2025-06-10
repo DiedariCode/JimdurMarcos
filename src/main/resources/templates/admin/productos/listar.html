@@ -177,6 +177,45 @@
                                 </tbody>
                             </table>
                         </div>
+                        
+                        <!-- Paginación -->
+                        <div class="d-flex justify-content-between align-items-center p-3" th:if="${totalPages > 0}">
+                            <div class="text-muted">
+                                Mostrando <span th:text="${productos.numberOfElements}">5</span> de 
+                                <span th:text="${totalItems}">20</span> productos
+                            </div>
+                            <nav>
+                                <ul class="pagination mb-0">
+                                    <!-- Primera página -->
+                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/productos(page=0, size=${pageSize}, sortField=${sortField}, sortDirection=${sortDirection}, nombreProducto=${nombreProducto})}">&laquo;</a>
+                                    </li>
+                                    
+                                    <!-- Página anterior -->
+                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/productos(page=${currentPage - 1}, size=${pageSize}, sortField=${sortField}, sortDirection=${sortDirection}, nombreProducto=${nombreProducto})}">&lt;</a>
+                                    </li>
+
+                                    <!-- Páginas -->
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+                                        th:classappend="${currentPage == i ? 'active' : ''}"
+                                        th:if="${i >= currentPage - 2 and i <= currentPage + 2}">
+                                        <a class="page-link" th:href="@{/admin/productos(page=${i}, size=${pageSize}, sortField=${sortField}, sortDirection=${sortDirection}, nombreProducto=${nombreProducto})}" 
+                                           th:text="${i + 1}">1</a>
+                                    </li>
+
+                                    <!-- Página siguiente -->
+                                    <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/productos(page=${currentPage + 1}, size=${pageSize}, sortField=${sortField}, sortDirection=${sortDirection}, nombreProducto=${nombreProducto})}">&gt;</a>
+                                    </li>
+                                    
+                                    <!-- Última página -->
+                                    <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/productos(page=${totalPages - 1}, size=${pageSize}, sortField=${sortField}, sortDirection=${sortDirection}, nombreProducto=${nombreProducto})}">&raquo;</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </main>
