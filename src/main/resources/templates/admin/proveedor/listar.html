@@ -82,52 +82,48 @@
                         </div>
 
                         <!-- Filtros de búsqueda -->
-                        <div class="search-filters">
-                            <div class="row">
-                                <div class="col-md-3 mb-2">
-                                    <label for="filtroTipo" class="form-label">Tipo de Proveedor</label>
-                                    <select class="form-select form-select-sm" id="filtroTipo">
-                                        <option value="">Todos los tipos</option>
-                                        <option value="fabricante">Fabricante</option>
-                                        <option value="distribuidor">Distribuidor</option>
-                                        <option value="mayorista">Mayorista</option>
-                                        <option value="importador">Importador</option>
-                                        <option value="otro">Otro</option>
-                                    </select>
+                        <div class="search-filters mb-4">
+                            <form th:action="@{/admin/proveedor}" method="get" id="searchForm">
+                                <input type="hidden" name="page" value="0" />
+                                <input type="hidden" name="size" th:value="${size}" />
+                                <input type="hidden" name="sortField" th:value="${sortField}" />
+                                <input type="hidden" name="sortDirection" th:value="${sortDirection}" />
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <label for="nombreProveedor" class="form-label">Buscar</label>
+                                        <input type="text" class="form-control form-control-sm" id="nombreProveedor" 
+                                               name="nombreProveedor" th:value="${nombreProveedor}" 
+                                               placeholder="Nombre o nombre comercial...">
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <label for="tipoProveedor" class="form-label">Tipo de Proveedor</label>
+                                        <select class="form-select form-select-sm" id="tipoProveedor" name="tipoProveedor">
+                                            <option value="">Todos los tipos</option>
+                                            <option value="fabricante" th:selected="${tipoProveedor == 'fabricante'}">Fabricante</option>
+                                            <option value="distribuidor" th:selected="${tipoProveedor == 'distribuidor'}">Distribuidor</option>
+                                            <option value="mayorista" th:selected="${tipoProveedor == 'mayorista'}">Mayorista</option>
+                                            <option value="importador" th:selected="${tipoProveedor == 'importador'}">Importador</option>
+                                            <option value="otro" th:selected="${tipoProveedor == 'otro'}">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <label for="estadoActivo" class="form-label">Estado</label>
+                                        <select class="form-select form-select-sm" id="estadoActivo" name="estadoActivo">
+                                            <option value="">Todos los estados</option>
+                                            <option value="Activo" th:selected="${estadoActivo == 'Activo'}">Activo</option>
+                                            <option value="Inactivo" th:selected="${estadoActivo == 'Inactivo'}">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary btn-sm me-2">
+                                            <i class="bi bi-search me-1"></i> Buscar
+                                        </button>
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="limpiarFiltros()">
+                                            <i class="bi bi-x-circle me-1"></i> Limpiar
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-md-3 mb-2">
-                                    <label for="filtroEstado" class="form-label">Estado</label>
-                                    <select class="form-select form-select-sm" id="filtroEstado">
-                                        <option value="">Todos los estados</option>
-                                        <option value="Activo">Activo</option>
-                                        <option value="Inactivo">Inactivo</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 mb-2">
-                                    <label for="filtroCategoria" class="form-label">Categoría</label>
-                                    <select class="form-select form-select-sm" id="filtroCategoria">
-                                        <option value="">Todas las categorías</option>
-                                        <option value="Partes de Motor">Partes de Motor</option>
-                                        <option value="Sistema de Frenos">Sistema de Frenos</option>
-                                        <option value="Suspensión">Suspensión</option>
-                                        <option value="Transmisión">Transmisión</option>
-                                        <option value="Sistema Eléctrico">Sistema Eléctrico</option>
-                                        <option value="Carrocería">Carrocería</option>
-                                        <option value="Aceites y Lubricantes">Aceites y Lubricantes</option>
-                                        <option value="Filtros">Filtros</option>
-                                        <option value="Herramientas">Herramientas</option>
-                                        <option value="Múltiples Categorías">Múltiples Categorías</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 mb-2 d-flex align-items-end">
-                                    <button class="btn btn-outline-secondary btn-sm me-2" onclick="limpiarFiltros()">
-                                        <i class="bi bi-x-circle"></i> Limpiar
-                                    </button>
-                                    <button class="btn btn-outline-primary btn-sm" onclick="exportarProveedores()">
-                                        <i class="bi bi-download"></i> Exportar
-                                    </button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
 
                         <!-- Tabla de proveedores -->
@@ -147,17 +143,32 @@
                                     <table id="tablaProveedores" class="table table-hover mb-0">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>Empresa</th>
-                                                <th>RUC</th>
-                                                <th>Tipo</th>
+                                                <th class="sortable" onclick="ordenar('nombre')">
+                                                    Empresa
+                                                    <i class="bi" th:classappend="${sortField == 'nombre'} ? ${sortDirection == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up'} : 'bi-sort'"></i>
+                                                </th>
+                                                <th class="sortable" onclick="ordenar('ruc')">
+                                                    RUC
+                                                    <i class="bi" th:classappend="${sortField == 'ruc'} ? ${sortDirection == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up'} : 'bi-sort'"></i>
+                                                </th>
+                                                <th class="sortable" onclick="ordenar('tipoProveedor')">
+                                                    Tipo
+                                                    <i class="bi" th:classappend="${sortField == 'tipoProveedor'} ? ${sortDirection == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up'} : 'bi-sort'"></i>
+                                                </th>
                                                 <th>Contacto</th>
-                                                <th>Teléfono</th>
-                                                <th>Categoría</th>
-                                                <th>Estado</th>
+                                                <th>Teléfono/Email</th>
+                                                <th>Categorías</th>
+                                                <th class="sortable" onclick="ordenar('estadoActivo')">
+                                                    Estado
+                                                    <i class="bi" th:classappend="${sortField == 'estadoActivo'} ? ${sortDirection == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up'} : 'bi-sort'"></i>
+                                                </th>
                                                 <th width="200">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <tr th:if="${#lists.isEmpty(proveedores)}">
+                                                <td colspan="8" class="text-center">No se encontraron proveedores</td>
+                                            </tr>
                                             <tr th:each="proveedor : ${proveedores}">
                                                 <td>
                                                     <div>
@@ -252,14 +263,48 @@
                             </div>
                         </div>
 
-                        <!-- Mensaje cuando no hay proveedores -->
-                        <div class="text-center py-5" th:if="${#lists.isEmpty(proveedores)}">
-                            <i class="bi bi-building display-1 text-muted"></i>
-                            <h4 class="text-muted mt-3">No hay proveedores registrados</h4>
-                            <p class="text-muted">Comienza agregando tu primer proveedor</p>
-                            <a href="/admin/proveedor/agregar" class="btn btn-primary">
-                                <i class="bi bi-plus-circle me-1"></i> Agregar Primer Proveedor
-                            </a>
+                        <!-- Paginación -->
+                        <div class="d-flex justify-content-between align-items-center mt-3" th:if="${totalPages > 0}">
+                            <div class="d-flex align-items-center">
+                                <span class="me-2">Mostrar</span>
+                                <select class="form-select form-select-sm" style="width: auto;" onchange="cambiarTamanoPagina(this.value)">
+                                    <option value="5" th:selected="${size == 5}">5</option>
+                                    <option value="10" th:selected="${size == 10}">10</option>
+                                    <option value="20" th:selected="${size == 20}">20</option>
+                                    <option value="50" th:selected="${size == 50}">50</option>
+                                </select>
+                                <span class="ms-2">registros</span>
+                            </div>
+
+                            <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+                                <ul class="pagination pagination-sm mb-0">
+                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/proveedor(page=0, size=${size}, sortField=${sortField}, sortDirection=${sortDirection}, nombreProveedor=${nombreProveedor}, tipoProveedor=${tipoProveedor}, estadoActivo=${estadoActivo})}" aria-label="Primera">
+                                            <span aria-hidden="true">&laquo;&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/proveedor(page=${currentPage - 1}, size=${size}, sortField=${sortField}, sortDirection=${sortDirection}, nombreProveedor=${nombreProveedor}, tipoProveedor=${tipoProveedor}, estadoActivo=${estadoActivo})}" aria-label="Anterior">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+                                        th:classappend="${i == currentPage ? 'active' : ''}"
+                                        th:if="${i >= currentPage - 2 and i <= currentPage + 2}">
+                                        <a class="page-link" th:href="@{/admin/proveedor(page=${i}, size=${size}, sortField=${sortField}, sortDirection=${sortDirection}, nombreProveedor=${nombreProveedor}, tipoProveedor=${tipoProveedor}, estadoActivo=${estadoActivo})}" th:text="${i + 1}">1</a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/proveedor(page=${currentPage + 1}, size=${size}, sortField=${sortField}, sortDirection=${sortDirection}, nombreProveedor=${nombreProveedor}, tipoProveedor=${tipoProveedor}, estadoActivo=${estadoActivo})}" aria-label="Siguiente">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/proveedor(page=${totalPages - 1}, size=${size}, sortField=${sortField}, sortDirection=${sortDirection}, nombreProveedor=${nombreProveedor}, tipoProveedor=${tipoProveedor}, estadoActivo=${estadoActivo})}" aria-label="Última">
+                                            <span aria-hidden="true">&raquo;&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </main>
@@ -330,6 +375,34 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
+        function limpiarFiltros() {
+            document.getElementById('nombreProveedor').value = '';
+            document.getElementById('tipoProveedor').value = '';
+            document.getElementById('estadoActivo').value = '';
+            document.getElementById('searchForm').submit();
+        }
+
+        function ordenar(campo) {
+            let currentSortField = document.querySelector('input[name="sortField"]').value;
+            let currentSortDirection = document.querySelector('input[name="sortDirection"]').value;
+            
+            let newDirection = 'asc';
+            if (campo === currentSortField) {
+                newDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+            }
+            
+            document.querySelector('input[name="sortField"]').value = campo;
+            document.querySelector('input[name="sortDirection"]').value = newDirection;
+            document.querySelector('input[name="page"]').value = 0;
+            document.getElementById('searchForm').submit();
+        }
+
+        function cambiarTamanoPagina(tamano) {
+            document.querySelector('input[name="size"]').value = tamano;
+            document.querySelector('input[name="page"]').value = 0;
+            document.getElementById('searchForm').submit();
+        }
+
         function confirmarEliminacion(btn) {
             const idProveedor = btn.getAttribute('data-id');
             const nombreProveedor = btn.getAttribute('data-nombre');

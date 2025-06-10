@@ -42,9 +42,19 @@ public class ProductoRestController {
 
     @PostMapping("/crear")
     @ResponseBody
+
+    /*
+     * Respuesta que se obtiene cuando se crea un producto exitosamente.
+     * {
+     * "success": true,
+     * "message": "Producto creado exitosamente",
+     * "idProducto": 123,
+     * }
+     */
+
     public ResponseEntity<Map<String, Object>> crearProducto(@Valid @ModelAttribute("producto") ProductoDTO producto,
             BindingResult result) {
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>(); // construir una respuesta personalizada en formato JSON
 
         // Validar SKU único
         if (productoService.existeSkuProducto(producto.getSku(), null)) {
@@ -54,20 +64,22 @@ public class ProductoRestController {
         }
 
         // if (result.hasErrors()) {
-        //     response.put("success", false);
-        //     response.put("message", "Error en la validación del formulario");
-        //     return ResponseEntity.ok(response);
+        // response.put("success", false);
+        // response.put("message", "Error en la validación del formulario");
+        // return ResponseEntity.ok(response);
         // }
 
         if (result.hasErrors()) {
-            List<String> errores = result.getFieldErrors().stream() // Convierte el objeto BindingResult en una lista de errores.
-                .map(error -> error.getDefaultMessage()) // Toma cada error y extraer su mensaje por defecto (el q se puso en el DTO).
-                .collect(Collectors.toList()); // Convierte la lista de errores en una lista de strings.
-        
+            List<String> errores = result.getFieldErrors().stream() // Convierte el objeto BindingResult en una lista de
+                                                                    // errores.
+                    .map(error -> error.getDefaultMessage()) // Toma cada error y extraer su mensaje por defecto (el q
+                                                             // se puso en el DTO).
+                    .collect(Collectors.toList()); // Convierte la lista de errores en una lista de strings.
+
             response.put("success", false);
             response.put("message", "Errores de validación");
             response.put("errors", errores); // lista de errores específicos
-        
+
             return ResponseEntity.ok(response);
         }
 
@@ -214,14 +226,14 @@ public class ProductoRestController {
             double precioOferta;
             boolean hayAdvertencia = false;
             String mensajeAdvertencia = "";
-            
+
             // Validar valores negativos
             if (descuento < 0) {
                 hayAdvertencia = true;
                 mensajeAdvertencia = "El descuento no puede ser negativo. Se ajustará automáticamente a 0.";
                 descuento = 0.0;
             }
-            
+
             if (descuento > 0) {
                 if ("porcentaje".equals(tipoDescuento)) {
                     // Validar que el descuento no sea mayor a 100%
@@ -243,17 +255,17 @@ public class ProductoRestController {
             } else {
                 precioOferta = precio;
             }
-            
+
             // Asegurar que el precio oferta no sea negativo
             if (precioOferta < 0) {
                 hayAdvertencia = true;
                 mensajeAdvertencia = "El precio de oferta no puede ser negativo. Se ajustará automáticamente a 0.";
                 precioOferta = 0;
             }
-            
+
             // Redondear a 2 decimales
             precioOferta = Math.round(precioOferta * 100.0) / 100.0;
-            
+
             response.put("precioOferta", precioOferta);
             response.put("hayAdvertencia", hayAdvertencia);
             response.put("mensajeAdvertencia", mensajeAdvertencia);
