@@ -81,4 +81,7 @@ public class Usuario {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
+
+    @Column(name = "imagen", nullable = true)
+    private String imagen;
 }

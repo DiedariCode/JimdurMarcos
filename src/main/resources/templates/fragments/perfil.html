@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Perfil</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="mb-4">Mi Perfil</h3>
+                    <img th:src="${usuario.fotoPerfil != null} ? ${usuario.fotoPerfil} : '@{/image/default-avatar.png}'"
+                         alt="Foto de perfil" class="rounded-circle mb-3" width="120" height="120">
+                    <h5 class="card-title mb-3" th:text="${usuario.nombre}">Nombre de Usuario</h5>
+                    <form th:action="@{/user/perfil/foto}" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <input class="form-control" type="file" name="foto" accept="image/*" required>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Subir nueva foto</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html> 
