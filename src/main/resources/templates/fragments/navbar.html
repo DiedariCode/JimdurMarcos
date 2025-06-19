@@ -122,7 +122,7 @@
                                 <i class="fas fa-user"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><span class="dropdown-item-text fw-bold" sec:authentication="name">Usuario</span></li>
+                                <li><span class="dropdown-item-text fw-bold text-center" sec:authentication="name">Usuario</span></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/admin/productos}"><i class="fas fa-tools me-2"></i>Panel Admin</a></li>
                                 <li><a class="dropdown-item" th:href="@{/user/perfil}"><i class="fas fa-user-circle me-2"></i>Mi Perfil</a></li>
