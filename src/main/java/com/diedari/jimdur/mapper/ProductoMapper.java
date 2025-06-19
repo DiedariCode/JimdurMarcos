@@ -55,7 +55,7 @@ public class ProductoMapper {
             List<ImagenProductoDTO> imagenesDTO = producto.getImagenes().stream()
                 .map(imagen -> ImagenProductoDTO.builder()
                     .id(imagen.getIdImagen())
-                    .rutaImagen(imagen.getNombreArchivo())
+                    .nombreArchivo(imagen.getNombreArchivo())
                     .esPortada(imagen.getEsPortada())
                     .build())
                 .collect(Collectors.toList());

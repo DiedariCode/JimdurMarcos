@@ -11,6 +11,7 @@ import com.diedari.jimdur.dto.CompatibilidadProductoDTO;
 import com.diedari.jimdur.dto.EspecificacionProductoDTO;
 import com.diedari.jimdur.dto.ProductoDTO;
 import com.diedari.jimdur.dto.ProductoProveedorDTO;
+import com.diedari.jimdur.dto.UbicacionDTO;
 import com.diedari.jimdur.mapper.ProductoMapper;
 import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.model.CompatibilidadProducto;
@@ -20,6 +21,7 @@ import com.diedari.jimdur.model.Marca;
 import com.diedari.jimdur.model.Producto;
 import com.diedari.jimdur.model.ProductoProveedor;
 import com.diedari.jimdur.model.Proveedor;
+import com.diedari.jimdur.model.Ubicaciones;
 import com.diedari.jimdur.repository.CategoriaRepository;
 import com.diedari.jimdur.repository.CompatibilidadProductoRepository;
 import com.diedari.jimdur.repository.EspecificacionProductoRepository;
@@ -47,7 +49,7 @@ public class ProductoServiceImpl implements ProductoService {
     private final FileStorageService fileStorageService;
 
     @Override
-    @Transactional
+    @Transactional // ! Para garantizar la consistencia de datos
     public ProductoDTO guardarProducto(ProductoDTO productoDTO) {
         // FASE 1: Guardar el producto principal
         Producto productoGuardado = guardarProductoPrincipal(productoDTO);
@@ -282,24 +284,42 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     private void guardarEspecificaciones(Producto producto, List<EspecificacionProductoDTO> especificacionesDTO) {
-        for (EspecificacionProductoDTO especificacionDTO : especificacionesDTO) {
-            EspecificacionProducto especificacion = EspecificacionProducto.builder()
-                    .nombre(especificacionDTO.getNombre())
-                    .valor(especificacionDTO.getValor())
+        // Limpiar la lista actual
+        producto.getEspecificaciones().clear();
+        
+        // Crear y agregar las nuevas especificaciones
+        especificacionesDTO.stream()
+            .filter(dto -> dto.getNombre() != null && !dto.getNombre().trim().isEmpty())
+            .forEach(dto -> {
+                EspecificacionProducto especificacion = EspecificacionProducto.builder()
+                    .nombre(dto.getNombre())
+                    .valor(dto.getValor())
                     .producto(producto)
                     .build();
-            especificacionProductoRepository.save(especificacion);
-        }
+                producto.getEspecificaciones().add(especificacion);
+            });
+        
+        // Guardar el producto actualizado
+        productoRepository.saveAndFlush(producto);
     }
 
     private void guardarCompatibilidades(Producto producto, List<CompatibilidadProductoDTO> compatibilidadesDTO) {
-        for (CompatibilidadProductoDTO compatibilidadDTO : compatibilidadesDTO) {
-            CompatibilidadProducto compatibilidad = CompatibilidadProducto.builder()
-                    .modeloCompatible(compatibilidadDTO.getModeloCompatible())
+        // Limpiar la lista actual
+        producto.getCompatibilidades().clear();
+        
+        // Crear y agregar las nuevas compatibilidades
+        compatibilidadesDTO.stream()
+            .filter(dto -> dto.getModeloCompatible() != null && !dto.getModeloCompatible().trim().isEmpty())
+            .forEach(dto -> {
+                CompatibilidadProducto compatibilidad = CompatibilidadProducto.builder()
+                    .modeloCompatible(dto.getModeloCompatible())
                     .producto(producto)
                     .build();
-            compatibilidadProductoRepository.save(compatibilidad);
-        }
+                producto.getCompatibilidades().add(compatibilidad);
+            });
+        
+        // Guardar el producto actualizado
+        productoRepository.saveAndFlush(producto);
     }
 
     private String generateSlug(String nombre) {
@@ -397,5 +417,15 @@ public class ProductoServiceImpl implements ProductoService {
 
         // Eliminar el registro de la base de datos
         imagenProductoRepository.delete(imagen);
+    }
+    public UbicacionDTO convertirAUbicacionDTO(Ubicaciones ubicacion) {
+        return UbicacionDTO.builder()
+            .idUbicacion(ubicacion.getIdUbicacion())
+            .nombre(ubicacion.getNombre())
+            .descripcion(ubicacion.getDescripcion())
+            .codigo(ubicacion.getCodigo())
+            .capacidad(ubicacion.getCapacidad())
+            .tipoUbicacion(ubicacion.getTipoUbicacion())
+            .build();
     }
 }

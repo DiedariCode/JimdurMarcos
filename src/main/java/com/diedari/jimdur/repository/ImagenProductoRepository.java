@@ -17,9 +17,4 @@ public interface ImagenProductoRepository extends JpaRepository<ImagenProducto, 
     @Modifying
     @Query("DELETE FROM ImagenProducto i WHERE i.producto = :producto")
     void deleteByProducto(Producto producto);
-
-    // buscar imágenes por producto o por tipo de imagen
-    //public List<ImagenProductoRepository> findByProductoId(Long productoId);
-
-    // public List<ImagenProductoRepository> findByTipo(String tipo);
 }

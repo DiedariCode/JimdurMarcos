@@ -56,7 +56,7 @@
                     <div class="product-gallery">
                         <div class="main-image border rounded mb-3">
                             <img th:if="${not #lists.isEmpty(producto.imagenesGuardadas)}"
-                                th:src="@{'/uploads/productos/' + ${producto.imagenesGuardadas[0].rutaImagen}}"
+                                th:src="@{'/uploads/productos/' + ${producto.imagenesGuardadas[0].nombreArchivo}}"
                                 class="img-fluid" id="mainImage" th:alt="${producto.nombre}">
                             <img th:unless="${not #lists.isEmpty(producto.imagenesGuardadas)}"
                                 th:src="@{/image/no-image.png}"
@@ -66,8 +66,8 @@
                             <button th:each="imagen : ${producto.imagenesGuardadas}" 
                                 class="thumbnail-btn border rounded"
                                 th:classappend="${imagen.esPortada} ? 'active' : ''"
-                                th:data-img="@{'/uploads/productos/' + ${imagen.rutaImagen}}">
-                                <img th:src="@{'/uploads/productos/' + ${imagen.rutaImagen}}" 
+                                th:data-img="@{'/uploads/productos/' + ${imagen.nombreArchivo}}">
+                                <img th:src="@{'/uploads/productos/' + ${imagen.nombreArchivo}}" 
                                     class="img-fluid"
                                     th:alt="${producto.nombre + ' - Vista ' + imagenStat.count}">
                             </button>

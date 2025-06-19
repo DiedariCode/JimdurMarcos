@@ -14,18 +14,25 @@ import com.diedari.jimdur.model.Categoria;
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     // Aquí puedes agregar métodos personalizados si es necesario
 
-    // Buscar por estadoActiva (nombre correcto del campo)
+    // Búsqueda por estadoActiva (sin paginación)
     List<Categoria> findByEstadoActiva(boolean estadoActiva);
 
-    // Buscar por nombreCategoria
+    // Búsqueda por nombreCategoria
     List<Categoria> findByNombreCategoria(String nombreCategoria);
 
-    // Buscar por nombreCategoria o descripcionCategoria (ignorando mayúsculas)
+    // Búsqueda por nombreCategoria o descripcionCategoria (ignorando mayúsculas)
     List<Categoria> findByNombreCategoriaContainingIgnoreCaseOrDescripcionCategoriaContainingIgnoreCase(
             String nombreCategoria, String descripcionCategoria);
 
+    // Búsqueda ordenada de categorías activas
     List<Categoria> findByEstadoActivaTrueOrderByNombreCategoriaAsc();
 
-    // Buscar por nombreCategoria con paginación
+    // Búsqueda paginada por nombre
     Page<Categoria> findByNombreCategoriaContainingIgnoreCase(String nombreCategoria, Pageable pageable);
+
+    // Búsqueda paginada por estado
+    Page<Categoria> findByEstadoActiva(boolean estadoActiva, Pageable pageable);
+
+    // Búsqueda paginada por nombre y estado
+    Page<Categoria> findByNombreCategoriaContainingIgnoreCaseAndEstadoActiva(String nombreCategoria, boolean estadoActiva, Pageable pageable);
 }

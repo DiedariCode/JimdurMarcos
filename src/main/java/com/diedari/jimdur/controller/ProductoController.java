@@ -1,37 +1,36 @@
 package com.diedari.jimdur.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.diedari.jimdur.dto.CompatibilidadProductoDTO;
 import com.diedari.jimdur.dto.EspecificacionProductoDTO;
 import com.diedari.jimdur.dto.ProductoDTO;
 import com.diedari.jimdur.dto.ProductoProveedorDTO;
+import com.diedari.jimdur.mapper.ProductoMapper;
 import com.diedari.jimdur.model.Categoria;
 import com.diedari.jimdur.model.Marca;
+import com.diedari.jimdur.model.Producto;
 import com.diedari.jimdur.model.Proveedor;
 import com.diedari.jimdur.repository.CategoriaRepository;
 import com.diedari.jimdur.repository.MarcaRepository;
+import com.diedari.jimdur.repository.ProductoRepository;
 import com.diedari.jimdur.repository.ProveedorRepository;
 import com.diedari.jimdur.service.ProductoService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -43,10 +42,31 @@ public class ProductoController {
     private final CategoriaRepository categoriaRepository;
     private final MarcaRepository marcaRepository;
     private final ProveedorRepository proveedorRepository;
+    private final ProductoRepository productoRepository;
+    private final ProductoMapper productoMapper;
 
     @GetMapping
-    public String listarProductos(Model model) {
-        List<ProductoDTO> productos = productoService.obtenerTodosLosProductos();
+    public String listarProductos(
+            Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "idProducto") String sortField,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam(required = false) String nombreProducto) {
+
+        Pageable pageable = PageRequest.of(page, size,
+                Sort.by(sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField));
+        
+        Page<Producto> productosPage;
+        if (nombreProducto != null && !nombreProducto.isEmpty()) {
+            productosPage = productoRepository.findByNombreContainingIgnoreCase(nombreProducto, pageable);
+        } else {
+            productosPage = productoRepository.findAll(pageable);
+        }
+        
+        // Convertir Page<Producto> a Page<ProductoDTO>
+        Page<ProductoDTO> productos = productosPage.map(productoMapper::toDTO);
+
         List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
         List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
 
@@ -54,6 +74,17 @@ public class ProductoController {
         model.addAttribute("categorias", categorias);
         model.addAttribute("marcas", marcas);
         model.addAttribute("pageTitle", "Gestión de Productos");
+        
+        // Atributos para la paginación
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productos.getTotalPages());
+        model.addAttribute("totalItems", productos.getTotalElements());
+        model.addAttribute("pageSize", size);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
+        model.addAttribute("nombreProducto", nombreProducto);
+
         return "admin/productos/listar";
     }
 
@@ -87,7 +118,7 @@ public class ProductoController {
             // Cargar datos necesarios para el formulario
             List<Categoria> categorias = categoriaRepository.findByEstadoActiva(true);
             List<Marca> marcas = marcaRepository.findByEstadoMarca(true);
-            List<Proveedor> proveedores = proveedorRepository.findAll();
+            List<Proveedor> proveedores = proveedorRepository.findByEstadoActivo("Activo");
 
             // Asegurarse de que las listas nunca sean null
             if (producto.getProveedores() == null) {

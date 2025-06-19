@@ -22,32 +22,21 @@ public class UbicacionController {
     @Autowired
     private UbicacionService ubicacionService;
 
-    /**
-     * Muestra la lista de ubicaciones
-     */
     @GetMapping
     public String listarUbicaciones(Model model) {
         List<Ubicaciones> ubicaciones = ubicacionService.listarUbicaciones();
         model.addAttribute("ubicaciones", ubicaciones);
-
         model.addAttribute("claseActiva", "ubicaciones");
         return "/admin/ubicacion/listar";
     }
 
-    /**
-     * Muestra el formulario para crear una nueva ubicación
-     */
     @GetMapping("/agregar")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("ubicacion", new Ubicaciones());
-
         model.addAttribute("claseActiva", "ubicaciones");
         return "/admin/ubicacion/nuevo";
     }
 
-    /**
-     * Procesa el formulario para guardar una nueva ubicación
-     */
     @PostMapping("/agregar")
     public String guardarUbicacion(@ModelAttribute Ubicaciones ubicacion, RedirectAttributes redirectAttributes) {
         try {
@@ -59,16 +48,11 @@ public class UbicacionController {
         return "redirect:/admin/ubicacion";
     }
 
-    /**
-     * Muestra el formulario para editar una ubicación existente
-     */
     @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable Integer id, Model model,
-            RedirectAttributes redirectAttributes) {
+    public String mostrarFormularioEditar(@PathVariable Integer id, Model model, RedirectAttributes redirectAttributes) {
         try {
             Ubicaciones ubicacion = ubicacionService.obtenerUbicacionPorId(id);
             model.addAttribute("ubicacion", ubicacion);
-
             model.addAttribute("claseActiva", "ubicaciones");
             return "/admin/ubicacion/editar";
         } catch (Exception e) {
@@ -77,9 +61,6 @@ public class UbicacionController {
         }
     }
 
-    /**
-     * Procesa el formulario para actualizar una ubicación existente
-     */
     @PostMapping("/actualizar")
     public String actualizarUbicacion(@ModelAttribute Ubicaciones ubicacion, RedirectAttributes redirectAttributes) {
         try {
@@ -91,9 +72,6 @@ public class UbicacionController {
         return "redirect:/admin/ubicacion";
     }
 
-    /**
-     * Elimina una ubicación
-     */
     @GetMapping("/eliminar/{id}")
     public String eliminarUbicacion(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {

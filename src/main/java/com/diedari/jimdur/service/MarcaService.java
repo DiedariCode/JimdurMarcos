@@ -2,6 +2,9 @@ package com.diedari.jimdur.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.diedari.jimdur.model.Marca;
 
 public interface MarcaService {
@@ -26,4 +29,11 @@ public interface MarcaService {
 
     // Método para eliminar una marca por su ID
     public void eliminarMarca(Long id);
+
+    // Método para obtener marcas filtradas con paginación
+    public Page<Marca> obtenerMarcasFiltradas(
+        String nombreMarca,
+        String estadoMarca,
+        Pageable pageable
+    );
 } 

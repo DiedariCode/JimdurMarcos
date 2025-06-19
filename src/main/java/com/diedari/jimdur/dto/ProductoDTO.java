@@ -1,18 +1,19 @@
 package com.diedari.jimdur.dto;
 
-import jakarta.validation.constraints.DecimalMax;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +25,7 @@ public class ProductoDTO {
 
     @NotBlank(message = "El código SKU es obligatorio")
     @Size(max = 50, message = "El SKU no puede exceder 50 caracteres")
+    @Pattern(regexp = "^[A-Z0-9]+(-[A-Z0-9]+)*$", message = "El SKU debe contener solo letras mayúsculas, números y guiones")
     private String sku;
 
     @NotBlank(message = "El nombre del producto es obligatorio")
@@ -38,7 +40,6 @@ public class ProductoDTO {
     private Double precio;
 
     @DecimalMin(value = "0.0", message = "El descuento no puede ser negativo")
-    @DecimalMax(value = "100.0", message = "El descuento no puede ser mayor a 100%")
     private Double descuento;
 
     private Double precioOferta;
@@ -84,4 +85,15 @@ public class ProductoDTO {
         this.especificaciones = new ArrayList<>();
         this.compatibilidades = new ArrayList<>();
     }
+
+    public String getRutaImagenPortada() {
+        if (imagenesGuardadas == null || imagenesGuardadas.isEmpty()) return null;
+    
+        return imagenesGuardadas.stream()
+            .filter(ImagenProductoDTO::getEsPortada)
+            .map(ImagenProductoDTO::getNombreArchivo) // ✅ Método de instancia sin paréntesis ni parámetros
+            .findFirst()
+            .orElse(null);
+    }
+    
 }
