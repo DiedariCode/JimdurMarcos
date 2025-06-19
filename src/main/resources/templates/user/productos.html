@@ -158,6 +158,16 @@
         <div class="container">
             <h1 class="mb-4 fw-bold">Catálogo de Productos</h1>
 
+            <div th:if="${errorFavorito}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                <span th:text="${errorFavorito}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+
+            <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${mensajeExito}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+
             <div class="row">
                 <!-- Sidebar Filters (Desktop) -->
                 <div class="col-lg-3 d-none d-lg-block">
@@ -329,6 +339,12 @@
                                     <button class="btn btn-primary w-100">
                                         <i class="bi bi-cart me-2"></i>Agregar al carrito
                                     </button>
+                                    <form th:action="@{/user/favoritos/agregar}" method="post" class="mt-2">
+                                        <input type="hidden" name="idProducto" th:value="${producto.idProducto}" />
+                                        <button type="submit" class="btn btn-outline-danger w-100">
+                                            <i class="bi bi-heart"></i> Añadir a Favoritos
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

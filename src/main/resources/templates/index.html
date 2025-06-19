@@ -44,14 +44,15 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Categories Section -->
         <section class="py-5 bg-light">
             <div class="container">
                 <h2 class="text-center mb-5">Categorías Principales</h2>
 
                 <div class="row g-4">
-                    <div class="col-6 col-md-4 col-lg-2" th:each="categoria : ${categorias}">
+                    <div class="col-6 col-md-4 col-lg-2"
+                        th:each="categoria : ${categorias.subList(0, categorias.size() > 12 ? 12 : categorias.size())}">
                         <a th:href="@{'/categoria/' + ${categoria.slugCategoria}}" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm category-card">
                                 <div class="card-body text-center">

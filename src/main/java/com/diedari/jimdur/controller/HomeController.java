@@ -14,6 +14,11 @@ import com.diedari.jimdur.dto.ProductoDTO;
 import com.diedari.jimdur.service.CategoriaService;
 import com.diedari.jimdur.service.MarcaService;
 import com.diedari.jimdur.service.ProductoService;
+import com.diedari.jimdur.dto.FavoritoDTO;
+import com.diedari.jimdur.service.FavoritoService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.diedari.jimdur.service.UsuarioService;
 
 @Controller
 @RequestMapping("/")
@@ -27,6 +32,12 @@ public class HomeController {
 
     @Autowired
     private MarcaService marcaService;
+
+    @Autowired
+    private FavoritoService favoritoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @GetMapping
     public String index(Model model) {
@@ -81,6 +92,15 @@ public class HomeController {
             return "redirect:/productos";
         }
         model.addAttribute("producto", producto);
+        // Lógica para saber si el producto es favorito del usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean esFavorito = false;
+        if (auth != null && auth.isAuthenticated() && !auth.getName().equals("anonymousUser")) {
+            Long idUsuario = usuarioService.obtenerPerfilPorEmail(auth.getName()).getId();
+            esFavorito = favoritoService.listarFavoritosPorUsuario(idUsuario).stream()
+                .anyMatch(f -> f.getIdProducto().equals(producto.getIdProducto()));
+        }
+        model.addAttribute("esFavorito", esFavorito);
         return "/user/detalle-producto";
     }
 }

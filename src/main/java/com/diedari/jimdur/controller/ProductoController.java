@@ -84,7 +84,6 @@ public class ProductoController {
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("nombreProducto", nombreProducto);
-
         return "admin/productos/listar";
     }
 

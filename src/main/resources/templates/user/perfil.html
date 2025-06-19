@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/user/all.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="container mt-5">
+        <h2 class="mb-4">Mi Perfil</h2>
+        <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensajeExito}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+        <ul class="nav nav-tabs" id="perfilTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="datos-tab" data-bs-toggle="tab" data-bs-target="#datos"
+                    type="button" role="tab" aria-controls="datos" aria-selected="true">Datos personales</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="direcciones-tab" data-bs-toggle="tab" data-bs-target="#direcciones"
+                    type="button" role="tab" aria-controls="direcciones" aria-selected="false">Direcciones</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pagos-tab" data-bs-toggle="tab" data-bs-target="#pagos" type="button"
+                    role="tab" aria-controls="pagos" aria-selected="false">Métodos de pago</button>
+            </li>
+        </ul>
+        <div class="tab-content p-4 border border-top-0 rounded-bottom" id="perfilTabsContent">
+            <!-- Datos personales -->
+            <div class="tab-pane fade show active" id="datos" role="tabpanel" aria-labelledby="datos-tab">
+                <div th:if="${usuario.rol == 'ADMIN' or usuario.rol == 'ROLE_ADMIN'}" class="mb-4">
+                    <h5>Foto de perfil</h5>
+                    <div class="mb-3">
+                        <img th:if="${usuario.imagen}" th:src="@{'/uploads/' + ${usuario.imagen}}" alt="Foto de perfil"
+                            class="img-thumbnail" style="max-width: 150px;">
+                        <span th:if="${usuario.imagen == null}">No hay foto de perfil</span>
+                    </div>
+                    <form th:action="@{/user/perfil/foto}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="id" th:value="${usuario.id}" />
+                        <div class="mb-3">
+                            <input type="file" class="form-control" name="foto" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Subir nueva foto</button>
+                    </form>
+                </div>
+                <form th:action="@{/user/perfil/editar}" method="post">
+                    <input type="hidden" name="id" th:value="${usuario.id}" />
+                    <div class="mb-3">
+                        <label for="nombres" class="form-label">Nombres</label>
+                        <input type="text" class="form-control" id="nombres" name="nombres"
+                            th:value="${usuario.nombres}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidos" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos" name="apellidos"
+                            th:value="${usuario.apellidos}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" th:value="${usuario.email}"
+                            readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono" name="telefono"
+                            th:value="${usuario.telefono}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </form>
+            </div>
+            <!-- Direcciones -->
+            <div class="tab-pane fade" id="direcciones" role="tabpanel" aria-labelledby="direcciones-tab">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Mis direcciones</h5>
+                    <a class="btn btn-success btn-sm" th:href="@{/user/perfil/direcciones/nueva}">Añadir dirección</a>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Dirección</th>
+                            <th>Referencia</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="dir : ${direcciones}">
+                            <td th:text="${dir.etiqueta + ' - ' + dir.calle + ', ' + dir.distrito + ', ' + dir.ciudad}">
+                                Casa - Av. Ejemplo 123, Distrito, Ciudad</td>
+                            <td th:text="${dir.referencia}">Referencia</td>
+                            <td>
+                                <a th:href="@{'/user/perfil/direcciones/editar/' + ${dir.idDireccion}}"
+                                    class="btn btn-sm btn-warning">Editar</a>
+                                <form th:action="@{'/user/perfil/direcciones/eliminar/' + ${dir.idDireccion}}"
+                                    method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(direcciones)}">
+                            <td colspan="3" class="text-center">No tienes direcciones registradas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Métodos de pago -->
+            <div class="tab-pane fade" id="pagos" role="tabpanel" aria-labelledby="pagos-tab">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Mis métodos de pago</h5>
+                    <a class="btn btn-success btn-sm" th:href="@{/user/perfil/pagos/nuevo}">Añadir método de pago</a>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Datos</th>
+                            <th>Activo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="mp : ${metodosPago}">
+                            <td th:text="${mp.tipo}">Tarjeta</td>
+                            <td th:text="${mp.datos}">**** 1234</td>
+                            <td>
+                                <span th:if="${mp.activo}" class="badge bg-success">Sí</span>
+                                <span th:unless="${mp.activo}" class="badge bg-secondary">No</span>
+                            </td>
+                            <td>
+                                <a th:href="@{'/user/perfil/pagos/editar/' + ${mp.id}}"
+                                    class="btn btn-sm btn-warning">Editar</a>
+                                <form th:action="@{'/user/perfil/pagos/eliminar/' + ${mp.id}}" method="post"
+                                    style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(metodosPago)}">
+                            <td colspan="4" class="text-center">No tienes métodos de pago registrados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var fileInput = document.querySelector('input[type="file"][name="foto"]');
+            if (fileInput) {
+                fileInput.addEventListener('change', function (event) {
+                    var file = event.target.files[0];
+                    if (file && file.size > 10 * 1024 * 1024) { // 10 MB
+                        alert('La imagen es demasiado pesada. El tamaño máximo permitido es 10 MB.');
+                        fileInput.value = '';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

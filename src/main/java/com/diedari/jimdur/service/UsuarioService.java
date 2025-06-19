@@ -1,6 +1,8 @@
 package com.diedari.jimdur.service;
 
 import com.diedari.jimdur.dto.RegistroUsuarioDTO;
+import com.diedari.jimdur.dto.PerfilUsuarioDTO;
+import com.diedari.jimdur.model.Usuario;
 
 public interface UsuarioService {
 
@@ -10,5 +12,12 @@ public interface UsuarioService {
      * @param dto el objeto DTO que contiene la información del usuario a crear
      */
     void crearUsuario(RegistroUsuarioDTO dto);
+
+    void actualizarPerfil(Long id, PerfilUsuarioDTO dto);
+    void actualizarFotoPerfil(Long id, String nombreImagen);
+    PerfilUsuarioDTO obtenerPerfil(Long id);
+    PerfilUsuarioDTO obtenerPerfilPorEmail(String email);
+    Usuario buscarPorEmail(String email);
+    Usuario obtenerUsuarioPorId(Long id);
 }
 

@@ -84,4 +84,10 @@ public class Usuario {
 
     @Column(name = "imagen", nullable = true)
     private String imagen;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Favorito> favoritos;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MedioPago> mediosPago;
 }

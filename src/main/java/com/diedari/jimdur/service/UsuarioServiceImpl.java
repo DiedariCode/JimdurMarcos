@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.diedari.jimdur.dto.RegistroUsuarioDTO;
+import com.diedari.jimdur.dto.PerfilUsuarioDTO;
 import com.diedari.jimdur.model.Usuario;
 import com.diedari.jimdur.model.Rol;
 import com.diedari.jimdur.repository.UsuarioRepository;
@@ -38,6 +39,61 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setRol(rolCliente);
         usuario.setEstadoCuenta("ACTIVA");
         usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public void actualizarPerfil(Long id, PerfilUsuarioDTO dto) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        usuario.setNombres(dto.getNombres());
+        usuario.setApellidos(dto.getApellidos());
+        usuario.setEmail(dto.getEmail());
+        usuario.setTelefono(dto.getTelefono());
+        usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public void actualizarFotoPerfil(Long id, String nombreImagen) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        usuario.setImagen(nombreImagen);
+        usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public PerfilUsuarioDTO obtenerPerfil(Long id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        return new PerfilUsuarioDTO(
+            usuario.getId(),
+            usuario.getNombres(),
+            usuario.getApellidos(),
+            usuario.getEmail(),
+            usuario.getTelefono(),
+            usuario.getImagen(),
+            usuario.getRol() != null ? usuario.getRol().getNombre() : null
+        );
+    }
+
+    @Override
+    public PerfilUsuarioDTO obtenerPerfilPorEmail(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow();
+        return new PerfilUsuarioDTO(
+            usuario.getId(),
+            usuario.getNombres(),
+            usuario.getApellidos(),
+            usuario.getEmail(),
+            usuario.getTelefono(),
+            usuario.getImagen(),
+            usuario.getRol() != null ? usuario.getRol().getNombre() : null
+        );
+    }
+
+    @Override
+    public Usuario obtenerUsuarioPorId(Long id) {
+        return usuarioRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Usuario buscarPorEmail(String email) {
+        return usuarioRepository.findByEmail(email).orElseThrow();
     }
 
 }

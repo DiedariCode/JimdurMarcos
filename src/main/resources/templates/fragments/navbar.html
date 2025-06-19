@@ -17,40 +17,33 @@
                         <button class="btn-icon position-relative" type="button" id="favoritosDropdown"
                             data-bs-toggle="dropdown" aria-expanded="false" aria-label="Ver favoritos">
                             <i class="fas fa-heart"></i>
-                            <span
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-count">
-                                2
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-count"
+                                  th:text="${favoritosNavbar != null ? favoritosNavbar.size() : 0}">
+                                0
                             </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="favoritosDropdown"
                             style="min-width: 300px;">
                             <h6 class="fw-bold mb-3">Mis Favoritos</h6>
-                            <!-- Favorite Item 1 -->
-                            <div class="cart-item d-flex align-items-center mb-2">
-                                <img th:src="@{/api/placeholder/40/40}" class="rounded me-3" alt="Producto Favorito">
-                                <div class="flex-grow-1">
-                                    <p class="mb-0 fw-bold small">Filtro de aceite</p>
-                                    <small class="text-muted">S/. 45.00</small>
-                                </div>
-                                <button class="btn btn-sm btn-icon text-danger"
-                                    aria-label="Eliminar Filtro de aceite de favoritos">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                            <div th:if="${favoritosNavbar != null and favoritosNavbar.empty}">
+                                <span class="text-muted">No tienes productos favoritos.</span>
                             </div>
-                            <!-- Favorite Item 2 -->
-                            <div class="cart-item d-flex align-items-center mb-3">
-                                <img th:src="@{/api/placeholder/40/40}" class="rounded me-3" alt="Producto Favorito">
+                            <div th:each="fav : ${favoritosNavbar != null ? favoritosNavbar : {}}" class="cart-item d-flex align-items-center mb-2">
+                                <img th:if="${fav.imagenPortada != null}" th:src="@{'/uploads/productos/' + ${fav.imagenPortada}}" class="rounded me-3" alt="Producto Favorito" style="width:40px;height:40px;object-fit:cover;">
+                                <img th:if="${fav.imagenPortada == null}" th:src="@{/image/no-image.png}" class="rounded me-3" alt="Producto Favorito" style="width:40px;height:40px;object-fit:cover;">
                                 <div class="flex-grow-1">
-                                    <p class="mb-0 fw-bold small">Kit de frenos</p>
-                                    <small class="text-muted">S/. 120.00</small>
+                                    <p class="mb-0 fw-bold small" th:text="${fav.nombreProducto != null ? fav.nombreProducto : fav.skuProducto}">Producto</p>
+                                    <small class="text-muted">SKU: <span th:text="${fav.skuProducto}"></span></small>
                                 </div>
-                                <button class="btn btn-sm btn-icon text-danger"
-                                    aria-label="Eliminar Kit de frenos de favoritos">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <form th:action="@{/user/favoritos/eliminar-navbar}" method="post" class="ms-2">
+                                    <input type="hidden" name="idFavorito" th:value="${fav.id}">
+                                    <button type="submit" class="btn btn-sm btn-icon text-danger" title="Eliminar de favoritos">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </div>
-                            <div class="d-grid">
-                                <a href="#" class="btn btn-sm btn-danger">Ver todos los favoritos</a>
+                            <div class="d-grid mt-2">
+                                <a th:href="@{/user/favoritos}" class="btn btn-sm btn-danger">Ver todos los favoritos</a>
                             </div>
                         </div>
                     </div>

@@ -39,6 +39,10 @@
 
     <main class="py-4">
         <div class="container">
+            <div th:if="${errorFavorito}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                <span th:text="${errorFavorito}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
             <!-- Breadcrumbs -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
@@ -143,9 +147,18 @@
                                     <i class="bi bi-cart"></i>
                                     Agregar al carrito
                                 </button>
-                                <button class="btn btn-outline-secondary" title="Agregar a favoritos">
-                                    <i class="bi bi-heart"></i>
-                                </button>
+                                <form th:if="${!esFavorito}" th:action="@{/user/favoritos/agregar-detalle}" method="post" class="ms-2">
+                                    <input type="hidden" name="idProducto" th:value="${producto.idProducto}" />
+                                    <button type="submit" class="btn btn-outline-danger" title="Añadir a favoritos">
+                                        <i class="bi bi-heart"></i> Añadir a Favoritos
+                                    </button>
+                                </form>
+                                <form th:if="${esFavorito}" th:action="@{/user/favoritos/eliminar-detalle}" method="post" class="ms-2">
+                                    <input type="hidden" name="idProducto" th:value="${producto.idProducto}" />
+                                    <button type="submit" class="btn btn-danger" title="Quitar de favoritos">
+                                        <i class="bi bi-heart-fill"></i> Quitar de Favoritos
+                                    </button>
+                                </form>
                                 <button class="btn btn-outline-secondary" title="Compartir">
                                     <i class="bi bi-share"></i>
                                 </button>
