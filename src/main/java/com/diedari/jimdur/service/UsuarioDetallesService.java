@@ -27,7 +27,7 @@ public class UsuarioDetallesService implements UserDetailsService {
         return new User(
                 usuario.getEmail(),
                 usuario.getContrasenaHash(),
-                List.of(new SimpleGrantedAuthority("ROLE_USER")) // Puedes cambiar o cargar el rol desde tu modelo
+                List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre()))
         );
     }
 }

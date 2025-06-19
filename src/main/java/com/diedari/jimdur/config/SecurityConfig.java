@@ -36,16 +36,14 @@ public class SecurityConfig {
                                                                 "/css/**",
                                                                 "/js/**",
                                                                 "/image/**",
-                                                                "/",
-                                                                "/admin/productos/api/**",
-                                                                "/admin/productos/crear",
-                                                                "/admin/productos/editar/**")
-                                                .permitAll()
+                                                                "/img/**",
+                                                                "/").permitAll()
+                                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
                                                 .loginPage("/user/login") // tu login web personalizado
                                                 .loginProcessingUrl("/user/login") // POST del formulario
-                                                .defaultSuccessUrl("/", false)
+                                                .defaultSuccessUrl("/", true)
                                                 .failureUrl("/user/login?error=true")
                                                 .permitAll())
                                 .logout(logout -> logout

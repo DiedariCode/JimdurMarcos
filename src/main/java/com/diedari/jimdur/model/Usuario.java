@@ -20,6 +20,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "Usuario")
@@ -58,10 +60,6 @@ public class Usuario {
     @Size(max = 255, message = "El teléfono no puede exceder 255 caracteres")
     private String telefono;
 
-    @Column(name = "rol", nullable = false)
-    @NotNull(message = "El rol es obligatorio")
-    private String rol;
-
     @Column(name = "estado_cuenta", nullable = false)
     @NotNull(message = "El estado de la cuenta es obligatorio")
     private String estadoCuenta;
@@ -79,4 +77,8 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pedido> pedidos;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rol_id", nullable = false)
+    private Rol rol;
 }
