@@ -1,8 +1,5 @@
 package com.diedari.jimdur.config;
 
-import com.diedari.jimdur.model.Rol;
-import com.diedari.jimdur.model.Vista;
-import com.diedari.jimdur.service.VistaService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,8 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.List;
+import com.diedari.jimdur.service.VistaService;
 
 @Configuration
 @EnableWebSecurity
@@ -30,41 +28,38 @@ public class SecurityConfig {
         }
 
         @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http, VistaService vistaService) throws Exception {
+        public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                        VistaService vistaService,
+                        FiltroAutorizacionDinamica filtroAutorizacionDinamica) throws Exception {
+
                 http
                                 .authorizeHttpRequests(authorize -> {
-                                        // Permisos públicos
+                                        // Rutas públicas
                                         authorize
                                                         .requestMatchers(
                                                                         "/uploads/**",
-                                                                        "/api/verification/**", // API de verificación es pública
+                                                                        "/api/verification/**",
                                                                         "/user/registro",
                                                                         "/css/**",
                                                                         "/js/**",
                                                                         "/image/**",
                                                                         "/img/**",
                                                                         "/",
-                                                                        "/productos/**", // Permitir ver productos a todos
+                                                                        "/productos/**",
                                                                         "/user/contacto",
                                                                         "/user/nosotros")
                                                         .permitAll();
 
-                                        // Reglas dinámicas desde la BD
-                                        List<Vista> vistas = vistaService.findAllWithRoles();
-                                        for (Vista vista : vistas) {
-                                                if (vista.getPath() != null && !vista.getRoles().isEmpty()) {
-                                                        String[] roles = vista.getRoles().stream().map(Rol::getNombre)
-                                                                        .toArray(String[]::new);
-                                                        authorize.requestMatchers(vista.getPath()).hasAnyRole(roles);
-                                                }
-                                        }
-
-                                        // Cualquier otra petición requiere autenticación
+                                        // Todo lo demás requiere autenticación
                                         authorize.anyRequest().authenticated();
                                 })
+                                // 🔐 Agregar filtro dinámico después del filtro de login
+                                .addFilterAfter(filtroAutorizacionDinamica, UsernamePasswordAuthenticationFilter.class)
+
+                                // Configuración de login
                                 .formLogin(form -> form
-                                                .loginPage("/user/login") // tu login web personalizado
-                                                .loginProcessingUrl("/user/login") // POST del formulario
+                                                .loginPage("/user/login")
+                                                .loginProcessingUrl("/user/login")
                                                 .defaultSuccessUrl("/", true)
                                                 .failureUrl("/user/login?error=true")
                                                 .permitAll())
@@ -73,8 +68,7 @@ public class SecurityConfig {
                                                 .logoutSuccessUrl("/")
                                                 .permitAll())
                                 .csrf(csrf -> csrf
-                                                .ignoringRequestMatchers("/api/**",
-                                                                "/admin/**"));
+                                                .ignoringRequestMatchers("/api/**", "/admin/**"));
 
                 return http.build();
         }

@@ -183,6 +183,12 @@
                                     <i class="bi bi-shield-check me-2 small"></i>Permisos de Vistas
                                 </a>
                             </li>
+                            <li class="nav-item mt-1">
+                                <a th:href="@{/admin/roles}" class="nav-link text-dark py-1"
+                                   th:classappend="${claseActiva == 'roles'} ? 'sub-active'">
+                                    <i class="bi bi-person-badge me-2 small"></i>Gestión de Roles
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

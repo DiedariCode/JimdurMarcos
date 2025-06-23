@@ -40,7 +40,7 @@ public class VistaController {
         Optional<Vista> vistaOpt = vistaService.findByIdWithRoles(id);
         if (vistaOpt.isPresent()) {
             model.addAttribute("vista", vistaOpt.get());
-            model.addAttribute("allRoles", rolService.findAll());
+            model.addAttribute("allRoles", rolService.listarTodos());
             return "admin/vistas/editar";
         } else {
             redirectAttributes.addFlashAttribute("mensaje", "Vista no encontrada");
@@ -56,7 +56,7 @@ public class VistaController {
             Vista vista = vistaOpt.get();
             Set<Rol> roles = new HashSet<>();
             if (rolesIds != null) {
-                List<Rol> allRoles = rolService.findAll();
+                List<Rol> allRoles = rolService.listarTodos();
                 roles = rolesIds.stream()
                         .map(rolId -> allRoles.stream().filter(r -> r.getId().equals(rolId)).findFirst())
                         .filter(Optional::isPresent)

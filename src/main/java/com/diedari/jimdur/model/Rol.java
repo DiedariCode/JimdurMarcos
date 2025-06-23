@@ -24,4 +24,7 @@ public class Rol {
 
     @ManyToMany(mappedBy = "roles")
     private Set<Usuario> usuarios;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<Vista> vistas;
 } 

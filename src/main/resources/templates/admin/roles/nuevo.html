@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nuevo Rol</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar.css}">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+        <main class="col-md-9 col-lg-10 ms-auto px-4 py-4 content-wrapper animate-fade">
+            <div class="d-flex justify-content-between align-items-center page-header mb-4">
+                <div>
+                    <h2>Nuevo Rol</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 mt-1">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard" class="text-decoration-none">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/roles" class="text-decoration-none">Roles</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Nuevo</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/admin/roles/guardar}" th:object="${rol}" method="post" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre del Rol</label>
+                            <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required />
+                            <div class="invalid-feedback">El nombre es obligatorio.</div>
+                            <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-danger small"></span>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Guardar</button>
+                            <a th:href="@{/admin/roles}" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+</body>
+</html> 
