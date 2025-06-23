@@ -12,6 +12,7 @@ import com.diedari.jimdur.model.Usuario;
 import com.diedari.jimdur.repository.UsuarioRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioDetallesService implements UserDetailsService {
@@ -24,10 +25,14 @@ public class UsuarioDetallesService implements UserDetailsService {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
 
+        List<SimpleGrantedAuthority> authorities = usuario.getRoles().stream()
+                .map(rol -> new SimpleGrantedAuthority("ROLE_" + rol.getNombre()))
+                .collect(Collectors.toList());
+
         return new User(
                 usuario.getEmail(),
                 usuario.getContrasenaHash(),
-                List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre()))
+                authorities
         );
     }
 }

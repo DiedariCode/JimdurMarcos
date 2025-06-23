@@ -1,5 +1,8 @@
 package com.diedari.jimdur.config;
 
+import com.diedari.jimdur.model.Rol;
+import com.diedari.jimdur.model.Vista;
+import com.diedari.jimdur.service.VistaService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -25,22 +30,38 @@ public class SecurityConfig {
         }
 
         @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        public SecurityFilterChain securityFilterChain(HttpSecurity http, VistaService vistaService) throws Exception {
                 http
-                                .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers(
-                                                                "/uploads/**",
-                                                                "/api/**",
-                                                                "/user/**",
-                                                                "/productos/**",
-                                                                "/user/registro",
-                                                                "/css/**",
-                                                                "/js/**",
-                                                                "/image/**",
-                                                                "/img/**",
-                                                                "/").permitAll()
-                                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                                .anyRequest().authenticated())
+                                .authorizeHttpRequests(authorize -> {
+                                        // Permisos públicos
+                                        authorize
+                                                        .requestMatchers(
+                                                                        "/uploads/**",
+                                                                        "/api/verification/**", // API de verificación es pública
+                                                                        "/user/registro",
+                                                                        "/css/**",
+                                                                        "/js/**",
+                                                                        "/image/**",
+                                                                        "/img/**",
+                                                                        "/",
+                                                                        "/productos/**", // Permitir ver productos a todos
+                                                                        "/user/contacto",
+                                                                        "/user/nosotros")
+                                                        .permitAll();
+
+                                        // Reglas dinámicas desde la BD
+                                        List<Vista> vistas = vistaService.findAllWithRoles();
+                                        for (Vista vista : vistas) {
+                                                if (vista.getPath() != null && !vista.getRoles().isEmpty()) {
+                                                        String[] roles = vista.getRoles().stream().map(Rol::getNombre)
+                                                                        .toArray(String[]::new);
+                                                        authorize.requestMatchers(vista.getPath()).hasAnyRole(roles);
+                                                }
+                                        }
+
+                                        // Cualquier otra petición requiere autenticación
+                                        authorize.anyRequest().authenticated();
+                                })
                                 .formLogin(form -> form
                                                 .loginPage("/user/login") // tu login web personalizado
                                                 .loginProcessingUrl("/user/login") // POST del formulario
@@ -49,14 +70,11 @@ public class SecurityConfig {
                                                 .permitAll())
                                 .logout(logout -> logout
                                                 .logoutUrl("/user/logout")
-                                                // .logoutSuccessUrl("/auth/login?logout=true")
                                                 .logoutSuccessUrl("/")
                                                 .permitAll())
                                 .csrf(csrf -> csrf
-                                                .ignoringRequestMatchers("/api/verification/**", 
-                                                                       "/admin/productos/api/**",
-                                                                       "/admin/productos/crear",
-                                                                       "/admin/productos/editar/**")); // Ignorar CSRF para API
+                                                .ignoringRequestMatchers("/api/**",
+                                                                "/admin/**"));
 
                 return http.build();
         }

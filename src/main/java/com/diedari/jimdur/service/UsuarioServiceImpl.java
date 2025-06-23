@@ -1,6 +1,7 @@
 package com.diedari.jimdur.service;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +37,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setContrasenaHash(passwordEncoder.encode(dto.getContrasena()));
         usuario.setFechaRegistro(LocalDateTime.now());
         Rol rolCliente = rolRepository.findByNombre("CLIENTE").orElseThrow(() -> new RuntimeException("Rol CLIENTE no encontrado"));
-        usuario.setRol(rolCliente);
+        usuario.setRoles(Set.of(rolCliente));
         usuario.setEstadoCuenta("ACTIVA");
         usuarioRepository.save(usuario);
     }
@@ -68,7 +69,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuario.getEmail(),
             usuario.getTelefono(),
             usuario.getImagen(),
-            usuario.getRol() != null ? usuario.getRol().getNombre() : null
+            usuario.getRoles() != null && !usuario.getRoles().isEmpty() ? usuario.getRoles().iterator().next().getNombre() : null
         );
     }
 
@@ -82,7 +83,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuario.getEmail(),
             usuario.getTelefono(),
             usuario.getImagen(),
-            usuario.getRol() != null ? usuario.getRol().getNombre() : null
+            usuario.getRoles() != null && !usuario.getRoles().isEmpty() ? usuario.getRoles().iterator().next().getNombre() : null
         );
     }
 
