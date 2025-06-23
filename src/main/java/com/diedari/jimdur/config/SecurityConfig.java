@@ -30,9 +30,10 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers(
                                                                 "/uploads/**",
-                                                                "/auth/**",
                                                                 "/api/**",
                                                                 "/user/**",
+                                                                "/productos/**",
+                                                                "/user/registro",
                                                                 "/css/**",
                                                                 "/js/**",
                                                                 "/image/**",

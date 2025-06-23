@@ -26,10 +26,11 @@ public class DataLoader implements CommandLineRunner {
         Rol clienteRol = rolRepository.findByNombre("CLIENTE")
                 .orElseGet(() -> rolRepository.save(Rol.builder().nombre("CLIENTE").build()));
 
+
         // Crear usuario admin si no existe
         if (!usuarioRepository.existsByEmail("admin@demo.com")) {
             Usuario admin = Usuario.builder()
-                    .nombres("Admin")
+                    .nombres("Admin")   
                     .apellidos("Demo")
                     .email("admin@demo.com")
                     .contrasenaHash(passwordEncoder.encode("admin123"))

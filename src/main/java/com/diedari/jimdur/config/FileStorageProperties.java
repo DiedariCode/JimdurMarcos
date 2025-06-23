@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import lombok.Data;
 
+// Para leer valores predeterminados del properties
 @Configuration
 @ConfigurationProperties(prefix = "file.upload")
 @Data
