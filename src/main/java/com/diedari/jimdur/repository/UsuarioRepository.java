@@ -20,6 +20,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     // Método para verificar si un email ya existe
     boolean existsByEmail(String email);
 
-    // Método para buscar usuarios por roles
-    List<Usuario> findByRoles_NombreIn(Set<String> nombres);
+    @Query("SELECT DISTINCT u FROM Usuario u LEFT JOIN FETCH u.roles r WHERE r.nombre <> 'CLIENTE'")
+    List<Usuario> findTrabajadores();
+    
+    @Query("SELECT u FROM Usuario u LEFT JOIN FETCH u.roles WHERE EXISTS (SELECT r FROM u.roles r WHERE r.nombre = 'CLIENTE') AND NOT EXISTS (SELECT r2 FROM u.roles r2 WHERE r2.nombre <> 'CLIENTE')")
+    List<Usuario> findClientesPuros();
 }

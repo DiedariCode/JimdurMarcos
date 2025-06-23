@@ -101,17 +101,17 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public List<Usuario> findAllTrabajadores() {
-        return usuarioRepository.findByRoles_NombreIn(Set.of("ADMIN", "GESTOR_PRODUCTOS"));
+        return usuarioRepository.findTrabajadores();
     }
 
     @Override
     public List<Usuario> findAllClientes() {
-        return usuarioRepository.findByRoles_NombreIn(Set.of("CLIENTE"));
+        return usuarioRepository.findClientesPuros();
     }
 
     @Override
     public List<Rol> findAllTrabajadorRoles() {
-        return rolRepository.findByNombreIn(Set.of("ADMIN", "GESTOR_PRODUCTOS"));
+        return rolRepository.findByNombreNotIn(Set.of("CLIENTE"));
     }
 
     @Override

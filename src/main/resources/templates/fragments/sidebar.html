@@ -44,7 +44,10 @@
                         th:classappend="${claseActiva == 'productos' 
                         || claseActiva == 'agregar' 
                         || claseActiva == 'categoria' 
-                        || claseActiva == 'marca' || claseActiva == 'proveedor'}
+                        || claseActiva == 'marca' 
+                        || claseActiva == 'proveedor'
+                        || claseActiva == 'agregar'
+                    }
                          ? 'active'">
                         <i class="bi bi-box-seam me-2"></i>
                         <span>Productos</span>
@@ -89,17 +92,9 @@
 
                 <li class="nav-item mb-2">
                     <a th:href="@{/admin/usuarios}" class="nav-link text-dark d-flex align-items-center"
-                        th:classappend="${claseActiva == 'usuario'} ? 'active'">
+                        th:classappend="${claseActiva == 'usuarios'} ? 'active'">
                         <i class="bi bi-people-fill me-2"></i>
                         <span>Usuarios</span>
-                    </a>
-                </li>
-
-                <li class="nav-item mb-2">
-                    <a th:href="@{/admin/usuarios}" class="nav-link text-dark d-flex align-items-center"
-                        th:classappend="${claseActiva == 'clientes'} ? 'active'">
-                        <i class="bi bi-person-fill me-2"></i>
-                        <span>Clientes</span>
                     </a>
                 </li>
 
@@ -129,7 +124,7 @@
                             </li>
                             <li class="nav-item">
                                 <a th:href="@{/admin/productos/agregar}" class="nav-link text-dark py-1"
-                                    th:classappend="${claseActiva == 'agregar'} ? 'sub-active'">
+                                    th:classappend="${claseActiva == ''} ? 'sub-active'">
                                     <i class="bi bi-plus-circle me-2 small"></i>Movimientos
                                 </a>
                             </li>

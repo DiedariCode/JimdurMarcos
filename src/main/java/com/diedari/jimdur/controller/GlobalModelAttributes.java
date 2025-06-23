@@ -15,6 +15,8 @@ import com.diedari.jimdur.model.Usuario;
 import com.diedari.jimdur.service.FavoritoService;
 import com.diedari.jimdur.service.UsuarioService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @ControllerAdvice
 public class GlobalModelAttributes {
 
@@ -46,5 +48,42 @@ public class GlobalModelAttributes {
         } catch (Exception e) {
             model.addAttribute("favoritosNavbar", Collections.emptyList());
         }
+    }
+
+    // PARA LA SIDERBAR
+    @ModelAttribute
+    public void setClaseActiva(Model model, HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        String claseActiva = "";
+
+        if (uri.contains("/admin/usuarios")) {
+            claseActiva = "usuarios";
+        } else if (uri.contains("/admin/productos/nuevo")) {
+            claseActiva = "agregar";
+        } else if (uri.contains("/admin/productos")) {
+            claseActiva = "productos";
+        } else if (uri.contains("/admin/proveedor")) {
+            claseActiva = "proveedor";
+        } else if (uri.contains("/admin/categorias")) {
+            claseActiva = "categoria";
+        } else if (uri.contains("/admin/marca")) {
+            claseActiva = "marca";
+        } else if (uri.contains("/admin/ubicacion")) {
+            claseActiva = "ubicaciones";
+        } else if (uri.contains("/admin/estados")) {
+            claseActiva = "estados";
+        } else if (uri.contains("/admin/reportes/ventas")) {
+            claseActiva = "ventas";
+        } else if (uri.contains("/admin/reportes/stock")) {
+            claseActiva = "stock";
+        } else if (uri.contains("/admin/vistas")) {
+            claseActiva = "vistas";
+        } else if (uri.contains("/admin/roles")) {
+            claseActiva = "roles";
+        } else if (uri.equals("/") || uri.contains("/admin")) {
+            claseActiva = "inicio";
+        }
+
+        model.addAttribute("claseActiva", claseActiva);
     }
 }

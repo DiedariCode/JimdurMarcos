@@ -49,6 +49,8 @@ public class UsuarioController {
     public String listarUsuarios(Model model) {
         model.addAttribute("trabajadores", usuarioService.findAllTrabajadores());
         model.addAttribute("clientes", usuarioService.findAllClientes());
+
+        model.addAttribute("claseActiva", "usuarios");
         return "admin/usuarios/listar";
     }
 
@@ -56,6 +58,8 @@ public class UsuarioController {
     public String mostrarFormularioNuevoTrabajador(Model model) {
         model.addAttribute("trabajador", new RegistroUsuarioDTO());
         model.addAttribute("roles", usuarioService.findAllTrabajadorRoles());
+
+        model.addAttribute("claseActiva", "usuarios");
         return "admin/usuarios/nuevo";
     }
 
@@ -75,6 +79,8 @@ public class UsuarioController {
     public String mostrarFormularioEditarTrabajador(@PathVariable Long id, Model model) {
         model.addAttribute("trabajador", usuarioService.obtenerUsuarioParaEditar(id));
         model.addAttribute("roles", usuarioService.findAllTrabajadorRoles());
+
+        model.addAttribute("claseActiva", "usuarios");
         return "admin/usuarios/editar";
     }
 
