@@ -1,6 +1,8 @@
 package com.diedari.jimdur.repository;
 
 import java.util.Optional;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +19,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     // Método para verificar si un email ya existe
     boolean existsByEmail(String email);
+
+    // Método para buscar usuarios por roles
+    List<Usuario> findByRoles_NombreIn(Set<String> nombres);
 }

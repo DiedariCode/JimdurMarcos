@@ -2,7 +2,10 @@ package com.diedari.jimdur.service;
 
 import com.diedari.jimdur.dto.RegistroUsuarioDTO;
 import com.diedari.jimdur.dto.PerfilUsuarioDTO;
+import com.diedari.jimdur.model.Rol;
 import com.diedari.jimdur.model.Usuario;
+
+import java.util.List;
 
 public interface UsuarioService {
 
@@ -19,5 +22,12 @@ public interface UsuarioService {
     PerfilUsuarioDTO obtenerPerfilPorEmail(String email);
     Usuario buscarPorEmail(String email);
     Usuario obtenerUsuarioPorId(Long id);
+
+    List<Usuario> findAllTrabajadores();
+    List<Usuario> findAllClientes();
+    List<Rol> findAllTrabajadorRoles();
+    void crearTrabajador(RegistroUsuarioDTO dto);
+    void actualizarTrabajador(Long id, RegistroUsuarioDTO dto);
+    RegistroUsuarioDTO obtenerUsuarioParaEditar(Long id);
 }
 

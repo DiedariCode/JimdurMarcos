@@ -2,6 +2,8 @@ package com.diedari.jimdur.service;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -95,6 +97,74 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario buscarPorEmail(String email) {
         return usuarioRepository.findByEmail(email).orElseThrow();
+    }
+
+    @Override
+    public List<Usuario> findAllTrabajadores() {
+        return usuarioRepository.findByRoles_NombreIn(Set.of("ADMIN", "GESTOR_PRODUCTOS"));
+    }
+
+    @Override
+    public List<Usuario> findAllClientes() {
+        return usuarioRepository.findByRoles_NombreIn(Set.of("CLIENTE"));
+    }
+
+    @Override
+    public List<Rol> findAllTrabajadorRoles() {
+        return rolRepository.findByNombreIn(Set.of("ADMIN", "GESTOR_PRODUCTOS"));
+    }
+
+    @Override
+    public void crearTrabajador(RegistroUsuarioDTO dto) {
+        Usuario usuario = new Usuario();
+        usuario.setNombres(dto.getNombres());
+        usuario.setApellidos(dto.getApellidos());
+        usuario.setEmail(dto.getEmail());
+        usuario.setTelefono(dto.getTelefono());
+        usuario.setContrasenaHash(passwordEncoder.encode(dto.getContrasena()));
+        usuario.setFechaRegistro(LocalDateTime.now());
+        if (dto.getRoles() != null && !dto.getRoles().isEmpty()) {
+            Set<Rol> roles = rolRepository.findByIdIn(dto.getRoles());
+            usuario.setRoles(roles);
+        }
+        usuario.setEstadoCuenta("ACTIVO");
+        usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public void actualizarTrabajador(Long id, RegistroUsuarioDTO dto) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        usuario.setNombres(dto.getNombres());
+        usuario.setApellidos(dto.getApellidos());
+        usuario.setEmail(dto.getEmail());
+        usuario.setTelefono(dto.getTelefono());
+
+        // Actualizar contraseña solo si se proporciona una nueva
+        if (dto.getContrasena() != null && !dto.getContrasena().isEmpty()) {
+            usuario.setContrasenaHash(passwordEncoder.encode(dto.getContrasena()));
+        }
+
+        if (dto.getRoles() != null && !dto.getRoles().isEmpty()) {
+            Set<Rol> roles = rolRepository.findByIdIn(dto.getRoles());
+            usuario.setRoles(roles);
+        }
+
+        usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public RegistroUsuarioDTO obtenerUsuarioParaEditar(Long id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        RegistroUsuarioDTO dto = new RegistroUsuarioDTO();
+        dto.setId(usuario.getId());
+        dto.setNombres(usuario.getNombres());
+        dto.setApellidos(usuario.getApellidos());
+        dto.setEmail(usuario.getEmail());
+        dto.setTelefono(usuario.getTelefono());
+        if (usuario.getRoles() != null) {
+            dto.setRoles(usuario.getRoles().stream().map(Rol::getId).collect(Collectors.toSet()));
+        }
+        return dto;
     }
 
 }
