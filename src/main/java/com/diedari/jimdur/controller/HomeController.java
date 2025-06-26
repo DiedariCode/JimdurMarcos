@@ -1,16 +1,31 @@
 package com.diedari.jimdur.controller;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.diedari.jimdur.model.Categoria;
+import com.diedari.jimdur.model.Permiso;
+import com.diedari.jimdur.model.Rol;
+import com.diedari.jimdur.model.Usuario;
 import com.diedari.jimdur.dto.ProductoDTO;
+import com.diedari.jimdur.repository.UsuarioRepository;
 import com.diedari.jimdur.service.CategoriaService;
 import com.diedari.jimdur.service.MarcaService;
 import com.diedari.jimdur.service.ProductoService;
@@ -18,6 +33,8 @@ import com.diedari.jimdur.service.ProductoService;
 @Controller
 @RequestMapping("/")
 public class HomeController {
+
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @Autowired
     private ProductoService productoService;
@@ -27,6 +44,9 @@ public class HomeController {
 
     @Autowired
     private MarcaService marcaService;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping
     public String index(Model model) {
@@ -82,5 +102,70 @@ public class HomeController {
         }
         model.addAttribute("producto", producto);
         return "/user/detalle-producto";
+    }
+
+    @GetMapping("/acceso-denegado")
+    public String accesoDenegado(Model model) {
+        logger.warn("Un usuario intentó acceder a una página sin los permisos necesarios.");
+        model.addAttribute("titulo", "Acceso Denegado");
+        return "acceso-denegado";
+    }
+
+    @GetMapping("/debug/permisos")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> debugPermisos(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).body(Map.of("error", "No autenticado"));
+        }
+        
+        Map<String, Object> info = new HashMap<>();
+        info.put("usuario", authentication.getName());
+        info.put("authorities", authentication.getAuthorities().stream()
+            .map(auth -> auth.getAuthority())
+            .collect(Collectors.toList()));
+        info.put("roles", authentication.getAuthorities().stream()
+            .map(auth -> auth.getAuthority())
+            .filter(auth -> auth.startsWith("ROLE_"))
+            .collect(Collectors.toList()));
+        info.put("permisos", authentication.getAuthorities().stream()
+            .map(auth -> auth.getAuthority())
+            .filter(auth -> !auth.startsWith("ROLE_"))
+            .collect(Collectors.toList()));
+        
+        return ResponseEntity.ok(info);
+    }
+
+    @GetMapping("/admin/debug/usuario-actual")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> debugUsuarioActual(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).body(Map.of("error", "No autenticado"));
+        }
+        
+        // Obtener usuario actualizado de la base de datos
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(authentication.getName());
+        if (!usuarioOpt.isPresent()) {
+            return ResponseEntity.status(404).body(Map.of("error", "Usuario no encontrado"));
+        }
+        
+        Usuario usuario = usuarioOpt.get();
+        Map<String, Object> info = new HashMap<>();
+        info.put("emailActual", authentication.getName());
+        info.put("permisosEnSesion", authentication.getAuthorities().stream()
+            .map(auth -> auth.getAuthority())
+            .filter(auth -> !auth.startsWith("ROLE_"))
+            .sorted()
+            .collect(Collectors.toList()));
+        
+        // Obtener permisos actuales de la base de datos
+        Set<String> permisosDB = new HashSet<>();
+        for (Rol rol : usuario.getRoles()) {
+            for (Permiso permiso : rol.getPermisos()) {
+                permisosDB.add(permiso.getNombre());
+            }
+        }
+        info.put("permisosEnBaseDatos", permisosDB.stream().sorted().collect(Collectors.toList()));
+        
+        return ResponseEntity.ok(info);
     }
 }

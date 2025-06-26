@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Rol - Jimdur</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar.css}">
+    
+    <style>
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: white;
+            padding: 1rem;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+        
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div th:replace="fragments/sidebar :: sidebar" class="sidebar"></div>
+        
+        <!-- Contenido principal -->
+        <div class="col-md-9 col-lg-10 py-4 px-5 ms-auto">
+            <div class="container-fluid">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h1 class="h3 mb-0">Crear Nuevo Rol</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a th:href="@{/admin/roles}">Roles</a></li>
+                                <li class="breadcrumb-item active">Nuevo</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Formulario -->
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-plus-circle me-2"></i>Información del Rol
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <form th:action="@{/admin/roles/guardar}" th:object="${rol}" method="post">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="nombre" class="form-label">Nombre del Rol *</label>
+                                                <input type="text" 
+                                                       class="form-control" 
+                                                       id="nombre" 
+                                                       th:field="*{nombre}" 
+                                                       th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid' : ''"
+                                                       placeholder="Ej: ADMINISTRADOR">
+                                                <div th:if="${#fields.hasErrors('nombre')}" 
+                                                     class="invalid-feedback" 
+                                                     th:errors="*{nombre}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="activo" class="form-label">Estado</label>
+                                                <select class="form-select" id="activo" th:field="*{activo}">
+                                                    <option th:value="true" th:selected="*{activo}">Activo</option>
+                                                    <option th:value="false" th:selected="!*{activo}">Inactivo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="descripcion" class="form-label">Descripción</label>
+                                        <textarea class="form-control" 
+                                                  id="descripcion" 
+                                                  th:field="*{descripcion}" 
+                                                  rows="3"
+                                                  placeholder="Describe las responsabilidades de este rol..."></textarea>
+                                    </div>
+                                    
+                                    <!-- Selección de Permisos -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Permisos Asignados</label>
+                                        <div class="permissions-grid" th:if="${permisos}">
+                                            <div th:each="permiso : ${permisos}" class="form-check">
+                                                <input class="form-check-input" 
+                                                       type="checkbox" 
+                                                       th:id="'permiso_' + ${permiso.id}"
+                                                       name="permisos" 
+                                                       th:value="${permiso.id}">
+                                                <label class="form-check-label" 
+                                                       th:for="'permiso_' + ${permiso.id}">
+                                                    <strong th:text="${permiso.nombre}"></strong>
+                                                    <small class="text-muted d-block" th:text="${permiso.descripcion}"></small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Botones para seleccionar/deseleccionar todos -->
+                                        <div class="mt-3">
+                                            <button type="button" class="btn btn-sm btn-outline-primary me-2" onclick="seleccionarTodos()">
+                                                <i class="fas fa-check-double"></i> Seleccionar Todos
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deseleccionarTodos()">
+                                                <i class="fas fa-times"></i> Deseleccionar Todos
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between">
+                                        <a th:href="@{/admin/roles}" class="btn btn-secondary">
+                                            <i class="fas fa-arrow-left me-2"></i>Volver
+                                        </a>
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-save me-2"></i>Guardar Rol
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="fas fa-info-circle me-2"></i>Información
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <small class="text-muted">Permisos Seleccionados:</small>
+                                    <div id="permisosCount">0</div>
+                                </div>
+                                <hr>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    <strong>Tip:</strong> Los permisos definen qué acciones puede realizar un usuario con este rol.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function seleccionarTodos() {
+            const checkboxes = document.querySelectorAll('input[name="permisos"]');
+            checkboxes.forEach(checkbox => checkbox.checked = true);
+            updatePermissionCount();
+        }
+        
+        function deseleccionarTodos() {
+            const checkboxes = document.querySelectorAll('input[name="permisos"]');
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+            updatePermissionCount();
+        }
+        
+        function updatePermissionCount() {
+            const checkedBoxes = document.querySelectorAll('input[name="permisos"]:checked');
+            document.getElementById('permisosCount').textContent = checkedBoxes.length;
+        }
+        
+        // Actualizar contador al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePermissionCount();
+            
+            // Agregar listeners a todos los checkboxes
+            document.querySelectorAll('input[name="permisos"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updatePermissionCount);
+            });
+        });
+    </script>
+</body>
+</html> 

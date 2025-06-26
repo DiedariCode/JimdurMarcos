@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/proveedor")
+@PreAuthorize("hasAuthority('LEER_PROVEEDORES')")
 public class ProveedorController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProveedorController.class);
@@ -89,12 +91,14 @@ public class ProveedorController {
     }
 
     @GetMapping("/agregar")
+    @PreAuthorize("hasAuthority('CREAR_PROVEEDORES')")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("proveedorDTO", new AgregarProveedorDTO());
         return "admin/proveedor/nuevo";
     }
 
     @PostMapping("/agregar")
+    @PreAuthorize("hasAuthority('CREAR_PROVEEDORES')")
     public String agregarProveedor(@Valid @ModelAttribute AgregarProveedorDTO proveedorDTO, 
                                  BindingResult result,
                                  Model model,
@@ -121,6 +125,7 @@ public class ProveedorController {
     }
 
     @GetMapping("/{id}/editar")
+    @PreAuthorize("hasAuthority('EDITAR_PROVEEDORES')")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         logger.debug("Mostrando formulario de edición para proveedor ID: {}", id);
         try {
@@ -145,6 +150,7 @@ public class ProveedorController {
     }
 
     @PostMapping("/{id}/editar")
+    @PreAuthorize("hasAuthority('EDITAR_PROVEEDORES')")
     public String editarProveedor(@PathVariable Long id, 
                                 @Valid @ModelAttribute("proveedorDTO") AgregarProveedorDTO proveedorDTO,
                                 BindingResult result,

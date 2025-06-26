@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/admin/productos")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('LEER_PRODUCTOS')")
 public class ProductoController {
 
     private final ProductoService productoService;
@@ -89,6 +91,7 @@ public class ProductoController {
     }
 
     @GetMapping("/nuevo")
+    @PreAuthorize("hasAuthority('CREAR_PRODUCTOS')")
     public String mostrarFormularioNuevo(Model model) {
         ProductoDTO producto = new ProductoDTO();
         producto.setActivo(true); // Por defecto activo
@@ -108,6 +111,7 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}/editar")
+    @PreAuthorize("hasAuthority('EDITAR_PRODUCTOS')")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
         try {
             ProductoDTO producto = productoService.obtenerProductoPorId(id);
@@ -155,6 +159,7 @@ public class ProductoController {
     }
 
     @PostMapping("/{id}/eliminar")
+    @PreAuthorize("hasAuthority('DESACTIVAR_PRODUCTOS')")
     public String eliminarProducto(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             productoService.eliminarProducto(id);

@@ -14,4 +14,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     // Método para verificar si un email ya existe
     boolean existsByEmail(String email);
+    
+    // Método para verificar si un email ya existe excluyendo un ID específico
+    boolean existsByEmailAndIdNot(String email, Long id);
 }

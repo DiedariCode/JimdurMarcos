@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import com.diedari.jimdur.service.MarcaService;
 
 @Controller
 @RequestMapping("/admin/marca")
+@PreAuthorize("hasAuthority('LEER_MARCAS')")
 public class MarcaController {
     @Autowired
     private MarcaService marcaService;
@@ -67,12 +69,14 @@ public class MarcaController {
     }
     
     @GetMapping("/agregar")
+    @PreAuthorize("hasAuthority('CREAR_MARCAS')")
     public String agregarMarca(Model model) {
         model.addAttribute("marca", new Marca());
         return "admin/marca/nueva";
     }
 
     @PostMapping("/agregar")
+    @PreAuthorize("hasAuthority('CREAR_MARCAS')")
     public String guardarMarca(@ModelAttribute Marca marca, RedirectAttributes redirectAttributes) {
         try {
             marcaService.guardarMarcaNuevo(marca);
@@ -86,6 +90,7 @@ public class MarcaController {
     } 
 
     @GetMapping("/editar/{id}")
+    @PreAuthorize("hasAuthority('EDITAR_MARCAS')")
     public String editarMarcaForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
             Marca marca = marcaService.obtenerMarcaPorId(id);
@@ -104,6 +109,7 @@ public class MarcaController {
     }
 
     @PostMapping("/editar/{id}")
+    @PreAuthorize("hasAuthority('EDITAR_MARCAS')")
     public String editarMarca(@PathVariable Long id, @ModelAttribute Marca marca, RedirectAttributes redirectAttributes) {
         try {
             Marca actual = marcaService.obtenerMarcaPorId(id);
@@ -129,6 +135,7 @@ public class MarcaController {
     }
     
     @PostMapping("/eliminar/{id}")
+    @PreAuthorize("hasAuthority('DESACTIVAR_MARCAS')")
     public String eliminarMarca(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             marcaService.eliminarMarca(id);

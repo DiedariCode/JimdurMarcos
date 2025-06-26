@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import com.diedari.jimdur.service.ProductoService;
 
 @Controller
 @RequestMapping("/admin/categorias")
+@PreAuthorize("hasAuthority('LEER_CATEGORIAS')")
 public class CategoriaController {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoriaController.class);
@@ -85,6 +87,7 @@ public class CategoriaController {
 
     // Esto es para agregar una nueva categoria
     @GetMapping("/agregar")
+    @PreAuthorize("hasAuthority('CREAR_CATEGORIAS')")
     public String nuevaCategoriaForm(Model model) {
         model.addAttribute("categoria", new Categoria());
         model.addAttribute("productos", productoService.obtenerTodosLosProductos()); // Vista para agregar categoria
@@ -93,6 +96,7 @@ public class CategoriaController {
 
     // Esto es para guardar una nueva categoria
     @PostMapping("/agregar")
+    @PreAuthorize("hasAuthority('CREAR_CATEGORIAS')")
     public String guardarCategoria(@ModelAttribute Categoria categoria, RedirectAttributes redirectAttributes) {
         try {
             categoriaService.crearCategoria(categoria);
@@ -108,6 +112,7 @@ public class CategoriaController {
 
     // Esto es para editar una categoria por su ID
     @GetMapping("/editar/{id}")
+    @PreAuthorize("hasAuthority('EDITAR_CATEGORIAS')")
     public String editarCategoriaForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
             Categoria categoria = categoriaService.obtenerCategoriaPorId(id);
@@ -129,6 +134,7 @@ public class CategoriaController {
 
     // Esto es para guardar los cambios de la categoria editada
     @PostMapping("/editar/{id}")
+    @PreAuthorize("hasAuthority('EDITAR_CATEGORIAS')")
     public String editarCategoria(@PathVariable Long id, @ModelAttribute Categoria categoria, RedirectAttributes redirectAttributes) {
         try {
             Categoria categoriaExistente = categoriaService.obtenerCategoriaPorId(id);
@@ -154,6 +160,7 @@ public class CategoriaController {
 
     // Esto es para eliminar una categoria por su ID
     @GetMapping("/eliminar/{id}")
+    @PreAuthorize("hasAuthority('DESACTIVAR_CATEGORIAS')")
     public String eliminarCategoria(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             Categoria categoria = categoriaService.obtenerCategoriaPorId(id);
