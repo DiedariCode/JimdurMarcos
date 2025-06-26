@@ -1,62 +1,65 @@
 package com.diedari.jimdur.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-
-import com.diedari.jimdur.model.Usuario;
-import com.diedari.jimdur.model.Rol;
 import com.diedari.jimdur.model.Permiso;
+import com.diedari.jimdur.model.Rol;
+import com.diedari.jimdur.model.Usuario;
 import com.diedari.jimdur.repository.UsuarioRepository;
 
-import java.util.ArrayList;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UsuarioDetallesService implements UserDetailsService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+
+    public UsuarioDetallesService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("Usuario no encontrado con el email: " + email));
 
-        // Verificar que el usuario esté activo
-        if (!"ACTIVO".equals(usuario.getEstadoCuenta())) {
+        // Verifica que el usuario esté activo (según tu lógica)
+        if (!"ACTIVO".equalsIgnoreCase(usuario.getEstadoCuenta())) {
             throw new UsernameNotFoundException("Usuario inactivo: " + email);
         }
 
         return new User(
                 usuario.getEmail(),
                 usuario.getContrasenaHash(),
-                getAuthorities(usuario.getRoles())
+                usuario.isHabilitado(),  // enabled
+                true,                    // accountNonExpired
+                true,                    // credentialsNonExpired
+                true,                    // accountNonLocked
+                mapRolesAndPermissionsToAuthorities(usuario.getRoles())
         );
     }
 
     /**
-     * Convierte los roles y permisos del usuario en authorities de Spring Security
+     * Convierte roles y permisos en authorities.
      */
-    private Collection<SimpleGrantedAuthority> getAuthorities(Set<Rol> roles) {
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        
-        for (Rol rol : roles) {
-            // Agregar el rol como authority
-            authorities.add(new SimpleGrantedAuthority(rol.getNombre()));
-            
-            // Agregar todos los permisos del rol como authorities
-            for (Permiso permiso : rol.getPermisos()) {
-                authorities.add(new SimpleGrantedAuthority(permiso.getNombre()));
-            }
-        }
-        
-        return authorities;
+    private Collection<? extends GrantedAuthority> mapRolesAndPermissionsToAuthorities(Set<Rol> roles) {
+        Stream<GrantedAuthority> rolesStream = roles.stream()
+                .map(rol -> new SimpleGrantedAuthority(rol.getNombre()));
+
+        Stream<GrantedAuthority> permisosStream = roles.stream()
+                .flatMap(rol -> rol.getPermisos().stream())
+                .map(permiso -> new SimpleGrantedAuthority(permiso.getNombre()));
+
+        return Stream.concat(rolesStream, permisosStream)
+                .collect(Collectors.toSet()); // Evita duplicados
     }
 }
-

@@ -89,4 +89,9 @@ public class Usuario {
         inverseJoinColumns = @JoinColumn(name = "rol_id")
     )
     private Set<Rol> roles;
+
+    public boolean isHabilitado() {
+        return "ACTIVO".equalsIgnoreCase(this.estadoCuenta);
+    }
+    
 }

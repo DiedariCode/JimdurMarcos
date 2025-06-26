@@ -34,7 +34,7 @@ public class SecurityConfig {
                                                 // --- 1. Recursos públicos ---
                                                 .requestMatchers("/css/**", "/js/**", "/image/**", "/img/**", 
                                                                "/uploads/**", "/webjars/**", "/favicon.ico").permitAll()
-                                                .requestMatchers("/", "/auth/**", "/user/login", "/user/register", 
+                                                .requestMatchers("/", "/auth/**", "/user/login", "/user/registro", 
                                                                "/user/productos", "/user/contacto", "/user/nosotros").permitAll()
                                                 .requestMatchers("/api/verification/**").permitAll()
                                                 
@@ -142,7 +142,7 @@ public class SecurityConfig {
                                 .formLogin(form -> form
                                                 .loginPage("/user/login")
                                                 .loginProcessingUrl("/user/login")
-                                                .defaultSuccessUrl("/admin", true)
+                                                .defaultSuccessUrl("/admin/productos", true)
                                                 .failureUrl("/user/login?error=true")
                                                 .permitAll())
                                 .logout(logout -> logout
