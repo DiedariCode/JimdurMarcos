@@ -418,14 +418,4 @@ public class ProductoServiceImpl implements ProductoService {
         // Eliminar el registro de la base de datos
         imagenProductoRepository.delete(imagen);
     }
-    public UbicacionDTO convertirAUbicacionDTO(Ubicaciones ubicacion) {
-        return UbicacionDTO.builder()
-            .idUbicacion(ubicacion.getIdUbicacion())
-            .nombre(ubicacion.getNombre())
-            .descripcion(ubicacion.getDescripcion())
-            .codigo(ubicacion.getCodigo())
-            .capacidad(ubicacion.getCapacidad())
-            .tipoUbicacion(ubicacion.getTipoUbicacion())
-            .build();
-    }
 }

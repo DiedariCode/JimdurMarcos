@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Inventario - Jimdur Admin</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+    
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <style>
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border: 1px solid rgba(0, 0, 0, 0.125);
+        }
+        
+        .btn-group-sm > .btn, .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .invalid-feedback {
+            display: block;
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+        
+        .border-4 {
+            border-width: 4px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+            <!-- Content -->
+            <main class="col-md-9 col-lg-10 py-4 px-5 ms-auto">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">
+                        <i class="fas fa-plus-circle text-primary me-2"></i>
+                        Nuevo Inventario
+                    </h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <a th:href="@{/admin/inventario}" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Volver al Inventario
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario -->
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-clipboard-list me-2"></i>
+                            Información del Inventario
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Información sobre precios y campos -->
+                        <div class="alert alert-light border-start border-4 border-primary mb-4">
+                            <h6 class="fw-bold text-primary mb-2">💡 Información Importante</h6>
+                            <small class="text-muted">
+                                <strong>Valor Unitario:</strong> Es el precio real que pagaste al comprar este lote específico. Puede incluir descuentos, promociones o costos adicionales.<br>
+                                <strong>Precio de Venta:</strong> Es el precio al público definido en el producto (para referencia de ganancia).<br>
+                                <strong>Ubicación:</strong> Lugar físico en tu almacén donde guardarás este inventario.
+                            </small>
+                        </div>
+
+                        <form th:action="@{/admin/inventario/guardar}" th:object="${inventario}" method="post" class="needs-validation" novalidate>
+                            
+                            <div class="row">
+                                <!-- Producto -->
+                                <div class="col-md-6">
+                                    <label for="producto" class="form-label">
+                                        📦 Producto <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" th:field="*{idProducto}" id="producto" required>
+                                        <option value="">Selecciona qué producto vas a almacenar...</option>
+                                        <option th:each="producto : ${productos}" 
+                                                th:value="${producto.idProducto}" 
+                                                th:text="${producto.sku + ' - ' + producto.nombre}">
+                                        </option>
+                                    </select>
+                                    <small class="text-muted">Producto que vas a ingresar al inventario</small>
+                                    <div class="invalid-feedback">
+                                        Por favor selecciona un producto.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('idProducto')}" 
+                                         class="text-danger small" th:errors="*{idProducto}">
+                                    </div>
+                                </div>
+
+                                <!-- Ubicación -->
+                                <div class="col-md-6">
+                                    <label for="ubicacion" class="form-label">
+                                        📍 Ubicación <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" th:field="*{idUbicacion}" id="ubicacion" required>
+                                        <option value="">Selecciona dónde lo guardarás...</option>
+                                        <option th:each="ubicacion : ${ubicaciones}" 
+                                                th:value="${ubicacion.idUbicacion}" 
+                                                th:text="${ubicacion.codigo + ' - ' + ubicacion.nombre + ' (Cap: ' + ubicacion.capacidad + ')'}">
+                                        </option>
+                                    </select>
+                                    <small class="text-muted">Lugar físico en tu almacén</small>
+                                    <div class="invalid-feedback">
+                                        Por favor selecciona una ubicación.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('idUbicacion')}" 
+                                         class="text-danger small" th:errors="*{idUbicacion}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <!-- Cantidad -->
+                                <div class="col-md-4">
+                                    <label for="cantidad" class="form-label">
+                                        📊 Cantidad <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="number" class="form-control" th:field="*{cantidad}" 
+                                           id="cantidad" min="0" step="1" required placeholder="Ej: 50">
+                                    <small class="text-muted">Unidades que vas a ingresar</small>
+                                    <div class="invalid-feedback">
+                                        Por favor ingresa una cantidad válida.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('cantidad')}" 
+                                         class="text-danger small" th:errors="*{cantidad}">
+                                    </div>
+                                </div>
+
+                                <!-- Valor Unitario -->
+                                <div class="col-md-4">
+                                    <label for="valorUnitario" class="form-label">
+                                        💰 Valor Unitario <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">S/.</span>
+                                        <input type="number" class="form-control" th:field="*{valorUnitario}" 
+                                               id="valorUnitario" min="0.01" step="0.01" required placeholder="0.00">
+                                    </div>
+                                    <small class="text-muted">Precio real que pagaste por unidad</small>
+                                    <div class="invalid-feedback">
+                                        Por favor ingresa un valor válido.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('valorUnitario')}" 
+                                         class="text-danger small" th:errors="*{valorUnitario}">
+                                    </div>
+                                </div>
+
+                                <!-- Información del Producto Seleccionado -->
+                                <div class="col-md-4" id="infoProducto" style="display: none;">
+                                    <label class="form-label">📈 Información de Referencia</label>
+                                    <div class="card bg-light">
+                                        <div class="card-body p-2">
+                                            <small>
+                                                <strong>Precio de Venta:</strong> S/ <span id="precioVentaRef">0.00</span><br>
+                                                <strong>Ganancia Estimada:</strong> S/ <span id="gananciaEstimada" class="text-success">0.00</span>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Información Calculada -->
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <h6><i class="fas fa-calculator me-2"></i>Información Calculada</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <small><strong>Valor Total:</strong> S/. <span id="valorTotal">0.00</span></small>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <small><strong>Estado:</strong> <span id="estadoStock" class="badge">Se calculará automáticamente</span></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botones -->
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a th:href="@{/admin/inventario}" class="btn btn-secondary">
+                                            <i class="fas fa-times me-1"></i>Cancelar
+                                        </a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-1"></i>Guardar Inventario
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        // CSRF Token para AJAX
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        // Validación del formulario
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                const forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        // Variable global para el precio de venta del producto
+        let precioVentaActual = 0;
+
+        // Calcular valor total automáticamente
+        function calcularValorTotal() {
+            const cantidad = parseFloat(document.getElementById('cantidad').value) || 0;
+            const precio = parseFloat(document.getElementById('valorUnitario').value) || 0;
+            const total = cantidad * precio;
+            
+            document.getElementById('valorTotal').textContent = total.toFixed(2);
+            
+            // Calcular ganancia estimada
+            const ganancia = precioVentaActual - precio;
+            const gananciaElement = document.getElementById('gananciaEstimada');
+            
+            gananciaElement.textContent = ganancia.toFixed(2);
+            
+            // Cambiar color según la ganancia
+            if (ganancia > 0) {
+                gananciaElement.className = 'text-success fw-bold';
+            } else if (ganancia < 0) {
+                gananciaElement.className = 'text-danger fw-bold';
+            } else {
+                gananciaElement.className = 'text-warning fw-bold';
+            }
+            
+            // Actualizar estado del stock básico
+            const estadoElement = document.getElementById('estadoStock');
+            
+            if (cantidad === 0) {
+                estadoElement.textContent = 'AGOTADO';
+                estadoElement.className = 'badge bg-danger';
+            } else if (cantidad <= 5) {
+                estadoElement.textContent = 'BAJO';
+                estadoElement.className = 'badge bg-warning';
+            } else {
+                estadoElement.textContent = 'DISPONIBLE';
+                estadoElement.className = 'badge bg-success';
+            }
+        }
+
+        // Event listeners para cálculos automáticos
+        document.getElementById('cantidad').addEventListener('input', calcularValorTotal);
+        document.getElementById('valorUnitario').addEventListener('input', calcularValorTotal);
+
+        // Mostrar información del producto seleccionado
+        document.getElementById('producto').addEventListener('change', function() {
+            const productoId = this.value;
+            const infoProducto = document.getElementById('infoProducto');
+            
+            if (productoId) {
+                // Obtener información del producto (en un caso real, harías una llamada AJAX)
+                // Por ahora simulamos obteniendo datos del select
+                const selectedOption = this.selectedOptions[0];
+                const textoCompleto = selectedOption.textContent;
+                
+                // Buscar el precio en la lista de productos (simplificado)
+                // En una implementación real, harías: fetch(`/api/productos/${productoId}/info`)
+                
+                // Mostrar información de referencia
+                precioVentaActual = 15.50; // Valor por defecto, en real sería de la BD
+                document.getElementById('precioVentaRef').textContent = precioVentaActual.toFixed(2);
+                
+                infoProducto.style.display = 'block';
+                
+                // Recalcular con el nuevo precio de referencia
+                calcularValorTotal();
+            } else {
+                infoProducto.style.display = 'none';
+                precioVentaActual = 0;
+            }
+        });
+
+        // Manejar envío del formulario con SweetAlert
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (this.checkValidity()) {
+                Swal.fire({
+                    title: '¿Confirmar creación?',
+                    text: 'Se creará un nuevo registro de inventario',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, crear',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    }
+                });
+            }
+        });
+
+        // Mensajes de éxito/error
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('success') === 'true') {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Inventario creado correctamente',
+                    icon: 'success',
+                    timer: 3000
+                });
+            }
+            
+            if (urlParams.get('error') === 'true') {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al crear el inventario',
+                    icon: 'error'
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

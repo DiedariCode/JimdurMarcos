@@ -51,13 +51,13 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.GET, "/admin/categorias/activar/**").hasAuthority("DESACTIVAR_CATEGORIAS")
                                                 
                                                 // --- 4. Gestión de Marcas ---
-                                                .requestMatchers(HttpMethod.GET, "/admin/marcas", "/admin/marcas/").hasAuthority("LEER_MARCAS")
-                                                .requestMatchers(HttpMethod.GET, "/admin/marcas/nueva").hasAuthority("CREAR_MARCAS")
-                                                .requestMatchers(HttpMethod.POST, "/admin/marcas/guardar").hasAuthority("CREAR_MARCAS")
-                                                .requestMatchers(HttpMethod.GET, "/admin/marcas/editar/**").hasAuthority("EDITAR_MARCAS")
-                                                .requestMatchers(HttpMethod.POST, "/admin/marcas/actualizar/**").hasAuthority("EDITAR_MARCAS")
-                                                .requestMatchers(HttpMethod.GET, "/admin/marcas/desactivar/**").hasAuthority("DESACTIVAR_MARCAS")
-                                                .requestMatchers(HttpMethod.GET, "/admin/marcas/activar/**").hasAuthority("DESACTIVAR_MARCAS")
+                                                .requestMatchers(HttpMethod.GET, "/admin/marca", "/admin/marca/").hasAuthority("LEER_MARCAS")
+                                                .requestMatchers(HttpMethod.GET, "/admin/marca/nueva").hasAuthority("CREAR_MARCAS")
+                                                .requestMatchers(HttpMethod.POST, "/admin/marca/guardar").hasAuthority("CREAR_MARCAS")
+                                                .requestMatchers(HttpMethod.GET, "/admin/marca/editar/**").hasAuthority("EDITAR_MARCAS")
+                                                .requestMatchers(HttpMethod.POST, "/admin/marca/actualizar/**").hasAuthority("EDITAR_MARCAS")
+                                                .requestMatchers(HttpMethod.GET, "/admin/marca/desactivar/**").hasAuthority("DESACTIVAR_MARCAS")
+                                                .requestMatchers(HttpMethod.GET, "/admin/marca/activar/**").hasAuthority("DESACTIVAR_MARCAS")
                                                 
                                                 // --- 5. Gestión de Productos ---
                                                 .requestMatchers(HttpMethod.GET, "/admin/productos", "/admin/productos/").hasAuthority("LEER_PRODUCTOS")
@@ -70,13 +70,13 @@ public class SecurityConfig {
                                                 .requestMatchers("/admin/productos/api/**").hasAuthority("LEER_PRODUCTOS")
                                                 
                                                 // --- 6. Gestión de Proveedores ---
-                                                .requestMatchers(HttpMethod.GET, "/admin/proveedores", "/admin/proveedores/").hasAuthority("LEER_PROVEEDORES")
-                                                .requestMatchers(HttpMethod.GET, "/admin/proveedores/nuevo").hasAuthority("CREAR_PROVEEDORES")
-                                                .requestMatchers(HttpMethod.POST, "/admin/proveedores/guardar").hasAuthority("CREAR_PROVEEDORES")
-                                                .requestMatchers(HttpMethod.GET, "/admin/proveedores/editar/**").hasAuthority("EDITAR_PROVEEDORES")
-                                                .requestMatchers(HttpMethod.POST, "/admin/proveedores/actualizar/**").hasAuthority("EDITAR_PROVEEDORES")
-                                                .requestMatchers(HttpMethod.GET, "/admin/proveedores/desactivar/**").hasAuthority("DESACTIVAR_PROVEEDORES")
-                                                .requestMatchers(HttpMethod.GET, "/admin/proveedores/activar/**").hasAuthority("DESACTIVAR_PROVEEDORES")
+                                                .requestMatchers(HttpMethod.GET, "/admin/proveedor", "/admin/proveedor/").hasAuthority("LEER_PROVEEDORES")
+                                                .requestMatchers(HttpMethod.GET, "/admin/proveedor/nuevo").hasAuthority("CREAR_PROVEEDORES")
+                                                .requestMatchers(HttpMethod.POST, "/admin/proveedor/guardar").hasAuthority("CREAR_PROVEEDORES")
+                                                .requestMatchers(HttpMethod.GET, "/admin/proveedor/editar/**").hasAuthority("EDITAR_PROVEEDORES")
+                                                .requestMatchers(HttpMethod.POST, "/admin/proveedor/actualizar/**").hasAuthority("EDITAR_PROVEEDORES")
+                                                .requestMatchers(HttpMethod.GET, "/admin/proveedor/desactivar/**").hasAuthority("DESACTIVAR_PROVEEDORES")
+                                                .requestMatchers(HttpMethod.GET, "/admin/proveedor/activar/**").hasAuthority("DESACTIVAR_PROVEEDORES")
                                                 
                                                 // --- 7. Gestión de Usuarios ---
                                                 .requestMatchers(HttpMethod.GET, "/admin/usuarios", "/admin/usuarios/").hasAuthority("LEER_USUARIOS")
@@ -88,24 +88,41 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.GET, "/admin/usuarios/activar/**").hasAuthority("DESACTIVAR_USUARIOS")
                                                 
                                                 // --- 8. Gestión de Ubicaciones ---
-                                                .requestMatchers(HttpMethod.GET, "/admin/ubicaciones", "/admin/ubicaciones/").hasAuthority("LEER_UBICACIONES")
-                                                .requestMatchers(HttpMethod.GET, "/admin/ubicaciones/nueva").hasAuthority("CREAR_UBICACIONES")
-                                                .requestMatchers(HttpMethod.POST, "/admin/ubicaciones/guardar").hasAuthority("CREAR_UBICACIONES")
-                                                .requestMatchers(HttpMethod.GET, "/admin/ubicaciones/editar/**").hasAuthority("EDITAR_UBICACIONES")
-                                                .requestMatchers(HttpMethod.POST, "/admin/ubicaciones/actualizar/**").hasAuthority("EDITAR_UBICACIONES")
-                                                .requestMatchers(HttpMethod.GET, "/admin/ubicaciones/desactivar/**").hasAuthority("DESACTIVAR_UBICACIONES")
-                                                .requestMatchers(HttpMethod.GET, "/admin/ubicaciones/activar/**").hasAuthority("DESACTIVAR_UBICACIONES")
+                                                .requestMatchers(HttpMethod.GET, "/admin/ubicacion", "/admin/ubicacion/").hasAuthority("LEER_UBICACIONES")
+                                                .requestMatchers(HttpMethod.GET, "/admin/ubicacion/nueva").hasAuthority("CREAR_UBICACIONES")
+                                                .requestMatchers(HttpMethod.POST, "/admin/ubicacion/guardar").hasAuthority("CREAR_UBICACIONES")
+                                                .requestMatchers(HttpMethod.GET, "/admin/ubicacion/editar/**").hasAuthority("EDITAR_UBICACIONES")
+                                                .requestMatchers(HttpMethod.POST, "/admin/ubicacion/actualizar/**").hasAuthority("EDITAR_UBICACIONES")
+                                                .requestMatchers(HttpMethod.GET, "/admin/ubicacion/desactivar/**").hasAuthority("DESACTIVAR_UBICACIONES")
+                                                .requestMatchers(HttpMethod.GET, "/admin/ubicacion/activar/**").hasAuthority("DESACTIVAR_UBICACIONES")
                                                 
-                                                // --- 9. Gestión de Roles y Permisos ---
+                                                // --- 9. Gestión de Inventario ---
+                                                .requestMatchers(HttpMethod.GET, "/admin/inventario", "/admin/inventario/").hasAuthority("LEER_INVENTARIO")
+                                                .requestMatchers(HttpMethod.GET, "/admin/inventario/nuevo").hasAuthority("CREAR_INVENTARIO")
+                                                .requestMatchers(HttpMethod.POST, "/admin/inventario/guardar").hasAuthority("CREAR_INVENTARIO")
+                                                .requestMatchers(HttpMethod.GET, "/admin/inventario/editar/**").hasAuthority("EDITAR_INVENTARIO")
+                                                .requestMatchers(HttpMethod.POST, "/admin/inventario/actualizar/**").hasAuthority("EDITAR_INVENTARIO")
+                                                .requestMatchers(HttpMethod.POST, "/admin/inventario/eliminar/**").hasAuthority("ELIMINAR_INVENTARIO")
+                                                .requestMatchers(HttpMethod.POST, "/admin/inventario/asignar-stock").hasAuthority("ASIGNAR_STOCK")
+                                                .requestMatchers(HttpMethod.GET, "/admin/inventario/producto/**").hasAuthority("LEER_INVENTARIO")
+                                                .requestMatchers(HttpMethod.GET, "/admin/inventario/stock-bajo").hasAuthority("LEER_INVENTARIO")
+                                                
+                                                // --- 10. Gestión de Movimientos de Inventario ---
+                                                .requestMatchers(HttpMethod.GET, "/admin/movimientos", "/admin/movimientos/").hasAuthority("LEER_MOVIMIENTOS")
+                                                .requestMatchers(HttpMethod.GET, "/admin/movimientos/producto/**").hasAuthority("LEER_MOVIMIENTOS")
+                                                .requestMatchers(HttpMethod.GET, "/admin/movimientos/reporte").hasAuthority("VER_REPORTES_INVENTARIO")
+                                                .requestMatchers(HttpMethod.GET, "/admin/reportes/inventario").hasAuthority("VER_REPORTES_INVENTARIO")
+                                                
+                                                // --- 11. Gestión de Roles y Permisos ---
                                                 .requestMatchers("/admin/roles/**").hasAuthority("GESTIONAR_ROLES")
                                                 .requestMatchers("/admin/permisos/**").hasAuthority("GESTIONAR_PERMISOS")
                                                 
-                                                // --- 10. Gestión de Órdenes ---
+                                                // --- 12. Gestión de Órdenes ---
                                                 .requestMatchers(HttpMethod.GET, "/admin/ordenes", "/admin/ordenes/").hasAuthority("LEER_ORDENES")
                                                 .requestMatchers(HttpMethod.POST, "/admin/ordenes/aprobar/**").hasAuthority("APROBAR_ORDENES")
                                                 .requestMatchers(HttpMethod.POST, "/admin/ordenes/cancelar/**").hasAuthority("CANCELAR_ORDENES")
                                                 
-                                                // --- 11. APIs REST ---
+                                                // --- 13. APIs REST ---
                                                 .requestMatchers(HttpMethod.GET, "/api/categorias/**").hasAuthority("LEER_CATEGORIAS")
                                                 .requestMatchers(HttpMethod.POST, "/api/categorias/**").hasAuthority("CREAR_CATEGORIAS")
                                                 .requestMatchers(HttpMethod.PUT, "/api/categorias/**").hasAuthority("EDITAR_CATEGORIAS")
@@ -136,7 +153,15 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.PUT, "/api/ubicaciones/**").hasAuthority("EDITAR_UBICACIONES")
                                                 .requestMatchers(HttpMethod.DELETE, "/api/ubicaciones/**").hasAuthority("DESACTIVAR_UBICACIONES")
                                                 
-                                                // --- 12. Otras rutas protegidas ---
+                                                .requestMatchers(HttpMethod.GET, "/api/inventario/**").hasAuthority("LEER_INVENTARIO")
+                                                .requestMatchers(HttpMethod.POST, "/api/inventario/**").hasAuthority("CREAR_INVENTARIO")
+                                                .requestMatchers(HttpMethod.PUT, "/api/inventario/**").hasAuthority("EDITAR_INVENTARIO")
+                                                .requestMatchers(HttpMethod.DELETE, "/api/inventario/**").hasAuthority("ELIMINAR_INVENTARIO")
+                                                
+                                                .requestMatchers(HttpMethod.GET, "/api/movimientos/**").hasAuthority("LEER_MOVIMIENTOS")
+                                                .requestMatchers(HttpMethod.POST, "/api/movimientos/**").hasAuthority("CREAR_MOVIMIENTOS")
+                                                
+                                                // --- 14. Otras rutas protegidas ---
                                                 .anyRequest().authenticated()
                                 )
                                 .formLogin(form -> form

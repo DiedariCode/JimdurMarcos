@@ -21,8 +21,9 @@ public class UbicacionServiceImpl implements UbicacionService {
     }
 
     @Override
-    public Ubicaciones obtenerUbicacionPorId(Integer idUbicacion) {
-        Optional<Ubicaciones> ubicacion = ubicacionRepository.findById(Long.valueOf(idUbicacion));
+    public Ubicaciones obtenerUbicacionPorId(Long idUbicacion) {
+        if (idUbicacion == null) return null;
+        Optional<Ubicaciones> ubicacion = ubicacionRepository.findById(idUbicacion);
         return ubicacion.orElse(null); // Retorna null si no se encuentra
     }
 
@@ -32,8 +33,10 @@ public class UbicacionServiceImpl implements UbicacionService {
     }
 
     @Override
-    public void eliminarUbicacion(Integer idUbicacion) {
-        ubicacionRepository.deleteById(Long.valueOf(idUbicacion));
+    public void eliminarUbicacion(Long idUbicacion) {
+        if (idUbicacion != null) {
+            ubicacionRepository.deleteById(idUbicacion);
+        }
     }
 
     @Override

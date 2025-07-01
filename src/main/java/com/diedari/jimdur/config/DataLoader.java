@@ -45,6 +45,8 @@ public class DataLoader implements CommandLineRunner {
             "LEER_PROVEEDORES", "CREAR_PROVEEDORES", "EDITAR_PROVEEDORES", "DESACTIVAR_PROVEEDORES",
             "LEER_USUARIOS", "CREAR_USUARIOS", "EDITAR_USUARIOS", "DESACTIVAR_USUARIOS",
             "LEER_UBICACIONES", "CREAR_UBICACIONES", "EDITAR_UBICACIONES", "DESACTIVAR_UBICACIONES",
+            "LEER_INVENTARIO", "CREAR_INVENTARIO", "EDITAR_INVENTARIO", "ELIMINAR_INVENTARIO", "ASIGNAR_STOCK",
+            "LEER_MOVIMIENTOS", "CREAR_MOVIMIENTOS", "VER_REPORTES_INVENTARIO",
             "LEER_ORDENES", "CREAR_ORDENES", "APROBAR_ORDENES", "CANCELAR_ORDENES",
             "GESTIONAR_ROLES", "GESTIONAR_PERMISOS", "VER_DASHBOARD"
         }).map(nombre -> {
@@ -76,12 +78,15 @@ public class DataLoader implements CommandLineRunner {
         rolUser.setPermisos(permisosUser);
         rolUser.setActivo(true);
 
-        // Permisos para PROVEEDOR (gestión de productos y proveedores)
+        // Permisos para PROVEEDOR (gestión de productos, proveedores e inventario)
         Set<Permiso> permisosProveedor = todosLosPermisos.stream()
             .filter(p -> p.getNombre().contains("PRODUCTOS") || 
                         p.getNombre().contains("PROVEEDORES") ||
                         p.getNombre().contains("MARCAS") ||
                         p.getNombre().contains("CATEGORIAS") ||
+                        p.getNombre().contains("INVENTARIO") ||
+                        p.getNombre().contains("MOVIMIENTOS") ||
+                        p.getNombre().equals("ASIGNAR_STOCK") ||
                         p.getNombre().equals("LEER_ORDENES"))
             .collect(Collectors.toSet());
 

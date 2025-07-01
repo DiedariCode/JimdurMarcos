@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -342,5 +343,28 @@ public class ProductoRestController {
             response.put("message", "Error al actualizar la portada: " + e.getMessage());
         }
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/proveedores")
+    @ResponseBody
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LEER_PRODUCTO')")
+    public ResponseEntity<List<Map<String, Object>>> obtenerProveedoresProducto(@PathVariable Long id) {
+        try {
+            ProductoDTO producto = productoService.obtenerProductoPorId(id);
+            List<Map<String, Object>> proveedores = new ArrayList<>();
+            
+            if (producto.getProveedores() != null) {
+                for (ProductoProveedorDTO pp : producto.getProveedores()) {
+                    Map<String, Object> proveedorInfo = new HashMap<>();
+                    proveedorInfo.put("nombre", pp.getNombreProveedor());
+                    proveedorInfo.put("precio", pp.getPrecioCompra());
+                    proveedores.add(proveedorInfo);
+                }
+            }
+            
+            return ResponseEntity.ok(proveedores);
+        } catch (Exception e) {
+            return ResponseEntity.ok(new ArrayList<>());
+        }
     }
 }

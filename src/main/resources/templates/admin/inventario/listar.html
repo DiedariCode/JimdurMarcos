@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JIMDUR Admin - Gestión de Inventario</title>
+    <!-- ICONOS BOOTSTRAP -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- CSS de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- ICONOS FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- CSS PERSONALIZADO -->
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar.css}">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 ms-auto px-4 py-4 content-wrapper animate-fade">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center page-header">
+                    <div>
+                        <h2><i class="fas fa-warehouse me-2"></i>Gestión de Inventario</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0 mt-1">
+                                <li class="breadcrumb-item"><a href="/admin" class="text-decoration-none">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Inventario</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="/admin/inventario/stock-bajo" class="btn btn-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Stock Bajo
+                        </a>
+                        <a th:href="@{/admin/inventario/nuevo}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Nuevo Inventario
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Alertas -->
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <span th:text="${success}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <!-- Filtros de búsqueda -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="get" class="row g-3">
+                            <div class="col-md-4">
+                                <label for="busqueda" class="form-label">Buscar</label>
+                                <input type="text" class="form-control" id="busqueda" name="busqueda" 
+                                       th:value="${busqueda}" placeholder="Buscar...">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="tipoBusqueda" class="form-label">Buscar por</label>
+                                <select class="form-select" id="tipoBusqueda" name="tipoBusqueda">
+                                    <option value="nombre" th:selected="${tipoBusqueda == 'nombre'}">Nombre del producto</option>
+                                    <option value="sku" th:selected="${tipoBusqueda == 'sku'}">SKU del producto</option>
+                                    <option value="ubicacion" th:selected="${tipoBusqueda == 'ubicacion'}">Código de ubicación</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="pageSize" class="form-label">Elementos por página</label>
+                                <select class="form-select" id="pageSize" name="size">
+                                    <option value="5" th:selected="${pageSize == 5}">5</option>
+                                    <option value="10" th:selected="${pageSize == 10}">10</option>
+                                    <option value="20" th:selected="${pageSize == 20}">20</option>
+                                    <option value="50" th:selected="${pageSize == 50}">50</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="fas fa-search me-1"></i>Buscar
+                                </button>
+                                <a href="/admin/inventario" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-1"></i>Limpiar
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tabla de Inventario -->
+                <div class="card mb-4">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle m-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Ubicación</th>
+                                        <th>Stock</th>
+                                        <th>Valor Unitario</th>
+                                        <th>Valor Total</th>
+                                        <th>Última Actualización</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="inventario : ${inventarios}">
+                                        <!-- Producto -->
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                <div class="fw-medium mb-1" th:text="${inventario.nombreProducto}">Nombre del producto</div>
+                                                <small class="text-muted" th:text="'SKU: ' + ${inventario.skuProducto}">SKU: ABC-123</small>
+                                            </div>
+                                        </td>
+
+                                        <!-- Ubicación -->
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                <div class="fw-medium mb-1" th:text="${inventario.nombreUbicacion}">Ubicación</div>
+                                                <small class="text-muted" th:text="'Código: ' + ${inventario.codigoUbicacion}">Código: UB-001</small>
+                                                <small class="text-muted" th:text="'Tipo: ' + ${inventario.tipoUbicacion}">Tipo: ESTANTE</small>
+                                            </div>
+                                        </td>
+
+                                        <!-- Stock -->
+                                        <td>
+                                            <span class="badge fs-6" 
+                                                  th:classappend="${inventario.cantidad > 10 ? 'bg-success' : (inventario.cantidad > 5 ? 'bg-warning' : 'bg-danger')}"
+                                                  th:text="${inventario.cantidad} + ' unidades'">50 unidades</span>
+                                        </td>
+
+                                        <!-- Valor Unitario -->
+                                        <td>
+                                            <span class="fw-medium" th:text="'S/ ' + ${#numbers.formatDecimal(inventario.valorUnitario, 1, 2)}">S/ 25.50</span>
+                                        </td>
+
+                                        <!-- Valor Total -->
+                                        <td>
+                                            <span class="fw-bold text-success" th:text="'S/ ' + ${#numbers.formatDecimal(inventario.valorTotal, 1, 2)}">S/ 1,275.00</span>
+                                        </td>
+
+                                        <!-- Última Actualización -->
+                                        <td>
+                                            <small th:text="${#temporals.format(inventario.fechaActualizacion, 'dd/MM/yyyy HH:mm')}">01/01/2024 10:30</small>
+                                        </td>
+
+                                        <!-- Acciones -->
+                                        <td>
+                                            <div class="d-flex justify-content-center gap-1">
+                                                <a th:href="@{/admin/inventario/{id}/editar(id=${inventario.idInventario})}"
+                                                    class="btn btn-sm btn-warning" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button type="button" 
+                                                        class="btn btn-sm btn-danger"
+                                                        title="Eliminar"
+                                                        th:onclick="'confirmarEliminar(' + ${inventario.idInventario} + ')'">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(inventarios)}">
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="text-muted">
+                                                <i class="fas fa-warehouse fa-3x mb-3"></i>
+                                                <p class="mb-0">No se encontraron registros de inventario</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Paginación -->
+                        <div class="d-flex justify-content-between align-items-center p-3" th:if="${totalPages > 0}">
+                            <div class="text-muted">
+                                Mostrando <span th:text="${inventarios.numberOfElements}">5</span> de 
+                                <span th:text="${totalItems}">20</span> registros
+                            </div>
+                            <nav>
+                                <ul class="pagination mb-0">
+                                    <!-- Primera página -->
+                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/inventario(page=0, size=${pageSize}, busqueda=${busqueda}, tipoBusqueda=${tipoBusqueda})}">&laquo;</a>
+                                    </li>
+                                    
+                                    <!-- Página anterior -->
+                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/inventario(page=${currentPage - 1}, size=${pageSize}, busqueda=${busqueda}, tipoBusqueda=${tipoBusqueda})}">&lt;</a>
+                                    </li>
+
+                                    <!-- Páginas -->
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+                                        th:classappend="${currentPage == i ? 'active' : ''}"
+                                        th:if="${i >= currentPage - 2 and i <= currentPage + 2}">
+                                        <a class="page-link" th:href="@{/admin/inventario(page=${i}, size=${pageSize}, busqueda=${busqueda}, tipoBusqueda=${tipoBusqueda})}" 
+                                           th:text="${i + 1}">1</a>
+                                    </li>
+
+                                    <!-- Página siguiente -->
+                                    <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/inventario(page=${currentPage + 1}, size=${pageSize}, busqueda=${busqueda}, tipoBusqueda=${tipoBusqueda})}">&gt;</a>
+                                    </li>
+                                    
+                                    <!-- Última página -->
+                                    <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/admin/inventario(page=${totalPages - 1}, size=${pageSize}, busqueda=${busqueda}, tipoBusqueda=${tipoBusqueda})}">&raquo;</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmarEliminar(idInventario) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Esta acción eliminará el registro de inventario. ¡No podrás revertir esto!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Crear formulario y enviarlo
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/admin/inventario/${idInventario}/eliminar`;
+                    
+                    // Agregar token CSRF
+                    const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+                    const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+                    
+                    if (csrfToken) {
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken;
+                        form.appendChild(csrfInput);
+                    }
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
+</body>
+
+</html> 
