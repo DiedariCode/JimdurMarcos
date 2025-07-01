@@ -28,6 +28,33 @@
         .border-4 {
             border-width: 4px !important;
         }
+        
+        /* Animación para barra de progreso sobrecargada */
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+        
+        /* Mejoras visuales para el modal de stock */
+        .progress {
+            background-color: #e9ecef;
+            border-radius: 10px;
+        }
+        
+        .progress-bar {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        #ubicacionSelect option {
+            padding: 8px;
+        }
+        
+        /* Indicadores de estado */
+        .estado-vacio { color: #28a745; }
+        .estado-medio { color: #ffc107; }
+        .estado-lleno { color: #fd7e14; }
+        .estado-sobrecargado { color: #dc3545; font-weight: bold; }
     </style>
 </head>
 
@@ -304,6 +331,28 @@
                                 </div>
                             </div>
 
+                            <!-- Información de capacidad de ubicación -->
+                            <div class="alert mb-3" id="capacidadUbicacionInfo" style="display: none;">
+                                <h6 class="mb-2">🏗️ Información de Capacidad</h6>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <small><strong>Capacidad Total:</strong> <span id="capacidadTotal">0</span> unidades</small>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small><strong>Ocupación Actual:</strong> <span id="ocupacionActual">0</span> unidades</small>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small><strong>Espacio Disponible:</strong> <span id="espacioDisponible">0</span> unidades</small>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar" id="barraProgreso" role="progressbar" style="width: 0%"></div>
+                                    </div>
+                                    <small class="text-muted">Ocupación: <span id="porcentajeOcupacion">0</span>%</small>
+                                </div>
+                            </div>
+
                             <!-- Stock existente en ubicación seleccionada -->
                             <div class="alert alert-info mb-3" id="stockExistenteInfo" style="display: none;">
                                 <h6 class="mb-2">📋 Stock Actual en esta Ubicación</h6>
@@ -318,6 +367,12 @@
                                         <small><strong>Valor Total:</strong> S/ <span id="stockActualTotal">0.00</span></small>
                                     </div>
                                 </div>
+                            </div>
+
+                            <!-- Alerta de capacidad excedida -->
+                            <div class="alert alert-danger mb-3" id="alertaCapacidad" style="display: none;">
+                                <h6 class="mb-1">⚠️ Capacidad Excedida</h6>
+                                <small id="mensajeCapacidad">La cantidad ingresada excede la capacidad disponible de la ubicación.</small>
                             </div>
 
                             <form id="formAsignarStock">
@@ -610,17 +665,43 @@
             }
         }
 
+        // Variable global para almacenar ubicaciones con información de ocupación
+        let ubicacionesConOcupacion = [];
+
         function cargarUbicaciones() {
             fetch('/admin/ubicacion/api')
                 .then(response => response.json())
                 .then(ubicaciones => {
+                    ubicacionesConOcupacion = ubicaciones; // Guardar para validaciones
                     const select = document.getElementById('ubicacionSelect');
-                    select.innerHTML = '<option value="">Seleccionar ubicación...</option>';
+                    select.innerHTML = '<option value="">Seleccionar ubicación de almacén...</option>';
                     
                     ubicaciones.forEach(ubicacion => {
                         const option = document.createElement('option');
                         option.value = ubicacion.idUbicacion;
-                        option.textContent = `${ubicacion.nombre} (${ubicacion.codigo}) - Capacidad: ${ubicacion.capacidad}`;
+                        
+                        // Crear texto descriptivo con información de ocupación
+                        const porcentaje = Math.round(ubicacion.porcentajeOcupacion || 0);
+                        const ocupacion = ubicacion.ocupacionActual || 0;
+                        const disponible = ubicacion.espacioDisponible || ubicacion.capacidad;
+                        
+                        // Emoji según estado
+                        let emoji = '';
+                        if (porcentaje <= 25) emoji = '🟢';
+                        else if (porcentaje <= 75) emoji = '🟡';
+                        else if (porcentaje <= 100) emoji = '🟠';
+                        else emoji = '🔴';
+                        
+                        option.textContent = `${emoji} ${ubicacion.nombre} (${ubicacion.codigo}) - ${ocupacion}/${ubicacion.capacidad} (${disponible} disponible)`;
+                        
+                        // Agregar clase CSS según estado
+                        if (disponible <= 0) {
+                            option.style.color = '#dc3545';
+                            option.style.fontWeight = 'bold';
+                        } else if (porcentaje > 75) {
+                            option.style.color = '#fd7e14';
+                        }
+                        
                         select.appendChild(option);
                     });
                 })
@@ -709,6 +790,12 @@
                 return;
             }
             
+            // Obtener información de la ubicación
+            const ubicacion = ubicacionesConOcupacion.find(u => u.idUbicacion == ubicacionId);
+            if (ubicacion) {
+                mostrarInformacionCapacidad(ubicacion);
+            }
+            
             // Buscar si hay stock en la ubicación seleccionada
             const stockEnUbicacion = stockActualProducto.find(inv => inv.idUbicacion == ubicacionId);
             
@@ -717,17 +804,120 @@
             } else {
                 mostrarOpcionesAsignacion();
             }
+            
+            // Validar capacidad en tiempo real
+            validarCapacidadEnTiempoReal();
+        }
+
+        function mostrarInformacionCapacidad(ubicacion) {
+            // Mostrar información de capacidad
+            document.getElementById('capacidadTotal').textContent = ubicacion.capacidad || 0;
+            document.getElementById('ocupacionActual').textContent = ubicacion.ocupacionActual || 0;
+            document.getElementById('espacioDisponible').textContent = ubicacion.espacioDisponible || ubicacion.capacidad;
+            document.getElementById('porcentajeOcupacion').textContent = Math.round(ubicacion.porcentajeOcupacion || 0);
+            
+            // Configurar barra de progreso
+            const porcentaje = ubicacion.porcentajeOcupacion || 0;
+            const barra = document.getElementById('barraProgreso');
+            barra.style.width = `${Math.min(porcentaje, 100)}%`;
+            
+            // Colores según el porcentaje
+            let colorClass = 'bg-success';
+            let alertClass = 'alert-success';
+            if (porcentaje > 75) {
+                colorClass = 'bg-warning';
+                alertClass = 'alert-warning';
+            }
+            if (porcentaje > 90) {
+                colorClass = 'bg-danger';
+                alertClass = 'alert-danger';
+            }
+            if (porcentaje > 100) {
+                colorClass = 'bg-danger';
+                alertClass = 'alert-danger';
+                barra.style.animation = 'blink 1s infinite';
+            }
+            
+            barra.className = `progress-bar ${colorClass}`;
+            document.getElementById('capacidadUbicacionInfo').className = `alert mb-3 ${alertClass}`;
+            document.getElementById('capacidadUbicacionInfo').style.display = 'block';
+        }
+
+        function validarCapacidadEnTiempoReal() {
+            const ubicacionId = document.getElementById('ubicacionSelect').value;
+            const cantidad = parseInt(document.getElementById('cantidadInput').value) || 0;
+            
+            if (!ubicacionId || cantidad === 0) {
+                document.getElementById('alertaCapacidad').style.display = 'none';
+                return;
+            }
+            
+            const ubicacion = ubicacionesConOcupacion.find(u => u.idUbicacion == ubicacionId);
+            const stockExistente = stockActualProducto.find(inv => inv.idUbicacion == ubicacionId);
+            
+            if (!ubicacion) return;
+            
+            let cantidadFinal = cantidad;
+            let espacioNecesario = cantidad;
+            
+            // Calcular según tipo de operación
+            if (stockExistente) {
+                const tipoOperacion = document.querySelector('input[name="tipoOperacion"]:checked')?.value || 'ENTRADA';
+                switch(tipoOperacion) {
+                    case 'ENTRADA':
+                        cantidadFinal = stockExistente.cantidad + cantidad;
+                        espacioNecesario = cantidad;
+                        break;
+                    case 'SALIDA':
+                        cantidadFinal = Math.max(0, stockExistente.cantidad - cantidad);
+                        espacioNecesario = 0; // No necesita espacio adicional
+                        break;
+                    case 'AJUSTE':
+                        cantidadFinal = cantidad;
+                        espacioNecesario = cantidad - stockExistente.cantidad;
+                        break;
+                }
+            }
+            
+            // Validar capacidad
+            const espacioDisponible = ubicacion.espacioDisponible || 0;
+            const excedeLimite = espacioNecesario > espacioDisponible;
+            
+            if (excedeLimite && espacioNecesario > 0) {
+                document.getElementById('mensajeCapacidad').textContent = 
+                    `La operación requiere ${espacioNecesario} unidades de espacio, pero solo hay ${espacioDisponible} disponibles. Exceso: ${espacioNecesario - espacioDisponible} unidades.`;
+                document.getElementById('alertaCapacidad').style.display = 'block';
+                
+                // Deshabilitar botón de envío
+                document.getElementById('btnSubmitStock').disabled = true;
+                document.getElementById('btnSubmitStock').classList.add('btn-secondary');
+                document.getElementById('btnSubmitStock').classList.remove('btn-primary');
+            } else {
+                document.getElementById('alertaCapacidad').style.display = 'none';
+                
+                // Habilitar botón de envío
+                document.getElementById('btnSubmitStock').disabled = false;
+                document.getElementById('btnSubmitStock').classList.remove('btn-secondary');
+                document.getElementById('btnSubmitStock').classList.add('btn-primary');
+            }
         }
 
         function ocultarOpcionesStock() {
+            document.getElementById('capacidadUbicacionInfo').style.display = 'none';
             document.getElementById('stockExistenteInfo').style.display = 'none';
             document.getElementById('tipoOperacionGroup').style.display = 'none';
             document.getElementById('stockResultanteInfo').style.display = 'none';
+            document.getElementById('alertaCapacidad').style.display = 'none';
             
             // Resetear textos a modo asignación
             document.getElementById('labelCantidad').textContent = 'Cantidad';
             document.getElementById('helpCantidad').textContent = 'Unidades a ingresar';
             document.getElementById('textoBotonSubmit').textContent = 'Asignar Stock al Inventario';
+            
+            // Habilitar botón de envío
+            document.getElementById('btnSubmitStock').disabled = false;
+            document.getElementById('btnSubmitStock').classList.remove('btn-secondary');
+            document.getElementById('btnSubmitStock').classList.add('btn-primary');
         }
 
         function mostrarOpcionesAsignacion() {
@@ -825,14 +1015,20 @@
             actualizarCalculos();
         }
 
-        // Event listeners para cálculos automáticos
-        document.getElementById('cantidadInput').addEventListener('input', actualizarCalculosStock);
+        // Event listeners para cálculos automáticos y validación de capacidad
+        document.getElementById('cantidadInput').addEventListener('input', function() {
+            actualizarCalculosStock();
+            validarCapacidadEnTiempoReal();
+        });
         document.getElementById('valorUnitarioInput').addEventListener('input', actualizarCalculosStock);
         document.getElementById('ubicacionSelect').addEventListener('change', verificarStockEnUbicacion);
         
         // Event listeners para cambios en tipo de operación
         document.querySelectorAll('input[name="tipoOperacion"]').forEach(radio => {
-            radio.addEventListener('change', actualizarCalculosStock);
+            radio.addEventListener('change', function() {
+                actualizarCalculosStock();
+                validarCapacidadEnTiempoReal();
+            });
         });
 
         // Event listeners para las pestañas

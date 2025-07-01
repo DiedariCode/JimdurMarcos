@@ -1,6 +1,8 @@
 package com.diedari.jimdur.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,21 +100,47 @@ public class UbicacionController {
     @PreAuthorize("hasAuthority('LEER_INVENTARIO')")
     public ResponseEntity<List<UbicacionDTO>> obtenerTodasLasUbicaciones() {
         try {
-            List<Ubicaciones> ubicaciones = ubicacionService.listarUbicaciones();
-            
-            // Convertir entidades a DTOs para evitar problemas de serialización
-            List<UbicacionDTO> ubicacionesDTO = ubicaciones.stream()
-                .map(u -> new UbicacionDTO(
-                    u.getIdUbicacion(),
-                    u.getCodigo(),
-                    u.getNombre(),
-                    u.getCapacidad()
-                ))
-                .collect(Collectors.toList());
-                
+            List<UbicacionDTO> ubicacionesDTO = ubicacionService.listarUbicacionesConOcupacion();
             return ResponseEntity.ok(ubicacionesDTO);
         } catch (Exception e) {
             e.printStackTrace(); // Para debug
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    // API REST para obtener una ubicación específica con información de ocupación
+    @GetMapping("/api/{id}")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('LEER_INVENTARIO')")
+    public ResponseEntity<UbicacionDTO> obtenerUbicacionConOcupacion(@PathVariable Long id) {
+        try {
+            UbicacionDTO ubicacion = ubicacionService.obtenerUbicacionConOcupacion(id);
+            return ubicacion != null ? ResponseEntity.ok(ubicacion) : ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            e.printStackTrace(); // Para debug
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    // API REST para validar capacidad antes de asignar stock
+    @GetMapping("/api/{id}/validar-capacidad/{cantidad}")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('LEER_INVENTARIO')")
+    public ResponseEntity<Map<String, Object>> validarCapacidad(@PathVariable Long id, @PathVariable Integer cantidad) {
+        try {
+            boolean esValido = ubicacionService.validarCapacidadDisponible(id, cantidad);
+            Integer espacioDisponible = ubicacionService.obtenerEspacioDisponible(id);
+            Double porcentajeOcupacion = ubicacionService.calcularPorcentajeOcupacion(id);
+            
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("esValido", esValido);
+            respuesta.put("espacioDisponible", espacioDisponible);
+            respuesta.put("porcentajeOcupacion", porcentajeOcupacion);
+            respuesta.put("cantidad", cantidad);
+            
+            return ResponseEntity.ok(respuesta);
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }

@@ -45,6 +45,12 @@ public interface InventarioRepository extends JpaRepository<Inventario, Long> {
     Integer getTotalStockByProducto(@Param("idProducto") Long idProducto);
 
     /**
+     * Obtener total de stock por ubicación
+     */
+    @Query("SELECT COALESCE(SUM(i.cantidad), 0) FROM Inventario i WHERE i.ubicacion.idUbicacion = :idUbicacion")
+    Integer getTotalStockByUbicacion(@Param("idUbicacion") Long idUbicacion);
+
+    /**
      * Buscar inventarios por nombre de producto (para búsqueda)
      */
     @Query("SELECT i FROM Inventario i WHERE LOWER(i.producto.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
