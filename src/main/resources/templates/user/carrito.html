@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - JIMDUR Repuestos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="/placeholder.svg?height=40&width=120" alt="JIMDUR Repuestos" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="catalogo.html">Catálogo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <button id="searchToggle" class="btn btn-outline-secondary me-2 d-lg-none">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <form id="searchForm" class="d-none d-lg-flex me-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Buscar productos...">
+                            <button class="btn btn-outline-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <a href="carrito.html" class="btn btn-primary position-relative me-2">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                        </span>
+                    </a>
+                    <a href="login.html" class="btn btn-outline-primary">
+                        <i class="fas fa-user me-1"></i> Ingresar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">Carrito de Compras</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Carrito</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">Productos en tu carrito (3)</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Cart Item 1 -->
+                        <div class="row mb-4 border-bottom pb-4">
+                            <div class="col-md-2 col-4">
+                                <img src="/placeholder.svg?height=100&width=100" class="img-fluid rounded" alt="Producto">
+                            </div>
+                            <div class="col-md-10 col-8">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="mb-0">Filtro de Aceite Premium</h5>
+                                    <button class="btn btn-sm text-danger" data-bs-toggle="tooltip" title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted mb-2">SKU: FIL-1234 | Marca: Bosch</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="input-group input-group-sm" style="width: 130px;">
+                                        <button class="btn btn-outline-secondary" type="button">-</button>
+                                        <input type="text" class="form-control text-center" value="2">
+                                        <button class="btn btn-outline-secondary" type="button">+</button>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0 text-muted"><small>$24.99 c/u</small></p>
+                                        <p class="fw-bold mb-0">$49.98</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cart Item 2 -->
+                        <div class="row mb-4 border-bottom pb-4">
+                            <div class="col-md-2 col-4">
+                                <img src="/placeholder.svg?height=100&width=100" class="img-fluid rounded" alt="Producto">
+                            </div>
+                            <div class="col-md-10 col-8">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="mb-0">Pastillas de Freno Delanteras</h5>
+                                    <button class="btn btn-sm text-danger" data-bs-toggle="tooltip" title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted mb-2">SKU: BRK-5678 | Marca: Brembo</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="input-group input-group-sm" style="width: 130px;">
+                                        <button class="btn btn-outline-secondary" type="button">-</button>
+                                        <input type="text" class="form-control text-center" value="1">
+                                        <button class="btn btn-outline-secondary" type="button">+</button>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0 text-muted"><small>$89.99 c/u</small></p>
+                                        <p class="fw-bold mb-0">$89.99</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cart Item 3 -->
+                        <div class="row">
+                            <div class="col-md-2 col-4">
+                                <img src="/placeholder.svg?height=100&width=100" class="img-fluid rounded" alt="Producto">
+                            </div>
+                            <div class="col-md-10 col-8">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="mb-0">Aceite Sintético 5W-30</h5>
+                                    <button class="btn btn-sm text-danger" data-bs-toggle="tooltip" title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                                <p class="text-muted mb-2">SKU: OIL-9012 | Marca: Mobil</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="input-group input-group-sm" style="width: 130px;">
+                                        <button class="btn btn-outline-secondary" type="button">-</button>
+                                        <input type="text" class="form-control text-center" value="1">
+                                        <button class="btn btn-outline-secondary" type="button">+</button>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0 text-muted"><small>$34.99 c/u</small></p>
+                                        <p class="fw-bold mb-0">$34.99</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white py-3">
+                        <div class="d-flex justify-content-between">
+                            <a href="catalogo.html" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-2"></i>Seguir comprando
+                            </a>
+                            <button id="updateCart" class="btn btn-outline-secondary">
+                                <i class="fas fa-sync-alt me-2"></i>Actualizar carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recently Viewed -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">Vistos recientemente</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-cols-2 row-cols-md-4 g-3">
+                            <div class="col">
+                                <div class="card h-100 product-card">
+                                    <img src="/placeholder.svg?height=150&width=150" class="card-img-top product-img p-2" alt="Producto">
+                                    <div class="card-body p-3">
+                                        <h6 class="card-title product-title">Bujías de Encendido</h6>
+                                        <p class="card-text text-primary fw-bold mb-0">$12.99</p>
+                                    </div>
+                                    <div class="card-footer p-3 pt-0 border-0 bg-transparent">
+                                        <button class="btn btn-sm btn-primary w-100">Agregar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 product-card">
+                                    <img src="/placeholder.svg?height=150&width=150" class="card-img-top product-img p-2" alt="Producto">
+                                    <div class="card-body p-3">
+                                        <h6 class="card-title product-title">Filtro de Aire</h6>
+                                        <p class="card-text text-primary fw-bold mb-0">$19.99</p>
+                                    </div>
+                                    <div class="card-footer p-3 pt-0 border-0 bg-transparent">
+                                        <button class="btn btn-sm btn-primary w-100">Agregar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 product-card">
+                                    <img src="/placeholder.svg?height=150&width=150" class="card-img-top product-img p-2" alt="Producto">
+                                    <div class="card-body p-3">
+                                        <h6 class="card-title product-title">Líquido de Frenos DOT 4</h6>
+                                        <p class="card-text text-primary fw-bold mb-0">$9.99</p>
+                                    </div>
+                                    <div class="card-footer p-3 pt-0 border-0 bg-transparent">
+                                        <button class="btn btn-sm btn-primary w-100">Agregar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 product-card">
+                                    <img src="/placeholder.svg?height=150&width=150" class="card-img-top product-img p-2" alt="Producto">
+                                    <div class="card-body p-3">
+                                        <h6 class="card-title product-title">Refrigerante Concentrado</h6>
+                                        <p class="card-text text-primary fw-bold mb-0">$14.99</p>
+                                    </div>
+                                    <div class="card-footer p-3 pt-0 border-0 bg-transparent">
+                                        <button class="btn btn-sm btn-primary w-100">Agregar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">Resumen del pedido</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                Subtotal
+                                <span>$174.96</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                Descuento
+                                <span class="text-success">-$10.00</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                Envío
+                                <span>$12.00</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                Impuestos (16%)
+                                <span>$28.31</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0 fw-bold">
+                                Total
+                                <span>$205.27</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-white py-3">
+                        <a href="checkout.html" class="btn btn-primary w-100">
+                            Proceder al pago <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Coupon Code -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">Cupón de descuento</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Código de cupón">
+                                <button class="btn btn-outline-primary" type="button">Aplicar</button>
+                            </div>
+                        </form>
+                        <div class="alert alert-success mb-0">
+                            <small><i class="fas fa-check-circle me-2"></i>Cupón "BIENVENIDA10" aplicado: 10% de descuento</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Estimate -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">Estimación de envío</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="zipCode" class="form-label">Código postal</label>
+                                <input type="text" class="form-control" id="zipCode" placeholder="Ingresa tu código postal">
+                            </div>
+                            <button type="button" class="btn btn-outline-primary w-100">Calcular envío</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">JIMDUR Repuestos</h5>
+                    <p class="small">
+                        Ofrecemos repuestos automotrices de alta calidad para todas las marcas y modelos. Más de 15 años de experiencia en el mercado.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Enlaces rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-white text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="catalogo.html" class="text-white text-decoration-none">Catálogo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Ofertas</a></li>
+                        <li class="mb-2"><a href="contacto.html" class="text-white text-decoration-none">Contacto</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Atención al cliente</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Mi cuenta</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Seguimiento de pedidos</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Devoluciones</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Preguntas frecuentes</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Términos y condiciones</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Av. Principal #123, Ciudad</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> (123) 456-7890</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@jimdur.com</li>
+                        <li><i class="fas fa-clock me-2"></i> Lun-Vie: 8am-6pm, Sáb: 9am-2pm</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center p-3 mt-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2023 JIMDUR Repuestos. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- Back to top button -->
+    <button id="backToTop" class="btn btn-primary btn-sm rounded-circle position-fixed bottom-0 end-0 m-4" style="display: none; z-index: 1000;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/scripts.js"></script>
+</body>
+</html>

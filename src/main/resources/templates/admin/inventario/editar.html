@@ -17,6 +17,143 @@
     
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <style>
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border: 1px solid rgba(0, 0, 0, 0.125);
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+        
+        .border-4 {
+            border-width: 4px !important;
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 4px solid #2196f3;
+        }
+        
+        .calculation-card {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border-left: 4px solid #a855f7;
+        }
+        
+        .history-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-left: 4px solid #22c55e;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .nav-tabs .nav-link {
+            border-radius: 10px 10px 0 0;
+            margin-right: 5px;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .tab-content {
+            background: white;
+            border-radius: 0 10px 10px 10px;
+            border: 1px solid #dee2e6;
+            border-top: none;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0056b3 0%, #003d7a 100%);
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+        
+        .badge {
+            font-size: 0.75em;
+            padding: 0.5em 0.75em;
+        }
+        
+        .movement-item {
+            border-left: 4px solid;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f8f9fa;
+        }
+        
+        .movement-entrada {
+            border-left-color: #28a745;
+        }
+        
+        .movement-salida {
+            border-left-color: #dc3545;
+        }
+        
+        .movement-ajuste {
+            border-left-color: #ffc107;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .stats-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .floating-actions {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -27,7 +164,7 @@
 
             <!-- Content -->
             <main class="col-md-9 col-lg-10 py-4 px-5 ms-auto">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
                     <h1 class="h2">
                         <i class="fas fa-edit text-primary me-2"></i>
                         Editar Inventario
@@ -41,112 +178,307 @@
                     </div>
                 </div>
 
-                <!-- Formulario -->
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-edit me-2"></i>
-                            Actualizar Información del Inventario
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <form th:action="@{/admin/inventario/{id}/actualizar(id=${inventario.idInventario})}" 
-                              th:object="${inventario}" method="post">
-                            
-                            <input type="hidden" th:field="*{idInventario}">
-                            
-                            <!-- Información del Producto (Solo lectura) -->
-                            <div class="row mb-3">
-                                <div class="col-12">
-                                    <div class="alert alert-info">
-                                        <h6><i class="fas fa-info-circle me-2"></i>Información del Producto</h6>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <strong>Producto:</strong> <span th:text="${inventario.nombreProducto}">Producto</span>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <strong>SKU:</strong> <span th:text="${inventario.skuProducto}">SKU</span>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <strong>Ubicación:</strong> <span th:text="${inventario.codigoUbicacion + ' - ' + inventario.nombreUbicacion}">Ubicación</span>
-                                            </div>
+                <div class="row">
+                    <!-- Columna Izquierda -->
+                    <div class="col-lg-8">
+                        <!-- Información del Producto -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Información del Producto
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert info-card">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h6 class="text-primary mb-2">📦 Producto</h6>
+                                            <p class="mb-1 fw-bold" th:text="${inventario.nombreProducto}">Nombre del Producto</p>
+                                            <small class="text-muted">SKU: <span th:text="${inventario.skuProducto}">SKU123</span></small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6 class="text-success mb-2">📍 Ubicación</h6>
+                                            <p class="mb-1 fw-bold">
+                                                <span th:text="${inventario.codigoUbicacion}">A-01</span> - 
+                                                <span th:text="${inventario.nombreUbicacion}">Estante A</span>
+                                            </p>
+                                            <small class="text-muted">Ubicación física</small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6 class="text-warning mb-2">📅 Última Actualización</h6>
+                                            <p class="mb-1 fw-bold" th:text="${#temporals.format(inventario.fechaActualizacion, 'dd/MM/yyyy')}">01/01/2024</p>
+                                            <small class="text-muted" th:text="${#temporals.format(inventario.fechaActualizacion, 'HH:mm')}">10:30</small>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="row">
-                                <!-- Producto (Hidden) -->
-                                <input type="hidden" th:field="*{idProducto}">
-                                
-                                <!-- Ubicación (Hidden) -->
-                                <input type="hidden" th:field="*{idUbicacion}">
-
-                                <!-- Cantidad -->
-                                <div class="col-md-4">
-                                    <label for="cantidad" class="form-label">Cantidad *</label>
-                                    <input type="number" class="form-control" th:field="*{cantidad}" 
-                                           id="cantidad" min="0" step="1" required>
-                                    <div th:if="${#fields.hasErrors('cantidad')}" 
-                                         class="text-danger small" th:errors="*{cantidad}">
-                                    </div>
-                                </div>
-
-                                <!-- Valor Unitario -->
-                                <div class="col-md-4">
-                                    <label for="valorUnitario" class="form-label">Valor Unitario *</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">S/.</span>
-                                        <input type="number" class="form-control" th:field="*{valorUnitario}" 
-                                               id="valorUnitario" min="0.01" step="0.01" required>
-                                    </div>
-                                    <div th:if="${#fields.hasErrors('valorUnitario')}" 
-                                         class="text-danger small" th:errors="*{valorUnitario}">
-                                    </div>
-                                </div>
+                        <!-- Formulario de Edición -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-edit me-2"></i>
+                                    Editar Detalles del Inventario
+                                </h5>
                             </div>
-
-
-
-                            <!-- Información Calculada -->
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <div class="alert alert-secondary">
-                                        <h6><i class="fas fa-calculator me-2"></i>Información Calculada</h6>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <small><strong>Valor Total:</strong> S/. <span id="valorTotal" th:text="${#numbers.formatDecimal(inventario.valorTotal, 1, 2)}">0.00</span></small>
+                            <div class="card-body">
+                                <form id="formEditarInventario" th:action="@{/admin/inventario/{id}/actualizar(id=${inventario.idInventario})}" 
+                                      th:object="${inventario}" method="post" class="needs-validation" novalidate>
+                                    
+                                    <input type="hidden" th:field="*{idInventario}">
+                                    <input type="hidden" th:field="*{idProducto}">
+                                    <input type="hidden" th:field="*{idUbicacion}">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="cantidadInput" class="form-label">
+                                                📊 Cantidad <span class="required">*</span>
+                                            </label>
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-text"><i class="fas fa-boxes"></i></span>
+                                                <input type="number" class="form-control" th:field="*{cantidad}" 
+                                                       id="cantidadInput" min="0" step="1" required>
+                                                <span class="input-group-text">unidades</span>
                                             </div>
-                                            <div class="col-md-6">
-                                                <small><strong>Última Actualización:</strong> 
-                                                    <span th:text="${#temporals.format(inventario.fechaActualizacion, 'dd/MM/yyyy HH:mm')}">Fecha</span>
-                                                </small>
+                                            <div class="form-text">
+                                                Stock anterior: <span id="stockAnterior" th:text="${inventario.cantidad}">0</span> unidades
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Por favor ingresa una cantidad válida.
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="valorUnitarioInput" class="form-label">
+                                                💰 Valor Unitario <span class="required">*</span>
+                                            </label>
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-text">S/</span>
+                                                <input type="number" class="form-control" th:field="*{valorUnitario}" 
+                                                       id="valorUnitarioInput" min="0.01" step="0.01" required>
+                                            </div>
+                                            <div class="form-text">
+                                                Valor anterior: S/ <span id="valorAnterior" th:text="${#numbers.formatDecimal(inventario.valorUnitario, 1, 2)}">0.00</span>
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Por favor ingresa un valor válido.
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <!-- Botones -->
-                            <div class="row mt-4">
-                                <div class="col-12">
-                                    <div class="d-flex justify-content-end gap-2">
-                                        <a th:href="@{/admin/inventario}" class="btn btn-secondary">
-                                            <i class="fas fa-times me-1"></i>Cancelar
-                                        </a>
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save me-1"></i>Actualizar Inventario
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button type="button" class="btn btn-secondary btn-lg" onclick="resetearCambios()">
+                                                    <i class="fas fa-undo me-2"></i>
+                                                    Resetear Cambios
+                                                </button>
+                                                <button type="submit" class="btn btn-primary btn-lg">
+                                                    <i class="fas fa-save me-2"></i>
+                                                    Actualizar Inventario
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Pestañas de Información -->
+                        <div class="card">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-chart-line me-2"></i>
+                                    Información Detallada
+                                </h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <ul class="nav nav-tabs" id="inventarioTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="actual-tab" data-bs-toggle="tab" data-bs-target="#actual" type="button" role="tab">
+                                            <i class="fas fa-boxes me-2"></i>Stock Actual
                                         </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="movimientos-tab" data-bs-toggle="tab" data-bs-target="#movimientos" type="button" role="tab">
+                                            <i class="fas fa-history me-2"></i>Movimientos
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="estadisticas-tab" data-bs-toggle="tab" data-bs-target="#estadisticas" type="button" role="tab">
+                                            <i class="fas fa-chart-bar me-2"></i>Estadísticas
+                                        </button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content p-3" id="inventarioTabsContent">
+                                    <!-- Tab Stock Actual -->
+                                    <div class="tab-pane fade show active" id="actual" role="tabpanel">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Ubicación</th>
+                                                        <th>Código</th>
+                                                        <th>Stock</th>
+                                                        <th>Valor Unitario</th>
+                                                        <th>Valor Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tablaStockActual">
+                                                    <tr>
+                                                        <td th:text="${inventario.nombreUbicacion}">Estante A</td>
+                                                        <td th:text="${inventario.codigoUbicacion}">A-01</td>
+                                                        <td><span class="badge bg-primary" th:text="${inventario.cantidad}">0</span></td>
+                                                        <td th:text="'S/ ' + ${#numbers.formatDecimal(inventario.valorUnitario, 1, 2)}">S/ 0.00</td>
+                                                        <td><strong th:text="'S/ ' + ${#numbers.formatDecimal(inventario.valorTotal, 1, 2)}">S/ 0.00</strong></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Tab Movimientos -->
+                                    <div class="tab-pane fade" id="movimientos" role="tabpanel">
+                                        <div id="listaMovimientos">
+                                            <div class="text-center py-4">
+                                                <i class="fas fa-spinner fa-spin fa-2x text-muted mb-3"></i>
+                                                <p class="text-muted">Cargando movimientos...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Tab Estadísticas -->
+                                    <div class="tab-pane fade" id="estadisticas" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="stats-card">
+                                                    <div class="stats-icon text-primary">
+                                                        <i class="fas fa-boxes"></i>
+                                                    </div>
+                                                    <h4 class="mb-1" th:text="${inventario.cantidad}">0</h4>
+                                                    <p class="text-muted mb-0">Stock Total</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="stats-card">
+                                                    <div class="stats-icon text-success">
+                                                        <i class="fas fa-dollar-sign"></i>
+                                                    </div>
+                                                    <h4 class="mb-1" th:text="'S/ ' + ${#numbers.formatDecimal(inventario.valorTotal, 1, 2)}">S/ 0.00</h4>
+                                                    <p class="text-muted mb-0">Valor Total</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="stats-card">
+                                                    <div class="stats-icon text-warning">
+                                                        <i class="fas fa-chart-line"></i>
+                                                    </div>
+                                                    <h4 class="mb-1" id="movimientosMes">0</h4>
+                                                    <p class="text-muted mb-0">Movimientos Este Mes</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="stats-card">
+                                                    <div class="stats-icon text-info">
+                                                        <i class="fas fa-calendar"></i>
+                                                    </div>
+                                                    <h4 class="mb-1" id="diasDesdeActualizacion">0</h4>
+                                                    <p class="text-muted mb-0">Días Sin Actualizar</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha -->
+                    <div class="col-lg-4">
+                        <!-- Cálculos en Tiempo Real -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-secondary text-white">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-calculator me-2"></i>
+                                    Cálculos Automáticos
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert calculation-card">
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <h6 class="text-primary">💰 Nuevo Valor Total</h6>
+                                            <h3 class="mb-0">S/ <span id="nuevoValorTotal" th:text="${#numbers.formatDecimal(inventario.valorTotal, 1, 2)}">0.00</span></h3>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <h6 class="text-info">📊 Diferencia</h6>
+                                            <h4 class="mb-0" id="diferenciaTotalContainer">
+                                                <span class="text-muted">S/ </span><span id="diferenciaTotal">0.00</span>
+                                            </h4>
+                                            <small class="text-muted">vs. valor anterior</small>
+                                        </div>
+                                        <div class="col-12">
+                                            <h6 class="text-success">🔄 Cambio en Stock</h6>
+                                            <h4 class="mb-0" id="cambioStockContainer">
+                                                <span id="cambioStock">0</span> unidades
+                                            </h4>
+                                            <small class="text-muted">vs. cantidad anterior</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Historial Rápido -->
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-clock me-2"></i>
+                                    Historial Rápido
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert history-card">
+                                    <h6 class="mb-3">📈 Resumen de Cambios</h6>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <small class="text-muted">Stock Inicial</small>
+                                            <p class="mb-1 fw-bold" id="stockInicialResumen" th:text="${inventario.cantidad}">0</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted">Valor Inicial</small>
+                                            <p class="mb-1 fw-bold" id="valorInicialResumen" th:text="'S/ ' + ${#numbers.formatDecimal(inventario.valorUnitario, 1, 2)}">S/ 0.00</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <small class="text-muted">Nuevo Stock</small>
+                                            <p class="mb-1 fw-bold text-primary" id="nuevoStockResumen" th:text="${inventario.cantidad}">0</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted">Nuevo Valor</small>
+                                            <p class="mb-1 fw-bold text-primary" id="nuevoValorResumen" th:text="'S/ ' + ${#numbers.formatDecimal(inventario.valorUnitario, 1, 2)}">S/ 0.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-
             </main>
         </div>
+    </div>
+
+    <!-- Botones Flotantes -->
+    <div class="floating-actions">
+        <button class="btn btn-warning floating-btn" onclick="resetearCambios()" title="Resetear Cambios">
+            <i class="fas fa-undo"></i>
+        </button>
+        <button class="btn btn-success floating-btn" onclick="guardarCambios()" title="Guardar Cambios">
+            <i class="fas fa-save"></i>
+        </button>
     </div>
 
     <!-- Bootstrap JS -->
@@ -155,43 +487,30 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
     <script>
-        // Calcular valor total automáticamente
-        function calcularValorTotal() {
-            const cantidad = parseFloat(document.getElementById('cantidad').value) || 0;
-            const precio = parseFloat(document.getElementById('valorUnitario').value) || 0;
-            const total = cantidad * precio;
-            
-            document.getElementById('valorTotal').textContent = total.toFixed(2);
-        }
+        // Variables globales
+        let inventarioOriginal = {
+            cantidad: /*[[${inventario.cantidad}]]*/ 0,
+            valorUnitario: /*[[${inventario.valorUnitario}]]*/ 0,
+            valorTotal: /*[[${inventario.valorTotal}]]*/ 0
+        };
+        
+        let productoId = /*[[${inventario.idProducto}]]*/ 0;
+        let ubicacionId = /*[[${inventario.idUbicacion}]]*/ 0;
+        
+        // CSRF Token para AJAX
+        const csrfToken = document.querySelector('meta[name="_csrf"]');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]');
+        const token = csrfToken ? csrfToken.getAttribute('content') : '';
+        const header = csrfHeader ? csrfHeader.getAttribute('content') : 'X-CSRF-TOKEN';
 
-        // Event listeners para cálculos automáticos
-        document.getElementById('cantidad').addEventListener('input', calcularValorTotal);
-        document.getElementById('valorUnitario').addEventListener('input', calcularValorTotal);
-
-        // Manejar envío del formulario con SweetAlert
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            Swal.fire({
-                title: '¿Confirmar actualización?',
-                text: 'Se actualizará el registro de inventario',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, actualizar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.submit();
-                }
-            });
-        });
-
-        // Mensajes de éxito/error
+        // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
+            configurarEventListeners();
+            calcularDiferencias();
+            calcularDiasDesdeActualizacion();
             
+            // Mensajes de éxito/error
+            const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('success') === 'true') {
                 Swal.fire({
                     title: '¡Éxito!',
@@ -200,7 +519,6 @@
                     timer: 3000
                 });
             }
-            
             if (urlParams.get('error') === 'true') {
                 Swal.fire({
                     title: 'Error',
@@ -209,6 +527,241 @@
                 });
             }
         });
+
+        // Configurar Event Listeners
+        function configurarEventListeners() {
+            // Cálculos automáticos
+            document.getElementById('cantidadInput').addEventListener('input', calcularDiferencias);
+            document.getElementById('valorUnitarioInput').addEventListener('input', calcularDiferencias);
+            
+            // Formulario submit
+            document.getElementById('formEditarInventario').addEventListener('submit', function(e) {
+                e.preventDefault();
+                confirmarActualizacion();
+            });
+            
+            // Pestañas
+            document.getElementById('movimientos-tab').addEventListener('click', cargarMovimientos);
+            document.getElementById('estadisticas-tab').addEventListener('click', cargarEstadisticas);
+        }
+
+        // Calcular diferencias en tiempo real
+        function calcularDiferencias() {
+            const nuevaCantidad = parseInt(document.getElementById('cantidadInput').value) || 0;
+            const nuevoValorUnitario = parseFloat(document.getElementById('valorUnitarioInput').value) || 0;
+            const nuevoValorTotal = nuevaCantidad * nuevoValorUnitario;
+            
+            // Actualizar valor total
+            document.getElementById('nuevoValorTotal').textContent = nuevoValorTotal.toFixed(2);
+            
+            // Calcular diferencia en valor total
+            const diferenciaTotalValor = nuevoValorTotal - inventarioOriginal.valorTotal;
+            const diferenciaTotalElement = document.getElementById('diferenciaTotal');
+            const diferenciaTotalContainer = document.getElementById('diferenciaTotalContainer');
+            
+            diferenciaTotalElement.textContent = Math.abs(diferenciaTotalValor).toFixed(2);
+            
+            // Aplicar colores según el cambio
+            if (diferenciaTotalValor > 0) {
+                diferenciaTotalContainer.className = 'mb-0 text-success';
+                diferenciaTotalElement.textContent = '+' + diferenciaTotalValor.toFixed(2);
+            } else if (diferenciaTotalValor < 0) {
+                diferenciaTotalContainer.className = 'mb-0 text-danger';
+                diferenciaTotalElement.textContent = diferenciaTotalValor.toFixed(2);
+            } else {
+                diferenciaTotalContainer.className = 'mb-0 text-muted';
+                diferenciaTotalElement.textContent = '0.00';
+            }
+            
+            // Calcular diferencia en stock
+            const diferenciaStock = nuevaCantidad - inventarioOriginal.cantidad;
+            const cambioStockElement = document.getElementById('cambioStock');
+            const cambioStockContainer = document.getElementById('cambioStockContainer');
+            
+            if (diferenciaStock > 0) {
+                cambioStockContainer.className = 'mb-0 text-success';
+                cambioStockElement.textContent = '+' + diferenciaStock;
+            } else if (diferenciaStock < 0) {
+                cambioStockContainer.className = 'mb-0 text-danger';
+                cambioStockElement.textContent = diferenciaStock;
+            } else {
+                cambioStockContainer.className = 'mb-0 text-muted';
+                cambioStockElement.textContent = '0';
+            }
+            
+            // Actualizar resumen
+            document.getElementById('nuevoStockResumen').textContent = nuevaCantidad;
+            document.getElementById('nuevoValorResumen').textContent = 'S/ ' + nuevoValorUnitario.toFixed(2);
+        }
+
+        // Calcular días desde la última actualización
+        function calcularDiasDesdeActualizacion() {
+            const fechaActualizacionStr = /*[[${#temporals.format(inventario.fechaActualizacion, 'yyyy-MM-dd HH:mm:ss')}]]*/ '2024-01-01 00:00:00';
+            const fechaActualizacion = new Date(fechaActualizacionStr);
+            const hoy = new Date();
+            const diferenciaDias = Math.floor((hoy - fechaActualizacion) / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('diasDesdeActualizacion').textContent = diferenciaDias;
+        }
+
+        // Cargar movimientos
+        function cargarMovimientos() {
+            const container = document.getElementById('listaMovimientos');
+            container.innerHTML = '<div class="text-center py-4"><i class="fas fa-spinner fa-spin fa-2x text-muted mb-3"></i><p class="text-muted">Cargando movimientos...</p></div>';
+            
+            fetch(`/admin/inventario/producto/${productoId}/movimientos`)
+                .then(response => response.json())
+                .then(movimientos => {
+                    if (movimientos.length === 0) {
+                        container.innerHTML = '<div class="text-center py-4"><i class="fas fa-history fa-2x text-muted mb-3"></i><p class="text-muted">No hay movimientos registrados</p></div>';
+                        return;
+                    }
+                    
+                    container.innerHTML = movimientos.map(mov => `
+                        <div class="movement-item movement-${mov.tipoMovimiento.toLowerCase()}">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <i class="fas fa-${mov.tipoMovimiento === 'ENTRADA' ? 'arrow-up' : mov.tipoMovimiento === 'SALIDA' ? 'arrow-down' : 'edit'} me-2"></i>
+                                        ${mov.tipoMovimiento}
+                                    </h6>
+                                    <p class="mb-1">${mov.descripcion}</p>
+                                    <small class="text-muted">${formatearFecha(mov.fechaMovimiento)}</small>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-${mov.tipoMovimiento === 'ENTRADA' ? 'success' : mov.tipoMovimiento === 'SALIDA' ? 'danger' : 'warning'}">${mov.cantidad} unidades</span>
+                                    <br>
+                                    <small class="text-muted">Stock: ${mov.stockAnterior} → ${mov.stockNuevo}</small>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                })
+                .catch(error => {
+                    console.error('Error al cargar movimientos:', error);
+                    container.innerHTML = '<div class="text-center py-4"><i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i><p class="text-warning">Error al cargar movimientos</p></div>';
+                });
+        }
+
+        // Cargar estadísticas
+        function cargarEstadisticas() {
+            fetch(`/admin/inventario/producto/${productoId}/estadisticas`)
+                .then(response => response.json())
+                .then(stats => {
+                    document.getElementById('movimientosMes').textContent = stats.movimientosMes || 0;
+                })
+                .catch(error => {
+                    console.error('Error al cargar estadísticas:', error);
+                    document.getElementById('movimientosMes').textContent = 'N/A';
+                });
+        }
+
+        // Formatear fecha
+        function formatearFecha(fecha) {
+            return new Date(fecha).toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Resetear cambios
+        function resetearCambios() {
+            Swal.fire({
+                title: '¿Resetear cambios?',
+                text: 'Se volverán a los valores originales',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, resetear',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('cantidadInput').value = inventarioOriginal.cantidad;
+                    document.getElementById('valorUnitarioInput').value = inventarioOriginal.valorUnitario;
+                    calcularDiferencias();
+                    
+                    Swal.fire({
+                        title: 'Cambios reseteados',
+                        text: 'Los valores han vuelto a su estado original',
+                        icon: 'success',
+                        timer: 2000
+                    });
+                }
+            });
+        }
+
+        // Guardar cambios (función para botón flotante)
+        function guardarCambios() {
+            if (!document.getElementById('formEditarInventario').checkValidity()) {
+                document.getElementById('formEditarInventario').reportValidity();
+                return;
+            }
+            confirmarActualizacion();
+        }
+
+        // Confirmar actualización
+        function confirmarActualizacion() {
+            if (!document.getElementById('formEditarInventario').checkValidity()) {
+                document.getElementById('formEditarInventario').reportValidity();
+                return;
+            }
+            
+            const nuevaCantidad = parseInt(document.getElementById('cantidadInput').value);
+            const nuevoValorUnitario = parseFloat(document.getElementById('valorUnitarioInput').value);
+            const nuevoValorTotal = nuevaCantidad * nuevoValorUnitario;
+            
+            // Detectar cambios
+            const cambioStock = nuevaCantidad - inventarioOriginal.cantidad;
+            const cambioValor = nuevoValorUnitario - inventarioOriginal.valorUnitario;
+            
+            let mensaje = '<div class="text-start">';
+            mensaje += `<p><strong>Cantidad:</strong> ${inventarioOriginal.cantidad} → ${nuevaCantidad} unidades`;
+            if (cambioStock !== 0) {
+                mensaje += ` <span class="text-${cambioStock > 0 ? 'success' : 'danger'}">(${cambioStock > 0 ? '+' : ''}${cambioStock})</span>`;
+            }
+            mensaje += '</p>';
+            
+            mensaje += `<p><strong>Valor Unitario:</strong> S/ ${inventarioOriginal.valorUnitario.toFixed(2)} → S/ ${nuevoValorUnitario.toFixed(2)}`;
+            if (cambioValor !== 0) {
+                mensaje += ` <span class="text-${cambioValor > 0 ? 'success' : 'danger'}">(${cambioValor > 0 ? '+' : ''}${cambioValor.toFixed(2)})</span>`;
+            }
+            mensaje += '</p>';
+            
+            mensaje += `<p><strong>Valor Total:</strong> S/ ${inventarioOriginal.valorTotal.toFixed(2)} → S/ ${nuevoValorTotal.toFixed(2)}</p>`;
+            mensaje += '</div>';
+            
+            Swal.fire({
+                title: '¿Confirmar actualización?',
+                html: mensaje,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, actualizar inventario',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('formEditarInventario').submit();
+                }
+            });
+        }
+
+        // Validación de Bootstrap
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
     </script>
 </body>
 </html> 

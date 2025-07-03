@@ -154,10 +154,10 @@
                                     <i class="fas fa-map-marker-alt me-2 small"></i>Ubicaciones
                                 </a>
                             </li>
-                            <li class="nav-item" sec:authorize="hasAuthority('VER_REPORTES_INVENTARIO')">
-                                <a th:href="@{/admin/movimientos/reporte}" class="nav-link text-dark py-1"
-                                    th:classappend="${claseActiva == 'reportes-inventario'} ? 'sub-active'">
-                                    <i class="fas fa-chart-line me-2 small"></i>Reportes Inventario
+                            <li class="nav-item" sec:authorize="hasAuthority('LEER_INVENTARIO')">
+                                <a th:href="@{/admin/inventario/reporte}" class="nav-link text-dark py-1"
+                                    th:classappend="${claseActiva == 'reporte-inventario'} ? 'sub-active'">
+                                    <i class="fas fa-chart-line me-2 small text-info"></i>Reporte de Inventario
                                 </a>
                             </li>
                         </ul>

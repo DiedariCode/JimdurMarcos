@@ -1,12 +1,17 @@
 package com.diedari.jimdur.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,10 +28,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.diedari.jimdur.dto.AsignarStockDTO;
 import com.diedari.jimdur.dto.InventarioDTO;
+import com.diedari.jimdur.dto.UbicacionDTO;
+import com.diedari.jimdur.dto.MovimientoInventarioDTO;
 import com.diedari.jimdur.repository.ProductoRepository;
 import com.diedari.jimdur.repository.UbicacionRepository;
 import com.diedari.jimdur.repository.UsuarioRepository;
 import com.diedari.jimdur.service.InventarioService;
+import com.diedari.jimdur.service.UbicacionService;
+import com.diedari.jimdur.service.MovimientoInventarioService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +50,8 @@ public class InventarioController {
     private final ProductoRepository productoRepository;
     private final UbicacionRepository ubicacionRepository;
     private final UsuarioRepository usuarioRepository;
+    private final UbicacionService ubicacionService;
+    private final MovimientoInventarioService movimientoInventarioService;
 
     @GetMapping
     public String listarInventarios(
@@ -338,5 +349,144 @@ public class InventarioController {
         model.addAttribute("totalItems", todosInventariosBajos.size());
 
         return "admin/inventario/stock-bajo";
+    }
+
+    @GetMapping("/ubicacion/{idUbicacion}")
+    @ResponseBody
+    public ResponseEntity<List<InventarioDTO>> obtenerInventarioPorUbicacion(@PathVariable Long idUbicacion) {
+        try {
+            List<InventarioDTO> inventarios = inventarioService.obtenerInventariosPorUbicacion(idUbicacion);
+            return ResponseEntity.ok(inventarios);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/producto/{idProducto}/movimientos")
+    @ResponseBody
+    public ResponseEntity<List<MovimientoInventarioDTO>> obtenerMovimientosPorProducto(@PathVariable Long idProducto) {
+        try {
+            List<MovimientoInventarioDTO> movimientos = movimientoInventarioService.obtenerMovimientosPorProducto(idProducto);
+            return ResponseEntity.ok(movimientos);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/producto/{idProducto}/estadisticas")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> obtenerEstadisticasProducto(@PathVariable Long idProducto) {
+        try {
+            Map<String, Object> estadisticas = new HashMap<>();
+            
+            // Obtener todos los movimientos del producto
+            List<MovimientoInventarioDTO> todosMovimientos = movimientoInventarioService.obtenerMovimientosPorProducto(idProducto);
+            
+            // Contar movimientos del mes actual (simplificado)
+            long movimientosRecientes = todosMovimientos.stream()
+                .filter(m -> m.getFechaMovimiento().isAfter(java.time.LocalDateTime.now().minusDays(30)))
+                .count();
+            estadisticas.put("movimientosMes", (int) movimientosRecientes);
+            
+            // Contar por tipo de movimiento
+            long totalEntradas = todosMovimientos.stream()
+                .filter(m -> "ENTRADA".equals(m.getTipoMovimiento()))
+                .count();
+            long totalSalidas = todosMovimientos.stream()
+                .filter(m -> "SALIDA".equals(m.getTipoMovimiento()))
+                .count();
+            
+            estadisticas.put("totalEntradas", (int) totalEntradas);
+            estadisticas.put("totalSalidas", (int) totalSalidas);
+            
+            return ResponseEntity.ok(estadisticas);
+        } catch (Exception e) {
+            Map<String, Object> estadisticasVacias = new HashMap<>();
+            estadisticasVacias.put("movimientosMes", 0);
+            estadisticasVacias.put("totalEntradas", 0);
+            estadisticasVacias.put("totalSalidas", 0);
+            return ResponseEntity.ok(estadisticasVacias);
+        }
+    }
+
+    @GetMapping("/reporte")
+    @PreAuthorize("hasAuthority('LEER_INVENTARIO')")
+    public String mostrarReporteInventario(Model model) {
+        try {
+            // Obtener todos los inventarios usando paginación
+            Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+            Page<InventarioDTO> pageInventarios = inventarioService.obtenerTodosLosInventarios(pageable);
+            List<InventarioDTO> todosInventarios = pageInventarios.getContent();
+            
+            // Log para debugging
+            System.out.println("=== REPORTE DE INVENTARIO ===");
+            System.out.println("Total inventarios encontrados: " + todosInventarios.size());
+            
+            // Calcular estadísticas generales
+            int totalProductos = todosInventarios.size();
+            int totalUnidades = todosInventarios.stream()
+                .mapToInt(InventarioDTO::getCantidad)
+                .sum();
+            double valorTotalInventario = todosInventarios.stream()
+                .mapToDouble(InventarioDTO::getValorTotal)
+                .sum();
+            
+            // Productos con stock bajo
+            List<InventarioDTO> stockBajo = inventarioService.obtenerInventariosConStockBajo(5);
+            int productosStockBajo = stockBajo.size();
+            
+            // Productos sin stock
+            long productosSinStock = todosInventarios.stream()
+                .filter(inv -> inv.getCantidad() == 0)
+                .count();
+            
+            // Ubicaciones más utilizadas
+            Map<String, Long> ubicacionesUsadas = todosInventarios.stream()
+                .collect(java.util.stream.Collectors.groupingBy(
+                    InventarioDTO::getNombreUbicacion,
+                    java.util.stream.Collectors.counting()
+                ));
+            
+            // Productos más valiosos
+            List<InventarioDTO> productosMasValiosos = todosInventarios.stream()
+                .sorted((a, b) -> Double.compare(b.getValorTotal(), a.getValorTotal()))
+                .limit(10)
+                .collect(java.util.stream.Collectors.toList());
+            
+            // Log de estadísticas para debugging
+            System.out.println("Estadísticas calculadas:");
+            System.out.println("- Total productos: " + totalProductos);
+            System.out.println("- Productos stock bajo: " + productosStockBajo);
+            System.out.println("- Productos sin stock: " + productosSinStock);
+            System.out.println("- Stock normal: " + (totalProductos - productosStockBajo - (int)productosSinStock));
+            System.out.println("- Ubicaciones utilizadas: " + ubicacionesUsadas.size());
+            System.out.println("================================");
+            
+            // Agregar datos al modelo
+            model.addAttribute("totalProductos", totalProductos);
+            model.addAttribute("totalUnidades", totalUnidades);
+            model.addAttribute("valorTotalInventario", valorTotalInventario);
+            model.addAttribute("productosStockBajo", productosStockBajo);
+            model.addAttribute("productosSinStock", (int)productosSinStock);
+            model.addAttribute("ubicacionesUsadas", ubicacionesUsadas);
+            model.addAttribute("productosMasValiosos", productosMasValiosos);
+            model.addAttribute("pageTitle", "Reporte de Inventario");
+            model.addAttribute("claseActiva", "reporte-inventario");
+            
+            return "admin/inventario/reporte";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Error al generar el reporte: " + e.getMessage());
+            model.addAttribute("totalProductos", 0);
+            model.addAttribute("totalUnidades", 0);
+            model.addAttribute("valorTotalInventario", 0.0);
+            model.addAttribute("productosStockBajo", 0);
+            model.addAttribute("productosSinStock", 0);
+            model.addAttribute("ubicacionesUsadas", new HashMap<>());
+            model.addAttribute("productosMasValiosos", new ArrayList<>());
+            model.addAttribute("pageTitle", "Reporte de Inventario");
+            model.addAttribute("claseActiva", "reporte-inventario");
+            return "admin/inventario/reporte";
+        }
     }
 } 

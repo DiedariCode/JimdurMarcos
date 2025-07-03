@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Pedido - JIMDUR Repuestos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="/placeholder.svg?height=40&width=120" alt="JIMDUR Repuestos" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="catalogo.html">Catálogo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <button id="searchToggle" class="btn btn-outline-secondary me-2 d-lg-none">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <form id="searchForm" class="d-none d-lg-flex me-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Buscar productos...">
+                            <button class="btn btn-outline-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <a href="carrito.html" class="btn btn-primary position-relative me-2">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                        </span>
+                    </a>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-1"></i> Juan Pérez
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="perfil.html"><i class="fas fa-user-circle me-2"></i>Mi Perfil</a></li>
+                            <li><a class="dropdown-item active" href="perfil-pedidos.html"><i class="fas fa-shopping-bag me-2"></i>Mis Pedidos</a></li>
+                            <li><a class="dropdown-item" href="perfil-lista-deseos.html"><i class="fas fa-heart me-2"></i>Lista de Deseos</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">Detalle de Pedido</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="perfil.html">Mi Perfil</a></li>
+                        <li class="breadcrumb-item"><a href="perfil-pedidos.html">Mis Pedidos</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Pedido #ORD-2023-1234</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <img src="/placeholder.svg?height=100&width=100" class="rounded-circle" width="100" height="100" alt="Foto de perfil">
+                        </div>
+                        <h5 class="mb-1">Juan Pérez</h5>
+                        <p class="text-muted mb-3">Cliente desde Enero 2022</p>
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-camera me-1"></i> Cambiar foto
+                        </button>
+                    </div>
+                </div>
+
+                <div class="list-group shadow-sm mb-4">
+                    <a href="perfil.html" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user-circle me-2"></i> Información Personal
+                    </a>
+                    <a href="perfil-pedidos.html" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-shopping-bag me-2"></i> Mis Pedidos
+                    </a>
+                    <a href="perfil-direcciones.html" class="list-group-item list-group-item-action">
+                        <i class="fas fa-map-marker-alt me-2"></i> Direcciones
+                    </a>
+                    <a href="perfil-lista-deseos.html" class="list-group-item list-group-item-action">
+                        <i class="fas fa-heart me-2"></i> Lista de Deseos
+                    </a>
+                    <a href="perfil-vehiculos.html" class="list-group-item list-group-item-action">
+                        <i class="fas fa-car me-2"></i> Mis Vehículos
+                    </a>
+                    <a href="perfil-notificaciones.html" class="list-group-item list-group-item-action">
+                        <i class="fas fa-bell me-2"></i> Notificaciones
+                    </a>
+                    <a href="perfil-cambiar-password.html" class="list-group-item list-group-item-action">
+                        <i class="fas fa-lock me-2"></i> Cambiar Contraseña
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action text-danger">
+                        <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                    </a>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h6 class="mb-3">¿Necesitas ayuda?</h6>
+                        <p class="small mb-3">Si tienes alguna pregunta o problema con tu pedido, no dudes en contactarnos.</p>
+                        <a href="contacto.html" class="btn btn-outline-primary btn-sm w-100">
+                            <i class="fas fa-headset me-2"></i> Contactar Soporte
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- Order Status -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="mb-1">Pedido #ORD-2023-1234</h5>
+                                <p class="text-muted mb-0">Realizado el 15 de Abril, 2023</p>
+                            </div>
+                            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                                <span class="badge bg-success p-2 px-3 fs-6">Entregado</span>
+                                <p class="text-muted mb-0 mt-1">Entregado el 18 de Abril, 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Progress -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="mb-4">Seguimiento del Pedido</h5>
+                        <div class="position-relative mb-4">
+                            <div class="progress" style="height: 3px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="position-absolute top-0 start-0 translate-middle bg-success border border-light rounded-circle" style="width: 20px; height: 20px;"></div>
+                            <div class="position-absolute top-0 start-33 translate-middle bg-success border border-light rounded-circle" style="width: 20px; height: 20px;"></div>
+                            <div class="position-absolute top-0 start-66 translate-middle bg-success border border-light rounded-circle" style="width: 20px; height: 20px;"></div>
+                            <div class="position-absolute top-0 start-100 translate-middle bg-success border border-light rounded-circle" style="width: 20px; height: 20px;"></div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-3">
+                                <div class="text-success mb-1"><i class="fas fa-check-circle"></i></div>
+                                <p class="small mb-0">Pedido Confirmado</p>
+                                <p class="small text-muted">15/04/2023</p>
+                            </div>
+                            <div class="col-3">
+                                <div class="text-success mb-1"><i class="fas fa-check-circle"></i></div>
+                                <p class="small mb-0">Procesando</p>
+                                <p class="small text-muted">16/04/2023</p>
+                            </div>
+                            <div class="col-3">
+                                <div class="text-success mb-1"><i class="fas fa-check-circle"></i></div>
+                                <p class="small mb-0">En Camino</p>
+                                <p class="small text-muted">17/04/2023</p>
+                            </div>
+                            <div class="col-3">
+                                <div class="text-success mb-1"><i class="fas fa-check-circle"></i></div>
+                                <p class="small mb-0">Entregado</p>
+                                <p class="small text-muted">18/04/2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Items -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">Productos</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Producto</th>
+                                        <th scope="col" class="text-center">Cantidad</th>
+                                        <th scope="col" class="text-end">Precio</th>
+                                        <th scope="col" class="text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/placeholder.svg?height=60&width=60" class="me-3" width="60" height="60" alt="Producto">
+                                                <div>
+                                                    <h6 class="mb-0">Filtro de Aceite Premium</h6>
+                                                    <p class="text-muted small mb-0">SKU: FLT-1234</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center align-middle">2</td>
+                                        <td class="text-end align-middle">$24.99</td>
+                                        <td class="text-end align-middle">$49.98</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/placeholder.svg?height=60&width=60" class="me-3" width="60" height="60" alt="Producto">
+                                                <div>
+                                                    <h6 class="mb-0">Aceite Sintético 5W-30</h6>
+                                                    <p class="text-muted small mb-0">SKU: OIL-5W30</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center align-middle">3</td>
+                                        <td class="text-end align-middle">$32.50</td>
+                                        <td class="text-end align-middle">$97.50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/placeholder.svg?height=60&width=60" class="me-3" width="60" height="60" alt="Producto">
+                                                <div>
+                                                    <h6 class="mb-0">Juego de Bujías de Iridio</h6>
+                                                    <p class="text-muted small mb-0">SKU: SPK-IR4</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center align-middle">1</td>
+                                        <td class="text-end align-middle">$45.99</td>
+                                        <td class="text-end align-middle">$45.99</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Details -->
+                <div class="row g-4 mb-4">
+                    <!-- Shipping Address -->
+                    <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-white py-3">
+                                <h5 class="mb-0">Dirección de Envío</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-1"><strong>Juan Pérez</strong></p>
+                                <p class="mb-1">Av. Principal #123</p>
+                                <p class="mb-1">Colonia Centro</p>
+                                <p class="mb-1">Ciudad de México, 01000</p>
+                                <p class="mb-1">México</p>
+                                <p class="mb-0">(123) 456-7890</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Payment Method -->
+                    <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-white py-3">
+                                <h5 class="mb-0">Método de Pago</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fab fa-cc-visa fa-2x text-primary me-3"></i>
+                                    <div>
+                                        <p class="mb-0"><strong>Tarjeta de Crédito</strong></p>
+                                        <p class="mb-0">Visa terminada en 4567</p>
+                                    </div>
+                                </div>
+                                <p class="mb-1"><strong>Titular:</strong> Juan Pérez</p>
+                                <p class="mb-0"><strong>Vencimiento:</strong> 05/2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">Resumen del Pedido</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8 offset-md-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Subtotal:</span>
+                                    <span>$193.47</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Descuento:</span>
+                                    <span class="text-success">-$15.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Envío:</span>
+                                    <span>$12.99</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Impuestos:</span>
+                                    <span>$13.81</span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between mb-0">
+                                    <strong>Total:</strong>
+                                    <strong>$205.27</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex justify-content-between">
+                    <a href="perfil-pedidos.html" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i> Volver a Mis Pedidos
+                    </a>
+                    <div>
+                        <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#returnModal">
+                            <i class="fas fa-undo me-2"></i> Solicitar Devolución
+                        </button>
+                        <button class="btn btn-primary" onclick="window.print()">
+                            <i class="fas fa-print me-2"></i> Imprimir Factura
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Return Modal -->
+    <div class="modal fade" id="returnModal" tabindex="-1" aria-labelledby="returnModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="returnModalLabel">Solicitar Devolución</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Selecciona los productos a devolver</label>
+                            <div class="list-group">
+                                <label class="list-group-item d-flex">
+                                    <input class="form-check-input me-2" type="checkbox" value="">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <div>
+                                            <h6 class="mb-1">Filtro de Aceite Premium</h6>
+                                            <p class="text-muted small mb-0">SKU: FLT-1234 | Cantidad: 2</p>
+                                        </div>
+                                        <span>$49.98</span>
+                                    </div>
+                                </label>
+                                <label class="list-group-item d-flex">
+                                    <input class="form-check-input me-2" type="checkbox" value="">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <div>
+                                            <h6 class="mb-1">Aceite Sintético 5W-30</h6>
+                                            <p class="text-muted small mb-0">SKU: OIL-5W30 | Cantidad: 3</p>
+                                        </div>
+                                        <span>$97.50</span>
+                                    </div>
+                                </label>
+                                <label class="list-group-item d-flex">
+                                    <input class="form-check-input me-2" type="checkbox" value="">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <div>
+                                            <h6 class="mb-1">Juego de Bujías de Iridio</h6>
+                                            <p class="text-muted small mb-0">SKU: SPK-IR4 | Cantidad: 1</p>
+                                        </div>
+                                        <span>$45.99</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="returnReason" class="form-label">Motivo de la devolución</label>
+                            <select class="form-select" id="returnReason">
+                                <option value="">Seleccionar motivo...</option>
+                                <option>Producto dañado</option>
+                                <option>Producto incorrecto</option>
+                                <option>Producto no necesario</option>
+                                <option>Mejor precio encontrado</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="returnComments" class="form-label">Comentarios adicionales</label>
+                            <textarea class="form-control" id="returnComments" rows="3" placeholder="Proporciona detalles adicionales sobre tu solicitud de devolución..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Enviar Solicitud</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">JIMDUR Repuestos</h5>
+                    <p class="small">
+                        Ofrecemos repuestos automotrices de alta calidad para todas las marcas y modelos. Más de 15 años de experiencia en el mercado.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Enlaces rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-white text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="catalogo.html" class="text-white text-decoration-none">Catálogo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Ofertas</a></li>
+                        <li class="mb-2"><a href="contacto.html" class="text-white text-decoration-none">Contacto</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Atención al cliente</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="perfil.html" class="text-white text-decoration-none">Mi cuenta</a></li>
+                        <li class="mb-2"><a href="perfil-pedidos.html" class="text-white text-decoration-none">Seguimiento de pedidos</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Devoluciones</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Preguntas frecuentes</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Términos y condiciones</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Av. Principal #123, Ciudad</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> (123) 456-7890</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@jimdur.com</li>
+                        <li><i class="fas fa-clock me-2"></i> Lun-Vie: 8am-6pm, Sáb: 9am-2pm</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center p-3 mt-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2023 JIMDUR Repuestos. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- Back to top button -->
+    <button id="backToTop" class="btn btn-primary btn-sm rounded-circle position-fixed bottom-0 end-0 m-4" style="display: none; z-index: 1000;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/scripts.js"></script>
+</body>
+</html>

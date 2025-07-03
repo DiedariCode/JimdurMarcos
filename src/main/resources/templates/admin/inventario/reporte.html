@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JIMDUR Admin - Reporte de Inventario</title>
+    <!-- CSS Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" th:href="@{/css/shared/sidebar.css}">
+    <style>
+        .stat-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+        .value-badge {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .alert-stats {
+            border-left: 4px solid #007bff;
+            background: linear-gradient(135deg, #e7f3ff, #f0f9ff);
+        }
+        .danger-stats {
+            border-left: 4px solid #dc3545;
+            background: linear-gradient(135deg, #ffeaea, #fff0f0);
+        }
+        .warning-stats {
+            border-left: 4px solid #ffc107;
+            background: linear-gradient(135deg, #fff8e1, #fffbf0);
+        }
+        .success-stats {
+            border-left: 4px solid #28a745;
+            background: linear-gradient(135deg, #e8f5e8, #f0f9f0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 ms-auto px-4 py-4">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2><i class="fas fa-chart-line me-2"></i>Reporte de Inventario</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="/admin/inventario" class="text-decoration-none">Inventario</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Reporte</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" onclick="window.print()">
+                            <i class="fas fa-print me-2"></i>Imprimir
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Estadísticas -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="card stat-card h-100 alert-stats">
+                            <div class="card-body text-center">
+                                <i class="fas fa-boxes stat-icon text-primary mb-3"></i>
+                                <h3 class="card-title h2 mb-1 text-primary" th:text="${totalProductos}">0</h3>
+                                <p class="card-text text-muted">Productos en Inventario</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stat-card h-100 success-stats">
+                            <div class="card-body text-center">
+                                <i class="fas fa-cubes stat-icon text-success mb-3"></i>
+                                <h3 class="card-title h2 mb-1 text-success" th:text="${totalUnidades}">0</h3>
+                                <p class="card-text text-muted">Unidades Totales</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stat-card h-100 alert-stats">
+                            <div class="card-body text-center">
+                                <i class="fas fa-dollar-sign stat-icon text-info mb-3"></i>
+                                <h3 class="card-title h2 mb-1 text-info">S/ <span th:text="${#numbers.formatDecimal(valorTotalInventario, 1, 2)}">0.00</span></h3>
+                                <p class="card-text text-muted">Valor Total Inventario</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stat-card h-100 warning-stats">
+                            <div class="card-body text-center">
+                                <i class="fas fa-exclamation-triangle stat-icon text-warning mb-3"></i>
+                                <h3 class="card-title h2 mb-1 text-warning" th:text="${productosStockBajo}">0</h3>
+                                <p class="card-text text-muted">Productos Stock Bajo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráfico y Ubicaciones -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Estado del Stock</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="stockChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Ubicaciones</h5>
+                            </div>
+                            <div class="card-body">
+                                <div th:if="${ubicacionesUsadas.size() > 0}">
+                                    <div th:each="ubicacion : ${ubicacionesUsadas}" class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span th:text="${ubicacion.key}">Ubicación</span>
+                                            <span><strong th:text="${ubicacion.value}">0</strong> productos</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" 
+                                                 th:style="'width: ' + ${ubicacion.value * 100 / totalProductos} + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if="${ubicacionesUsadas.size() == 0}" class="text-center text-muted">
+                                    <i class="fas fa-inbox fa-3x mb-3"></i>
+                                    <p>No hay datos disponibles</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Productos Valiosos -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="mb-0"><i class="fas fa-star me-2"></i>Productos más Valiosos</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Rank</th>
+                                                <th>Producto</th>
+                                                <th>SKU</th>
+                                                <th>Ubicación</th>
+                                                <th>Cantidad</th>
+                                                <th>Valor Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="producto, iterStat : ${productosMasValiosos}">
+                                                <td>
+                                                    <span class="badge bg-primary" th:text="${iterStat.index + 1}">1</span>
+                                                </td>
+                                                <td th:text="${producto.nombreProducto}">Producto</td>
+                                                <td><code th:text="${producto.skuProducto}">SKU-001</code></td>
+                                                <td><span class="badge bg-info" th:text="${producto.nombreUbicacion}">Ubicación</span></td>
+                                                <td><span class="badge bg-secondary" th:text="${producto.cantidad}">0</span></td>
+                                                <td>
+                                                    <span class="value-badge">S/ <span th:text="${#numbers.formatDecimal(producto.valorTotal, 1, 2)}">0.00</span></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alertas -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="mb-0"><i class="fas fa-exclamation-circle me-2"></i>Alertas</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-times-circle me-2"></i>
+                                    <strong th:text="${productosSinStock}">0</strong> productos sin stock
+                                </div>
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong th:text="${productosStockBajo}">0</strong> productos con stock bajo
+                                </div>
+                                <div class="text-center">
+                                    <a href="/admin/inventario/stock-bajo" class="btn btn-outline-danger">
+                                        <i class="fas fa-eye me-2"></i>Ver Productos Afectados
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Recomendaciones</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item border-0">
+                                        <i class="fas fa-plus-circle text-success me-2"></i>
+                                        Revisar productos sin stock
+                                    </div>
+                                    <div class="list-group-item border-0">
+                                        <i class="fas fa-truck text-primary me-2"></i>
+                                        Contactar proveedores
+                                    </div>
+                                    <div class="list-group-item border-0">
+                                        <i class="fas fa-chart-line text-warning me-2"></i>
+                                        Analizar productos de alta rotación
+                                    </div>
+                                    <div class="list-group-item border-0">
+                                        <i class="fas fa-balance-scale text-info me-2"></i>
+                                        Optimizar niveles de stock
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script th:inline="javascript">
+        // Variables de datos desde el servidor
+        const totalProductos = /*[[${totalProductos}]]*/ 0;
+        const productosStockBajo = /*[[${productosStockBajo}]]*/ 0;
+        const productosSinStock = /*[[${productosSinStock}]]*/ 0;
+        const stockNormal = totalProductos - productosStockBajo - productosSinStock;
+        
+        console.log('Datos del gráfico:', {
+            total: totalProductos,
+            stockBajo: productosStockBajo,
+            sinStock: productosSinStock,
+            normal: stockNormal
+        });
+
+        // Inicializar gráfico cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Solo crear el gráfico si hay datos
+            if (totalProductos > 0) {
+                crearGraficoStock();
+            } else {
+                mostrarMensajeSinDatos();
+            }
+            
+            // Mostrar fecha actual
+            const fechaHoy = new Date().toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            console.log('Reporte generado el:', fechaHoy);
+        });
+
+        function crearGraficoStock() {
+            const ctx = document.getElementById('stockChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Stock Normal', 'Stock Bajo', 'Sin Stock'],
+                    datasets: [{
+                        data: [stockNormal, productosStockBajo, productosSinStock],
+                        backgroundColor: [
+                            '#28a745', // Verde para stock normal
+                            '#ffc107', // Amarillo para stock bajo
+                            '#dc3545'  // Rojo para sin stock
+                        ],
+                        borderWidth: 3,
+                        borderColor: '#fff',
+                        hoverBorderWidth: 5,
+                        hoverBorderColor: '#333'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 1000
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                    return `${label}: ${value} productos (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function mostrarMensajeSinDatos() {
+            const container = document.querySelector('#stockChart').parentElement;
+            container.innerHTML = `
+                <div class="text-center py-5">
+                    <i class="fas fa-chart-pie fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No hay datos de inventario</h5>
+                    <p class="text-muted">Agrega productos al inventario para ver las estadísticas</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html> 
