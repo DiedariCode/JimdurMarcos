@@ -1,6 +1,7 @@
 package com.diedari.jimdur.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -28,14 +26,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.diedari.jimdur.dto.AsignarStockDTO;
 import com.diedari.jimdur.dto.InventarioDTO;
-import com.diedari.jimdur.dto.UbicacionDTO;
 import com.diedari.jimdur.dto.MovimientoInventarioDTO;
 import com.diedari.jimdur.repository.ProductoRepository;
 import com.diedari.jimdur.repository.UbicacionRepository;
 import com.diedari.jimdur.repository.UsuarioRepository;
 import com.diedari.jimdur.service.InventarioService;
-import com.diedari.jimdur.service.UbicacionService;
 import com.diedari.jimdur.service.MovimientoInventarioService;
+import com.diedari.jimdur.service.UbicacionService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
