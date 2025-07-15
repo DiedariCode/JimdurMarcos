@@ -2,6 +2,7 @@ package com.diedari.jimdur.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -27,8 +28,24 @@ public class SecurityConfig {
                 return config.getAuthenticationManager();
         }
 
+        // 1. Cadena de seguridad para API (Basic Auth)
         @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        @Order(1)
+        public SecurityFilterChain apiSecurity(HttpSecurity http) throws Exception {
+                http
+                                .securityMatcher("/api/**")
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests(auth -> auth
+                                                .anyRequest().authenticated()
+                                )
+                                .httpBasic();
+                return http.build();
+        }
+
+        // 2. Cadena de seguridad para Web (form login)
+        @Bean
+        @Order(2)
+        public SecurityFilterChain webSecurity(HttpSecurity http) throws Exception {
                 http
                                 .authorizeHttpRequests(auth -> auth
                                                 // --- 1. Recursos públicos ---

@@ -41,6 +41,13 @@ public class ProductoRestController {
     private final MarcaRepository marcaRepository;
     private final ProveedorRepository proveedorRepository;
 
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<List<ProductoDTO>> listarProductos() {
+        List<ProductoDTO> productos = productoService.obtenerTodosLosProductos();
+        return ResponseEntity.ok(productos);
+    }
+
     @PostMapping("/crear")
     @ResponseBody
 
