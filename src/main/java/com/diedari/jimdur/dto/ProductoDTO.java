@@ -75,6 +75,9 @@ public class ProductoDTO {
     // Para las compatibilidades
     private List<CompatibilidadProductoDTO> compatibilidades = new ArrayList<>();
 
+    // Para el stock disponible
+    private Integer stockDisponible;
+
     // Constructor con valores por defecto
     public ProductoDTO(String sku, String nombre) {
         this.sku = sku;

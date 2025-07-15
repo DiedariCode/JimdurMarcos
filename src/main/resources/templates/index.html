@@ -51,7 +51,8 @@
                 <h2 class="text-center mb-5">Categorías Principales</h2>
 
                 <div class="row g-4">
-                    <div class="col-6 col-md-4 col-lg-2" th:each="categoria : ${categorias}">
+                    <!-- Limitar a máximo 12 categorías (2 filas de 6) -->
+                    <div class="col-6 col-md-4 col-lg-2" th:each="categoria, iterStat : ${categorias}" th:if="${iterStat.index < 12}">
                         <a th:href="@{'/categoria/' + ${categoria.slugCategoria}}" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm category-card">
                                 <div class="card-body text-center">
@@ -70,16 +71,31 @@
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>Productos Destacados</h2>
-                    <a href="catalogo.html" class="btn btn-outline-primary">Ver todos</a>
+                    <a th:href="@{/productos}" class="btn btn-outline-primary">Ver todos</a>
                 </div>
-                <div class="row g-4">
-                    <!-- Product 1 -->
-                    <div class="col-md-6 col-lg-3">
+                <div class="row g-4" th:if="${productosDestacados != null and !productosDestacados.isEmpty()}">
+                    <!-- Productos dinámicos con descuentos -->
+                    <div class="col-md-6 col-lg-3" th:each="producto : ${productosDestacados}">
                         <div class="card h-100 product-card">
-                            <div class="badge bg-danger position-absolute top-0 end-0 m-2">-15%</div>
-                            <img src="img/product-1.jpg" class="card-img-top" alt="Aceite Motul 5100">
+                            <!-- Badge de descuento si existe -->
+                            <div th:if="${producto.descuento != null and producto.descuento > 0}" 
+                                 class="badge bg-danger position-absolute top-0 end-0 m-2" 
+                                 th:text="'-' + ${#numbers.formatDecimal(producto.descuento, 0, 0)} + '%'">-15%</div>
+                            
+                            <!-- Imagen del producto (usar la primera imagen o imagen por defecto) -->
+                            <img th:if="${producto.imagenesGuardadas != null and !producto.imagenesGuardadas.isEmpty()}" 
+                                 th:src="@{'/uploads/productos/' + ${producto.imagenesGuardadas[0].nombreArchivo}}" 
+                                 class="card-img-top" 
+                                 th:alt="${producto.nombre}" 
+                                 style="height: 200px; object-fit: cover;">
+                            <img th:unless="${producto.imagenesGuardadas != null and !producto.imagenesGuardadas.isEmpty()}" 
+                                 th:src="@{/image/productos/aceite.webp}" 
+                                 class="card-img-top" 
+                                 th:alt="${producto.nombre}" 
+                                 style="height: 200px; object-fit: cover;">
+                            
                             <div class="card-body">
-                                <h5 class="card-title">Aceite Motul 5100 4T 15W50</h5>
+                                <h5 class="card-title" th:text="${producto.nombre}">Nombre del Producto</h5>
                                 <div class="d-flex align-items-center mb-2">
                                     <div class="ratings">
                                         <i class="bi bi-star-fill text-warning"></i>
@@ -92,93 +108,26 @@
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <span class="text-muted text-decoration-line-through">$8,500</span>
-                                        <span class="fw-bold fs-5 ms-2">$7,225</span>
+                                        <!-- Mostrar precio original tachado si hay descuento -->
+                                        <span th:if="${producto.descuento != null and producto.descuento > 0}" 
+                                              class="text-muted text-decoration-line-through" 
+                                              th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'COMMA', 0, 'POINT')}">$8,500</span>
+                                        <!-- Mostrar precio con descuento o precio normal -->
+                                        <span class="fw-bold fs-5" 
+                                              th:classappend="${producto.descuento != null and producto.descuento > 0} ? 'ms-2' : ''"
+                                              th:text="'$' + ${#numbers.formatDecimal(producto.precioOferta != null ? producto.precioOferta : producto.precio, 0, 'COMMA', 0, 'POINT')}">$7,225</span>
                                     </div>
-                                    <a href="producto-1.html" class="btn btn-sm btn-outline-primary">Ver detalles</a>
+                                    <a th:href="@{'/producto/' + ${producto.slug}}" class="btn btn-sm btn-outline-primary">Ver detalles</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Product 2 -->
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 product-card">
-                            <img src="img/product-2.jpg" class="card-img-top" alt="Kit de Transmisión">
-                            <div class="card-body">
-                                <h5 class="card-title">Kit de Transmisión Honda CG 150</h5>
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="ratings">
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star text-warning"></i>
-                                    </div>
-                                    <small class="ms-2 text-muted">(18)</small>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <span class="fw-bold fs-5">$12,900</span>
-                                    </div>
-                                    <a href="producto-2.html" class="btn btn-sm btn-outline-primary">Ver detalles</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product 3 -->
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 product-card">
-                            <div class="badge bg-success position-absolute top-0 end-0 m-2">Nuevo</div>
-                            <img src="img/product-3.jpg" class="card-img-top" alt="Batería Yuasa">
-                            <div class="card-body">
-                                <h5 class="card-title">Batería Yuasa YTX7L-BS 12V</h5>
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="ratings">
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                    </div>
-                                    <small class="ms-2 text-muted">(32)</small>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <span class="fw-bold fs-5">$15,750</span>
-                                    </div>
-                                    <a href="producto-3.html" class="btn btn-sm btn-outline-primary">Ver detalles</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product 4 -->
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 product-card">
-                            <img src="img/product-4.jpg" class="card-img-top" alt="Pastillas de Freno">
-                            <div class="card-body">
-                                <h5 class="card-title">Pastillas de Freno Yamaha FZ16</h5>
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="ratings">
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-half text-warning"></i>
-                                    </div>
-                                    <small class="ms-2 text-muted">(15)</small>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <span class="fw-bold fs-5">$5,200</span>
-                                    </div>
-                                    <a href="producto-4.html" class="btn btn-sm btn-outline-primary">Ver detalles</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                
+                <!-- Mensaje si no hay productos destacados -->
+                <div th:if="${productosDestacados == null or productosDestacados.isEmpty()}" class="text-center py-5">
+                    <p class="text-muted">No hay productos destacados disponibles en este momento.</p>
+                    <a th:href="@{/productos}" class="btn btn-primary">Ver todo el catálogo</a>
                 </div>
             </div>
         </section>
@@ -187,24 +136,40 @@
         <section class="py-5 bg-light">
             <div class="container">
                 <h2 class="text-center mb-5">Marcas Destacadas</h2>
-                <div class="row align-items-center justify-content-center">
+                <!-- <div class="row align-items-center justify-content-center" th:if="${marcas != null and !marcas.isEmpty()}">
+                    <div class="col-4 col-md-2 mb-4 mb-md-0" th:each="marca, iterStat : ${marcas}" th:if="${iterStat.index < 6}">
+                        <img th:if="${marca.logourlMarca != null and !marca.logourlMarca.isEmpty()}" 
+                             th:src="@{'/uploads/marcas/' + ${marca.logourlMarca}}" 
+                             th:alt="${marca.nombreMarca}" 
+                             class="img-fluid brand-logo"
+                             style="max-height: 80px; object-fit: contain;">
+                        <img th:unless="${marca.logourlMarca != null and !marca.logourlMarca.isEmpty()}" 
+                             th:src="@{/image/marcas/Honda.png}" 
+                             th:alt="${marca.nombreMarca}" 
+                             class="img-fluid brand-logo"
+                             style="max-height: 80px; object-fit: contain;">
+                    </div>
+                </div> -->
+                
+                <!-- Marcas por defecto si no hay marcas en la base de datos -->
+                <div class="row align-items-center justify-content-center" th:if="${marcas == null or marcas.isEmpty()}">
                     <div class="col-4 col-md-2 mb-4 mb-md-0">
-                        <img src="img/brand-honda.png" alt="Honda" class="img-fluid brand-logo">
+                        <img th:src="@{/image/marcas/Honda.png}" alt="Honda" class="img-fluid brand-logo">
                     </div>
                     <div class="col-4 col-md-2 mb-4 mb-md-0">
-                        <img src="img/brand-yamaha.png" alt="Yamaha" class="img-fluid brand-logo">
+                        <img th:src="@{/image/marcas/yamaha.png}" alt="Yamaha" class="img-fluid brand-logo">
                     </div>
                     <div class="col-4 col-md-2 mb-4 mb-md-0">
-                        <img src="img/brand-suzuki.png" alt="Suzuki" class="img-fluid brand-logo">
+                        <img th:src="@{/image/marcas/Kawasaki.png}" alt="Kawasaki" class="img-fluid brand-logo">
                     </div>
                     <div class="col-4 col-md-2 mb-4 mb-md-0">
-                        <img src="img/brand-kawasaki.png" alt="Kawasaki" class="img-fluid brand-logo">
+                        <img th:src="@{/image/marcas/ktm.png}" alt="KTM" class="img-fluid brand-logo">
                     </div>
                     <div class="col-4 col-md-2 mb-4 mb-md-0">
-                        <img src="img/brand-motul.png" alt="Motul" class="img-fluid brand-logo">
+                        <img th:src="@{/image/marcas/BAJAJ.png}" alt="Bajaj" class="img-fluid brand-logo">
                     </div>
                     <div class="col-4 col-md-2 mb-4 mb-md-0">
-                        <img src="img/brand-castrol.png" alt="Castrol" class="img-fluid brand-logo">
+                        <img th:src="@{/image/marcas/Hero.png}" alt="Hero" class="img-fluid brand-logo">
                     </div>
                 </div>
             </div>

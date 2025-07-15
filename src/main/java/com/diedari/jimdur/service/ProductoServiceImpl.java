@@ -30,6 +30,7 @@ import com.diedari.jimdur.repository.MarcaRepository;
 import com.diedari.jimdur.repository.ProductoProveedorRepository;
 import com.diedari.jimdur.repository.ProductoRepository;
 import com.diedari.jimdur.repository.ProveedorRepository;
+import com.diedari.jimdur.service.InventarioService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +48,7 @@ public class ProductoServiceImpl implements ProductoService {
     private final CompatibilidadProductoRepository compatibilidadProductoRepository;
     private final ProductoMapper productoMapper;
     private final FileStorageService fileStorageService;
+    private final InventarioService inventarioService;
 
     @Override
     @Transactional // ! Para garantizar la consistencia de datos
@@ -187,14 +189,28 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public List<ProductoDTO> obtenerTodosLosProductos() {
-        return productoMapper.toDTOList(productoRepository.findAll());
+        List<ProductoDTO> productos = productoMapper.toDTOList(productoRepository.findAll());
+        
+        // Agregar stock disponible a cada producto
+        productos.forEach(producto -> {
+            Integer stock = inventarioService.obtenerTotalStockPorProducto(producto.getIdProducto());
+            producto.setStockDisponible(stock != null ? stock : 0);
+        });
+        
+        return productos;
     }
 
     @Override
     public ProductoDTO obtenerProductoPorId(Long id) {
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        return productoMapper.toDTO(producto);
+        ProductoDTO productoDTO = productoMapper.toDTO(producto);
+        
+        // Agregar stock disponible
+        Integer stock = inventarioService.obtenerTotalStockPorProducto(id);
+        productoDTO.setStockDisponible(stock != null ? stock : 0);
+        
+        return productoDTO;
     }
 
     @Override
@@ -417,5 +433,33 @@ public class ProductoServiceImpl implements ProductoService {
 
         // Eliminar el registro de la base de datos
         imagenProductoRepository.delete(imagen);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductoDTO> obtenerProductosDestacados(int limite) {
+        List<Producto> productos = productoRepository.findProductosConDescuentoOrderByDescuentoDesc();
+        return productos.stream()
+                .limit(limite)
+                .map(productoMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductoDTO> obtenerProductosConDescuentoMinimo(Double minDescuento, int limite) {
+        List<Producto> productos = productoRepository.findProductosConDescuentoMinimoOrderByDescuentoDesc(minDescuento);
+        List<ProductoDTO> productosDTO = productos.stream()
+                .limit(limite)
+                .map(productoMapper::toDTO)
+                .collect(Collectors.toList());
+        
+        // Agregar stock disponible a cada producto
+        productosDTO.forEach(producto -> {
+            Integer stock = inventarioService.obtenerTotalStockPorProducto(producto.getIdProducto());
+            producto.setStockDisponible(stock != null ? stock : 0);
+        });
+        
+        return productosDTO;
     }
 }

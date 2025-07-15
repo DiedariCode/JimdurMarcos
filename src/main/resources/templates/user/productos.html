@@ -322,12 +322,16 @@
                                         </span>
                                     </div>
 
-                                    <p class="text-success small mt-1" th:text="'En stock'">En stock</p>
+                                    <p class="text-success small mt-1" th:if="${producto.stockDisponible > 0}" th:text="'En stock (' + ${producto.stockDisponible} + ' unidades)'">En stock</p>
+                                    <p class="text-danger small mt-1" th:if="${producto.stockDisponible <= 0}" th:text="'Sin stock'">Sin stock</p>
                                 </div>
 
                                 <div class="card-footer bg-white border-top-0">
-                                    <button class="btn btn-primary w-100">
-                                        <i class="bi bi-cart me-2"></i>Agregar al carrito
+                                    <button class="btn btn-primary w-100" 
+                                            th:disabled="${producto.stockDisponible <= 0}"
+                                            th:classappend="${producto.stockDisponible <= 0} ? 'disabled' : ''">
+                                        <i class="bi bi-cart me-2"></i>
+                                        <span th:text="${producto.stockDisponible > 0 ? 'Agregar al carrito' : 'Sin stock'}">Agregar al carrito</span>
                                     </button>
                                 </div>
                             </div>

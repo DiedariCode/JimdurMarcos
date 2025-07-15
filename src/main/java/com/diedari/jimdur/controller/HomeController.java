@@ -27,6 +27,7 @@ import com.diedari.jimdur.model.Usuario;
 import com.diedari.jimdur.dto.ProductoDTO;
 import com.diedari.jimdur.repository.UsuarioRepository;
 import com.diedari.jimdur.service.CategoriaService;
+import com.diedari.jimdur.service.InventarioService;
 import com.diedari.jimdur.service.MarcaService;
 import com.diedari.jimdur.service.ProductoService;
 
@@ -46,12 +47,22 @@ public class HomeController {
     private MarcaService marcaService;
     
     @Autowired
+    private InventarioService inventarioService;
+    
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     @GetMapping
     public String index(Model model) {
         List<Categoria> categorias = categoriaService.obtenerCategoriaPorEstado(true);
         model.addAttribute("categorias", categorias);
+
+        // Obtener productos destacados con descuentos altos (mínimo 10% de descuento, máximo 4 productos)
+        List<ProductoDTO> productosDestacados = productoService.obtenerProductosConDescuentoMinimo(10.0, 4);
+        model.addAttribute("productosDestacados", productosDestacados);
+
+        // Obtener marcas activas para la sección de marcas
+        model.addAttribute("marcas", marcaService.obtenerMarcasPorEstado(true));
 
         // NAVBAR DINAMICA:
         model.addAttribute("activePage", "inicio");
@@ -71,7 +82,15 @@ public class HomeController {
     public String productosForm(Model model) {
         List<ProductoDTO> productos = productoService.obtenerTodosLosProductos();
         
-        model.addAttribute("productos", productos);
+        // Filtrar productos que tienen stock disponible
+        List<ProductoDTO> productosConStock = productos.stream()
+            .filter(producto -> {
+                Integer stock = inventarioService.obtenerTotalStockPorProducto(producto.getIdProducto());
+                return stock != null && stock > 0;
+            })
+            .collect(Collectors.toList());
+        
+        model.addAttribute("productos", productosConStock);
 
         model.addAttribute("categorias", categoriaService.obtenerCategoriaPorEstado(true));
 
@@ -100,6 +119,11 @@ public class HomeController {
         if (producto == null) {
             return "redirect:/productos";
         }
+        
+        // Obtener el stock total del producto
+        Integer stockTotal = inventarioService.obtenerTotalStockPorProducto(producto.getIdProducto());
+        producto.setStockDisponible(stockTotal != null ? stockTotal : 0);
+        
         model.addAttribute("producto", producto);
         return "/user/detalle-producto";
     }

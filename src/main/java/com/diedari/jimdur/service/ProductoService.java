@@ -29,4 +29,9 @@ public interface ProductoService {
     void eliminarImagen(Long idImagen);
 
     void actualizarPortada(Long idImagen);
+
+    // Métodos para productos destacados
+    List<ProductoDTO> obtenerProductosDestacados(int limite);
+
+    List<ProductoDTO> obtenerProductosConDescuentoMinimo(Double minDescuento, int limite);
 }

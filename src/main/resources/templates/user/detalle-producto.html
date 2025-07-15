@@ -118,7 +118,8 @@
                         <!-- Availability -->
                         <div class="d-flex align-items-center gap-2 mb-2">
                             <span class="fw-medium">Disponibilidad:</span>
-                            <span class="text-success" th:text="${producto.activo ? 'En stock' : 'No disponible'}">En stock</span>
+                            <span class="text-success" th:if="${producto.stockDisponible > 0}" th:text="'En stock (' + ${producto.stockDisponible} + ' unidades)'">En stock</span>
+                            <span class="text-danger" th:if="${producto.stockDisponible <= 0}" th:text="'Sin stock'">Sin stock</span>
                         </div>
 
                         <!-- SKU -->
@@ -139,9 +140,11 @@
                                         <i class="bi bi-plus"></i>
                                     </button>
                                 </div>
-                                <button class="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center gap-2">
+                                <button class="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center gap-2" 
+                                        th:disabled="${producto.stockDisponible <= 0}"
+                                        th:classappend="${producto.stockDisponible <= 0} ? 'disabled' : ''">
                                     <i class="bi bi-cart"></i>
-                                    Agregar al carrito
+                                    <span th:text="${producto.stockDisponible > 0 ? 'Agregar al carrito' : 'Sin stock'}">Agregar al carrito</span>
                                 </button>
                                 <button class="btn btn-outline-secondary" title="Agregar a favoritos">
                                     <i class="bi bi-heart"></i>
