@@ -135,10 +135,10 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <div th:if="${usuario.roles}" th:each="rol : ${usuario.roles}">
+                                            <div th:if="${usuario.roles != null and !usuario.roles.isEmpty()}" th:each="rol : ${usuario.roles}">
                                                 <span class="badge bg-primary me-1" th:text="${rol.nombre}">Administrador</span>
                                             </div>
-                                            <span th:if="${#lists.isEmpty(usuario.roles)}" class="badge bg-secondary">Sin rol</span>
+                                            <span th:if="${usuario.roles == null or usuario.roles.isEmpty()}" class="badge bg-secondary">Sin rol</span>
                                         </td>
                                         <td th:text="${#temporals.format(usuario.fechaRegistro, 'dd/MM/yyyy HH:mm')}">01/05/2023 14:32</td>
                                         <td>

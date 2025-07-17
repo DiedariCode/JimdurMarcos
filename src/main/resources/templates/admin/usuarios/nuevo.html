@@ -41,7 +41,8 @@
                                                    id="nombres" 
                                                    th:field="*{nombres}" 
                                                    th:classappend="${#fields.hasErrors('nombres')} ? 'is-invalid' : ''"
-                                                   placeholder="Ingrese los nombres">
+                                                   placeholder="Ingrese los nombres"
+                                                   required>
                                             <div th:if="${#fields.hasErrors('nombres')}" 
                                                  class="invalid-feedback" 
                                                  th:errors="*{nombres}">
@@ -59,7 +60,8 @@
                                                    id="apellidos" 
                                                    th:field="*{apellidos}" 
                                                    th:classappend="${#fields.hasErrors('apellidos')} ? 'is-invalid' : ''"
-                                                   placeholder="Ingrese los apellidos">
+                                                   placeholder="Ingrese los apellidos"
+                                                   required>
                                             <div th:if="${#fields.hasErrors('apellidos')}" 
                                                  class="invalid-feedback" 
                                                  th:errors="*{apellidos}">
@@ -79,7 +81,8 @@
                                                    id="email" 
                                                    th:field="*{email}" 
                                                    th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
-                                                   placeholder="usuario@ejemplo.com">
+                                                   placeholder="usuario@ejemplo.com"
+                                                   required>
                                             <div th:if="${#fields.hasErrors('email')}" 
                                                  class="invalid-feedback" 
                                                  th:errors="*{email}">
@@ -112,7 +115,8 @@
                                                    id="contrasenaHash" 
                                                    th:field="*{contrasenaHash}" 
                                                    th:classappend="${#fields.hasErrors('contrasenaHash')} ? 'is-invalid' : ''"
-                                                   placeholder="Contraseña segura">
+                                                   placeholder="Contraseña segura"
+                                                   required>
                                             <div th:if="${#fields.hasErrors('contrasenaHash')}" 
                                                  class="invalid-feedback" 
                                                  th:errors="*{contrasenaHash}">
@@ -159,6 +163,11 @@
                                     <div th:if="${#lists.isEmpty(roles)}" class="alert alert-warning">
                                         <i class="fas fa-exclamation-triangle me-2"></i>
                                         No hay roles disponibles. Asegúrate de crear roles primero.
+                                    </div>
+                                    
+                                    <div class="form-text">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Si no seleccionas ningún rol, se asignará automáticamente el rol "USER".
                                     </div>
                                 </div>
                                 

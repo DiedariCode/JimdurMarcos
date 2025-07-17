@@ -51,6 +51,23 @@ public class UsuarioAdminController {
                          RedirectAttributes redirectAttributes,
                          Model model) {
 
+        // Validaciones personalizadas
+        if (usuario.getNombres() == null || usuario.getNombres().trim().isEmpty()) {
+            result.rejectValue("nombres", "error.usuario", "El nombre es obligatorio");
+        }
+        
+        if (usuario.getApellidos() == null || usuario.getApellidos().trim().isEmpty()) {
+            result.rejectValue("apellidos", "error.usuario", "Los apellidos son obligatorios");
+        }
+        
+        if (usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
+            result.rejectValue("email", "error.usuario", "El email es obligatorio");
+        }
+        
+        if (usuario.getContrasenaHash() == null || usuario.getContrasenaHash().trim().isEmpty()) {
+            result.rejectValue("contrasenaHash", "error.usuario", "La contraseña es obligatoria");
+        }
+
         if (result.hasErrors()) {
             model.addAttribute("roles", usuarioService.getRolesDisponibles());
             model.addAttribute("claseActiva", "usuarios");
@@ -66,21 +83,37 @@ public class UsuarioAdminController {
         }
 
         try {
+            // Debug: Imprimir información del usuario
+            System.out.println("Creando usuario: " + usuario.getNombres() + " " + usuario.getApellidos());
+            System.out.println("Email: " + usuario.getEmail());
+            System.out.println("Roles seleccionados: " + (roles != null ? roles.toString() : "null"));
+            
             // Encriptar contraseña
             usuario.setContrasenaHash(passwordEncoder.encode(usuario.getContrasenaHash()));
             usuario.setFechaRegistro(LocalDateTime.now());
-            usuario.setEstadoCuenta("ACTIVO");
+            
+            // Asegurar que el estado tenga un valor por defecto
+            if (usuario.getEstadoCuenta() == null || usuario.getEstadoCuenta().trim().isEmpty()) {
+                usuario.setEstadoCuenta("ACTIVO");
+            }
 
+            // Guardar usuario
             Usuario usuarioGuardado = usuarioService.save(usuario);
-
-            // Asignar roles si se proporcionaron
+            System.out.println("Usuario guardado con ID: " + usuarioGuardado.getId());
+            
+            // Asignar roles después de guardar
             if (roles != null && !roles.isEmpty()) {
                 usuarioService.asignarRoles(usuarioGuardado.getId(), roles);
+                System.out.println("Roles asignados exitosamente");
+            } else {
+                System.out.println("No se seleccionaron roles, se mantendrá el rol por defecto");
             }
 
             redirectAttributes.addFlashAttribute("mensaje", "Usuario creado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
         } catch (Exception e) {
+            System.err.println("Error al crear usuario: " + e.getMessage());
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("mensaje", "Error al crear el usuario: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
@@ -115,6 +148,19 @@ public class UsuarioAdminController {
                            RedirectAttributes redirectAttributes,
                            Model model) {
 
+        // Validaciones personalizadas
+        if (usuario.getNombres() == null || usuario.getNombres().trim().isEmpty()) {
+            result.rejectValue("nombres", "error.usuario", "El nombre es obligatorio");
+        }
+        
+        if (usuario.getApellidos() == null || usuario.getApellidos().trim().isEmpty()) {
+            result.rejectValue("apellidos", "error.usuario", "Los apellidos son obligatorios");
+        }
+        
+        if (usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
+            result.rejectValue("email", "error.usuario", "El email es obligatorio");
+        }
+
         if (result.hasErrors()) {
             model.addAttribute("roles", usuarioService.getRolesDisponibles());
             model.addAttribute("claseActiva", "usuarios");
@@ -140,6 +186,10 @@ public class UsuarioAdminController {
                 Usuario usuarioExistente = usuarioService.findById(id).orElseThrow();
                 usuario.setContrasenaHash(usuarioExistente.getContrasenaHash());
             }
+
+            // Mantener la fecha de registro original
+            Usuario usuarioExistente = usuarioService.findById(id).orElseThrow();
+            usuario.setFechaRegistro(usuarioExistente.getFechaRegistro());
 
             Usuario usuarioActualizado = usuarioService.save(usuario);
 

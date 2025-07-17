@@ -39,36 +39,29 @@ public class Usuario {
     private Long id;
 
     @Column(name = "nombre", nullable = false)
-    @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 255, message = "El nombre no puede exceder 255 caracteres")
     private String nombres;
 
     @Column(name = "apellidos", nullable = false)
-    @NotBlank(message = "Los apellidos son obligatorios")
     @Size(max = 255, message = "Los apellidos no pueden exceder 255 caracteres")
     private String apellidos;
 
     @Column(name = "correo", unique = true, nullable = false)
-    @NotBlank(message = "El correo es obligatorio")
     @Email(message = "El correo debe tener un formato válido")
     @Size(max = 255, message = "El correo no puede exceder 255 caracteres")
     private String email;
 
     @Column(name = "contrasena", nullable = false)
-    @NotBlank(message = "La contraseña es obligatoria")
     @Size(max = 255, message = "La contraseña no puede exceder 255 caracteres")
     private String contrasenaHash;
 
     @Column(name = "telefono")
-    @Size(max = 255, message = "El teléfono no puede exceder 255 caracteres")
     private String telefono;
 
     @Column(name = "estado_cuenta", nullable = false)
-    @NotNull(message = "El estado de la cuenta es obligatorio")
     private String estadoCuenta;
 
     @Column(name = "fecha_registro", nullable = false)
-    @NotNull(message = "La fecha de registro es obligatoria")
     private LocalDateTime fechaRegistro;
 
     // Relaciones

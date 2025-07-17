@@ -32,6 +32,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private RolRepository rolRepository;
 
     @Override
+    @Transactional
     public void crearUsuario(RegistroUsuarioDTO dto) {
         Usuario usuario = new Usuario();
         usuario.setNombres(dto.getNombres());
@@ -69,11 +70,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public Usuario save(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
 
     @Override
+    @Transactional
     public Usuario asignarRoles(Long usuarioId, Set<Long> rolesIds) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
         if (usuarioOpt.isPresent()) {
@@ -85,11 +88,19 @@ public class UsuarioServiceImpl implements UsuarioService {
                 roles = rolRepository.findAllById(rolesIds)
                     .stream()
                     .collect(Collectors.toSet());
-            } else {
-                // Si no se proporcionan roles, asignar rol USER por defecto
-                Rol rolUser = rolRepository.findByNombre("ROLE_USER")
-                    .orElseThrow(() -> new RuntimeException("Rol ROLE_USER no encontrado"));
-                roles.add(rolUser);
+            }
+            
+            // Si no se proporcionan roles, mantener los roles actuales
+            if (roles.isEmpty()) {
+                if (usuario.getRoles() == null || usuario.getRoles().isEmpty()) {
+                    // Solo asignar USER si no hay roles actuales
+                    Rol rolUser = rolRepository.findByNombre("ROLE_USER")
+                        .orElseThrow(() -> new RuntimeException("Rol ROLE_USER no encontrado"));
+                    roles.add(rolUser);
+                } else {
+                    // Mantener los roles actuales
+                    roles = usuario.getRoles();
+                }
             }
             
             usuario.setRoles(roles);
@@ -101,26 +112,34 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional(readOnly = true)
     public List<Rol> getRolesDisponibles() {
-        return rolRepository.findByActivoTrue();
+        return rolRepository.findAll().stream()
+            .filter(rol -> rol.getActivo() != null && rol.getActivo())
+            .collect(Collectors.toList());
     }
 
     @Override
+    @Transactional
     public void activar(Long id) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
             usuario.setEstadoCuenta("ACTIVO");
             usuarioRepository.save(usuario);
+        } else {
+            throw new RuntimeException("Usuario no encontrado con ID: " + id);
         }
     }
 
     @Override
+    @Transactional
     public void desactivar(Long id) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
             usuario.setEstadoCuenta("INACTIVO");
             usuarioRepository.save(usuario);
+        } else {
+            throw new RuntimeException("Usuario no encontrado con ID: " + id);
         }
     }
 
