@@ -13,7 +13,8 @@ import jakarta.transaction.Transactional;
 @Repository
 public interface ImagenProductoRepository extends JpaRepository<ImagenProducto, Long> {
 
-    @Transactional
+    // Eliminar todas las imágenes de un producto
+    @Transactional 
     @Modifying
     @Query("DELETE FROM ImagenProducto i WHERE i.producto = :producto")
     void deleteByProducto(Producto producto);

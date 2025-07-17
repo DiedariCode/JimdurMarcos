@@ -16,6 +16,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     boolean existsBySku(String sku);
 
+    // Existe un producto con el mismo sku pero diferente id producto
     boolean existsBySkuAndIdProductoNot(String sku, Long idProducto);
 
     List<Producto> findByActivo(boolean activo);

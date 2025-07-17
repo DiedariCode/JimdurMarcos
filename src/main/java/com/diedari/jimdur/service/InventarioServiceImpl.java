@@ -54,7 +54,7 @@ public class InventarioServiceImpl implements InventarioService {
     @Transactional(readOnly = true)
     public List<InventarioDTO> obtenerInventariosPorProducto(Long idProducto) {
         return inventarioRepository.findByProducto_IdProducto(idProducto)
-                .stream()
+                .stream() // Convertir a stream para poder usar el metodo map y otros metodos de stream.
                 .map(this::convertirADTO)
                 .collect(Collectors.toList());
     }

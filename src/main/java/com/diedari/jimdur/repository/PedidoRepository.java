@@ -7,10 +7,6 @@ import com.diedari.jimdur.model.Pedido;
 
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
-    
-    // Aquí puedes agregar métodos personalizados si es necesario
-    // Por ejemplo, para buscar pedidos por estado o fecha
-    // List<Pedido> findByEstado(String estado);
-    // List<Pedido> findByFechaCreacionBetween(Date startDate, Date endDate);
-    
+
+   
 }
