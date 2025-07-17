@@ -179,6 +179,7 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.POST, "/api/movimientos/**").hasAuthority("CREAR_MOVIMIENTOS")
                                                 
                                                 // --- 14. Otras rutas protegidas ---
+                                                .requestMatchers("/admin/prueba").hasAuthority("ACCESO_PRUEBA")
                                                 .anyRequest().authenticated()
                                 )
                                 .formLogin(form -> form

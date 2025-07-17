@@ -49,7 +49,7 @@ public class ProductoServiceImpl implements ProductoService {
     private final FileStorageService fileStorageService;
 
     @Override
-    @Transactional // ! Para garantizar la consistencia de datos
+    @Transactional 
     public ProductoDTO guardarProducto(ProductoDTO productoDTO) {
         // FASE 1: Guardar el producto principal
         Producto productoGuardado = guardarProductoPrincipal(productoDTO);

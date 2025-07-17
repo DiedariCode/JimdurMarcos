@@ -49,6 +49,7 @@ public class DataLoader implements CommandLineRunner {
             "LEER_MOVIMIENTOS", "CREAR_MOVIMIENTOS", "VER_REPORTES_INVENTARIO",
             "LEER_ORDENES", "CREAR_ORDENES", "APROBAR_ORDENES", "CANCELAR_ORDENES",
             "GESTIONAR_ROLES", "GESTIONAR_PERMISOS", "VER_DASHBOARD"
+           
         }).map(nombre -> {
             Permiso p = new Permiso();
             p.setNombre(nombre);
@@ -95,8 +96,8 @@ public class DataLoader implements CommandLineRunner {
         rolProveedor.setDescripcion("Proveedor con permisos de gestión de productos");
         rolProveedor.setPermisos(permisosProveedor);
         rolProveedor.setActivo(true);
-        
-        rolRepository.saveAll(List.of(rolAdmin, rolUser, rolProveedor));
+
+        rolRepository.saveAll(List.of(rolAdmin, rolUser, rolProveedor ));
 
         // --- 3. Crear los Usuarios y asignarles Roles ---
         Usuario admin = new Usuario();
@@ -128,7 +129,8 @@ public class DataLoader implements CommandLineRunner {
         proveedor.setEstadoCuenta("ACTIVO");
         proveedor.setFechaRegistro(LocalDateTime.now());
         proveedor.setRoles(Set.of(rolProveedor));
-        
+
+
         usuarioRepository.saveAll(List.of(admin, user, proveedor));
 
         System.out.println("Datos iniciales cargados exitosamente.");
@@ -136,5 +138,6 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("- Admin: admin@jimdur.com / admin123");
         System.out.println("- Cliente: cliente@jimdur.com / cliente123");
         System.out.println("- Proveedor: proveedor@jimdur.com / proveedor123");
+        System.out.println("Roles y permisos creados exitosamente.");
     }
 } 

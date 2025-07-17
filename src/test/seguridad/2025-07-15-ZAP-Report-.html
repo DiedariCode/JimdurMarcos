@@ -1,0 +1,2704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZAP por Informe de Escaneo Checkmarx</title>
+<link
+	href="2025-07-15-ZAP-Report-/normalize/normalize.css" rel="stylesheet">
+<link
+	href="2025-07-15-ZAP-Report-/themes/original/main.css" rel="stylesheet">
+<link
+	href="2025-07-15-ZAP-Report-/themes/original/colors.css" rel="stylesheet">
+</head>
+<body>
+	<header>
+		<h1>ZAP por Informe de Escaneo Checkmarx</h1>
+		<p>
+			<span>Generated with</span> <a href="https://zaproxy.org"><img
+				src="2025-07-15-ZAP-Report-/zap32x32.png" alt="The ZAP logo" class="zap-logo">ZAP</a>
+			<span>on mar 15 jul 2025, at 11:32:21</span>
+		</p>
+		<p>ZAP Versión: 2.16.1</p>
+		<p>
+			ZAP by <a href="https://checkmarx.com/">Checkmarx</a>
+		</p>
+	</header>
+
+	<main>
+
+		<section id="contents" class="contents">
+			<h2>Contents</h2>
+			<nav>
+				<ol>
+					<li><a
+						href="#about-this-report">About This Report</a>
+						<ol>
+							
+							<li><a
+								href="#report-parameters">Report Parameters</a></li>
+						</ol></li>
+					<data-th-block>
+					<li><a
+						href="#summaries">Summaries</a>
+						<ol>
+							<li><a
+								href="#risk-confidence-counts">Alert Counts by Risk and Confidence</a></li>
+							<li><a
+								href="#site-risk-counts">Alert Counts by Site and Risk</a></li>
+							<li><a
+								href="#alert-type-counts">Alert Counts by Alert Type</a></li>
+						</ol></li>
+					<li><a
+						href="#alerts">Alerts</a>
+						<ol>
+							
+							 
+							
+							
+							
+							
+							<li><a
+								href="#alerts--risk-2-confidence-3"><span>Risk</span>=<span
+									class="risk-level">Medio</span>, <span>Confidence</span>=<span
+									class="confidence-level">Alta</span> <span>(2)</span></a></li>
+							
+							<li><a
+								href="#alerts--risk-2-confidence-2"><span>Risk</span>=<span
+									class="risk-level">Medio</span>, <span>Confidence</span>=<span
+									class="confidence-level">Media</span> <span>(1)</span></a></li>
+							
+							
+							  
+							
+							
+							
+							
+							
+							
+							<li><a
+								href="#alerts--risk-1-confidence-2"><span>Risk</span>=<span
+									class="risk-level">Bajo</span>, <span>Confidence</span>=<span
+									class="confidence-level">Media</span> <span>(2)</span></a></li>
+							
+							
+							  
+							
+							
+							
+							
+							<li><a
+								href="#alerts--risk-0-confidence-3"><span>Risk</span>=<span
+									class="risk-level">Informativo</span>, <span>Confidence</span>=<span
+									class="confidence-level">Alta</span> <span>(2)</span></a></li>
+							
+							<li><a
+								href="#alerts--risk-0-confidence-2"><span>Risk</span>=<span
+									class="risk-level">Informativo</span>, <span>Confidence</span>=<span
+									class="confidence-level">Media</span> <span>(2)</span></a></li>
+							
+							
+							  
+						</ol></li>
+					<li><a
+						href="#appendix">Appendix</a>
+						<ol>
+							<li><a
+								href="#alert-types">Alert Types</a></li>
+						</ol></li>
+					</data-th-block>
+				</ol>
+			</nav>
+		</section>
+
+		<section
+			id="about-this-report" class="about-this-report">
+			<h2>About This Report</h2>
+
+			
+
+			<section
+				id="report-parameters">
+				<h3>Report Parameters</h3>
+				<div class="report-parameters--container">
+					<h4>Contexts</h4>
+					
+					
+					<p>No contexts were selected, so all contexts were included by default.</p>
+					  
+
+					<h4>Sites</h4>
+					
+					<p>The following sites were included:</p>
+					<ul class="sites-list">
+						<li><span class="site">https://accounts.google.com</span></li>
+						<li><span class="site">http://localhost:8080</span></li>
+					</ul>
+					
+					<p>(If no sites were selected, all sites were included by default.)</p>
+					<p>An included site must also be within one of the included contexts for its data to be included in the report.</p>
+
+					<h4>Risk levels</h4>
+					<p>
+						<span>Included</span>:
+						 
+						<span class="included-risk-codes"><span class="risk-level">Alto</span>, <span class="risk-level">Medio</span>, <span class="risk-level">Bajo</span>, <span class="risk-level">Informativo</span></span>
+					</p>
+					<p>
+						<span>Excluded</span>:
+						 <span>None</span>
+						
+					</p>
+
+					<h4>Confidence levels</h4>
+					<p>
+						<span>Included</span>:
+						
+						
+						<span class="included-confidence-codes"><span class="confidence-level">Confirmado por Usuario</span>, <span class="confidence-level">Alta</span>, <span class="confidence-level">Media</span>, <span class="confidence-level">Baja</span></span>
+					</p>
+					<p>
+						<span>Excluded</span>:
+						
+						
+						<span class="included-confidence-codes"> <span class="confidence-level">Confirmado por Usuario</span>, <span class="confidence-level">Alta</span>, <span class="confidence-level">Media</span>, <span class="confidence-level">Baja</span>, <span class="confidence-level">Falso positivo</span></span>
+					</p>
+				</div>
+			</section>
+		</section>
+
+		
+		<section>
+			
+		</section>
+		
+		<section id="summaries" class="summaries">
+			<h2>Summaries</h2>
+
+			<section
+				id="risk-confidence-counts">
+				<h3>Alert Counts by Risk and Confidence</h3>
+				<table class="risk-confidence-counts-table">
+					<caption>
+						<p>This table shows the number of alerts for each level of risk and confidence included in the report.</p>
+						<p>(The percentages in brackets represent the count as a percentage of the total number of alerts included in the report, rounded to one decimal place.)</p>
+					</caption>
+					<colgroup>
+						<col>
+						<col>
+					</colgroup>
+					<colgroup>
+						<col
+							style="width: 14.0%"><col
+							style="width: 14.0%"><col
+							style="width: 14.0%"><col
+							style="width: 14.0%">
+						<col style="width: 14.0%">
+					</colgroup>
+					<thead>
+						<tr>
+							<td colspan="2" rowspan="2"></td>
+							<th scope="colgroup"
+								colspan="5">Confidence</th>
+						</tr>
+						<tr>
+							<th scope="col">Confirmado por Usuario</th>
+							<th scope="col">Alta</th>
+							<th scope="col">Media</th>
+							<th scope="col">Baja</th>
+							<th scope="col">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="rowgroup"
+								rowspan="5">Risk</th>
+							<th scope="row">Alto</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span class="additional-info-percentages">(0,0 %)</span></td>
+						</tr>
+						<tr>
+							
+							<th scope="row">Medio</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(22,2 %)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(11,1 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>3</span><br> <span class="additional-info-percentages">(33,3 %)</span></td>
+						</tr>
+						<tr>
+							
+							<th scope="row">Bajo</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(22,2 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>2</span><br> <span class="additional-info-percentages">(22,2 %)</span></td>
+						</tr>
+						<tr>
+							
+							<th scope="row">Informativo</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(22,2 %)</span></td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(22,2 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>4</span><br> <span class="additional-info-percentages">(44,4 %)</span></td>
+						</tr>
+						<tr>
+							<th scope="row">Total</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>4</span><br> <span
+								class="additional-info-percentages">(44,4 %)</span></td>
+							<td><span>5</span><br> <span
+								class="additional-info-percentages">(55,6 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>9</span><br> <span
+								class="additional-info-percentages">(100%)</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section
+				id="site-risk-counts">
+				<h3>Alert Counts by Site and Risk</h3>
+				<table class="site-risk-counts-table">
+					<caption>
+						<p>This table shows, for each site for which one or more alerts were raised, the number of alerts raised at each risk level.</p>
+						<p>Alerts with a confidence level of &quot;False Positive&quot; have been excluded from these counts.</p>
+						<p>(The numbers in brackets are the number of alerts raised for the site at or above that risk level.)</p>
+					</caption>
+					<colgroup>
+						<col>
+						<col>
+					</colgroup>
+					<colgroup>
+						<col
+							style="width: 16.25%"><col
+							style="width: 16.25%"><col
+							style="width: 16.25%"><col
+							style="width: 16.25%">
+					</colgroup>
+					<thead>
+						<tr>
+							<td colspan="2" rowspan="2"></td>
+							<th scope="colgroup" colspan="4">Risk</th>
+						</tr>
+						<tr>
+							<th scope="col">
+								<span>Alto</span><br>  <span
+									class="additional-info-percentages">(= Alto)</span>  
+							</th>
+							<th scope="col">
+								<span>Medio</span><br>   <span
+									class="additional-info-percentages">(&gt;= Medio)</span> 
+							</th>
+							<th scope="col">
+								<span>Bajo</span><br>   <span
+									class="additional-info-percentages">(&gt;= Bajo)</span> 
+							</th>
+							<th scope="col">
+								<span>Informativo</span><br>   <span
+									class="additional-info-percentages">(&gt;= Informativo)</span> 
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="rowgroup"
+								rowspan="1">Site</th>
+							<th scope="row">http://localhost:8080</th>
+							
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0)</span></td>
+							<td><span>3</span><br> <span
+								class="additional-info-percentages">(3)</span></td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(5)</span></td>
+							<td><span>4</span><br> <span
+								class="additional-info-percentages">(9)</span></td>
+							
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section
+				id="alert-type-counts">
+				<h3>Alert Counts by Alert Type</h3>
+				<table class="alert-type-counts-table">
+					<caption>
+						<p>This table shows the number of alerts of each alert type, together with the alert type&#39;s risk level.</p>
+						<p>(The percentages in brackets represent each count as a percentage, rounded to one decimal place, of the total number of alerts included in this report.)</p>
+					</caption>
+					<thead>
+						<tr>
+							<th scope="col">Alert type</th>
+							<th scope="col">Risk</th>
+							<th scope="col">Count</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-0">Cabecera Content Security Policy (CSP) no configurada</a></th>
+							<td class="risk-level">Medio</td>
+							<td><span>6</span><br> <span
+								class="additional-info-percentages">(66,7 %)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-1">ID de sesión en la Reescritura de URL</a></th>
+							<td class="risk-level">Medio</td>
+							<td><span>40</span><br> <span
+								class="additional-info-percentages">(444,4 %)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-2">Método de autenticación débil</a></th>
+							<td class="risk-level">Medio</td>
+							<td><span>4</span><br> <span
+								class="additional-info-percentages">(44,4 %)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-3">Cookie sin el atributo SameSite</a></th>
+							<td class="risk-level">Bajo</td>
+							<td><span>17</span><br> <span
+								class="additional-info-percentages">(188,9 %)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-4">Inclusión de archivos fuente JavaScript entre dominios</a></th>
+							<td class="risk-level">Bajo</td>
+							<td><span>4</span><br> <span
+								class="additional-info-percentages">(44,4 %)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-5">Aplicación Web Moderna</a></th>
+							<td class="risk-level">Informativo</td>
+							<td><span>6</span><br> <span
+								class="additional-info-percentages">(66,7 %)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-6">Divulgación de información - Comentarios sospechosos</a></th>
+							<td class="risk-level">Informativo</td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(22,2 %)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-7">Petición de Autenticación Identificada</a></th>
+							<td class="risk-level">Informativo</td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(11,1 %)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-8">Respuesta de Gestión de Sesión Identificada</a></th>
+							<td class="risk-level">Informativo</td>
+							<td><span>20</span><br> <span
+								class="additional-info-percentages">(222,2 %)</span></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th scope="row">Total</th>
+							<td></td>
+							<td>9</td>
+						</tr>
+					</tfoot>
+				</table>
+			</section>
+		</section>
+
+		<section id="alerts" class="alerts">
+			<h2>Alerts</h2>
+			<ol>
+				
+				 
+				 
+				
+				
+				<li id="alerts--risk-2-confidence-3">
+					<h3>
+						<span>Risk</span>=<span
+							class="risk-level">Medio</span>, <span>Confidence</span>=<span
+							class="confidence-level">Alta</span> <span>(2)</span>
+					</h3>
+					<ol>
+						
+						<li class="alerts--site-li">
+							<h4>
+								<span class="site">http://localhost:8080</span> <span>(2)</span>
+							</h4>
+							<ol>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-0">Cabecera Content Security Policy (CSP) no configurada</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://localhost:8080/admin/productos/nuevo</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/693.html">CWE-693</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/Top10/A05_2021-Security_Misconfiguration/">OWASP_2021_A05</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html">OWASP_2017_A06</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_QA_STD = </span>
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>La Política de seguridad de contenido (CSP) es una capa adicional de seguridad que ayuda a detectar y mitigar ciertos tipos de ataques, incluidos Cross Site Scripting (XSS) y ataques de inyección de datos. Estos ataques se utilizan para todo, desde el robo de datos hasta la desfiguración del sitio o la distribución de malware. CSP proporciona un conjunto de encabezados HTTP estándar que permiten a los propietarios de sitios web declarar fuentes de contenido aprobadas que los navegadores deberían poder cargar en esa página; los tipos cubiertos son JavaScript, CSS, marcos HTML, fuentes, imágenes y objetos incrustados como applets de Java, ActiveX, archivos de audio y video.</p>
+ </td>
+	</tr>
+	
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (250 bytes)</summary>
+				
+				<pre><code>GET http://localhost:8080/admin/productos/nuevo HTTP/1.1
+host: localhost:8080
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (309 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 200
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: text/html;charset=UTF-8
+Content-Language: es-PE
+Date: Tue, 15 Jul 2025 15:27:59 GMT
+content-length: 4409
+
+</code></pre>
+				
+				
+			</details> <details class="response-body">
+				<summary>Response body (4409 bytes)</summary>
+				
+				<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Jimdur - Iniciar Sesión&lt;/title&gt;
+
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;!-- Font Awesome --&gt;
+    &lt;link href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;!-- Custom CSS --&gt;
+    &lt;link href=&quot;/css/login.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+
+&lt;body class=&quot;login-page&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center align-items-center min-vh-100&quot;&gt;
+            &lt;div class=&quot;col-md-6 col-lg-5&quot;&gt;
+                &lt;div class=&quot;login-box&quot;&gt;
+                    &lt;!-- Logo --&gt;
+                    &lt;div class=&quot;text-center mb-4&quot;&gt;
+                        &lt;img src=&quot;/image/logos/logo_Jimdur_pequeno.png&quot; alt=&quot;Jimdur Logo&quot; class=&quot;login-logo&quot;&gt;
+                    &lt;/div&gt;
+
+                    &lt;!-- Título --&gt;
+                    &lt;h2 class=&quot;text-center mb-4&quot;&gt;Bienvenido a Jimdur&lt;/h2&gt;
+
+                    &lt;!-- Mensajes de error/éxito --&gt;
+                    
+                    
+
+                    &lt;!-- Formulario de login --&gt;
+                    &lt;form action=&quot;/user/login&quot; method=&quot;post&quot; class=&quot;login-form&quot;&gt;&lt;input type=&quot;hidden&quot; name=&quot;_csrf&quot; value=&quot;9tcH9POqe4TvB9mVfupN11j2e_Nei2KWsc7P01TngMavMS_JlONlwsGfSODCMr-tTMd54TyUVstnuVu7iav3tmSG4aKcUB7x&quot;/&gt;
+                        &lt;input type=&quot;hidden&quot; name=&quot;_csrf&quot; value=&quot;9tcH9POqe4TvB9mVfupN11j2e_Nei2KWsc7P01TngMavMS_JlONlwsGfSODCMr-tTMd54TyUVstnuVu7iav3tmSG4aKcUB7x&quot; /&gt;
+                        &lt;div class=&quot;form-group mb-3&quot;&gt;
+                            &lt;div class=&quot;input-group&quot;&gt;
+                                &lt;span class=&quot;input-group-text&quot;&gt;
+                                    &lt;i class=&quot;fas fa-envelope&quot;&gt;&lt;/i&gt;
+                                &lt;/span&gt;
+                                &lt;input type=&quot;email&quot; class=&quot;form-control&quot; name=&quot;username&quot;
+                                    placeholder=&quot;Correo electrónico&quot; required autofocus&gt;
+                                &lt;div class=&quot;invalid-feedback&quot;&gt;
+                                    Por favor ingresa un email válido.
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+
+                        &lt;div class=&quot;form-group mb-4&quot;&gt;
+                            &lt;div class=&quot;input-group&quot;&gt;
+                                &lt;span class=&quot;input-group-text&quot;&gt;
+                                    &lt;i class=&quot;fas fa-lock&quot;&gt;&lt;/i&gt;
+                                &lt;/span&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control&quot; name=&quot;password&quot; placeholder=&quot;Contraseña&quot;
+                                    required&gt;
+                                &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-secondary toggle-password&quot;&gt;
+                                    &lt;i class=&quot;fas fa-eye&quot;&gt;&lt;/i&gt;
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+
+                        &lt;div class=&quot;d-flex justify-content-between align-items-center mb-4&quot;&gt;
+                            &lt;div class=&quot;form-check&quot;&gt;
+                                &lt;input type=&quot;checkbox&quot; class=&quot;form-check-input&quot; id=&quot;remember-me&quot; name=&quot;remember-me&quot;&gt;
+                                &lt;label class=&quot;form-check-label&quot; for=&quot;remember-me&quot;&gt;Recordarme&lt;/label&gt;
+                            &lt;/div&gt;
+                            &lt;a href=&quot;#&quot; class=&quot;forgot-password&quot;&gt;¿Olvidaste tu contraseña?&lt;/a&gt;
+                        &lt;/div&gt;
+
+                        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary w-100 mb-3&quot;&gt;
+                            &lt;i class=&quot;fas fa-sign-in-alt me-2&quot;&gt;&lt;/i&gt;Iniciar Sesión
+                        &lt;/button&gt;
+                    &lt;/form&gt;
+
+                    &lt;div class=&quot;text-center mt-4&quot;&gt;
+                        &lt;p class=&quot;mb-0&quot;&gt;¿No tienes una cuenta? &lt;a href=&quot;/register&quot;
+                                class=&quot;register-link&quot;&gt;Regístrate aquí&lt;/a&gt;&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap JS --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- Custom JS --&gt;
+    &lt;script src=&quot;/js/login.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	
+	
+	
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Asegúrese de que su servidor web, servidor de aplicaciones, balanceador de carga, etc. esté configurado para establecer la cabecera Content-Security-Policy.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-1">ID de sesión en la Reescritura de URL</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://localhost:8080/user/login;jsessionid=AF22538424F2759F0EFDDFF9E895E07D</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/598.html">CWE-598</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">OWASP_2021_A01</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_QA_STD = </span>
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/06-Session_Management_Testing/04-Testing_for_Exposed_Session_Variables">WSTG-v42-SESS-04</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure.html">OWASP_2017_A03</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_DEV_STD = </span>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>La reescritura de URL se utiliza para rastrear el ID de sesión del usuario. El ID de sesión puede ser revelado a través del encabezado cross-site referer. Además, el ID de sesión puede almacenarse en el historial del navegador o en los registros del servidor.</p>
+ </td>
+	</tr>
+	
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (380 bytes)</summary>
+				
+				<pre><code>GET http://localhost:8080/user/login;jsessionid=AF22538424F2759F0EFDDFF9E895E07D HTTP/1.1
+host: localhost:8080
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+referer: http://localhost:8080/image/logos
+Cookie: JSESSIONID=D2A0785700984C96786AE5F89F07C586
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (116 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 302
+Location: http://localhost:8080/user/login
+Content-Length: 0
+Date: Tue, 15 Jul 2025 15:29:18 GMT
+
+</code></pre>
+				
+				
+			</details> <details class="response-body" open="open">
+				<summary>Response body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>jsessionid=AF22538424F2759F0EFDDFF9E895E07D</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Para contenido seguro, ponga el ID de sesión en una cookie. Para ser aún más seguro considere usar una combinación de cookie y URL rewrite.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+							</ol>
+						</li>
+						
+					</ol>
+				</li>
+				
+				<li id="alerts--risk-2-confidence-2">
+					<h3>
+						<span>Risk</span>=<span
+							class="risk-level">Medio</span>, <span>Confidence</span>=<span
+							class="confidence-level">Media</span> <span>(1)</span>
+					</h3>
+					<ol>
+						
+						<li class="alerts--site-li">
+							<h4>
+								<span class="site">http://localhost:8080</span> <span>(1)</span>
+							</h4>
+							<ol>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-2">Método de autenticación débil</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://localhost:8080/api/placeholder/40/40</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">OWASP_2021_A01</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/Top10/A02_2021-Cryptographic_Failures/">OWASP_2021_A02</a></span> 
+				</li>
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/326.html">CWE-326</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/04-Authentication_Testing/01-Testing_for_Credentials_Transported_over_an_Encrypted_Channel">WSTG-v42-ATHN-01</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_QA_STD = </span>
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-top-ten/2017/A2_2017-Broken_Authentication.html">OWASP_2017_A02</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure.html">OWASP_2017_A03</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_DEV_STD = </span>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>Método HTTP de autenticación básica o por intercambio de hash, se ha utilizado sobre una conexión no segura. Las credenciales pueden ser leu00eddas y luego reutilizadas por alguien con acceso a la red.</p>
+ </td>
+	</tr>
+	
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (335 bytes)</summary>
+				
+				<pre><code>GET http://localhost:8080/api/placeholder/40/40 HTTP/1.1
+host: localhost:8080
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+referer: http://localhost:8080
+Cookie: JSESSIONID=D2A0785700984C96786AE5F89F07C586
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (325 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 302
+WWW-Authenticate: Basic realm=&quot;Realm&quot;
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Location: http://localhost:8080/user/login
+Content-Length: 0
+Date: Tue, 15 Jul 2025 15:29:18 GMT
+
+</code></pre>
+				
+				
+			</details> <details class="response-body" open="open">
+				<summary>Response body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>www-authenticate: Basic realm=&quot;Realm&quot;</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Proteger la conexión usando HTTPS o usar un mecanismo de autenticación más fuerte.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+							</ol>
+						</li>
+						
+					</ol>
+				</li>
+				
+				
+				  
+				 
+				
+				
+				
+				
+				<li id="alerts--risk-1-confidence-2">
+					<h3>
+						<span>Risk</span>=<span
+							class="risk-level">Bajo</span>, <span>Confidence</span>=<span
+							class="confidence-level">Media</span> <span>(2)</span>
+					</h3>
+					<ol>
+						
+						<li class="alerts--site-li">
+							<h4>
+								<span class="site">http://localhost:8080</span> <span>(2)</span>
+							</h4>
+							<ol>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-3">Cookie sin el atributo SameSite</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://localhost:8080/robots.txt</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">OWASP_2021_A01</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_QA_STD = </span>
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes">WSTG-v42-SESS-02</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/1275.html">CWE-1275</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-top-ten/2017/A5_2017-Broken_Access_Control.html">OWASP_2017_A05</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_DEV_STD = </span>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>Se ha establecido una cookie sin el atributo SameSite, lo que significa que la cookie puede ser enviada como resultado de una solicitud &#39;cross-site&#39;. El atributo SameSite es una medida eficaz para contrarrestar la falsificación de peticiones entre sitios, la inclusión de scripts entre sitios y los ataques de sincronización.</p>
+ </td>
+	</tr>
+	
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (239 bytes)</summary>
+				
+				<pre><code>GET http://localhost:8080/robots.txt HTTP/1.1
+host: localhost:8080
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (361 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 302
+Set-Cookie: JSESSIONID=3613C4F9DE74E696352B3E35CE24FCFC; Path=/; HttpOnly
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Location: http://localhost:8080/user/login
+Content-Length: 0
+Date: Tue, 15 Jul 2025 15:27:59 GMT
+
+</code></pre>
+				
+				
+			</details> <details class="response-body" open="open">
+				<summary>Response body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Parameter</th>
+		<td><pre><code>JSESSIONID</code></pre></td>
+	</tr>
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>Set-Cookie: JSESSIONID</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Asegúrese que el atributo SameSite está establecido como &#39;lax&#39; o idealmente &#39;strict&#39; para todas las cookies.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-4">Inclusión de archivos fuente JavaScript entre dominios</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://localhost:8080/admin/productos/nuevo</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/">OWASP_2021_A08</a></span> 
+				</li>
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/829.html">CWE-829</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_QA_STD = </span>
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					 <span>POLICY_DEV_STD = </span>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>La página incluye uno o más archivos de script de un dominio de terceros.</p>
+ </td>
+	</tr>
+	
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (250 bytes)</summary>
+				
+				<pre><code>GET http://localhost:8080/admin/productos/nuevo HTTP/1.1
+host: localhost:8080
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (309 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 200
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: text/html;charset=UTF-8
+Content-Language: es-PE
+Date: Tue, 15 Jul 2025 15:27:59 GMT
+content-length: 4409
+
+</code></pre>
+				
+				
+			</details> <details class="response-body">
+				<summary>Response body (4409 bytes)</summary>
+				
+				<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Jimdur - Iniciar Sesión&lt;/title&gt;
+
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;!-- Font Awesome --&gt;
+    &lt;link href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;!-- Custom CSS --&gt;
+    &lt;link href=&quot;/css/login.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+
+&lt;body class=&quot;login-page&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center align-items-center min-vh-100&quot;&gt;
+            &lt;div class=&quot;col-md-6 col-lg-5&quot;&gt;
+                &lt;div class=&quot;login-box&quot;&gt;
+                    &lt;!-- Logo --&gt;
+                    &lt;div class=&quot;text-center mb-4&quot;&gt;
+                        &lt;img src=&quot;/image/logos/logo_Jimdur_pequeno.png&quot; alt=&quot;Jimdur Logo&quot; class=&quot;login-logo&quot;&gt;
+                    &lt;/div&gt;
+
+                    &lt;!-- Título --&gt;
+                    &lt;h2 class=&quot;text-center mb-4&quot;&gt;Bienvenido a Jimdur&lt;/h2&gt;
+
+                    &lt;!-- Mensajes de error/éxito --&gt;
+                    
+                    
+
+                    &lt;!-- Formulario de login --&gt;
+                    &lt;form action=&quot;/user/login&quot; method=&quot;post&quot; class=&quot;login-form&quot;&gt;&lt;input type=&quot;hidden&quot; name=&quot;_csrf&quot; value=&quot;9tcH9POqe4TvB9mVfupN11j2e_Nei2KWsc7P01TngMavMS_JlONlwsGfSODCMr-tTMd54TyUVstnuVu7iav3tmSG4aKcUB7x&quot;/&gt;
+                        &lt;input type=&quot;hidden&quot; name=&quot;_csrf&quot; value=&quot;9tcH9POqe4TvB9mVfupN11j2e_Nei2KWsc7P01TngMavMS_JlONlwsGfSODCMr-tTMd54TyUVstnuVu7iav3tmSG4aKcUB7x&quot; /&gt;
+                        &lt;div class=&quot;form-group mb-3&quot;&gt;
+                            &lt;div class=&quot;input-group&quot;&gt;
+                                &lt;span class=&quot;input-group-text&quot;&gt;
+                                    &lt;i class=&quot;fas fa-envelope&quot;&gt;&lt;/i&gt;
+                                &lt;/span&gt;
+                                &lt;input type=&quot;email&quot; class=&quot;form-control&quot; name=&quot;username&quot;
+                                    placeholder=&quot;Correo electrónico&quot; required autofocus&gt;
+                                &lt;div class=&quot;invalid-feedback&quot;&gt;
+                                    Por favor ingresa un email válido.
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+
+                        &lt;div class=&quot;form-group mb-4&quot;&gt;
+                            &lt;div class=&quot;input-group&quot;&gt;
+                                &lt;span class=&quot;input-group-text&quot;&gt;
+                                    &lt;i class=&quot;fas fa-lock&quot;&gt;&lt;/i&gt;
+                                &lt;/span&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control&quot; name=&quot;password&quot; placeholder=&quot;Contraseña&quot;
+                                    required&gt;
+                                &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-secondary toggle-password&quot;&gt;
+                                    &lt;i class=&quot;fas fa-eye&quot;&gt;&lt;/i&gt;
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+
+                        &lt;div class=&quot;d-flex justify-content-between align-items-center mb-4&quot;&gt;
+                            &lt;div class=&quot;form-check&quot;&gt;
+                                &lt;input type=&quot;checkbox&quot; class=&quot;form-check-input&quot; id=&quot;remember-me&quot; name=&quot;remember-me&quot;&gt;
+                                &lt;label class=&quot;form-check-label&quot; for=&quot;remember-me&quot;&gt;Recordarme&lt;/label&gt;
+                            &lt;/div&gt;
+                            &lt;a href=&quot;#&quot; class=&quot;forgot-password&quot;&gt;¿Olvidaste tu contraseña?&lt;/a&gt;
+                        &lt;/div&gt;
+
+                        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary w-100 mb-3&quot;&gt;
+                            &lt;i class=&quot;fas fa-sign-in-alt me-2&quot;&gt;&lt;/i&gt;Iniciar Sesión
+                        &lt;/button&gt;
+                    &lt;/form&gt;
+
+                    &lt;div class=&quot;text-center mt-4&quot;&gt;
+                        &lt;p class=&quot;mb-0&quot;&gt;¿No tienes una cuenta? &lt;a href=&quot;/register&quot;
+                                class=&quot;register-link&quot;&gt;Regístrate aquí&lt;/a&gt;&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap JS --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- Custom JS --&gt;
+    &lt;script src=&quot;/js/login.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Parameter</th>
+		<td><pre><code>https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js</code></pre></td>
+	</tr>
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Asegúrese de que los archivos fuente JavaScript se cargan solo desde fuentes de confianza, y que las fuentes no pueden ser controladas por los usuarios finales de la aplicación.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+							</ol>
+						</li>
+						
+					</ol>
+				</li>
+				
+				
+				  
+				 
+				
+				
+				<li id="alerts--risk-0-confidence-3">
+					<h3>
+						<span>Risk</span>=<span
+							class="risk-level">Informativo</span>, <span>Confidence</span>=<span
+							class="confidence-level">Alta</span> <span>(2)</span>
+					</h3>
+					<ol>
+						
+						<li class="alerts--site-li">
+							<h4>
+								<span class="site">http://localhost:8080</span> <span>(2)</span>
+							</h4>
+							<ol>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-7">Petición de Autenticación Identificada</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">POST http://localhost:8080/user/login</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>La petición en cuestión se ha identificado como una petición de autenticación. El campo &quot;Otra información&quot; contiene un conjunto de líneas key=vvalue que identifican cualquier campo relevante. Si la solicitud está en un contexto que tiene un método de autenticación configurado como &quot;Detección automática&quot;, esta regla cambiará la autenticación para que coincida con la petición identificada.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Other info</th>
+		<td> 
+<p>userParam=username</p>
+
+<p>userValue=foo-bar@example.com</p>
+
+<p>passwordParam=password</p>
+
+<p>referer=http://localhost:8080/user/login</p>
+
+<p>csrfToken=_csrf</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (406 bytes)</summary>
+				
+				<pre><code>POST http://localhost:8080/user/login HTTP/1.1
+host: localhost:8080
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+content-type: application/x-www-form-urlencoded
+referer: http://localhost:8080/user/login
+content-length: 161
+Cookie: JSESSIONID=3613C4F9DE74E696352B3E35CE24FCFC
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (161 bytes)</summary>
+				
+				<pre><code>_csrf=SSeIPVm6P-7EBHbA5ap94MeQBW-6QDqUjcYedxGXKVVmEmc-fEHuXjzeCd_pPUT4h4dJ1PD1KA2Od165taMsFSSiHWdVK1UH&amp;username=foo-bar%40example.com&amp;password=ZAP&amp;remember-me=on</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (297 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 302
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Location: http://localhost:8080/user/login?error=true
+Content-Length: 0
+Date: Tue, 15 Jul 2025 15:27:59 GMT
+
+</code></pre>
+				
+				
+			</details> <details class="response-body" open="open">
+				<summary>Response body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Parameter</th>
+		<td><pre><code>username</code></pre></td>
+	</tr>
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>password</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Se trata de una alerta informativa y no de una vulnerabilidad, por lo que no hay nada que corregir.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-8">Respuesta de Gestión de Sesión Identificada</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://localhost:8080/robots.txt</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>Se ha identificado que la respuesta dada contiene un token de gestión de sesión. El campo &#39;Other Info&#39; contiene un conjunto de tokens de cabecera que pueden utilizarse en el método Header Based Session Management (gestión de sesión basado en cabecera). Si la petición se encuentra en un contexto que tiene un método Session Management establecido en &quot;Auto-Detect&quot;, esta regla cambiará la gestión de sesión para utilizar los tokens identificados.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Other info</th>
+		<td> 
+<p>cookie:JSESSIONID</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (333 bytes)</summary>
+				
+				<pre><code>GET http://localhost:8080/register HTTP/1.1
+host: localhost:8080
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+referer: http://localhost:8080/user/login
+Cookie: JSESSIONID=3613C4F9DE74E696352B3E35CE24FCFC
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (286 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 302
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Location: http://localhost:8080/user/login
+Content-Length: 0
+Date: Tue, 15 Jul 2025 15:27:59 GMT
+
+</code></pre>
+				
+				
+			</details> <details class="response-body" open="open">
+				<summary>Response body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Parameter</th>
+		<td><pre><code>JSESSIONID</code></pre></td>
+	</tr>
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>JSESSIONID</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Se trata de una alerta informativa y no de una vulnerabilidad, por lo que no hay nada que corregir.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+							</ol>
+						</li>
+						
+					</ol>
+				</li>
+				
+				<li id="alerts--risk-0-confidence-2">
+					<h3>
+						<span>Risk</span>=<span
+							class="risk-level">Informativo</span>, <span>Confidence</span>=<span
+							class="confidence-level">Media</span> <span>(2)</span>
+					</h3>
+					<ol>
+						
+						<li class="alerts--site-li">
+							<h4>
+								<span class="site">http://localhost:8080</span> <span>(2)</span>
+							</h4>
+							<ol>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-5">Aplicación Web Moderna</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://localhost:8080/admin/productos/nuevo</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					 <span>POLICY_QA_STD = </span>
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					 <span>POLICY_DEV_STD = </span>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>La aplicación parece ser una aplicación web moderna. Si necesita explorarla automáticamente, el Ajax Spider puede ser más eficaz que el estándar.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Other info</th>
+		<td> 
+<p>Se han encontrado enlaces que no tienen atributos href tradicionales, lo que indica que se trata de una aplicación web moderna.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (250 bytes)</summary>
+				
+				<pre><code>GET http://localhost:8080/admin/productos/nuevo HTTP/1.1
+host: localhost:8080
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (309 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 200
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: text/html;charset=UTF-8
+Content-Language: es-PE
+Date: Tue, 15 Jul 2025 15:27:59 GMT
+content-length: 4409
+
+</code></pre>
+				
+				
+			</details> <details class="response-body">
+				<summary>Response body (4409 bytes)</summary>
+				
+				<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Jimdur - Iniciar Sesión&lt;/title&gt;
+
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;!-- Font Awesome --&gt;
+    &lt;link href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;!-- Custom CSS --&gt;
+    &lt;link href=&quot;/css/login.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+
+&lt;body class=&quot;login-page&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center align-items-center min-vh-100&quot;&gt;
+            &lt;div class=&quot;col-md-6 col-lg-5&quot;&gt;
+                &lt;div class=&quot;login-box&quot;&gt;
+                    &lt;!-- Logo --&gt;
+                    &lt;div class=&quot;text-center mb-4&quot;&gt;
+                        &lt;img src=&quot;/image/logos/logo_Jimdur_pequeno.png&quot; alt=&quot;Jimdur Logo&quot; class=&quot;login-logo&quot;&gt;
+                    &lt;/div&gt;
+
+                    &lt;!-- Título --&gt;
+                    &lt;h2 class=&quot;text-center mb-4&quot;&gt;Bienvenido a Jimdur&lt;/h2&gt;
+
+                    &lt;!-- Mensajes de error/éxito --&gt;
+                    
+                    
+
+                    &lt;!-- Formulario de login --&gt;
+                    &lt;form action=&quot;/user/login&quot; method=&quot;post&quot; class=&quot;login-form&quot;&gt;&lt;input type=&quot;hidden&quot; name=&quot;_csrf&quot; value=&quot;9tcH9POqe4TvB9mVfupN11j2e_Nei2KWsc7P01TngMavMS_JlONlwsGfSODCMr-tTMd54TyUVstnuVu7iav3tmSG4aKcUB7x&quot;/&gt;
+                        &lt;input type=&quot;hidden&quot; name=&quot;_csrf&quot; value=&quot;9tcH9POqe4TvB9mVfupN11j2e_Nei2KWsc7P01TngMavMS_JlONlwsGfSODCMr-tTMd54TyUVstnuVu7iav3tmSG4aKcUB7x&quot; /&gt;
+                        &lt;div class=&quot;form-group mb-3&quot;&gt;
+                            &lt;div class=&quot;input-group&quot;&gt;
+                                &lt;span class=&quot;input-group-text&quot;&gt;
+                                    &lt;i class=&quot;fas fa-envelope&quot;&gt;&lt;/i&gt;
+                                &lt;/span&gt;
+                                &lt;input type=&quot;email&quot; class=&quot;form-control&quot; name=&quot;username&quot;
+                                    placeholder=&quot;Correo electrónico&quot; required autofocus&gt;
+                                &lt;div class=&quot;invalid-feedback&quot;&gt;
+                                    Por favor ingresa un email válido.
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+
+                        &lt;div class=&quot;form-group mb-4&quot;&gt;
+                            &lt;div class=&quot;input-group&quot;&gt;
+                                &lt;span class=&quot;input-group-text&quot;&gt;
+                                    &lt;i class=&quot;fas fa-lock&quot;&gt;&lt;/i&gt;
+                                &lt;/span&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control&quot; name=&quot;password&quot; placeholder=&quot;Contraseña&quot;
+                                    required&gt;
+                                &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-secondary toggle-password&quot;&gt;
+                                    &lt;i class=&quot;fas fa-eye&quot;&gt;&lt;/i&gt;
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+
+                        &lt;div class=&quot;d-flex justify-content-between align-items-center mb-4&quot;&gt;
+                            &lt;div class=&quot;form-check&quot;&gt;
+                                &lt;input type=&quot;checkbox&quot; class=&quot;form-check-input&quot; id=&quot;remember-me&quot; name=&quot;remember-me&quot;&gt;
+                                &lt;label class=&quot;form-check-label&quot; for=&quot;remember-me&quot;&gt;Recordarme&lt;/label&gt;
+                            &lt;/div&gt;
+                            &lt;a href=&quot;#&quot; class=&quot;forgot-password&quot;&gt;¿Olvidaste tu contraseña?&lt;/a&gt;
+                        &lt;/div&gt;
+
+                        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary w-100 mb-3&quot;&gt;
+                            &lt;i class=&quot;fas fa-sign-in-alt me-2&quot;&gt;&lt;/i&gt;Iniciar Sesión
+                        &lt;/button&gt;
+                    &lt;/form&gt;
+
+                    &lt;div class=&quot;text-center mt-4&quot;&gt;
+                        &lt;p class=&quot;mb-0&quot;&gt;¿No tienes una cuenta? &lt;a href=&quot;/register&quot;
+                                class=&quot;register-link&quot;&gt;Regístrate aquí&lt;/a&gt;&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap JS --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- Custom JS --&gt;
+    &lt;script src=&quot;/js/login.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>&lt;a href=&quot;#&quot; class=&quot;forgot-password&quot;&gt;¿Olvidaste tu contraseña?&lt;/a&gt;</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Se trata de una alerta informativa, por lo que no es necesario realizar ningún cambio.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-6">Divulgación de información - Comentarios sospechosos</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://localhost:8080</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">OWASP_2021_A01</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Webpage_Content_for_Information_Leakage">WSTG-v42-INFO-05</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure.html">OWASP_2017_A03</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/615.html">CWE-615</a></span> 
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>The response appears to contain suspicious comments which may help an attacker.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Other info</th>
+		<td> 
+<p>The following pattern was used: \bUSER\b and was detected 2 times, the first in likely comment: &quot;&lt;!-- User Actions &amp; Mobile Toggler Group --&gt;&quot;, see evidence field for the suspicious comment/snippet.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (228 bytes)</summary>
+				
+				<pre><code>GET http://localhost:8080 HTTP/1.1
+host: localhost:8080
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (310 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 200
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: text/html;charset=UTF-8
+Content-Language: es-PE
+Date: Tue, 15 Jul 2025 15:29:18 GMT
+content-length: 32507
+
+</code></pre>
+				
+				
+			</details> <details class="response-body">
+				<summary>Response body (32507 bytes)</summary>
+				
+				<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;JIMDUR EIRL&lt;/title&gt;
+
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;!-- Bootstrap Icons --&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css&quot;&gt;
+    &lt;!-- AOS CSS --&gt;
+    &lt;link href=&quot;https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/styles.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/user/all.css&quot;&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+    &lt;!-- Navbar --&gt;
+    &lt;header&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;!-- Logo --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/&quot;&gt;
+                &lt;img src=&quot;/image/logos/logo_Jimdur_pequeno.png&quot; alt=&quot;Jimdur Logo&quot;&gt;
+            &lt;/a&gt;
+
+            &lt;!-- User Actions &amp; Mobile Toggler Group --&gt;
+            &lt;div class=&quot;d-flex align-items-center order-lg-3&quot;&gt;
+                &lt;!-- User Actions --&gt;
+                &lt;div class=&quot;d-flex align-items-center me-2&quot;&gt;
+                    &lt;!-- Favoritos Dropdown --&gt;
+                    &lt;div class=&quot;dropdown&quot;&gt;
+                        &lt;button class=&quot;btn-icon position-relative&quot; type=&quot;button&quot; id=&quot;favoritosDropdown&quot;
+                            data-bs-toggle=&quot;dropdown&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Ver favoritos&quot;&gt;
+                            &lt;i class=&quot;fas fa-heart&quot;&gt;&lt;/i&gt;
+                            &lt;span
+                                class=&quot;position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-count&quot;&gt;
+                                2
+                            &lt;/span&gt;
+                        &lt;/button&gt;
+                        &lt;div class=&quot;dropdown-menu dropdown-menu-end p-3&quot; aria-labelledby=&quot;favoritosDropdown&quot;
+                            style=&quot;min-width: 300px;&quot;&gt;
+                            &lt;h6 class=&quot;fw-bold mb-3&quot;&gt;Mis Favoritos&lt;/h6&gt;
+                            &lt;!-- Favorite Item 1 --&gt;
+                            &lt;div class=&quot;cart-item d-flex align-items-center mb-2&quot;&gt;
+                                &lt;img src=&quot;/api/placeholder/40/40&quot; class=&quot;rounded me-3&quot; alt=&quot;Producto Favorito&quot;&gt;
+                                &lt;div class=&quot;flex-grow-1&quot;&gt;
+                                    &lt;p class=&quot;mb-0 fw-bold small&quot;&gt;Filtro de aceite&lt;/p&gt;
+                                    &lt;small class=&quot;text-muted&quot;&gt;S/. 45.00&lt;/small&gt;
+                                &lt;/div&gt;
+                                &lt;button class=&quot;btn btn-sm btn-icon text-danger&quot;
+                                    aria-label=&quot;Eliminar Filtro de aceite de favoritos&quot;&gt;
+                                    &lt;i class=&quot;fas fa-trash&quot;&gt;&lt;/i&gt;
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                            &lt;!-- Favorite Item 2 --&gt;
+                            &lt;div class=&quot;cart-item d-flex align-items-center mb-3&quot;&gt;
+                                &lt;img src=&quot;/api/placeholder/40/40&quot; class=&quot;rounded me-3&quot; alt=&quot;Producto Favorito&quot;&gt;
+                                &lt;div class=&quot;flex-grow-1&quot;&gt;
+                                    &lt;p class=&quot;mb-0 fw-bold small&quot;&gt;Kit de frenos&lt;/p&gt;
+                                    &lt;small class=&quot;text-muted&quot;&gt;S/. 120.00&lt;/small&gt;
+                                &lt;/div&gt;
+                                &lt;button class=&quot;btn btn-sm btn-icon text-danger&quot;
+                                    aria-label=&quot;Eliminar Kit de frenos de favoritos&quot;&gt;
+                                    &lt;i class=&quot;fas fa-trash&quot;&gt;&lt;/i&gt;
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;d-grid&quot;&gt;
+                                &lt;a href=&quot;#&quot; class=&quot;btn btn-sm btn-danger&quot;&gt;Ver todos los favoritos&lt;/a&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;!-- Carrito Dropdown --&gt;
+                    &lt;div class=&quot;dropdown ms-2&quot;&gt;
+                        &lt;button class=&quot;btn-icon position-relative&quot; type=&quot;button&quot; id=&quot;carritoDropdown&quot;
+                            data-bs-toggle=&quot;dropdown&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Ver carrito de compras&quot;&gt;
+                            &lt;i class=&quot;fas fa-shopping-cart&quot;&gt;&lt;/i&gt;
+                            &lt;span
+                                class=&quot;position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-count&quot;&gt;
+                                3
+                            &lt;/span&gt;
+                        &lt;/button&gt;
+                        &lt;div class=&quot;dropdown-menu dropdown-menu-end p-3&quot; aria-labelledby=&quot;carritoDropdown&quot;
+                            style=&quot;min-width: 320px;&quot;&gt;
+                            &lt;h6 class=&quot;fw-bold mb-3&quot;&gt;Mi Carrito&lt;/h6&gt;
+                            &lt;!-- Cart Item 1 --&gt;
+                            &lt;div class=&quot;cart-item d-flex align-items-center mb-2&quot;&gt;
+                                &lt;img src=&quot;/api/placeholder/40/40&quot; class=&quot;rounded me-3&quot; alt=&quot;Producto en carrito&quot;&gt;
+                                &lt;div class=&quot;flex-grow-1&quot;&gt;
+                                    &lt;p class=&quot;mb-0 fw-bold small&quot;&gt;Filtro de aceite&lt;/p&gt;
+                                    &lt;small class=&quot;text-muted&quot;&gt;1 x S/. 45.00&lt;/small&gt;
+                                &lt;/div&gt;
+                                &lt;button class=&quot;btn btn-sm btn-icon text-danger&quot;
+                                    aria-label=&quot;Eliminar Filtro de aceite del carrito&quot;&gt;
+                                    &lt;i class=&quot;fas fa-trash&quot;&gt;&lt;/i&gt;
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                            &lt;!-- Cart Item 2 --&gt;
+                            &lt;div class=&quot;cart-item d-flex align-items-center mb-2&quot;&gt;
+                                &lt;img src=&quot;/api/placeholder/40/40&quot; class=&quot;rounded me-3&quot; alt=&quot;Producto en carrito&quot;&gt;
+                                &lt;div class=&quot;flex-grow-1&quot;&gt;
+                                    &lt;p class=&quot;mb-0 fw-bold small&quot;&gt;Kit de frenos&lt;/p&gt;
+                                    &lt;small class=&quot;text-muted&quot;&gt;1 x S/. 120.00&lt;/small&gt;
+                                &lt;/div&gt;
+                                &lt;button class=&quot;btn btn-sm btn-icon text-danger&quot;
+                                    aria-label=&quot;Eliminar Kit de frenos del carrito&quot;&gt;
+                                    &lt;i class=&quot;fas fa-trash&quot;&gt;&lt;/i&gt;
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                            &lt;!-- Cart Item 3 --&gt;
+                            &lt;div class=&quot;cart-item d-flex align-items-center mb-3&quot;&gt;
+                                &lt;img src=&quot;/api/placeholder/40/40&quot; class=&quot;rounded me-3&quot; alt=&quot;Producto en carrito&quot;&gt;
+                                &lt;div class=&quot;flex-grow-1&quot;&gt;
+                                    &lt;p class=&quot;mb-0 fw-bold small&quot;&gt;Aceite motor&lt;/p&gt;
+                                    &lt;small class=&quot;text-muted&quot;&gt;2 x S/. 35.00&lt;/small&gt;
+                                &lt;/div&gt;
+                                &lt;button class=&quot;btn btn-sm btn-icon text-danger&quot;
+                                    aria-label=&quot;Eliminar Aceite motor del carrito&quot;&gt;
+                                    &lt;i class=&quot;fas fa-trash&quot;&gt;&lt;/i&gt;
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                            &lt;hr class=&quot;my-2&quot;&gt;
+                            &lt;div class=&quot;d-flex justify-content-between mb-3&quot;&gt;
+                                &lt;span class=&quot;fw-semibold&quot;&gt;Total:&lt;/span&gt;
+                                &lt;span class=&quot;fw-bold&quot;&gt;S/. 235.00&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;d-grid&quot;&gt;
+                                &lt;a href=&quot;#&quot; class=&quot;btn btn-sm btn-danger&quot;&gt;Proceder al pago&lt;/a&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;!-- Usuario Button --&gt;
+                    
+                    &lt;div&gt;
+                        &lt;a class=&quot;btn btn-outline-primary ms-2&quot; href=&quot;/user/login&quot;&gt;&lt;i class=&quot;fas fa-sign-in-alt me-1&quot;&gt;&lt;/i&gt;Iniciar sesión&lt;/a&gt;
+                        &lt;a class=&quot;btn btn-primary ms-2&quot; href=&quot;user/registro&quot;&gt;&lt;i class=&quot;fas fa-user-plus me-1&quot;&gt;&lt;/i&gt;Registrarse&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;!-- Navbar Toggler (Mobile) --&gt;
+                &lt;button class=&quot;navbar-toggler ms-2&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot;
+                    data-bs-target=&quot;#navbarNavContent&quot; aria-controls=&quot;navbarNavContent&quot; aria-expanded=&quot;false&quot;
+                    aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Main Navigation Links &amp; Search --&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNavContent&quot;&gt;
+                &lt;!-- Navigation Links --&gt;
+                &lt;ul class=&quot;navbar-nav mx-auto&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; href=&quot;/&quot;
+                            aria-current=&quot;page&quot;&gt;Inicio&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/productos&quot;&gt;Productos&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item dropdown&quot;&gt;
+                        &lt;a class=&quot;nav-link dropdown-toggle&quot; href=&quot;#&quot; id=&quot;categoriasDropdown&quot; role=&quot;button&quot;
+                            data-bs-toggle=&quot;dropdown&quot; aria-expanded=&quot;false&quot;&gt;
+                            Categorías
+                        &lt;/a&gt;
+                        &lt;ul class=&quot;dropdown-menu&quot; aria-labelledby=&quot;categoriasDropdown&quot;&gt;
+                            &lt;li&gt;&lt;a class=&quot;dropdown-item&quot; href=&quot;#&quot;&gt;Motores&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a class=&quot;dropdown-item&quot; href=&quot;#&quot;&gt;Frenos&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a class=&quot;dropdown-item&quot; href=&quot;#&quot;&gt;Transmisión&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a class=&quot;dropdown-item&quot; href=&quot;#&quot;&gt;Accesorios&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;hr class=&quot;dropdown-divider&quot;&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;&lt;a class=&quot;dropdown-item&quot; href=&quot;#&quot;&gt;Ver todas&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/nosotros&quot;&gt;Nosotros&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contacto&quot;&gt;Contacto&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+
+                &lt;!-- Search Bar --&gt;
+                &lt;div class=&quot;mt-3 mt-lg-0&quot;&gt;
+                    &lt;form class=&quot;search-form d-flex&quot; role=&quot;search&quot;&gt;
+                        &lt;input class=&quot;form-control form-control-sm&quot; type=&quot;search&quot; placeholder=&quot;Buscar productos...&quot;
+                            aria-label=&quot;Buscar productos&quot;&gt;
+                        &lt;button class=&quot;btn btn-sm btn-outline-secondary&quot; type=&quot;submit&quot; aria-label=&quot;Buscar&quot;&gt;
+                            &lt;i class=&quot;fas fa-search&quot;&gt;&lt;/i&gt;
+                        &lt;/button&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+
+    &lt;!-- Main Content --&gt;
+    &lt;main&gt;
+        &lt;!-- Hero Banner --&gt;
+        &lt;section class=&quot;hero-banner&quot;&gt;
+            &lt;div class=&quot;container&quot;&gt;
+                &lt;div class=&quot;row align-items-center py-5&quot;&gt;
+                    &lt;div class=&quot;col-lg-6&quot;&gt;
+                        &lt;h1 class=&quot;display-5 fw-bold mb-3&quot;&gt;Repuestos de calidad para tu moto&lt;/h1&gt;
+                        &lt;p class=&quot;lead mb-4&quot;&gt;Encuentra todo lo que necesitas para mantener tu moto en óptimas
+                            condiciones. Amplio catálogo de repuestos originales y alternativos.&lt;/p&gt;
+                        &lt;div class=&quot;d-grid gap-2 d-md-flex&quot;&gt;
+                            &lt;a href=&quot;catalogo.html&quot; class=&quot;btn btn-primary btn-lg px-4&quot;&gt;Ver Catálogo&lt;/a&gt;
+                            &lt;a href=&quot;contacto.html&quot; class=&quot;btn btn-outline-secondary btn-lg px-4&quot;&gt;Contactar&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-lg-6&quot;&gt;
+                        &lt;img src=&quot;/image/moto.jpg&quot; alt=&quot;Repuestos de motos&quot; class=&quot;img-fluid rounded shadow-lg&quot;&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+        
+        &lt;!-- Categories Section --&gt;
+        &lt;section class=&quot;py-5 bg-light&quot;&gt;
+            &lt;div class=&quot;container&quot;&gt;
+                &lt;h2 class=&quot;text-center mb-5&quot;&gt;Categorías Principales&lt;/h2&gt;
+
+                &lt;div class=&quot;row g-4&quot;&gt;
+                    
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- Featured Products --&gt;
+        &lt;section class=&quot;py-5&quot;&gt;
+            &lt;div class=&quot;container&quot;&gt;
+                &lt;div class=&quot;d-flex justify-content-between align-items-center mb-4&quot;&gt;
+                    &lt;h2&gt;Productos Destacados&lt;/h2&gt;
+                    &lt;a href=&quot;catalogo.html&quot; class=&quot;btn btn-outline-primary&quot;&gt;Ver todos&lt;/a&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;row g-4&quot;&gt;
+                    &lt;!-- Product 1 --&gt;
+                    &lt;div class=&quot;col-md-6 col-lg-3&quot;&gt;
+                        &lt;div class=&quot;card h-100 product-card&quot;&gt;
+                            &lt;div class=&quot;badge bg-danger position-absolute top-0 end-0 m-2&quot;&gt;-15%&lt;/div&gt;
+                            &lt;img src=&quot;img/product-1.jpg&quot; class=&quot;card-img-top&quot; alt=&quot;Aceite Motul 5100&quot;&gt;
+                            &lt;div class=&quot;card-body&quot;&gt;
+                                &lt;h5 class=&quot;card-title&quot;&gt;Aceite Motul 5100 4T 15W50&lt;/h5&gt;
+                                &lt;div class=&quot;d-flex align-items-center mb-2&quot;&gt;
+                                    &lt;div class=&quot;ratings&quot;&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-half text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;/div&gt;
+                                    &lt;small class=&quot;ms-2 text-muted&quot;&gt;(24)&lt;/small&gt;
+                                &lt;/div&gt;
+                                &lt;div class=&quot;d-flex justify-content-between align-items-center&quot;&gt;
+                                    &lt;div&gt;
+                                        &lt;span class=&quot;text-muted text-decoration-line-through&quot;&gt;$8,500&lt;/span&gt;
+                                        &lt;span class=&quot;fw-bold fs-5 ms-2&quot;&gt;$7,225&lt;/span&gt;
+                                    &lt;/div&gt;
+                                    &lt;a href=&quot;producto-1.html&quot; class=&quot;btn btn-sm btn-outline-primary&quot;&gt;Ver detalles&lt;/a&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;!-- Product 2 --&gt;
+                    &lt;div class=&quot;col-md-6 col-lg-3&quot;&gt;
+                        &lt;div class=&quot;card h-100 product-card&quot;&gt;
+                            &lt;img src=&quot;img/product-2.jpg&quot; class=&quot;card-img-top&quot; alt=&quot;Kit de Transmisión&quot;&gt;
+                            &lt;div class=&quot;card-body&quot;&gt;
+                                &lt;h5 class=&quot;card-title&quot;&gt;Kit de Transmisión Honda CG 150&lt;/h5&gt;
+                                &lt;div class=&quot;d-flex align-items-center mb-2&quot;&gt;
+                                    &lt;div class=&quot;ratings&quot;&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;/div&gt;
+                                    &lt;small class=&quot;ms-2 text-muted&quot;&gt;(18)&lt;/small&gt;
+                                &lt;/div&gt;
+                                &lt;div class=&quot;d-flex justify-content-between align-items-center&quot;&gt;
+                                    &lt;div&gt;
+                                        &lt;span class=&quot;fw-bold fs-5&quot;&gt;$12,900&lt;/span&gt;
+                                    &lt;/div&gt;
+                                    &lt;a href=&quot;producto-2.html&quot; class=&quot;btn btn-sm btn-outline-primary&quot;&gt;Ver detalles&lt;/a&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;!-- Product 3 --&gt;
+                    &lt;div class=&quot;col-md-6 col-lg-3&quot;&gt;
+                        &lt;div class=&quot;card h-100 product-card&quot;&gt;
+                            &lt;div class=&quot;badge bg-success position-absolute top-0 end-0 m-2&quot;&gt;Nuevo&lt;/div&gt;
+                            &lt;img src=&quot;img/product-3.jpg&quot; class=&quot;card-img-top&quot; alt=&quot;Batería Yuasa&quot;&gt;
+                            &lt;div class=&quot;card-body&quot;&gt;
+                                &lt;h5 class=&quot;card-title&quot;&gt;Batería Yuasa YTX7L-BS 12V&lt;/h5&gt;
+                                &lt;div class=&quot;d-flex align-items-center mb-2&quot;&gt;
+                                    &lt;div class=&quot;ratings&quot;&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;/div&gt;
+                                    &lt;small class=&quot;ms-2 text-muted&quot;&gt;(32)&lt;/small&gt;
+                                &lt;/div&gt;
+                                &lt;div class=&quot;d-flex justify-content-between align-items-center&quot;&gt;
+                                    &lt;div&gt;
+                                        &lt;span class=&quot;fw-bold fs-5&quot;&gt;$15,750&lt;/span&gt;
+                                    &lt;/div&gt;
+                                    &lt;a href=&quot;producto-3.html&quot; class=&quot;btn btn-sm btn-outline-primary&quot;&gt;Ver detalles&lt;/a&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;!-- Product 4 --&gt;
+                    &lt;div class=&quot;col-md-6 col-lg-3&quot;&gt;
+                        &lt;div class=&quot;card h-100 product-card&quot;&gt;
+                            &lt;img src=&quot;img/product-4.jpg&quot; class=&quot;card-img-top&quot; alt=&quot;Pastillas de Freno&quot;&gt;
+                            &lt;div class=&quot;card-body&quot;&gt;
+                                &lt;h5 class=&quot;card-title&quot;&gt;Pastillas de Freno Yamaha FZ16&lt;/h5&gt;
+                                &lt;div class=&quot;d-flex align-items-center mb-2&quot;&gt;
+                                    &lt;div class=&quot;ratings&quot;&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                        &lt;i class=&quot;bi bi-star-half text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;/div&gt;
+                                    &lt;small class=&quot;ms-2 text-muted&quot;&gt;(15)&lt;/small&gt;
+                                &lt;/div&gt;
+                                &lt;div class=&quot;d-flex justify-content-between align-items-center&quot;&gt;
+                                    &lt;div&gt;
+                                        &lt;span class=&quot;fw-bold fs-5&quot;&gt;$5,200&lt;/span&gt;
+                                    &lt;/div&gt;
+                                    &lt;a href=&quot;producto-4.html&quot; class=&quot;btn btn-sm btn-outline-primary&quot;&gt;Ver detalles&lt;/a&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- Brands Section --&gt;
+        &lt;section class=&quot;py-5 bg-light&quot;&gt;
+            &lt;div class=&quot;container&quot;&gt;
+                &lt;h2 class=&quot;text-center mb-5&quot;&gt;Marcas Destacadas&lt;/h2&gt;
+                &lt;div class=&quot;row align-items-center justify-content-center&quot;&gt;
+                    &lt;div class=&quot;col-4 col-md-2 mb-4 mb-md-0&quot;&gt;
+                        &lt;img src=&quot;img/brand-honda.png&quot; alt=&quot;Honda&quot; class=&quot;img-fluid brand-logo&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-4 col-md-2 mb-4 mb-md-0&quot;&gt;
+                        &lt;img src=&quot;img/brand-yamaha.png&quot; alt=&quot;Yamaha&quot; class=&quot;img-fluid brand-logo&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-4 col-md-2 mb-4 mb-md-0&quot;&gt;
+                        &lt;img src=&quot;img/brand-suzuki.png&quot; alt=&quot;Suzuki&quot; class=&quot;img-fluid brand-logo&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-4 col-md-2 mb-4 mb-md-0&quot;&gt;
+                        &lt;img src=&quot;img/brand-kawasaki.png&quot; alt=&quot;Kawasaki&quot; class=&quot;img-fluid brand-logo&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-4 col-md-2 mb-4 mb-md-0&quot;&gt;
+                        &lt;img src=&quot;img/brand-motul.png&quot; alt=&quot;Motul&quot; class=&quot;img-fluid brand-logo&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-4 col-md-2 mb-4 mb-md-0&quot;&gt;
+                        &lt;img src=&quot;img/brand-castrol.png&quot; alt=&quot;Castrol&quot; class=&quot;img-fluid brand-logo&quot;&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- Testimonials --&gt;
+        &lt;section class=&quot;py-5&quot;&gt;
+            &lt;div class=&quot;container&quot;&gt;
+                &lt;h2 class=&quot;text-center mb-5&quot;&gt;Lo que dicen nuestros clientes&lt;/h2&gt;
+                &lt;div class=&quot;row&quot;&gt;
+                    &lt;div class=&quot;col-md-4 mb-4&quot;&gt;
+                        &lt;div class=&quot;card h-100 testimonial-card&quot;&gt;
+                            &lt;div class=&quot;card-body&quot;&gt;
+                                &lt;div class=&quot;ratings mb-3&quot;&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                &lt;/div&gt;
+                                &lt;p class=&quot;card-text&quot;&gt;&quot;Excelente servicio y productos de calidad. Siempre encuentro lo
+                                    que necesito para mi moto y a precios competitivos.&quot;&lt;/p&gt;
+                                &lt;div class=&quot;d-flex align-items-center mt-3&quot;&gt;
+                                    &lt;img src=&quot;img/avatar-1.jpg&quot; alt=&quot;Cliente&quot; class=&quot;rounded-circle me-3&quot; width=&quot;50&quot;
+                                        height=&quot;50&quot;&gt;
+                                    &lt;div&gt;
+                                        &lt;h6 class=&quot;mb-0&quot;&gt;Carlos Rodríguez&lt;/h6&gt;
+                                        &lt;small class=&quot;text-muted&quot;&gt;Cliente desde 2020&lt;/small&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-md-4 mb-4&quot;&gt;
+                        &lt;div class=&quot;card h-100 testimonial-card&quot;&gt;
+                            &lt;div class=&quot;card-body&quot;&gt;
+                                &lt;div class=&quot;ratings mb-3&quot;&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-half text-warning&quot;&gt;&lt;/i&gt;
+                                &lt;/div&gt;
+                                &lt;p class=&quot;card-text&quot;&gt;&quot;Muy buena atención y asesoramiento. Me ayudaron a elegir los
+                                    repuestos correctos para mi modelo de moto. Recomendado.&quot;&lt;/p&gt;
+                                &lt;div class=&quot;d-flex align-items-center mt-3&quot;&gt;
+                                    &lt;img src=&quot;img/avatar-2.jpg&quot; alt=&quot;Cliente&quot; class=&quot;rounded-circle me-3&quot; width=&quot;50&quot;
+                                        height=&quot;50&quot;&gt;
+                                    &lt;div&gt;
+                                        &lt;h6 class=&quot;mb-0&quot;&gt;Laura Martínez&lt;/h6&gt;
+                                        &lt;small class=&quot;text-muted&quot;&gt;Cliente desde 2021&lt;/small&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-md-4 mb-4&quot;&gt;
+                        &lt;div class=&quot;card h-100 testimonial-card&quot;&gt;
+                            &lt;div class=&quot;card-body&quot;&gt;
+                                &lt;div class=&quot;ratings mb-3&quot;&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star-fill text-warning&quot;&gt;&lt;/i&gt;
+                                    &lt;i class=&quot;bi bi-star text-warning&quot;&gt;&lt;/i&gt;
+                                &lt;/div&gt;
+                                &lt;p class=&quot;card-text&quot;&gt;&quot;Envíos rápidos y productos bien embalados. La calidad de los
+                                    repuestos es excelente y los precios son justos.&quot;&lt;/p&gt;
+                                &lt;div class=&quot;d-flex align-items-center mt-3&quot;&gt;
+                                    &lt;img src=&quot;img/avatar-3.jpg&quot; alt=&quot;Cliente&quot; class=&quot;rounded-circle me-3&quot; width=&quot;50&quot;
+                                        height=&quot;50&quot;&gt;
+                                    &lt;div&gt;
+                                        &lt;h6 class=&quot;mb-0&quot;&gt;Miguel Sánchez&lt;/h6&gt;
+                                        &lt;small class=&quot;text-muted&quot;&gt;Cliente desde 2019&lt;/small&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- Call to Action --&gt;
+        &lt;section class=&quot;py-5 bg-primary text-white&quot;&gt;
+            &lt;div class=&quot;container&quot;&gt;
+                &lt;div class=&quot;row align-items-center&quot;&gt;
+                    &lt;div class=&quot;col-lg-8 mb-4 mb-lg-0&quot;&gt;
+                        &lt;h2 class=&quot;fw-bold&quot;&gt;¿Necesitas ayuda para encontrar un repuesto?&lt;/h2&gt;
+                        &lt;p class=&quot;lead mb-0&quot;&gt;Nuestro equipo de expertos está listo para asesorarte y ayudarte a
+                            encontrar exactamente lo que necesitas.&lt;/p&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-lg-4 text-lg-end&quot;&gt;
+                        &lt;a href=&quot;contacto.html&quot; class=&quot;btn btn-light btn-lg&quot;&gt;Contáctanos&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+
+    &lt;footer class=&quot;bg-dark text-white py-5&quot;&gt;
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;div class=&quot;row g-4&quot;&gt;
+      &lt;!-- ?About :v --&gt;
+      &lt;div class=&quot;col-lg-3 col-md-6&quot;&gt;
+        &lt;div class=&quot;d-flex align-items-center mb-3&quot;&gt;
+          &lt;i class=&quot;bi bi-bicycle me-2 text-primary fs-4&quot;&gt;&lt;/i&gt;
+          &lt;span class=&quot;fw-bold fs-4&quot;&gt;JIMDUR Repuestos&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;p class=&quot;text-white-50 mb-4&quot;&gt;Especialistas en repuestos y accesorios para motos de todas las marcas. Calidad y
+          garantía en todos nuestros productos.&lt;/p&gt;
+        &lt;div class=&quot;d-flex gap-3&quot;&gt;
+          &lt;a href=&quot;#&quot; class=&quot;text-white-50 hover-text-primary&quot;&gt;&lt;i class=&quot;bi bi-facebook fs-5&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+          &lt;a href=&quot;#&quot; class=&quot;text-white-50 hover-text-primary&quot;&gt;&lt;i class=&quot;bi bi-instagram fs-5&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+          &lt;a href=&quot;#&quot; class=&quot;text-white-50 hover-text-primary&quot;&gt;&lt;i class=&quot;bi bi-twitter fs-5&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+          &lt;a href=&quot;#&quot; class=&quot;text-white-50 hover-text-primary&quot;&gt;&lt;i class=&quot;bi bi-youtube fs-5&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- ? Enlaces Rapidos --&gt;
+      &lt;div class=&quot;col-lg-3 col-md-6&quot;&gt;
+        &lt;h5 class=&quot;fw-bold mb-4&quot;&gt;Enlaces rápidos&lt;/h5&gt;
+        &lt;ul class=&quot;list-unstyled&quot;&gt;
+          &lt;li class=&quot;mb-2&quot;&gt;&lt;a href=&quot;/productos&quot;
+              class=&quot;text-white-50 text-decoration-none hover-text-primary&quot;&gt;Catálogo de productos&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;mb-2&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;text-white-50 text-decoration-none hover-text-primary&quot;&gt;Ofertas
+              especiales&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;mb-2&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;text-white-50 text-decoration-none hover-text-primary&quot;&gt;Marcas&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;mb-2&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;text-white-50 text-decoration-none hover-text-primary&quot;&gt;Blog&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;mb-2&quot;&gt;&lt;a href=&quot;nosotros.html&quot; class=&quot;text-white-50 text-decoration-none hover-text-primary&quot;&gt;Sobre
+              nosotros&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;mb-2&quot;&gt;&lt;a href=&quot;contacto.html&quot;
+              class=&quot;text-white-50 text-decoration-none hover-text-primary&quot;&gt;Contacto&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+
+      &lt;!-- ? Contactos --&gt;
+      &lt;div class=&quot;col-lg-3 col-md-6&quot;&gt;
+        &lt;h5 class=&quot;fw-bold mb-4&quot;&gt;Contacto&lt;/h5&gt;
+        &lt;ul class=&quot;list-unstyled&quot;&gt;
+          &lt;li class=&quot;mb-3 d-flex&quot;&gt;
+            &lt;i class=&quot;bi bi-geo-alt text-primary me-2 mt-1&quot;&gt;&lt;/i&gt;
+            &lt;span class=&quot;text-white-50&quot;&gt;Av las Amapolas, Piura 20009&lt;/span&gt;
+          &lt;/li&gt;
+          &lt;li class=&quot;mb-3 d-flex&quot;&gt;
+            &lt;i class=&quot;bi bi-telephone text-primary me-2 mt-1&quot;&gt;&lt;/i&gt;
+            &lt;span class=&quot;text-white-50&quot;&gt;+51 123456789&lt;/span&gt;
+          &lt;/li&gt;
+          &lt;li class=&quot;mb-3 d-flex&quot;&gt;
+            &lt;i class=&quot;bi bi-envelope text-primary me-2 mt-1&quot;&gt;&lt;/i&gt;
+            &lt;span class=&quot;text-white-50&quot;&gt;info@jimdurrepuestos.com&lt;/span&gt;
+          &lt;/li&gt;
+          &lt;li class=&quot;d-flex&quot;&gt;
+            &lt;i class=&quot;bi bi-clock text-primary me-2 mt-1&quot;&gt;&lt;/i&gt;
+            &lt;div class=&quot;text-white-50&quot;&gt;
+              &lt;div&gt;Lun-Vie: 9:00 - 18:00&lt;/div&gt;
+              &lt;div&gt;Sáb: 9:00 - 13:00&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+
+      &lt;!-- ? Recibir correos --&gt;
+      &lt;div class=&quot;col-lg-3 col-md-6&quot;&gt;
+        &lt;h5 class=&quot;fw-bold mb-4&quot;&gt;Suscríbete a para recibir ofertas&lt;/h5&gt;
+        &lt;p class=&quot;text-white-50 mb-3&quot;&gt;Recibe nuestras ofertas y novedades directamente en tu correo.&lt;/p&gt;
+        &lt;form class=&quot;mb-3&quot;&gt;
+          &lt;div class=&quot;input-group&quot;&gt;
+            &lt;input type=&quot;email&quot; class=&quot;form-control bg-dark border-secondary text-white&quot;
+              placeholder=&quot;Tu correo electrónico&quot;&gt;
+            &lt;button class=&quot;btn btn-primary&quot; type=&quot;submit&quot;&gt;Suscribirse&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+        &lt;h6 class=&quot;fw-bold mb-3&quot;&gt;Métodos de pago&lt;/h6&gt;
+        &lt;div class=&quot;d-flex flex-wrap gap-2&quot;&gt;
+          &lt;i class=&quot;fa-brands fa-cc-visa payment-icon&quot;&gt;&lt;/i&gt;
+          &lt;i class=&quot;fa-brands fa-cc-mastercard payment-icon&quot;&gt;&lt;/i&gt;
+          &lt;i class=&quot;fa-brands fa-cc-amex payment-icon&quot;&gt;&lt;/i&gt;
+          &lt;i class=&quot;fa-brands fa-cc-paypal payment-icon&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;border-top border-secondary mt-4 pt-4 text-center&quot;&gt;
+      &lt;p&gt;©
+        &lt;script&gt;document.write(new Date().getFullYear())&lt;/script&gt; JIMDUR Repuestos. Todos los derechos reservados.
+      &lt;/p&gt;
+
+      &lt;small class=&quot;d-block mt-2&quot;&gt;
+        Este sitio web es parte de un proyecto académico universitario y no representa a la empresa real &lt;strong&gt;GRUPO
+          JIMDUR E.I.R.L.&lt;/strong&gt;, registrada en Piura, Perú.
+      &lt;/small&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;
+
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js&quot;
+        integrity=&quot;sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r&quot;
+        crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js&quot;
+        integrity=&quot;sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+&quot;
+        crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>User</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Eliminar todos los comentarios que muestren información que pueda ayudar a un atacante y solucionar el problema al que se refieren.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+							</ol>
+						</li>
+						
+					</ol>
+				</li>
+				
+				
+				  
+			</ol>
+		</section>
+
+		<section id="appendix" class="appendix">
+			<h2>Appendix</h2>
+
+			<section id="alert-types" class="alert-types">
+				<h3>Alert Types</h3>
+				<p class="alert-types-intro">This section contains additional information on the types of alerts in the report.</p>
+				<ol>
+					<li
+						id="alert-type-0">
+						<h4>Cabecera Content Security Policy (CSP) no configurada</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10038/">Cabecera Content Security Policy (CSP) no configurada</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/693.html">693</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>15</td>
+							</tr>
+							<tr>
+								<th scope="row">Reference</th>
+								<td>
+									<ol>
+										<li><a
+											href="https://developer.mozilla.org/en-US/docs/Web/Security/CSP/Introducing_Content_Security_Policy">https://developer.mozilla.org/en-US/docs/Web/Security/CSP/Introducing_Content_Security_Policy</a></li>
+										<li><a
+											href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html</a></li>
+										<li><a
+											href="https://www.w3.org/TR/CSP/">https://www.w3.org/TR/CSP/</a></li>
+										<li><a
+											href="https://w3c.github.io/webappsec-csp/">https://w3c.github.io/webappsec-csp/</a></li>
+										<li><a
+											href="https://web.dev/articles/csp">https://web.dev/articles/csp</a></li>
+										<li><a
+											href="https://caniuse.com/#feat=contentsecuritypolicy">https://caniuse.com/#feat=contentsecuritypolicy</a></li>
+										<li><a
+											href="https://content-security-policy.com/">https://content-security-policy.com/</a></li>
+									</ol>
+								</td>
+							</tr>
+						</table>
+					</li>
+					<li
+						id="alert-type-1">
+						<h4>ID de sesión en la Reescritura de URL</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/3/">ID de sesión en la Reescritura de URL</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/598.html">598</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>13</td>
+							</tr>
+							<tr>
+								<th scope="row">Reference</th>
+								<td>
+									<ol>
+										<li><a
+											href="https://seclists.org/webappsec/2002/q4/111">https://seclists.org/webappsec/2002/q4/111</a></li>
+									</ol>
+								</td>
+							</tr>
+						</table>
+					</li>
+					<li
+						id="alert-type-2">
+						<h4>Método de autenticación débil</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10105/">Método de autenticación débil</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/326.html">326</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>4</td>
+							</tr>
+							<tr>
+								<th scope="row">Reference</th>
+								<td>
+									<ol>
+										<li><a
+											href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html</a></li>
+									</ol>
+								</td>
+							</tr>
+						</table>
+					</li>
+					<li
+						id="alert-type-3">
+						<h4>Cookie sin el atributo SameSite</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10054/">Cookie sin el atributo SameSite</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/1275.html">1275</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>13</td>
+							</tr>
+							<tr>
+								<th scope="row">Reference</th>
+								<td>
+									<ol>
+										<li><a
+											href="https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site">https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site</a></li>
+									</ol>
+								</td>
+							</tr>
+						</table>
+					</li>
+					<li
+						id="alert-type-4">
+						<h4>Inclusión de archivos fuente JavaScript entre dominios</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10017/">Inclusión de archivos fuente JavaScript entre dominios</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/829.html">829</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>15</td>
+							</tr>
+							
+						</table>
+					</li>
+					<li
+						id="alert-type-5">
+						<h4>Aplicación Web Moderna</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10109/">Aplicación Web Moderna</a>)
+									</span>   
+								</td>
+							</tr>
+							
+							
+							
+						</table>
+					</li>
+					<li
+						id="alert-type-6">
+						<h4>Divulgación de información - Comentarios sospechosos</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10027/">Divulgación de información - Comentarios sospechosos</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/615.html">615</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>13</td>
+							</tr>
+							
+						</table>
+					</li>
+					<li
+						id="alert-type-7">
+						<h4>Petición de Autenticación Identificada</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10111/">Petición de Autenticación Identificada</a>)
+									</span>   
+								</td>
+							</tr>
+							
+							
+							<tr>
+								<th scope="row">Reference</th>
+								<td>
+									<ol>
+										<li><a
+											href="https://www.zaproxy.org/docs/desktop/addons/authentication-helper/auth-req-id/">https://www.zaproxy.org/docs/desktop/addons/authentication-helper/auth-req-id/</a></li>
+									</ol>
+								</td>
+							</tr>
+						</table>
+					</li>
+					<li
+						id="alert-type-8">
+						<h4>Respuesta de Gestión de Sesión Identificada</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10112/">Respuesta de Gestión de Sesión Identificada</a>)
+									</span>   
+								</td>
+							</tr>
+							
+							
+							<tr>
+								<th scope="row">Reference</th>
+								<td>
+									<ol>
+										<li><a
+											href="https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id">https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id</a></li>
+									</ol>
+								</td>
+							</tr>
+						</table>
+					</li>
+				</ol>
+			</section>
+		</section>
+		 
+	</main>
+</body>
+</html>
+
+
+

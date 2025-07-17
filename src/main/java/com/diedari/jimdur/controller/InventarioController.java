@@ -84,6 +84,7 @@ public class InventarioController {
         model.addAttribute("inventarios", inventarios);
         model.addAttribute("pageTitle", "Gestión de Inventario");
         
+        
         // Atributos para la paginación
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", inventarios.getTotalPages());
